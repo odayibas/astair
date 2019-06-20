@@ -1,6 +1,6 @@
 # ASTAiR
 
-ASTAiR is the future of A/C Controllers in a workplace. The main motivation of the product is to democratise the A/C settings of shared places like work. Finally peace will be prevail among the diverse groups of colleages which define heat comfort very differently... 
+ASTAiR is the future of A/C Controllers in a workplace. Since thermal comfort varies from person to person, finding the optimum temperature is a quite common problem especially in offices. ASTAiR aims to minimize the complaints about room temperature which comes from the employees. The main motivation of the product is to democratise the A/C settings of shared places like a workplace. Therefore, peace will prevail among the diverse groups of colleagues which define thermal comfort very differently...
 
 ## Getting Started
 
@@ -37,6 +37,7 @@ ASTAiR is the future of A/C Controllers in a workplace. The main motivation of t
 ## Built With
 
 * [YOLO](https://pjreddie.com/darknet/yolo/) - Object Detection
+* [OPENCV](https://opencv.org/)- Open Source Computer Vision Library
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [TODO](http://www.todo.com/) - The web framework used, etc...
 
