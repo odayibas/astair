@@ -2,9 +2,11 @@
 
 ASTAiR is the future of A/C Controllers in a workplace. Since thermal comfort varies from person to person, finding the optimum temperature is a quite common problem especially in offices. ASTAiR aims to minimize the complaints about room temperature which comes from the employees. The main motivation of the product is to democratise the A/C settings of shared places like a workplace. Therefore, peace will prevail among the diverse groups of colleagues which define thermal comfort very differently...
 
-## Getting Started
+[TODO: embed the powtoon video]
 
-[TODO]
+## Components (subsystems)
+
+[TODO: bullet list of subsystems (linked to respective READMEs)]
 
 ### Prerequisites
 
