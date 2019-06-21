@@ -7,11 +7,11 @@ ASTAiR is the future of A/C Controllers in a workplace. Since thermal comfort va
 
 ## Components (subsystems)
 
-[Controller Logic](/controller-logic/README.md)
-[Controller Unit](/controller-unit/README.md)
-[Feedback Collector](/feedback-collector/README.md)
-[Management Application](/management-app/README.md)
-[Video Analytics](/video-analytics/README.md)
+* [Controller Logic](/controller-logic/README.md)
+* [Controller Unit](/controller-unit/README.md)
+* [Feedback Collector](/feedback-collector/README.md)
+* [Management Application](/management-app/README.md)
+* [Video Analytics](/video-analytics/README.md)
 
 
 ## Installing
@@ -23,16 +23,6 @@ ASTAiR is the future of A/C Controllers in a workplace. Since thermal comfort va
 ## Running the tests
 
 [TODO: Explain how to run the automated tests for this system]
-
-
-### Break down into end to end tests
-
-[TODO: Explain what these tests test and why]
-
-
-### And coding style tests
-
-[TODO: Explain what these tests test and why]
 
 
 ## Deployment
