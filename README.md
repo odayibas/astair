@@ -1,33 +1,28 @@
 # ASTAiR
 
-ASTAiR is the future of A/C Controllers in a workplace. The main motivation of the product is to democratise the A/C settings of shared places like work. Finally peace will be prevail among the diverse groups of colleages which define heat comfort very differently... 
+ASTAiR is the future of A/C Controllers in a workplace. Since thermal comfort varies from person to person, finding the optimum temperature is a quite common problem especially in offices. ASTAiR aims to minimize the complaints about room temperature which comes from the employees. The main motivation of the product is to democratise the A/C settings of shared places like a workplace. Therefore, peace will prevail among the diverse groups of colleagues which define thermal comfort very differently...
 
-## Getting Started
-
-[TODO]
-
-### Prerequisites
-
-[TODO: preprequisites for development like CUDA, OpenCV, etc.]
+[TODO: embed the powtoon video]
 
 
-### Installing
+## Components (subsystems)
 
+* [Controller Logic](/controller-logic/README.md)
+* [Controller Unit](/controller-unit/README.md)
+* [Feedback Collector](/feedback-collector/README.md)
+* [Management Application](/management-app/README.md)
+* [Video Analytics](/video-analytics/README.md)
+
+
+## Installing
+
+[TODO: write preprequisites for development like CUDA, OpenCV, etc. for each component (here or in the sub-readme)]
 [TODO: steps to install development environment. Give example, end with demo]
 
 
 ## Running the tests
 
 [TODO: Explain how to run the automated tests for this system]
-
-### Break down into end to end tests
-
-[TODO: Explain what these tests test and why]
-
-
-### And coding style tests
-
-[TODO: Explain what these tests test and why]
 
 
 ## Deployment
@@ -37,6 +32,7 @@ ASTAiR is the future of A/C Controllers in a workplace. The main motivation of t
 ## Built With
 
 * [YOLO](https://pjreddie.com/darknet/yolo/) - Object Detection
+* [OPENCV](https://opencv.org/)- Open Source Computer Vision Library
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [TODO](http://www.todo.com/) - The web framework used, etc...
 
@@ -51,9 +47,7 @@ ASTAiR is the future of A/C Controllers in a workplace. The main motivation of t
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
-
-[TODO]
-<!-- See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.-->
+See the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
