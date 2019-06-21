@@ -1,3 +1,6 @@
+import sys
+from datetime import datetime
+
 """
 -Input Parameters:
 Hot Vote, Good Vote, Cold Vote, A/C Degree
@@ -83,17 +86,29 @@ def decision(votes, climateDegree):
         degree = calculateDegree(votes, climateDegree)
     return degree
 
+def display(degree):
+    print(f'New A/C Degree: {degree}')
+
 # This function calls all necessary functions and 
 # calculates degree for A/C.
 def voteBaseModel(hotVote, goodVote, coldVote, climateDegree):
     votes = calculatePercent(hotVote, goodVote, coldVote)
     degree = decision(votes, climateDegree)
-    print(f'New A/C Degree: {degree}')
+    return degree
+
+# This function is written temporarily until the database is installed.
+def writeFile(degree):
+    myFile = open('VoteModel.txt', 'a')
+    myFile.write('\nAccessed on ' + str(datetime.now()) + " New A/C Degree: " + str(degree))
 
 # Main function.
 if __name__ == "__main__":
-    hotVote = 10
-    goodVote = 10
-    coldVote = 10
-    acDegree = 20
-    voteBaseModel(hotVote, goodVote, coldVote, acDegree)
+    if(len(sys.argv) != 5):
+        print("Error")
+        sys.exit(1)
+    hotVote = int(sys.argv[1]) #10
+    goodVote = int(sys.argv[2]) #10
+    coldVote = int(sys.argv[3]) #10
+    acDegree = int(sys.argv[4]) #20
+    degree = voteBaseModel(hotVote, goodVote, coldVote, acDegree)
+    #writeFile(degree)

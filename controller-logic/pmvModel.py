@@ -1,4 +1,6 @@
 import math
+import sys
+from datetime import datetime
 
 """
     --- Input Parameters ---
@@ -12,7 +14,7 @@ import math
 """
 
 # This function calls all necessary functions.
-def pmvModel(ta, tr, vel, rh, met, clo, work = 0):
+def pmv(ta, tr, vel, rh, met, clo, work = 0):
     pa = calculatePA(rh, ta)
     icl = calculateICL(clo)
     mw = calculateMW(met, work)
@@ -24,7 +26,7 @@ def pmvModel(ta, tr, vel, rh, met, clo, work = 0):
     tcl, xn, hc = calculateTCL(icl, fcl, taa, tra, mw, tcla, hcf)
     totalLost = calculationTotalLost(mw, pa, met, ta, fcl, xn, tra, tcl, hc)
     ts = calculationTS(met)
-    pmv = ts * (mw - totalLost)
+    pmv = calculatePVM(ts, mw, totalLost)
     ppd = calculatePPD(pmv)
     return pmv, ppd
 
@@ -128,14 +130,25 @@ def calculationTS(m):
 # This function calculates predicted percentage dissat (PPD).
 def calculatePPD(pmv):
     return 100 - 95 * math.exp(-0.03353 * (pmv**4) - 0.2179 * (pmv**2))
-    
+
+# This function calculates predicted mean vote (PVM).
+def calculatePVM(ts, mw, totalLost):
+    return ts * (mw - totalLost)
+
+def writeFile(pmv, ppd, tr):
+    myFile = open('PMVModel.txt', 'a')
+    myFile.write('\nAccessed on ' + str(datetime.now()) + " PMV: " + str(pmv) + " PPD: " + str(ppd) + " New A/C Degree: " + str(round(pmv, 0) + tr))
+
 # Main Function    
 if __name__ == "__main__":
-    tr = 25
-    ta = 23.5
-    vel = 0.2
-    rh = 60
-    met = 1.2
-    clo = 0.3
-    pmv, ppd = pmvModel(tr, ta, vel, rh, met, clo)
-    display(pmv, ppd, tr)
+    if(len(sys.argv) != 7):
+        print("Error")
+        sys.exit(1)
+    tr = float(sys.argv[1]) #25
+    ta = float(sys.argv[2]) #23.5
+    vel = float(sys.argv[3]) #0.2
+    rh = float(sys.argv[4]) #60
+    met = float(sys.argv[5]) #1.2
+    clo = float(sys.argv[6]) #0.3
+    pmv, ppd = pmv(tr, ta, vel, rh, met, clo)
+    #writeFile(pmv, ppd, tr)

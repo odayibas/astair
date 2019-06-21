@@ -57,7 +57,7 @@ The PMV is an index that predicts the mean value of the votes of a large group o
 
 The PPD is an index that establishes a quantitative prediction of the percentage of thermally dissatisfied people who feel too cool or too warm. 
 
-The PMV and PPD are ISO 7726 standard.
+The PMV and PPD are ISO 7730 standard.
 
 **Input Parameters:**
 
@@ -75,6 +75,13 @@ The PMV and PPD are ISO 7726 standard.
 - PPD Values
 - A/C Degree
 
+**How to install?**
+
+We will create docker image. When you work this code, you should install docker on personal computer. After installing, you must write the following codes to the console:
+
+- docker build -t models . 
+- docker run models
+
 **References**
 ---
-[1] [ISO 7730](http://www.asandanismanlik.com/wp-content/uploads/2016/12/katalogs-1343-DD.24-TS_EN_ISO_7730.pdf) 
+[1] [ISO 7730 Documents](http://www.asandanismanlik.com/wp-content/uploads/2016/12/katalogs-1343-DD.24-TS_EN_ISO_7730.pdf) 
