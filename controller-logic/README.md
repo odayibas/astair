@@ -2,6 +2,8 @@
 ---
 In this chapter, we will create rule based models for ASTAiR project. These models will dynamically change the A/C degree, according to the parameters that it receives from the work place and user feedbacks. In this way, we aim that thermal comfort will be provided in the work places in a democratic way. We will create two models. These models are "Vote Based Model" and "Predicted Mean Vote (PMV)".
 
+The system analyzes the work places, taking data from a database every 10 minutes. If the mean radiant temperature increases or decreases by 1 degree, the "PMV Model" runs. Otherwise, system gives notice to feedback collector, feedbacks are collected and "Vote Based Model" is run.
+
 **Vote Based Model**
 ---
 This model is based on the results of voting at slack. These voting results will be accessed from the database. The percentage of data received from the database is calculated and received A/C degree and the optimum degree of air conditioning is calculated according to a particular algorithm.
