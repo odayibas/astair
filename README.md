@@ -4,23 +4,26 @@ ASTAiR is the future of A/C Controllers in a workplace. Since thermal comfort va
 
 [TODO: embed the powtoon video]
 
+
 ## Components (subsystems)
 
-[TODO: bullet list of subsystems (linked to respective READMEs)]
+[Controller Logic](/controller-logic/README.md)
+[Controller Unit](/controller-unit/README.md)
+[Feedback Collector](/feedback-collector/README.md)
+[Management Application](/management-app/README.md)
+[Video Analytics](/video-analytics/README.md)
 
-### Prerequisites
 
-[TODO: preprequisites for development like CUDA, OpenCV, etc.]
+## Installing
 
-
-### Installing
-
+[TODO: write preprequisites for development like CUDA, OpenCV, etc. for each component (here or in the sub-readme)]
 [TODO: steps to install development environment. Give example, end with demo]
 
 
 ## Running the tests
 
 [TODO: Explain how to run the automated tests for this system]
+
 
 ### Break down into end to end tests
 
@@ -54,9 +57,7 @@ ASTAiR is the future of A/C Controllers in a workplace. Since thermal comfort va
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
-
-[TODO]
-<!-- See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.-->
+See the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
