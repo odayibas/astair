@@ -26,9 +26,10 @@ App takes Slack token for reaching API. With this token app can call APIs that h
 **Deployment**
 
 Python app deployed to Heroku server. 
-TODO: Dockerised deployment
 
-TODO: Installing slack app
-TODO: How to use app
-TODO: How to use input parameters
-TODO: Add images
+- TODO: Dockerised deployment
+
+- TODO: Installing slack app
+- TODO: How to use app
+- TODO: How to use input parameters
+- TODO: Add images
