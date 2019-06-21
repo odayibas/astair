@@ -7,6 +7,9 @@ In this part of the project:
 	* Data will be taken from air conditioner (Airwell) and sensors(A-star sensors)
 	* The read data will be saved to the database
 	* Air conditioning settings will be set according to the data from the web application
+	
+### System Overview
+TODO: Add Figure & Explain !!
 
 ### Components used
 	* Raspberry pi 3 B +
@@ -16,6 +19,9 @@ In this part of the project:
   
 ### Circuit Connection between MAX485 and Raspberry Pi 3 B+
 ![alt text](Raspberry_RS485_AC_Circuit.png)
+###### Figure 1: Circuit Connection 
+
+
 
 ### Inputs and outputs
 >	**Inputs**
