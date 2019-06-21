@@ -7,17 +7,17 @@ Feedback collector part of project handles collecting feedbacks from employees w
 
 **Input Parameters**
 
-  -Slack API Token
-  -Postgresql Database Connection Infos
+  - Slack API Token
+  - Postgresql Database Connection Infos
   
 **Output Parameters**
 
-  -Slack Username
-  -Slack UserID
-  -Channel ID
-  -Selected Answer
-  -Timestamp of Selection
-  -Survey ID
+  - Slack Username
+  - Slack UserID
+  - Channel ID
+  - Selected Answer
+  - Timestamp of Selection
+  - Survey ID
   
 **Sending Message**
 
