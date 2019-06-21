@@ -18,27 +18,29 @@ In this part of the project:
 ![alt text](Raspberry_RS485_AC_Circuit.png)
 
 ### Inputs and outputs
-	 Inputs
-		1. A/C
-			* Mode
-			* Fan Speed
-			* A/C Degree
-			* A/C Zone (or A/C ID)
-			* ON/OFF
+>	**Inputs**
+>
+>		1. A/C
+>			* Mode (Cool/Fan/Dry/Heat/Auto)
+>			* Fan Speed (Low/Medium/High/Auto)
+>			* A/C Degree (16°C ~ 30°C || 60°F ~ 85°F)
+>			* A/C Zone (or A/C ID)
+>			* ON/OFF
+>
+>		2. A-Star Sensor
+>			* Degree
+>			* Humidity
+>			* Sensor ID
 
-		2. A-Star Sensor
-			* Degree
-			* Humidity
-			* Sensor ID
-
-	Outputs
-		1. To A/C
-			* Mode
-			* Fan Speed
-			* A/C Degree
-			* A/C Zone (or A/C ID)
-			* ON/OFF
-
-		2. To Database
-			* A/C Data
-			* A-Star Data
+>	**Outputs**
+>
+>		1. To A/C
+>			* Mode
+>			* Fan Speed
+>			* A/C Degree
+>			* A/C Zone (or A/C ID)
+>			* ON/OFF
+>
+>		2. To Database
+>			* A/C Data
+>			* A-Star Data
