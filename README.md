@@ -47,7 +47,7 @@ ASTAiR is the future of A/C Controllers in a workplace. Since thermal comfort va
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
-See the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See the list of [contributors](https://github.com/odayibas/astair/contributors) who participated in this project.
 
 ## License
 
