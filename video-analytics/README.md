@@ -9,13 +9,14 @@ OpenCV library and Caffe model was used for object detection. That helps us to f
 
 We used PyImageSearch to track an object. This model compares the consecutive frames in the camera. It notices that the object is moving and decides it is the same as the previous object. Directions are determined by using centroids of the people. When these centroid points intersects with the certain lines given by the user, number of male and female and total count of people are updated.
 
-**Gender Detection**
+**Gender Detection:**
+
 To detect gender gender_net caffemodel was used. When people enter to or exit from the office number of female and male updated.
 
 **Use case:**
 
 User will be write RTSP address of the IP camera to the web app and draw a line on the screen. Later the program will start counting the number of the people in the room. Returns that value to the database. This value will be used for the modelling and deciding the optimum temperature, fan etc. for air-conditioners. Furthermore, this number will be printed on the screen by web application of ASTAiR.
 
-*Sample usage in terminal*
+**Sample usage in terminal**
 
 python people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/example_01.mp4  --output output/output_01.avi
