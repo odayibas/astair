@@ -21,9 +21,8 @@ User will write RTSP address of the IP camera to the web app and draw a line on 
 
 **Sample usage in the terminal:**
 
-$ workon cv
-
-$ python3 people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/example_01.mp4  --output output/output_01.avi
+- workon cv
+- python3 people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/example_01.mp4  --output output/output_01.avi
 
 The numerator and denominator parameters decide how to draw the line on   the camera image
 
