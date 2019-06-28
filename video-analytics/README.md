@@ -19,14 +19,15 @@ A combination between people tracking and gender detection. Gender of every pers
 
 User will write RTSP address of the IP camera to the web app and draw a line on the screen. Later the program will start counting the number of people in the room. Returns that value to the database. This value will be used for the modeling and deciding the optimum temperature, fan, etc. for air-conditioners. Furthermore, this number will be printed on the screen by the web application of ASTAiR.
 
-**Sample usage in the terminal**
+**Sample usage in the terminal:**
 
 $ workon cv
+
 $ python3 people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/example_01.mp4  --output output/output_01.avi
 
 The numerator and denominator parameters decide how to draw the line on   the camera image
 
-**Requirements**
+**Requirements:**
 
 - python3.5
 - OPENCV
