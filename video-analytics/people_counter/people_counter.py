@@ -35,6 +35,8 @@ ap.add_argument("-p", "--prototxt", required=True,
                 help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("-m", "--model", required=True,
                 help="path to Caffe pre-trained model")
+ap.add_argument("-n", "--numerator", type=int)
+ap.add_argument("-d", "--denominator", type=int, default=32)
 ap.add_argument("-i", "--input", type=str,
                 help="path to optional input video file")
 ap.add_argument("-o", "--output", type=str,
@@ -91,11 +93,11 @@ trackableObjects = {}
 # initialize the total number of frames processed thus far, along
 # with the total number of objects that have moved either up or down
 totalFrames = 0
+
 totalCount = 0
-arr = np.zeros(1000)  #numpy array to track the change of people's direction while they are moving
+arr = []
 totalMale = 0
 totalFemale = 0
-count = False
 
 # start the frames per second throughput estimator
 fps = FPS().start()
@@ -221,8 +223,10 @@ while True:
     # draw a horizontal line in the center of the frame -- once an
     # object crosses this line we will determine whether they were
     # moving 'up' or 'down'
-    belowLinePos = 18 * H // 32
-    aboveLinePos = 13 * H // 32
+
+    aboveLinePos = args["numerator"] * H // args["denominator"]
+    belowLinePos = (args["numerator"] + 5) * H // args["denominator"]
+    
     cv2.line(frame, (0, belowLinePos), (W, belowLinePos), (0, 255, 255), 2)  # below line
     cv2.line(frame, (0, aboveLinePos), (W, aboveLinePos), (0, 0, 255), 2)  # above line
 
@@ -232,8 +236,6 @@ while True:
 
     # loop over the tracked objects
     for (objectID, centroid) in objects.items():
-
-        # print("ID ", objectID, ": ", gender)
 
         # check to see if a trackable object exists for the current
         # object ID
@@ -254,6 +256,9 @@ while True:
             direction = centroid[1] - np.mean(y)
             to.centroids.append(centroid)
 
+            if len(arr) == objectID:
+                arr.append(0)
+
             if to.counted:
                 if aboveLinePos - centroid[1] > 10 and arr[objectID] == 1:
                     to.counted = False
@@ -267,15 +272,15 @@ while True:
                 # line, count the object
                 if direction < -5 and 0 < aboveLinePos - centroid[1] < 20:
                     if arr[objectID] != 1:
-                        if count:
-                            record = connector.select_latest_row()
-                            if record[1] == 'sysAdmin':
-                                if record[2] != totalCount:
-                                    totalCount = record[2]
-                                    totalMale = record[3]
-                                    totalFemale = record[4]
+                        record = connector.select_latest_row()
+                        if record[1] == 'sysAdmin':
+                            if record[2] != totalCount:
+                                totalCount = record[2]
+                                totalMale = record[3]
+                                totalFemale = record[4]
 
                         to.counted = True
+
                         arr[objectID] = 1
                         if gender == "Male":
                             totalMale += -1
@@ -291,13 +296,12 @@ while True:
                 # center line, count the object
                 elif direction > 5 and 0 < centroid[1] - belowLinePos < 20:
                     if arr[objectID] != 2:
-                        if count:
-                            record = connector.select_latest_row()
-                            if record[1] == 'sysAdmin':
-                                if record[2] != totalCount:
-                                    totalCount = record[2]
-                                    totalMale = record[3]
-                                    totalFemale = record[4]
+                        record = connector.select_latest_row()
+                        if record[1] == 'sysAdmin':
+                            if record[2] != totalCount:
+                                totalCount = record[2]
+                                totalMale = record[3]
+                                totalFemale = record[4]
 
                         to.counted = True
                         arr[objectID] = 2
@@ -315,10 +319,10 @@ while True:
 
         # draw both the ID of the object and the centroid of the
         # object on the output frame
-        #text = "ID {}".format(objectID)
+        text = "ID {}".format(objectID)
         #cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
-        #cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
-        #            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
 
     # construct a tuple of information we will be displaying on the
@@ -372,11 +376,5 @@ else:
 # close any open windows
 cv2.destroyAllWindows()
 
-
-connector.select_from_table()
-#connector.update_table('2020-09-01 10:34:02', 'Cam', 50, 10, 40)
-#connector.delete_from_table('2019-09-01 10:34:02')
-#connector.insert_table('2019-09-01T10:34:02', 'Cam', 15, 11, 4)
-#connector.delete_all_rows()
 connector.disconnect_db()
 
