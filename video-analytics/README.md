@@ -12,26 +12,45 @@ We used PyImageSearch to track an object. This model compares the consecutive fr
 
 ## Gender Detection
 
-A combination between people tracking and gender detection. Gender of every person is predicted using caffe models and gender_net.
+Gender of every person is predicted using caffe models and gender_net. We are predicting every person's gender. However, if a person enters or leaves the office, we count this gender. We are increasing the number of this gender by 1 (enters) or decreasing that number by 1 (leaves).
 
 
 ## Use case
 
 User will write RTSP address of the IP camera to the web app and draw a line on the screen. Later the program will start counting the number of people in the room. Returns that value to the database. This value will be used for the modeling and deciding the optimum temperature, fan, etc. for air-conditioners. Furthermore, this number will be printed on the screen by the web application of ASTAiR.
 
-**Sample usage in the terminal:**
+## Sample usage in the terminal
+
+**Usage for .mp4 videos**
 
 ```
 $ workon cv
 $ python3 people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/example_01.mp4  --output output/output_01.avi
 ```
 
-The numerator and denominator parameters decide how to draw the line on   the camera image
+**Usage for RTSP stream**
 
-**Requirements:**
+```
+$ workon cv
+$ python3 people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input rtsp://IP_Adress/MediaInput/h264 --output output/output_01.avi
+```
+
+The numerator and denominator parameters decide how to draw the line on   the camera image.
+
+**Update of outputs by Admin**
+
+```
+$ python3 admin_db.py -o 28 -m 18 -f 10
+```
+
+For example, this inputs set the Occupancy (Total person inside) = 20, Male count = 12, Female count = 8. 
+
+## Requirements:
 
 - python3.5
 - OPENCV
 - imutils
 - numpy
 - dlib
+- scipy
+- psycopg2
