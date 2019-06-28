@@ -1,9 +1,9 @@
-import React, { Component, lazy, Suspense } from 'react';
-import jwt_decode from 'jwt-decode'
+import React, { Component } from 'react';
+// import jwt_decode from 'jwt-decode'
+import axios from 'axios'
+
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from 'react-chartjs-2';
 import Modal from 'react-awesome-modal';
-
-
 import {
   Badge,
   Button,
@@ -24,6 +24,7 @@ import {
   Row,
   Table,
 } from 'reactstrap';
+
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import './Profile.css'
@@ -36,13 +37,13 @@ const brandDanger = getStyle('--danger')
 
 // Card Chart 1
 const cardChartData1 = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
+  labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+  datasets: [
       {
-        label: 'My First dataset',
+        label: 'Region 2',
         backgroundColor: brandPrimary,
         borderColor: 'rgba(255,255,255,.55)',
-        data: [65, 59, 84, 84, 51, 55, 40],
+        data: [23, 24, 22, 23, 23]
       },
     ],
   };
@@ -97,7 +98,7 @@ const cardChartData1 = {
     labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     datasets: [
       {
-        label: 'My First dataset',
+        label: 'Region 1',
         backgroundColor: brandInfo,
         borderColor: 'rgba(255,255,255,.55)',
         data: [23, 24, 22, 23, 23],
@@ -152,13 +153,13 @@ const cardChartData1 = {
   
   // Card Chart 3
   const cardChartData3 = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     datasets: [
       {
-        label: 'My First dataset',
+        label: 'Region 3',
         backgroundColor: 'rgba(255,255,255,.2)',
         borderColor: 'rgba(255,255,255,.55)',
-        data: [78, 81, 80, 45, 34, 12, 40],
+        data: [23, 24, 22, 23, 23],
       },
     ],
   };
@@ -196,13 +197,13 @@ const cardChartData1 = {
   
   // Card Chart 4
   const cardChartData4 = {
-    labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
     datasets: [
       {
-        label: 'My First dataset',
+        label: 'Region 4',
         backgroundColor: 'rgba(255,255,255,.3)',
         borderColor: 'transparent',
-        data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
+        data: [23, 24, 22, 23, 23],
       },
     ],
   };
@@ -229,6 +230,7 @@ const cardChartData1 = {
     },
   };
 
+
   function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   } 
@@ -243,7 +245,7 @@ for (var i = 0; i <= elements; i++) {
   data3.push(23);
 }
 
-const mainChart = {
+let mainChart = {
     labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
     datasets: [
       {
@@ -252,24 +254,7 @@ const mainChart = {
         borderColor: brandInfo,
         pointHoverBackgroundColor: '#fff',
         borderWidth: 2,
-        data: data1,
-      },
-      {
-        label: 'My Second dataset',
-        backgroundColor: 'transparent',
-        borderColor: brandSuccess,
-        pointHoverBackgroundColor: '#fff',
-        borderWidth: 2,
-        data: data2,
-      },
-      {
-        label: 'My Third dataset',
-        backgroundColor: 'transparent',
-        borderColor: brandDanger,
-        pointHoverBackgroundColor: '#fff',
-        borderWidth: 1,
-        borderDash: [8, 5],
-        data: data3,
+        data: []
       },
     ],
   };
@@ -320,10 +305,10 @@ const mainChart = {
   };
 
   const bar = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     datasets: [
       {
-        label: 'My First dataset',
+        label: 'Region 1',
         backgroundColor: brandInfo,
         borderColor: brandInfo,
         borderWidth: 1,
@@ -343,10 +328,10 @@ const mainChart = {
   }
 
   const bar2 = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     datasets: [
       {
-        label: 'My First dataset',
+        label: 'Region 2',
         backgroundColor: brandPrimary,
         borderColor: brandPrimary,
         borderWidth: 1,
@@ -366,10 +351,10 @@ const mainChart = {
   }
 
   const bar3 = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
     datasets: [
       {
-        label: 'My First dataset',
+        label: 'Region 3',
         backgroundColor: brandWarning,
         borderColor: brandWarning,
         borderWidth: 1,
@@ -389,10 +374,10 @@ const mainChart = {
   }
 
   const bar4  = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
+    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        datasets: [
       {
-        label: 'My First dataset',
+        label: 'Region 4',
         backgroundColor: brandDanger,
         borderColor: brandDanger,
         borderWidth: 1,
@@ -413,18 +398,282 @@ const mainChart = {
 
 
 class Profile extends Component{
-    constructor(){
-        super()
-        this.state = {
-            first_name : '',
-            last_name : '',
-            email : '',
-            visible : '',
-            visible2 : '',
-            visible3 : '',
-            visible4 : ''
-        }
+  constructor(){
+    super()
+      this.state = {
+        first_name : '',
+        last_name : '',
+        email : '',
+        visible : '',
+        visible2 : '',
+        visible3 : '',
+        visible4 : '',
+        temp: null,
+        currentWeather: null,
+        dailySummary: null,
+        dew: null,
+        humidity: null,
+        visibility: null,
+        timezone : null,
+        sensorData : [],
+        sensorTemp: null,
+        sensorTemp1: null,
+        sensorTemp2: null,
+        sensorTemp3: null,
+        sensorTemp4: null,
+        people : null,
+        male:null,
+        female: null,
+        datasets:[]
     }
+
+  }
+
+  getMale =  async() => {
+    
+    const url = "/get-male";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+      console.log(res.data)
+      console.log("taken")
+      let presentState = {...this.state}
+
+      presentState.male= res.data
+
+
+      this.setState({
+        ...presentState
+    })
+
+
+    })
+  }
+
+  getFemale =  async() => {
+    
+    const url = "/get-female";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+      console.log(res.data)
+      console.log("taken")
+      let presentState = {...this.state}
+
+      presentState.female= res.data
+
+
+      this.setState({
+        ...presentState
+    })
+
+
+    })
+  }
+
+
+  getcompVisionControllerData =  async() => {
+    
+    const url = "/get-people";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+      console.log(res.data)
+      console.log("taken")
+      let presentState = {...this.state}
+
+      presentState.people= res.data
+
+
+      this.setState({
+        ...presentState
+    })
+
+
+    })
+  }
+
+  getSensorData1 =  async() => {
+    
+    const url = "/sensor/get-zone/1";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+      let presentState = {...this.state}
+
+      presentState.sensorTemp1 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+
+      this.setState({
+        ...presentState
+    })
+
+    })
+  }
+
+  getSensorData2 =  async() => {
+    
+    const url = "/sensor/get-zone/2";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+      let presentState = {...this.state}
+
+      presentState.sensorTemp2 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+
+      this.setState({
+        ...presentState
+    })
+
+    })
+  }
+
+  getSensorData3 =  async() => {
+    
+    const url = "/sensor/get-zone/3";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+
+      let presentState = {...this.state}
+
+      presentState.sensorTemp3 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+
+      this.setState({
+        ...presentState
+    })
+
+    })
+  }
+
+  getSensorData4 =  async() => {
+    
+    const url = "/sensor/get-zone/4";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+      let presentState = {...this.state}
+
+      presentState.sensorTemp4 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+
+      this.setState({
+        ...presentState
+    })
+
+    })
+  }
+ 
+  getSensorData =  async() => {
+    
+    const url = "/sensor/get-all";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+
+      let presentState = {...this.state}
+      presentState.sensorData = res.data
+
+      presentState.sensorTemp = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+
+
+      let datasets = []
+      console.log(res.data.length)
+      mainChart.datasets[0].data.push(res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree);
+      let data = {}
+      data["data"] = mainChart.datasets[0].data
+      datasets.push(data)
+      this.setState({
+          ...presentState,datasets
+      },()=> console.log(this.state.datasets))
+
+    })
+  }
+ 
+  getOutdoorData = async() => {
+
+    const url = "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/eda3e07c6d1ebeb49dd8a4353a0666a9/39.925533,32.866287?units=si";
+    return axios.get(url, {
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+    })
+    .then((res) => {
+      let presentState = {...this.state};
+      presentState.temp = res.data.currently.apparentTemperature;
+      presentState.currentWeather = res.data.currently.summary;
+      presentState.dailySummary = res.data.hourly.summary;
+      presentState.dew = res.data.currently.dewPoint;
+      presentState.humidity = res.data.currently.humidity;
+      presentState.visibility = res.data.currently.visibility;
+      presentState.timezone = res.data.timezone;
+
+
+      this.setState({
+          ...presentState
+      })
+  })
+
+  }
+
+
+  componentDidMount(){     
+  this.trigger()
+
+ }
+
+trigger() {
+    let newTime = Date.now() - this.props.date;
+    setInterval(() => { 
+          this.getSensorData().then(data => {})
+          this.getSensorData1().then(data => {})
+          this.getSensorData2().then(data => {})
+          this.getSensorData3().then(data => {})
+          this.getSensorData4().then(data => {})
+          this.getcompVisionControllerData().then(data => {})
+          this.getOutdoorData().then(data => {})
+          this.getMale().then(data => {})
+          this.getFemale().then(data => {})
+    }, 1000);
+  }
 
   openModal() {
       this.setState({
@@ -437,97 +686,90 @@ class Profile extends Component{
           visible : false
       });
   }
+  
   openModal2() {
     this.setState({
         visible2 : true
     });
-}
+  }
 
-closeModal2() {
+  closeModal2() {
     this.setState({
         visible2: false
     });
-}
+  }
 
-openModal3() {
+  openModal3() {
+
   this.setState({
       visible3 : true
   });
-}
+  }
 
-closeModal3() {
+  closeModal3() {
   this.setState({
       visible3: false
   });
-}
+  }
 
-
-openModal4() {
+  openModal4() {
   this.setState({
       visible4 : true
   });
-}
+  }
 
-closeModal4() {
+  closeModal4() {
   this.setState({
       visible4: false
   });
+  }
+
+  avmodal() {
+  var x =  (this.state.sensorTemp1 +  this.state.sensorTemp2 +  this.state.sensorTemp3 + this.state.sensorTemp4)/4
+  x = x * 100   
+  x = parseInt(x)
+  var y = x/100
+  return y
 }
-
-componentDidMount(){
-        
-/*  const token =  localStorage.usertoken
-  const decoded = jwt_decode(token);
-  this.setState({
-      first_name : decoded.first_name,
-      last_name : decoded.last_name,
-      email : decoded.email
-  })*/
-}
-
-
   render(){
-    return(
+    
+      return(
       <div>
-        <div className= "jumbotron bg-white">
-           <div>
-        <Row >
-          <Col xs="12" sm="6" lg="3">
-          <div  onClick={() => this.openModal()}>
-            <Card className="text-white bg-info">
-              <CardBody className="pb-0">
-                <div className="text-value">24°C</div>
-                <div>First Region</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData2} options={cardChartOpts2} height={70} />
+          <div className= "jumbotron mt-5 bg-white">
+            <Row >
+            <Col xs="12" sm="6" lg="3">
+              <div  onClick={() => this.openModal()}>
+                <Card className="text-white bg-info">
+                <CardBody className="pb-0">
+                  <div className="text-value">24°C</div>
+                    <div>First Region</div>
+                </CardBody>
+                <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+                  <Line data={cardChartData2} options={cardChartOpts2} height={70} />
+                </div>
+              </Card>
               </div>
-            </Card>
-            </div>
-            <Modal visible={this.state.visible} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal()}>
-              <div>
-                <p> 
-                <Card>
-            <CardHeader>
-            Average A/C Temperatures  for Region 1
-            <div className="card-header-actions">
-                <a href="/monitor" className="card-header-action">
-                  <small className="text-muted">Click here for more information...</small>
-                </a>
-              </div>
-            </CardHeader>
-            <CardBody>
-              <div className="chart-wrapper">
-                <Bar data={bar} options={options} />
-              </div>
-            </CardBody>
-          </Card>
-                </p>
-               <div>
-               <button class="btn btn-outline-primary btn-block"
-                href="javascript:void(0);" onClick={() => this.closeModal()}>Close</button>
-               </div>
-            </div>
+                <Modal visible={this.state.visible} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                  <div>
+                    <Card>
+                      <CardHeader>Average A/C Temperatures  for Region 1
+                        <div className="card-header-actions">
+                          <a href="/monitor" className="card-header-action">
+                          <small className="text-muted">Click here for more information...</small>
+                          </a>
+                        </div>
+                      </CardHeader>
+                      <CardBody>
+                        <div className="chart-wrapper">
+                          <Bar data={bar} options={options} />
+                        </div>
+                      </CardBody>
+                    </Card>
+                  <div>
+                    <button class="btn btn-outline-primary btn-block"
+                    href="javascript:void(0);" onClick={() => this.closeModal()}>Close</button>
+                  </div>
+                  </div>
           </Modal>
         </Col>
 
@@ -546,23 +788,21 @@ componentDidMount(){
             <Modal visible={this.state.visible2} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal2()}>
               <div>
                 <div>
-                  <p> 
                     <Card>
                       <CardHeader>
                       Average A/C Temperatures  for Region 2
                         <div className="card-header-actions">
-                        <a href="http://www.chartjs.org" className="card-header-action">
-                        <small className="text-muted">docs</small>
+                          <a href="/monitor" className="card-header-action">
+                       <small className="text-muted">Click here for more information...</small>
                         </a>
                         </div>
                       </CardHeader>
                       <CardBody>
                         <div className="chart-wrapper">
-                          <Bar data={bar2} options={options2} />
+                          <Bar data={cardChartData1} options={cardChartOpts1} />
                         </div>
                       </CardBody>
                     </Card>
-                  </p>
                   <button class="btn btn-outline-primary btn-block"
                   href="javascript:void(0);" onClick={() => this.closeModal2()}>Close</button>
                 </div>
@@ -584,7 +824,6 @@ componentDidMount(){
             </div>
             <Modal visible={this.state.visible3} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal3()}>
               <div>
-                <p> 
                   <Card>
                     <CardHeader>
                     Average A/C Temperatures  for Region 3
@@ -600,7 +839,6 @@ componentDidMount(){
                         </div>
                       </CardBody>
                   </Card>
-                </p>
                   <div>
                     <button class="btn btn-outline-primary btn-block"
                     href="javascript:void(0);" onClick={() => this.closeModal3()}>Close</button>
@@ -621,16 +859,15 @@ componentDidMount(){
                 </div>
             </Card>
           </div>
-          <Modal visible={this.state.visible4} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal4()}>
-                    <div>
-                    <p> 
+            <Modal visible={this.state.visible4} width="450" height="350" effect="fadeInUp" onClickAway={() => this.closeModal4()}>
+              <div>
                 <Card>
-            <CardHeader>
-              Average A/C Temperatures  for Region 4
-              <div className="card-header-actions">
-              <a href="/monitor" className="card-header-action">
-                  <small className="text-muted">Click here for more information...</small>
-                </a>
+                  <CardHeader>
+                    Average A/C Temperatures  for Region 4
+                     <div className="card-header-actions">
+                      <a href="/monitor" className="card-header-action">
+                       <small className="text-muted">Click here for more information...</small>
+                      </a>
               </div>
             </CardHeader>
             <CardBody>
@@ -639,7 +876,6 @@ componentDidMount(){
               </div>
             </CardBody>
           </Card>
-              </p>
                 <div>
                   <button class="btn btn-outline-primary btn-block"
                   href="javascript:void(0);" onClick={() => this.closeModal4()}>Close</button>
@@ -648,9 +884,10 @@ componentDidMount(){
           </Modal>
         </Col>
         </Row>
+            </div>
 
-        <div className="jumbotron bg-white">
-              <center><div className="text-muted">User Feedbacks For Indoor  Temperatures</div></center>
+        <div>
+        <center><div className="text-muted"><h4>User Feedbacks For Indoor  Temperatures</h4></div></center>
                 <Row className="text-center">
                 <Col sm={12} md className="mb-sm-2 mb-0">
                     <strong>Hot</strong>
@@ -665,7 +902,114 @@ componentDidMount(){
                     <Progress className="progress-xs mt-2" color="primary" value="40" />
                   </Col>
                 </Row>
+                <div className="jumbotron bg-white">
+                <Row className="text-center">
+                  <Col sm={12} md className="mb-sm-2 mb-0">
+                    <Card>
+                      <CardBody>  
+                      <div className= "bg-white">
+                      <h5> OUTDOOR TEMPERATURE</h5>
+                      <h4> {this.state.temp} °C </h4>
+                      </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                 
+                    <Col sm={12} md className="mb-sm-2 mb-0">
+                    <center><Card>
+                      <CardBody>  
+                      <div className="bg-white">
+                      <Card>
+                      <CardBody>  
+                      <h5> PEOPLE COUNT </h5>
+                      <h4> {this.state.people} </h4>
+                      </CardBody>
+                    </Card>
+                      </div>
+                      <br></br>
+                      <div>
+                        <Row>
+                      <Col sm={12} md className="mb-sm-2 mb-0">
+                    <Card>
+                      <CardBody>  
+                      <div className= "bg-white">
+                      <h5> Male</h5>
+                      <h4> {this.state.male} </h4>
+                      </div>
+                      </CardBody>
+                    </Card>
+                    </Col>
+                    <Col sm={12} md className="mb-sm-2 mb-0">
+                    <Card>
+                      <CardBody>  
+                      <div className= "bg-white">
+                      <h5> Female</h5>
+                      <h4> {this.state.female} </h4>
+                      </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  </Row>
+                      </div>
+                      </CardBody>
+                      
+                    </Card></center>
+                  </Col>
+                  <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
+                   <Card>
+                      <CardBody>  
+                      <div className="bg-white">
+                      <h5> AVERAGE SENSOR TEMPERATURES </h5>
+                      <h4>  {this.avmodal()} °C </h4>               
+                      </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+              </Row>
+              <div>
+              <center><div className="text-muted"><h4>Indoor Sensor Temperature Values</h4></div></center>
+              <Row>
+                <Col sm={12} md className="mb-sm-2 mb-0">
+                  <Card className="text-white bg-info">
+                    <CardHeader><center><strong>Region 1</strong></center>
+                    </CardHeader>
+                    <CardBody className="pb-0">
+                    <center><h5> {this.state.sensorTemp1} °C </h5></center>
+                    </CardBody> 
+                  </Card>
+                </Col>
+                <Col sm={12} md className="mb-sm-2 mb-0">
+                  <Card className="text-white bg-primary">
+                  <CardHeader><center><strong>Region 2</strong></center>
+                    </CardHeader>
+                    <CardBody className="pb-0">
+                    <center><h5> {this.state.sensorTemp2}°C </h5></center>
+                    </CardBody> 
+                  </Card>                          
+                </Col>
+                <Col sm={12} md className="mb-sm-2 mb-0">
+                  <Card className="text-white bg-warning">
+                  <CardHeader><center><strong>Region 3</strong></center>
+                    </CardHeader>
+                    <CardBody className="pb-0">
+                    <center><h5> {this.state.sensorTemp3}°C </h5></center>
+                    </CardBody> 
+                  </Card>                               
+                </Col>
+                <Col sm={12} md className="mb-sm-2 mb-0">
+                  <Card className="text-white bg-danger">
+                  <CardHeader><center><strong>Region 4</strong></center>
+                    </CardHeader>
+                    <CardBody className="pb-0">
+                    <center><h5> {this.state.sensorTemp4} °C </h5></center>
+                    </CardBody> 
+                  </Card>                               
+                </Col>
+              </Row>   
+              </div>
+            </div>
         </div>
+
               
         <div className="jumbotron mt-5 bg-white">
         <Row>
@@ -689,15 +1033,13 @@ componentDidMount(){
                   </Col>
                 </Row>
                 <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-                  <Line data={mainChart} options={mainChartOpts} height={300} />
+                  <Bar data={mainChart} options={mainChartOpts} height={300} />
                 </div>
               </CardBody>
             </Card>
           </Col>
         </Row>
         </div>
-        </div>
-    </div>
     </div>
 
         )

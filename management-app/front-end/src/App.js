@@ -1,10 +1,8 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom'
-
-import Navbar from './components/Navbar'
 import Landing from './components/views/Pages/Landing'
 import Login from './components/views/Pages/Login '
-
+import Navbar from './components/Navbar'
 import Register from './components/views/Pages/Register'
 import Profile from './components/views/Dashboard/Profile'
 import Monitor from './components/views/Monitor/Monitor'

@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {Link, withRouter} from 'react-router-dom'
-
 class Navbar extends Component{
 
     logout(e){
@@ -42,15 +41,16 @@ class Navbar extends Component{
         )
 
         return(
-            <nav className="navbar navbar-expand-lg navbar-succes  bg-light rounded ">
+            <nav className="navbar-dark navbar-expand-lg navbar-success bg-dark rounded ">
                 <button className= "navbar-toggler"
                 type= "button"
                 data-toggle="collapse"
                 data-target = "navbar1"
                 aria-controls="navbar1"
                 aria-label="Toggle navigation">
-                    <span className ="navbar-toggle-icon"></span>
+                <span className ="navbar-toggle-icon"></span>
                 </button>
+                
                 <div className="collapse navbar-collapse justify-content-md-center"
                 id="navbar1">
                     <ul className="navbar-nav">
@@ -58,18 +58,11 @@ class Navbar extends Component{
                             <Link to= "/"  className ="nav-link">
                                 Home
                             </Link>
+
                         </li>
-                        <li className = "nav -item">
-                    <Link to= "/profile" className="nav-link">
-                        Dashboard
-                    </Link>
-                </li>
-                <li className = "nav -item">
-                    <Link to= "/monitor" className="nav-link">
-                        Monitor
-                    </Link>
-                </li>
                     </ul>
+                    {localStorage.usertoken ? userLink : loginRegLink}
+
                 </div>
             </nav>
 

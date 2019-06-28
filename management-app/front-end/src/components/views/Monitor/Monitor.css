@@ -37,4 +37,9 @@
     margin: auto;
   }
 
-  
+  .body {
+  background-image: url("office-layout.svg");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  margin-right: 200px;
+}
