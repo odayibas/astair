@@ -16,10 +16,23 @@ TODO: Add Figure & Explain !!
 	* MAX485 TTL To RS485 Module
 	* A-Star Sensors
 	* Sparkfun ESP32 Thing
-  
+	
+	
+### A-Star Sensor
+This sensor consist of 3 component:
+
+	1 - Sparkfun ESP32 Thing
+	2 - DS18B20 Temperature Sensor
+	3 - 3.7V LiPo Battery 
+
+The connection between Sparkfun ESP32 Thing and DS18B20 Temperature Sensor is given below.
+
+![alt text](AStarSensor_bb.png)
+###### Figure 1: Circuit Connection
+
 ### Circuit Connection between MAX485 and Raspberry Pi 3 B+
 ![alt text](Raspberry_RS485_AC_Circuit.png)
-###### Figure 1: Circuit Connection 
+###### Figure 2: Circuit Connection 
 
 
 
