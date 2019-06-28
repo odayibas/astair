@@ -25,17 +25,17 @@ User will write RTSP address of the IP camera to the web app and draw a line on 
 
 ```
 $ workon cv
-$ python3 people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input videos/example_01.mp4  --output output/output_01.avi
+$ python3 people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --numerator 13 --denominator 32 --input videos/example_01.mp4  --output output/output_01.avi
 ```
 
 **Usage for RTSP stream**
 
 ```
 $ workon cv
-$ python3 people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --input rtsp://IP_Adress/MediaInput/h264 --output output/output_01.avi
+$ python3 people_counter.py --prototxt mobilenet_ssd/MobileNetSSD_deploy.prototxt  --model mobilenet_ssd/MobileNetSSD_deploy.caffemodel --numerator 13 --denominator 32 --input rtsp://IP_Adress/MediaInput/h264 --output output/output_01.avi
 ```
 
-The numerator and denominator parameters decide how to draw the line on   the camera image.
+The numerator and denominator parameters decide how to draw a horizontal line on   the camera image.
 
 **Update of outputs by Admin**
 
@@ -43,7 +43,7 @@ The numerator and denominator parameters decide how to draw the line on   the ca
 $ python3 admin_db.py -o 28 -m 18 -f 10
 ```
 
-For example, this inputs set the Occupancy (Total person inside) = 20, Male count = 12, Female count = 8. 
+For example, this inputs set the Occupancy (Total person inside) = 28, Male count = 18, Female count = 10. 
 
 ## Requirements:
 
