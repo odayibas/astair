@@ -43,7 +43,7 @@ render(){
             <div className="row">
                 <div className= "col-md-6 mt-5 mx-auto">
                     <form noValidate onSubmit={this.onSubmit}>
-                        <h1  className=  "h3 mb-3 font-weight-normal">plase sign in </h1>
+                        <h1  className=  "h3 mb-3 font-weight-normal">Plase Sign Up! </h1>
                         <div className="form-group">
                             <label htmlFor="first_name">First  Name</label>
                             <input type="text" className="form-control"
