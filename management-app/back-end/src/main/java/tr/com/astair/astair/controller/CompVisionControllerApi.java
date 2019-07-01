@@ -2,20 +2,24 @@ package tr.com.astair.astair.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import tr.com.astair.astair.model.ComputerVision;
 
 import java.util.List;
 
 public interface CompVisionControllerApi {
 
-
+    //get today's average people,female,male counts
     @GetMapping("/get")
-    public ResponseEntity<List<ComputerVision>> getCurrentDateData();
+    public ResponseEntity<List<Object>> getTodaysAve();
 
     //get all data
     @GetMapping("/get-all")
     public ResponseEntity<List<ComputerVision>> getAll();
+
+    //get all data
+    @GetMapping("/get-today")
+    public ResponseEntity<List<ComputerVision>>  getTodaysData();
 
     //get last 30 records
     @GetMapping("/get-limited")

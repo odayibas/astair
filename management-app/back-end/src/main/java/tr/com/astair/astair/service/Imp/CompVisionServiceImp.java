@@ -1,14 +1,13 @@
 package tr.com.astair.astair.service.Imp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.ComputerVision;
 import tr.com.astair.astair.repository.ComputerVisionRepo;
 import tr.com.astair.astair.service.ComputerVisionService;
 
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,10 +21,13 @@ public class CompVisionServiceImp implements ComputerVisionService {
     }
 
 
-    public List<ComputerVision> getCurrentDateData( ) {
-        return computerVisionRepo.getCurrentDateData();
+    public List<Object> getTodaysAve( ) {
+        return computerVisionRepo.getTodaysAve();
     }
 
+    public List<ComputerVision> getTodaysData( ) {
+        return computerVisionRepo.getTodaysData();
+    }
     public List<ComputerVision> get() {
         return computerVisionRepo.findAll();
     }
@@ -48,5 +50,7 @@ public class CompVisionServiceImp implements ComputerVisionService {
         ComputerVision x = computerVisionRepo.findTopByOrderByDateDesc();
         return x.getMale_count();
     }
+
+
 
 }

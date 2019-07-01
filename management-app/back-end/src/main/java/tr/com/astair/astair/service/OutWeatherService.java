@@ -1,3 +1,4 @@
+/*
 package tr.com.astair.astair.service;
 
 import tr.com.astair.astair.model.OutdoorWeather;
@@ -15,3 +16,4 @@ public interface OutWeatherService {
 
 
 }
+*/

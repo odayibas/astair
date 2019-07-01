@@ -23,7 +23,6 @@ public class ACController implements ACControllerApi {
         this.acService = acService;
     }
 
-
     public ResponseEntity<AC> saveAC(@RequestBody AC ac) {
         try {
             ac = acService.save(ac);
@@ -33,7 +32,6 @@ public class ACController implements ACControllerApi {
         }
     }
 
-
     public ResponseEntity<AC> getAC(@PathVariable Long id) {
         AC ac = acService.getById(id);
         if (ac == null) {
@@ -42,7 +40,6 @@ public class ACController implements ACControllerApi {
         return new ResponseEntity<>(ac, HttpStatus.OK);
     }
 
-
     public ResponseEntity<List<AC>> getAllAC() {
         List<AC> ac = acService.get();
         if (ac == null) {
@@ -50,7 +47,6 @@ public class ACController implements ACControllerApi {
         }
         return new ResponseEntity<>(ac, HttpStatus.OK);
     }
-
 
     public ResponseEntity<AC> updateAC(@RequestBody AC ac) {
         if (ac.getId() == null || acService.getById(ac.getId()) == null)

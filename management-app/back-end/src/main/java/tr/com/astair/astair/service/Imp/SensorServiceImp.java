@@ -26,7 +26,6 @@ public class SensorServiceImp implements SensorService {
 
     public List<Sensor> getByZone(Integer ac_zone) {
         Example<Sensor> sExample = Example.of(new Sensor(ac_zone));
-        ;
         return sensorRepository.findAll(sExample);
     }
 
@@ -41,5 +40,6 @@ public class SensorServiceImp implements SensorService {
     public Float getAllSensorDegreeAve() {
         return sensorRepository.getAllSensorDegreeAve();
     }
+
 
 }

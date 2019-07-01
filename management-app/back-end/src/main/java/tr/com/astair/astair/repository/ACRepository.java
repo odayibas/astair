@@ -11,4 +11,5 @@ public interface ACRepository extends JpaRepository<AC, Long> {
 
     @Query(nativeQuery = true, value = "select * from ac where id=?1 ORDER BY ac_time desc LIMIT 30")
     List<AC> getIdforManage(@Param("id") Long id);
+
 }

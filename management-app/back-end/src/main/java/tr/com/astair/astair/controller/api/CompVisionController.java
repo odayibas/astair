@@ -3,17 +3,15 @@ package tr.com.astair.astair.controller.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.astair.astair.controller.CompVisionControllerApi;
 import tr.com.astair.astair.model.ComputerVision;
 import tr.com.astair.astair.service.ComputerVisionService;
 
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Date;
+import java.math.BigDecimal;
+
 import java.util.List;
 
 @RestController
@@ -26,25 +24,37 @@ public class CompVisionController implements CompVisionControllerApi {
         this.computerVisionService = computerVisionService;
     }
 
-    public ResponseEntity<List<ComputerVision>> getCurrentDateData() {
+    public ResponseEntity<List<Object>> getTodaysAve() {
         try {
       /*      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Date  date1 = format.parse ( date );*/
-            List<ComputerVision> test = computerVisionService.getCurrentDateData();
+            List<Object> test = computerVisionService.getTodaysAve();
+            for (Object cdata:test) {
+                Object[] obj= (Object[]) cdata;
+                obj[0] =  ((BigDecimal) obj[0]).intValue();
+                obj[1] = ((BigDecimal) obj[1]).intValue();
+                obj[2] = ((BigDecimal) obj[2]).intValue();
+            }
             if (test == null) {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
-
             return new ResponseEntity<>(test, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<List<ComputerVision>> getAll() {
+     public ResponseEntity<List<ComputerVision>> getAll() {
         List<ComputerVision> test = computerVisionService.get();
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<ComputerVision>> getTodaysData() {
+        List<ComputerVision> test = computerVisionService.getTodaysData();
         if (test == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -82,6 +92,5 @@ public class CompVisionController implements CompVisionControllerApi {
         }
         return new ResponseEntity(test, HttpStatus.OK);
     }
-
 
 }

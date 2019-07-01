@@ -20,6 +20,4 @@ public interface SensorRepository extends JpaRepository<Sensor, Long>, PagingAnd
 
     @Query(nativeQuery = true, value = "select AVG(sensor_degree) as sensor_degree  from(select * from sensor s ORDER BY Id desc LIMIT 30) as s1" )
     Float getAllSensorDegreeAve();
-
-
 }

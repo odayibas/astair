@@ -18,7 +18,7 @@ public class ComputerVision implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.S")
     private Timestamp date;
 
-    @Column(name = "action_type")
+    @Column(name = "action_id")
     private String action_type;
 
     @Column(name = "occupancy")

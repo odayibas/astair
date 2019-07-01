@@ -1,3 +1,4 @@
+/*
 package tr.com.astair.astair.service.Imp;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,3 +36,4 @@ public class OutWeatherServiceImp implements OutWeatherService {
 
 
 }
+*/
