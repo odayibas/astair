@@ -39,12 +39,17 @@ CREATE TABLE sensor (
 CREATE TYPE vote_type AS enum('Sicak', 'Guzel', 'Soguk', 'Ofiste Degilim');
 CREATE TYPE poll_type AS enum('Manuel', 'Auto');
 
+create table survey (
+	ID SERIAL primary key,
+	creater VARCHAR(255) NOT NULL,
+	data_time TIMESTAMP not null
+);
+
 CREATE TABLE weatherPoll (
     ID SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES personalInfo(ID),
     vote vote_type NOT NULL,
-    poll_creator poll_type NOT NULL,
-    vote_id INTEGER NOT NULL,
+    vote_id INTEGER references survey(ID),
     data_time TIMESTAMP NOT NULL
 );
 
@@ -72,3 +77,12 @@ CREATE TABLE outdoor (
     precip_probability FLOAT NOT NULL,
     time_zone VARCHAR(255) NOT NULL
 );
+
+
+CREATE TABLE slack_temp (
+    ID SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    loc INTEGER NOT NULL,
+    comment VARCHAR(255) NOT NULL
+);
+
