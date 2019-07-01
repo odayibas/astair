@@ -9,6 +9,7 @@ CREATE TYPE fan_speed AS enum('Low', 'Medium', 'High', 'Auto');
 
 CREATE TABLE ac (
     ID SERIAL PRIMARY KEY,
+    ac_id INTEGER REFERENCES zone(ac_zone),
     ac_mode mode NOT NULL,
     ac_degree FLOAT NOT NULL,
     ac_fan_speed fan_speed NOT NULL,
@@ -16,16 +17,21 @@ CREATE TABLE ac (
     ac_time TIMESTAMP NOT NULL
 );
 
+CREATE TABLE zone (
+    ID SERIAL PRIMARY KEY,
+    ac_zone INTEGER NOT NULL UNIQUE
+);
+
 CREATE TABLE personalInfo (
     ID SERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    ac_zone INTEGER REFERENCES ac(ID),
+    ac_id INTEGER REFERENCES zone(ac_zone),
     birthday DATE
 );
 
 CREATE TABLE sensor (
     ID SERIAL PRIMARY KEY,
-    ac_id INTEGER REFERENCES ac(ID),
+    ac_id INTEGER REFERENCES zone(ac_zone),
     sensor_degree FLOAT NOT NULL,
     date_time TIMESTAMP NOT NULL
 );
