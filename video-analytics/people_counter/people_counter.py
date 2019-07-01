@@ -28,7 +28,6 @@ connection, cursor = None, None
 connector = DatabaseConnector(connection, cursor)
 connector.connect_db()
 
-
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--prototxt", required=True,
@@ -226,7 +225,7 @@ while True:
 
     aboveLinePos = args["numerator"] * H // args["denominator"]
     belowLinePos = (args["numerator"] + 5) * H // args["denominator"]
-    
+
     cv2.line(frame, (0, belowLinePos), (W, belowLinePos), (0, 255, 255), 2)  # below line
     cv2.line(frame, (0, aboveLinePos), (W, aboveLinePos), (0, 0, 255), 2)  # above line
 
@@ -345,12 +344,12 @@ while True:
         writer.write(frame)
 
     # show the output frame
-    cv2.imshow("Frame", frame)
-    key = cv2.waitKey(1) & 0xFF
+    ################cv2.imshow("Frame", frame)
+    ################key = cv2.waitKey(1) & 0xFF
 
     # if the `q` key was pressed, break from the loop
-    if key == ord("q"):
-        break
+    ###########if key == ord("q"):
+    ###########    break
     # increment the total number of frames processed thus far and
     # then update the FPS counter
     totalFrames += 1
