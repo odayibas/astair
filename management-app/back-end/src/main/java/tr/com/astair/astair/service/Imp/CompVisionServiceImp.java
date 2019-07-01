@@ -7,6 +7,8 @@ import tr.com.astair.astair.repository.ComputerVisionRepo;
 import tr.com.astair.astair.service.ComputerVisionService;
 
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,8 +22,8 @@ public class CompVisionServiceImp implements ComputerVisionService {
     }
 
 
-    public List<ComputerVision> getIdforManage(String id) {
-        return computerVisionRepo.getIdforManage(id);
+    public List<ComputerVision> getCurrentDateData( ) {
+        return computerVisionRepo.getCurrentDateData();
     }
 
     public List<ComputerVision> get() {

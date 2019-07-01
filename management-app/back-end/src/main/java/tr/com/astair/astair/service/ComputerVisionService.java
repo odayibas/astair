@@ -3,13 +3,13 @@ package tr.com.astair.astair.service;
 import tr.com.astair.astair.model.ComputerVision;
 
 
-import java.sql.Timestamp;
+
 import java.util.List;
 
 public interface ComputerVisionService {
 
-    //get all data of a day like 2015-09-05%
-    public List<ComputerVision> getIdforManage(String id);
+    //get all data of current date
+    public List<ComputerVision> getCurrentDateData();
 
     //get all computer vision data
     public List<ComputerVision> get();

@@ -5,14 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import tr.com.astair.astair.model.ComputerVision;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface CompVisionControllerApi {
 
 
-    @GetMapping("/get/{date}")
-    public ResponseEntity<List<ComputerVision>> get(@PathVariable String date);
+    @GetMapping("/get")
+    public ResponseEntity<List<ComputerVision>> getCurrentDateData();
 
     //get all data
     @GetMapping("/get-all")

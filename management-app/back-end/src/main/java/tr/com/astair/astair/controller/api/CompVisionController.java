@@ -10,6 +10,10 @@ import tr.com.astair.astair.model.ComputerVision;
 import tr.com.astair.astair.service.ComputerVisionService;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -22,12 +26,21 @@ public class CompVisionController implements CompVisionControllerApi {
         this.computerVisionService = computerVisionService;
     }
 
-    public ResponseEntity<List<ComputerVision>> get(@PathVariable String id) {
-        List<ComputerVision> test = computerVisionService.getIdforManage(id);
-        if (test == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<List<ComputerVision>> getCurrentDateData() {
+        try {
+      /*      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date  date1 = format.parse ( date );*/
+            List<ComputerVision> test = computerVisionService.getCurrentDateData();
+            if (test == null) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity<>(test, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new ResponseEntity<>(test, HttpStatus.OK);
+
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<List<ComputerVision>> getAll() {

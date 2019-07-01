@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import tr.com.astair.astair.model.ComputerVision;
 
 import java.sql.Timestamp;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -17,8 +19,7 @@ public interface ComputerVisionRepo extends JpaRepository<ComputerVision, Timest
 
     ComputerVision findTopByOrderByDateDesc();
 
-    @Query(nativeQuery = true, value = "select * from ComputerVision c where c.id like 'time%'")
-    List<ComputerVision> getIdforManage(@Param("time") String time);
-
+    @Query(nativeQuery = true,value = "SELECT * FROM computervision c WHERE c.data_time BETWEEN CURRENT_DATE - 1 AND CURRENT_DATE")
+    List<ComputerVision> getCurrentDateData();
 
 }
