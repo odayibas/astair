@@ -10,7 +10,7 @@ public interface SensorService {
     //get all sensor data
     public List<Sensor> get();
 
-    //get sensor data by zone
+    //get all sensor data of a sensor
     public List<Sensor> getByZone(Integer id);
 
     //get last 30 records of a sensor

@@ -1,3 +1,4 @@
+/*
 package tr.com.astair.astair.controller;
 
 import org.springframework.http.ResponseEntity;
@@ -25,3 +26,4 @@ public interface OWControllerApi {
 
 
 }
+*/

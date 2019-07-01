@@ -1,3 +1,4 @@
+/*
 package tr.com.astair.astair.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -162,3 +163,4 @@ public class OutdoorWeather implements Serializable {
         this.time = time_zone;
     }
 }
+*/

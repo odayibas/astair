@@ -1,3 +1,4 @@
+/*
 package tr.com.astair.astair.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,3 +61,4 @@ public class OutWeatherController implements OWControllerApi {
         return new ResponseEntity<>(OW, HttpStatus.OK);
     }
 }
+*/

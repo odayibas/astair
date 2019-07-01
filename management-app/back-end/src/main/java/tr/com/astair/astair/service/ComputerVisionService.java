@@ -8,8 +8,12 @@ import java.util.List;
 
 public interface ComputerVisionService {
 
-    //get all data of current date
-    public List<ComputerVision> getCurrentDateData();
+    //get average people count of today
+    public List<Object> getTodaysAve();
+
+    //get today's data
+    public List<ComputerVision> getTodaysData();
+
 
     //get all computer vision data
     public List<ComputerVision> get();
@@ -23,7 +27,6 @@ public interface ComputerVisionService {
     //get current male count
     public Integer getMaleCount();
 
-    /*  public List<Integer> getMaleCounts();*/
     //get last 30 record of data
     public List<ComputerVision> getLimited();
 

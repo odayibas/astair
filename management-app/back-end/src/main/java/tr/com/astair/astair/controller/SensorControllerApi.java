@@ -10,14 +10,6 @@ import java.util.List;
 
 public interface SensorControllerApi {
 
-    // get data of a sensor
-    @GetMapping("/sensor/get-zone/{id}")
-    ResponseEntity<List<Sensor>>  getByZone(@PathVariable Integer id);
-
-    //get all sensor data
-   @GetMapping("/sensor/get-all")
-    ResponseEntity<List<Sensor>> getAll();
-
    //get last 30 records of a sensor
    @GetMapping("/sensor/get-last/{id}")
    ResponseEntity<List<Sensor>> getLimited(@PathVariable Integer id);
@@ -30,9 +22,12 @@ public interface SensorControllerApi {
     @GetMapping("/sensor/get-ave-degree")
     ResponseEntity<Float> getAllSensorDegreeAve();
 
+    //get all sensor data
+    @GetMapping("/sensor/get-all")
+    ResponseEntity<List<Sensor>> getAll();
 
-
-
-
+    // get all data of a sensor
+    @GetMapping("/sensor/get-zone/{id}")
+    ResponseEntity<List<Sensor>>  getByZone(@PathVariable Integer id);
 
 }
