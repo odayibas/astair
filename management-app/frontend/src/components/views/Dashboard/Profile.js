@@ -558,7 +558,7 @@ trigger() {
   render(){
     
       return(
-      	<div style={{width: '100% !important',margin: 'auto',height: '100%',minWidth:1500,marginTop: '40px'}}>
+      	<div style={{width: '100% !important',margin: 'auto',height: '100%',minWidth:1700,marginTop: '40px'}}>
       	<div style={{ left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
           <Col  xs="4" sm="3">
           <Row>
@@ -632,16 +632,46 @@ trigger() {
                 </CardBody>
               </Card>
             </Col>
-   
-            <Col>
+            <Col sm={12} md className="mb-sm-2 mb-0">
+                    <center><Card>
+                      <CardBody>  
+                      <div className="bg-white">
                       <Card>
                       <CardBody>  
                       <h5> PEOPLE COUNT </h5>
                       <h4> {this.state.people} </h4>
                       </CardBody>
                     </Card>
-
-                                        </Col>
+                      </div>
+                      <br></br>
+                      <div>
+                        <Row>
+                      <Col sm={12} md className="mb-sm-2 mb-0">
+                    <Card>
+                      <CardBody>  
+                      <div className= "bg-white">
+                      <h5> Male</h5>
+                      <h4> {this.state.male} </h4>
+                      </div>
+                      </CardBody>
+                    </Card>
+                    </Col>
+                    <Col sm={12} md className="mb-sm-2 mb-0">
+                    <Card>
+                      <CardBody>  
+                      <div className= "bg-white">
+                      <h5> Female</h5>
+                      <h4> {this.state.female} </h4>
+                      </div>
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  </Row>
+                      </div>
+                      </CardBody>
+                      
+                    </Card></center>
+                  </Col>
             <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
               <Card style={{padding :'10px'}}>
                 <CardBody>  
@@ -670,8 +700,6 @@ trigger() {
                     <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
                       <ButtonGroup className="mr-3" aria-label="First group">
                         <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>INDOOR</Button>
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>COUNT</Button>
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(3)} active={this.state.radioSelected === 3}>OUTDOOR</Button>
                       </ButtonGroup>
                     </ButtonToolbar>
                   </Col>
