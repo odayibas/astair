@@ -27,8 +27,4 @@ public interface ACControllerApi {
     @GetMapping("/AC/get-all")
     public ResponseEntity<List<AC>> getAllAC();
 
-/*
-    @GetMapping("/AC/get-last/{id}")
-    ResponseEntity<List<AC>> getLimited(@PathVariable Long id);*/
-
 }

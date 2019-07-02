@@ -3,13 +3,18 @@ package tr.com.astair.astair.service;
 import tr.com.astair.astair.model.ComputerVision;
 
 
-
 import java.util.List;
 
 public interface ComputerVisionService {
 
     //get average people count of today
-    public List<Object> getTodaysAve();
+    public Integer getAvePeopleCnt();
+
+    //get average female count of today
+    public Integer getAveFemaleCnt();
+
+    //get average male count of today
+    public Integer getAveMaleCnt();
 
     //get today's data
     public List<ComputerVision> getTodaysData();

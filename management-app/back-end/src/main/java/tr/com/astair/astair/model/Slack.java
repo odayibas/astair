@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name="weatherpoll")
+@Table(name = "weatherpoll")
 public class Slack {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,19 +13,20 @@ public class Slack {
     @Column(name = "user_id")
     private Long user_id;
 
-    @Column(name="vote")
+    @Column(name = "vote")
     private String vote;
 
-    @Column(name="vote_id")
+    @Column(name = "vote_id")
     private Integer vote_id;
 
-    @Column(name="poll_creator")
-    private String poll_creator;
+//    @Column(name="poll_creator")
+//    private String poll_creator;
 
     @Column(name = "date_time")
     private Timestamp date_time;
 
-    public Slack(){}
+    public Slack() {
+    }
 
     public Slack(Long user_id) {
         this.user_id = user_id;
@@ -35,7 +36,7 @@ public class Slack {
         this.user_id = user_id;
         this.vote = vote;
         this.vote_id = vote_id;
-        this.poll_creator = poll_creator;
+        /*  this.poll_creator = poll_creator;*/
     }
 
     public Integer getVote_id() {
@@ -70,19 +71,19 @@ public class Slack {
         this.vote = vote;
     }
 
-    public String getPoll_creator() {
+  /*  public String getPoll_creator() {
         return poll_creator;
     }
 
     public void setPoll_creator(String poll_creator) {
         this.poll_creator = poll_creator;
-    }
+    }*/
 
     public Timestamp getDate_time() {
         return date_time;
     }
 
-    public void setDate_time(Timestamp  date_time) {
+    public void setDate_time(Timestamp date_time) {
         this.date_time = date_time;
     }
 }

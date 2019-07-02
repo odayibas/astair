@@ -35,7 +35,6 @@ public class Sensor implements Serializable {
         this.date_time = date_time;
     }
 
-
     public Sensor(Integer ac_id, Float sensor_degree) {
         this.ac_id = ac_id;
         this.sensor_degree = sensor_degree;

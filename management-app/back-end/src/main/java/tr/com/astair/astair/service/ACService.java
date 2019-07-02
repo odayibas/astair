@@ -19,6 +19,4 @@ public interface ACService {
     //get all AC data
     public List<AC> get();
 
-    /*   public List<AC> getLimited(Long id);*/
-
 }

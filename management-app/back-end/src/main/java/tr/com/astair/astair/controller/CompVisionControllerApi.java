@@ -9,9 +9,17 @@ import java.util.List;
 
 public interface CompVisionControllerApi {
 
-    //get today's average people,female,male counts
-    @GetMapping("/get")
-    public ResponseEntity<List<Object>> getTodaysAve();
+    //get today's average people count
+    @GetMapping("/get-average-people-count")
+    public ResponseEntity<Integer> getAvePeopleCnt();
+
+    //get today's average female count
+    @GetMapping("/get-average-female-count")
+    public ResponseEntity<Integer> getAveFemaleCnt();
+
+    //get today's average male count
+    @GetMapping("/get-average-male-count")
+    public ResponseEntity<Integer> getAveMaleCnt();
 
     //get all data
     @GetMapping("/get-all")
@@ -19,7 +27,7 @@ public interface CompVisionControllerApi {
 
     //get all data
     @GetMapping("/get-today")
-    public ResponseEntity<List<ComputerVision>>  getTodaysData();
+    public ResponseEntity<List<ComputerVision>> getTodaysData();
 
     //get last 30 records
     @GetMapping("/get-limited")

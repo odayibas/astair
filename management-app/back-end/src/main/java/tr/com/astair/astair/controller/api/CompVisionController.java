@@ -1,5 +1,6 @@
 package tr.com.astair.astair.controller.api;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +10,6 @@ import tr.com.astair.astair.controller.CompVisionControllerApi;
 import tr.com.astair.astair.model.ComputerVision;
 import tr.com.astair.astair.service.ComputerVisionService;
 
-
-import java.math.BigDecimal;
 
 import java.util.List;
 
@@ -24,28 +23,32 @@ public class CompVisionController implements CompVisionControllerApi {
         this.computerVisionService = computerVisionService;
     }
 
-    public ResponseEntity<List<Object>> getTodaysAve() {
-        try {
-      /*      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Date  date1 = format.parse ( date );*/
-            List<Object> test = computerVisionService.getTodaysAve();
-            for (Object cdata:test) {
-                Object[] obj= (Object[]) cdata;
-                obj[0] =  ((BigDecimal) obj[0]).intValue();
-                obj[1] = ((BigDecimal) obj[1]).intValue();
-                obj[2] = ((BigDecimal) obj[2]).intValue();
-            }
-            if (test == null) {
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity<>(test, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+    public ResponseEntity<Integer> getAvePeopleCnt() {
+        Integer test = computerVisionService.getAvePeopleCnt();
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(test, HttpStatus.OK);
     }
 
-     public ResponseEntity<List<ComputerVision>> getAll() {
+    public ResponseEntity<Integer> getAveFemaleCnt() {
+        Integer test = computerVisionService.getAveFemaleCnt();
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(test, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Integer> getAveMaleCnt() {
+        Integer test = computerVisionService.getAveMaleCnt();
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(test, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<ComputerVision>> getAll() {
         List<ComputerVision> test = computerVisionService.get();
         if (test == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

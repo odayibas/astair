@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.astair.astair.controller.SlackControllerApi;
 import tr.com.astair.astair.model.Slack;
+import tr.com.astair.astair.model.WeatherP1;
 import tr.com.astair.astair.service.SlackService;
 
 import java.util.List;
@@ -21,8 +22,16 @@ public class SlackController implements SlackControllerApi {
         this.slackService = slackService;
     }
 
-    public ResponseEntity<List<Slack>> getPollResult(@PathVariable Integer id) {
-        List<Slack> test = slackService.getPollResult(id);
+    public ResponseEntity<WeatherP1> getPollResults(@PathVariable Integer id) {
+        WeatherP1 test = slackService.getPollResults(id);
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Slack>> getPollAllResult(@PathVariable Integer id) {
+        List<Slack> test = slackService.getPollAllResults(id);
         if (test == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

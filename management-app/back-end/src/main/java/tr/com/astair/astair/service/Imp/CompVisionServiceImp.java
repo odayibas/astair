@@ -21,13 +21,22 @@ public class CompVisionServiceImp implements ComputerVisionService {
     }
 
 
-    public List<Object> getTodaysAve( ) {
-        return computerVisionRepo.getTodaysAve();
+    public Integer getAvePeopleCnt() {
+        return computerVisionRepo.getAvePeopleCount();
     }
 
-    public List<ComputerVision> getTodaysData( ) {
+    public Integer getAveFemaleCnt() {
+        return computerVisionRepo.getAveFemaleCount();
+    }
+
+    public Integer getAveMaleCnt() {
+        return computerVisionRepo.getAveMaleCount();
+    }
+
+    public List<ComputerVision> getTodaysData() {
         return computerVisionRepo.getTodaysData();
     }
+
     public List<ComputerVision> get() {
         return computerVisionRepo.findAll();
     }
@@ -50,7 +59,5 @@ public class CompVisionServiceImp implements ComputerVisionService {
         ComputerVision x = computerVisionRepo.findTopByOrderByDateDesc();
         return x.getMale_count();
     }
-
-
 
 }

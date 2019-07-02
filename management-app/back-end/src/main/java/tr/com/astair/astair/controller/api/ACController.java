@@ -63,12 +63,4 @@ public class ACController implements ACControllerApi {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-  /*  public ResponseEntity<List<AC>> getLimited(@PathVariable Long id){
-        List<AC> test = acService.getLimited(id);
-        if(test == null){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(test, HttpStatus.OK);
-    }*/
-
 }
