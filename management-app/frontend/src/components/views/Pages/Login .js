@@ -47,7 +47,7 @@ class Login extends Component {
                             <div className="form-group">
                                 <label htmlFor="email">Email Adress</label>
                                 <input type="email" className="form-control"
-                                name="email" required
+                                name="email"
                                 placeholder= "email"
                                 value={this.state.email}
                                 onChange={this.onChange}/>
@@ -55,14 +55,14 @@ class Login extends Component {
                             <div className="form-group">
                                 <label htmlFor="password">Password</label>
                                 <input type="password" className="form-control"
-                                name="password" required
+                                name="password"
                                 placeholder= "password"
                                 value={this.state.password}
                                 onChange={this.onChange}/>
                             </div>
                             <button type="submit"
                             className="btn btn-lg btn-primary btn-block">
-                                Sign in
+                                Submit
                             </button>
                         </form>
                     </div>

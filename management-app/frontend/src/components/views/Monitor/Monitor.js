@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import mySvg from './office-layout.svg'
+import mySvg from './blueprint.png'
 import axios from 'axios'
 import SplitterLayout from 'react-splitter-layout'
 import 'react-splitter-layout/lib/index.css'
@@ -181,8 +181,8 @@ mouseLeave4 = () => {
 render() {
 
  var sectionStyle = {
-  width: "880px",
-  height: "620px",
+  width: "655px",
+  height: "680px%",
   backgroundPosition: "center bottom",
   backgroundImage: "url(" + mySvg + ")"
 
@@ -371,6 +371,10 @@ render() {
               </Col>
             </Row>
           </section> </center>
+          <br></br> 
+          <br></br>
+          <br></br>
+
         </div>
     );
   }

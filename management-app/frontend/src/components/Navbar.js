@@ -10,6 +10,7 @@ class Navbar extends Component{
     }
 
     render(){
+        //style={{position: 'fixed', width :'100%', z-index:'1', top :'0'}}
         const loginRegLink =(
             <ul className ="navbar-nav">
                 <li className = "nav -item">
@@ -41,7 +42,7 @@ class Navbar extends Component{
         )
 
         return(
-            <nav className="navbar-dark navbar-expand-lg navbar-success bg-dark rounded ">
+            <nav className="navbar-dark navbar-expand-lg navbar-success bg-dark rounded " >
                 <button className= "navbar-toggler"
                 type= "button"
                 data-toggle="collapse"
