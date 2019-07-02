@@ -158,7 +158,7 @@ function getColor() {
       {
         label: 'My First dataset',
         backgroundColor: 'transparent',
-        borderColor: getColor(),
+        borderColor: brandPrimary,
         pointHoverBackgroundColor: '#fff',
         borderWidth: 2,
         data: []
@@ -562,13 +562,14 @@ trigger() {
       	<div style={{ left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
           <Col  xs="4" sm="3">
           <Row>
+            
             <Card className="text-white bg-primary">
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.sensorTemp1} °C</div>
                 <div>Sensor 1</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData2} options={cardChartOpts1} height={70} />
+                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
               </div>
             </Card>
             </Row>
@@ -609,7 +610,6 @@ trigger() {
             </Card>
             </Row>
             <br></br>
-          
           </Col>
           <Col>
         <div>
@@ -622,69 +622,48 @@ trigger() {
               <strong>Cold</strong>
               <Progress className="progress-xs mt-2" color="primary" value="40" />
             </Col>
-             <Col sm={12} md className="mb-sm-2 mb-0">
+             <Col >
               <Card style={{padding : '20px'}}>
-                <CardBody>  
+                <CardBody className="pb-0">  
                 <div className= "bg-white">
-                <h5> OUTDOOR </h5>
-                <h4> {this.state.temp} °C </h4>
+                <div className="text-value"> <h4> OUTDOOR </h4>
+                <h2> {this.state.temp} °C </h2>
+                </div>
                 </div>
                 </CardBody>
               </Card>
             </Col>
-            <Col sm={12} md className="mb-sm-2 mb-0">
-                    <center><Card>
-                      <CardBody>  
-                      <div className="bg-white">
-                      <Card>
-                      <CardBody>  
-                      <h5> PEOPLE COUNT </h5>
-                      <h4> {this.state.people} </h4>
-                      </CardBody>
-                    </Card>
-                      </div>
-                      <br></br>
-                      <div>
-                        <Row>
-                      <Col sm={12} md className="mb-sm-2 mb-0">
-                    <Card>
-                      <CardBody>  
-                      <div className= "bg-white">
-                      <h5> Male</h5>
-                      <h4> {this.state.male} </h4>
-                      </div>
-                      </CardBody>
-                    </Card>
-                    </Col>
-                    <Col sm={12} md className="mb-sm-2 mb-0">
-                    <Card>
-                      <CardBody>  
-                      <div className= "bg-white">
-                      <h5> Female</h5>
-                      <h4> {this.state.female} </h4>
-                      </div>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  </Row>
-                      </div>
-                      </CardBody>
-                      
-                    </Card></center>
-                  </Col>
+            <Col >
+            <Card>
+              <CardBody className="pb-0">
+                <div className="text-value">   <h4>People Count</h4></div>
+                <h2>{this.state.people}	</h2>
+                <Row>
+                  <Col>
+                <div className="text-value">    <h4>Male</h4></div>
+                <h2> {this.state.male}	</h2>
+                </Col>
+                <Col>
+                <div className="text-value"> <h4>Female</h4>	</div>
+                <h2>{this.state.female}	</h2>
+                </Col>
+                </Row>
+
+              </CardBody>
+           
+            </Card>
+            </Col>
             <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-              <Card style={{padding :'10px'}}>
-                <CardBody>  
+              <Card style={{padding :'20px'}}>
+                <CardBody className="pb-0">  
                   <div className="bg-white">
-                  <h5> INDOOR </h5>
-                  <h4>  {this.avmodal()} °C </h4>               
+                  <h4> INDOOR </h4>
+                  <h2>  {this.avmodal()} °C </h2>               
                   </div>
                 </CardBody>
               </Card>
             </Col>
-          </Row>
-
-              
+          </Row>   
         <div style={{paddingTop :'30px'}}>
         <Row>
           <Col>
@@ -699,7 +678,7 @@ trigger() {
                     <Button color="primary" className="float-right"><i className="icon-cloud-download"></i></Button>
                     <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
                       <ButtonGroup className="mr-3" aria-label="First group">
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>INDOOR</Button>
+                        <Button color="outline-secondary">INDOOR</Button>
                       </ButtonGroup>
                     </ButtonToolbar>
                   </Col>
@@ -715,8 +694,7 @@ trigger() {
       </div>
      </Col>
    </div>
-
-        </div>
+   </div>
         )
     }
 }
