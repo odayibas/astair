@@ -561,7 +561,7 @@ trigger() {
      
       	
         <div style={{width: '100% !important',margin: 'auto',height: '100%',minWidth:1700,marginTop: '40px'}}>
-          <div style={{ left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
+          <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
           <Col  xs="4" sm="3">
 
           <Row>
