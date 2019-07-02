@@ -5,6 +5,11 @@ html, body{
 }
 
 body {
+  background-image: url("/assets/ASTAiR.png");
+  background-size: 75%;
+  background-repeat: no-repeat;
+  background-position:75% 0;
+
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",

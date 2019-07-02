@@ -558,11 +558,13 @@ trigger() {
   render(){
     
       return(
-      	<div style={{width: '100% !important',margin: 'auto',height: '100%',minWidth:1700,marginTop: '40px'}}>
-      	<div style={{ left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
+     
+      	
+        <div style={{width: '100% !important',margin: 'auto',height: '100%',minWidth:1700,marginTop: '40px'}}>
+          <div style={{ left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
           <Col  xs="4" sm="3">
+
           <Row>
-            
             <Card className="text-white bg-primary">
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.sensorTemp1} °C</div>
@@ -625,10 +627,8 @@ trigger() {
              <Col >
               <Card style={{padding : '20px'}}>
                 <CardBody className="pb-0">  
-                <div className= "bg-white">
                 <div className="text-value"> <h4> OUTDOOR </h4>
                 <h2> {this.state.temp} °C </h2>
-                </div>
                 </div>
                 </CardBody>
               </Card>
@@ -656,7 +656,7 @@ trigger() {
             <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
               <Card style={{padding :'20px'}}>
                 <CardBody className="pb-0">  
-                  <div className="bg-white">
+                  <div className="bg-transparent">
                   <h4> INDOOR </h4>
                   <h2>  {this.avmodal()} °C </h2>               
                   </div>
@@ -667,8 +667,8 @@ trigger() {
         <div style={{paddingTop :'30px'}}>
         <Row>
           <Col>
-            <Card>
-              <CardBody>
+            <Card style={{background: 'transparent'}}>
+              <CardBody style={{background: 'transparent'}}>
                 <Row>
                   <Col sm="5">
                     <CardTitle className="mb-0">Average Temperatures</CardTitle>
@@ -694,7 +694,8 @@ trigger() {
       </div>
      </Col>
    </div>
-   </div>
+    </div>
+
         )
     }
 }
