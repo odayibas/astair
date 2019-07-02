@@ -23,7 +23,6 @@ import time
 import dlib
 import datetime
 
-
 connection, cursor = None, None
 connector = DatabaseConnector(connection, cursor)
 connector.connect_db()
@@ -95,6 +94,7 @@ totalFrames = 0
 
 totalCount = 0
 arr = []
+arr_twolines = []
 totalMale = 0
 totalFemale = 0
 
@@ -258,29 +258,38 @@ while True:
             if len(arr) == objectID:
                 arr.append(0)
 
+            if len(arr_twolines) == objectID:
+                arr_twolines.append("init")
+
             if to.counted:
-                if aboveLinePos - centroid[1] > 10 and arr[objectID] == 1:
+                if aboveLinePos - centroid[1] > 0 and arr[objectID] == 1:
+                    print("out, can be recounted")
                     to.counted = False
-                elif centroid[1] - belowLinePos > 10 and arr[objectID] == 2:
+                elif centroid[1] - belowLinePos > 0 and arr[objectID] == 2:
+                    print("in, can be recounted")
                     to.counted = False
 
             # check to see if the object has been counted or not
             if not to.counted:
+
+                # if object intersect with above line
+
                 # if the direction is negative (indicating the object
                 # is moving up) AND the centroid is above the center
                 # line, count the object
-                if direction < -5 and 0 < aboveLinePos - centroid[1] < 20:
-                    if arr[objectID] != 1:
+                if direction < -5 and 0 < aboveLinePos - centroid[1] < 20:  # upper from above line case
+                    if arr[objectID] != 1 and (
+                            arr_twolines[objectID] == "upper_below" or arr_twolines[objectID] == "init"):
                         record = connector.select_latest_row()
-                        if record[1] == 'sysAdmin':
-                            if record[2] != totalCount:
-                                totalCount = record[2]
-                                totalMale = record[3]
-                                totalFemale = record[4]
+                        if record[1] == 'sysAdmin' and record[2] != totalCount:
+                            totalCount = record[2]
+                            totalMale = record[3]
+                            totalFemale = record[4]
 
                         to.counted = True
-
                         arr[objectID] = 1
+                        arr_twolines[objectID] = "upper_above"
+
                         if gender == "Male":
                             totalMale += -1
                         elif gender == "Female":
@@ -290,20 +299,25 @@ while True:
 
                         connector.insert_table(datetime.datetime.now(), 'Cam', totalCount, totalMale, totalFemale)
 
+                elif direction < 0 and 0 < belowLinePos - centroid[1] < 35:  # upper from below line case
+                    arr_twolines[objectID] = "upper_below"
+
                 # if the direction is positive (indicating the object
                 # is moving down) AND the centroid is below the
                 # center line, count the object
-                elif direction > 5 and 0 < centroid[1] - belowLinePos < 20:
-                    if arr[objectID] != 2:
+                elif direction > 5 and 0 < centroid[1] - belowLinePos < 20:  # lower from below line case
+                    if arr[objectID] != 2 and (
+                            arr_twolines[objectID] == "lower_above" or arr_twolines[objectID] == "init"):
                         record = connector.select_latest_row()
-                        if record[1] == 'sysAdmin':
-                            if record[2] != totalCount:
-                                totalCount = record[2]
-                                totalMale = record[3]
-                                totalFemale = record[4]
+                        if record[1] == 'sysAdmin' and record[2] != totalCount:
+                            totalCount = record[2]
+                            totalMale = record[3]
+                            totalFemale = record[4]
 
                         to.counted = True
                         arr[objectID] = 2
+                        arr_twolines[objectID] = "lower_below"
+
                         if gender == "Male":
                             totalMale += 1
                         elif gender == "Female":
@@ -313,13 +327,16 @@ while True:
 
                         connector.insert_table(datetime.datetime.now(), 'Cam', totalCount, totalMale, totalFemale)
 
+                elif direction > 0 and 0 < centroid[1] - aboveLinePos < 35:  # lower from above line case
+                    arr_twolines[objectID] = "lower_above"
+
         # store the trackable object in our dictionary
         trackableObjects[objectID] = to
 
         # draw both the ID of the object and the centroid of the
         # object on the output frame
         text = "ID {}".format(objectID)
-        #cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
+        # cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
         cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
@@ -344,12 +361,12 @@ while True:
         writer.write(frame)
 
     # show the output frame
-    ################cv2.imshow("Frame", frame)
-    ################key = cv2.waitKey(1) & 0xFF
+    cv2.imshow("Frame", frame)
+    key = cv2.waitKey(1) & 0xFF
 
     # if the `q` key was pressed, break from the loop
-    ###########if key == ord("q"):
-    ###########    break
+    if key == ord("q"):
+        break
     # increment the total number of frames processed thus far and
     # then update the FPS counter
     totalFrames += 1
