@@ -211,10 +211,19 @@ class Profile extends Component{
         people : null,
         male:null,
         female: null,
+        selectedOption: '',
         datasets:[]
-    }
+    }  
+    this.radioChange = this.radioChange.bind(this);
+
 
   }
+  radioChange(e) {
+    this.setState({
+      selectedOption: e.currentTarget.value
+    });
+  }
+  
   
  
    getMale =  async() => {
@@ -380,16 +389,18 @@ class Profile extends Component{
 
        presentState.sensorTemp4 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
        let datasets = []
+      
        if(mainChart.datasets[0].data.length != 30){
 
-      mainChart.datasets[0].data.push(res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree);
-      let data = {}
-      data["data"] = mainChart.datasets[0].data
-      datasets.push(data) 
+        mainChart.datasets[0].data.push(res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree);
+        let data = {}
+        data["data"] = mainChart.datasets[0].data
+        datasets.push(data) 
        }
        else{
-
-        mainChart.datasets[0].data = []
+        mainChart.datasets[0].data.shift();
+        datasets.push(res.data[res.data.length - 1].sensor_degree ) ;
+        
       }
   
 
@@ -471,7 +482,7 @@ trigger() {
           this.getOutdoorData().then(data => {})
           this.getMale().then(data => {})
           this.getFemale().then(data => {})
-    }, 5000);
+    }, 500);
   }
 
 
@@ -489,6 +500,187 @@ getColorbyHeat(x) {
   }else {return 'rgba(0,0,0,.0)'}
   }
   render(){
+    const sensors =(
+      <div>
+      <Row>
+      <Card style={{background: this.getColorbyHeat(this.state.sensorTemp1)}}>
+        <CardBody className="pb-0">
+          <div className="text-value">{this.state.sensorTemp1} °C</div>
+          <div>Sensor 1</div>
+        </CardBody>
+        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+          <Line data={ 
+            {labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+             datasets: [
+               {
+                label: 'Region 2',
+                backgroundColor: this.getColorbyHeat(this.state.sensorTemp1),
+                borderColor: 'rgba(255,255,255,.55)',
+                data: [23, 24, 22, 23, 23]
+              },
+            ],}}options={cardChartOpts1} height={70} />
+        </div>
+      </Card>
+      </Row>
+      <br></br>
+      <Row>
+       <Card style={{background: this.getColorbyHeat(this.state.sensorTemp2)}}>
+        <CardBody className="pb-0">
+          <div className="text-value">{this.state.sensorTemp2} °C		</div>
+          <div>Sensor 2</div>
+        </CardBody>
+        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+          <Line data={{
+          labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+          datasets: [
+              {
+                label: 'Region 2',
+                backgroundColor: this.getColorbyHeat(this.state.sensorTemp2),
+                borderColor: 'rgba(255,255,255,.55)',
+                data: [23, 24, 22, 23, 23]
+              },
+            ],}}options={cardChartOpts1} height={70} />
+        </div>
+      </Card>
+      </Row>
+      <br></br>
+      <Row>
+         <Card style={{background: this.getColorbyHeat(this.state.sensorTemp3)}}>
+        <CardBody className="pb-0">
+          <div className="text-value">{this.state.sensorTemp3} °C</div>
+          <div>Sensor 3</div>
+        </CardBody>
+        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+          <Line data={ {
+          labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+          datasets: [
+              {
+                label: 'Region 2',
+                backgroundColor: this.getColorbyHeat(this.state.sensorTemp3),
+                borderColor: 'rgba(255,255,255,.55)',
+                data: [23, 24, 22, 23, 23]
+              },
+            ],
+          }} options={cardChartOpts1} height={70} />
+        </div>
+      </Card>
+      </Row>
+      <br></br>
+       <Row>
+        <Card style={{background: this.getColorbyHeat(this.state.sensorTemp4)}}>
+        <CardBody className="pb-0">
+          <div className="text-value">{this.state.sensorTemp4} °C</div>
+          <div>Sensor 4</div>
+        </CardBody>
+        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+          <Line data={{
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+            datasets: [
+                {
+                  label: 'Region 2',
+                  backgroundColor: this.getColorbyHeat(this.state.sensorTemp4),
+                  borderColor: 'rgba(255,255,255,.55)',
+                  data: [23, 24, 22, 23, 23]
+                },
+              ],
+            }} options={cardChartOpts1} height={70} />
+        </div>
+      </Card>
+      </Row> 
+      </div>
+      )
+
+      const ac =(
+        <div>
+        <Row>
+        <Card >
+          <CardBody className="pb-0">
+            <div className="text-value">{this.state.sensorTemp1} °C</div>
+            <div>Sensor 1</div>
+          </CardBody>
+          <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+            <Line data={ 
+              {labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+               datasets: [
+                 {
+                  label: 'Region 2',
+                  backgroundColor: this.getColorbyHeat(this.state.sensorTemp1),
+                  borderColor: 'rgba(255,255,255,.55)',
+                  data: [23, 24, 22, 23, 23]
+                },
+              ],}}options={cardChartOpts1} height={70} />
+          </div>
+        </Card>
+        </Row>
+        <br></br>
+        <Row>
+         <Card >
+          <CardBody className="pb-0">
+            <div className="text-value">{this.state.sensorTemp2} °C		</div>
+            <div>Sensor 2</div>
+          </CardBody>
+          <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+            <Line data={{
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+            datasets: [
+                {
+                  label: 'Region 2',
+                  backgroundColor: this.getColorbyHeat(this.state.sensorTemp2),
+                  borderColor: 'rgba(255,255,255,.55)',
+                  data: [23, 24, 22, 23, 23]
+                },
+              ],}}options={cardChartOpts1} height={70} />
+          </div>
+        </Card>
+        </Row>
+        <br></br>
+        <Row>
+           <Card >
+          <CardBody className="pb-0">
+            <div className="text-value">{this.state.sensorTemp3} °C</div>
+            <div>Sensor 3</div>
+          </CardBody>
+          <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+            <Line data={ {
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+            datasets: [
+                {
+                  label: 'Region 2',
+                  backgroundColor: this.getColorbyHeat(this.state.sensorTemp3),
+                  borderColor: 'rgba(255,255,255,.55)',
+                  data: [23, 24, 22, 23, 23]
+                },
+              ],
+            }} options={cardChartOpts1} height={70} />
+          </div>
+        </Card>
+        </Row>
+        <br></br>
+         <Row>
+          <Card >
+          <CardBody className="pb-0">
+            <div className="text-value">{this.state.sensorTemp4} °C</div>
+            <div>Sensor 4</div>
+          </CardBody>
+          <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+            <Line data={{
+              labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+              datasets: [
+                  {
+                    label: 'Region 2',
+                    backgroundColor: this.getColorbyHeat(this.state.sensorTemp4),
+                    borderColor: 'rgba(255,255,255,.55)',
+                    data: [23, 24, 22, 23, 23]
+                  },
+                ],
+              }} options={cardChartOpts1} height={70} />
+          </div>
+        </Card>
+        </Row> 
+        </div>
+        )
+
+
     
       return(
      
@@ -496,93 +688,8 @@ getColorbyHeat(x) {
         <div style={{width: '100% !important',margin: 'auto',height: '100%',minWidth:1700,marginTop: '40px'}}>
           <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
           <Col  xs="4" sm="3">
-
-          <Row>
-            <Card style={{background: this.getColorbyHeat(this.state.sensorTemp1)}}>
-              <CardBody className="pb-0">
-                <div className="text-value">{this.state.sensorTemp1} °C</div>
-                <div>Sensor 1</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={ 
-                  {labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-                   datasets: [
-                     {
-                      label: 'Region 2',
-                      backgroundColor: this.getColorbyHeat(this.state.sensorTemp1),
-                      borderColor: 'rgba(255,255,255,.55)',
-                      data: [23, 24, 22, 23, 23]
-                    },
-                  ],}}options={cardChartOpts1} height={70} />
-              </div>
-            </Card>
-            </Row>
-            <br></br>
-            <Row>
-             <Card style={{background: this.getColorbyHeat(this.state.sensorTemp2)}}>
-              <CardBody className="pb-0">
-                <div className="text-value">{this.state.sensorTemp2} °C		</div>
-                <div>Sensor 2</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={{
-                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-                datasets: [
-                    {
-                      label: 'Region 2',
-                      backgroundColor: this.getColorbyHeat(this.state.sensorTemp2),
-                      borderColor: 'rgba(255,255,255,.55)',
-                      data: [23, 24, 22, 23, 23]
-                    },
-                  ],}}options={cardChartOpts1} height={70} />
-              </div>
-            </Card>
-            </Row>
-            <br></br>
-            <Row>
-               <Card style={{background: this.getColorbyHeat(this.state.sensorTemp3)}}>
-              <CardBody className="pb-0">
-                <div className="text-value">{this.state.sensorTemp3} °C</div>
-                <div>Sensor 3</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={ {
-                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-                datasets: [
-                    {
-                      label: 'Region 2',
-                      backgroundColor: this.getColorbyHeat(this.state.sensorTemp3),
-                      borderColor: 'rgba(255,255,255,.55)',
-                      data: [23, 24, 22, 23, 23]
-                    },
-                  ],
-                }} options={cardChartOpts1} height={70} />
-              </div>
-            </Card>
-            </Row>
-            <br></br>
-             <Row>
-              <Card style={{background: this.getColorbyHeat(this.state.sensorTemp4)}}>
-              <CardBody className="pb-0">
-                <div className="text-value">{this.state.sensorTemp4} °C</div>
-                <div>Sensor 4</div>
-              </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={{
-                  labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-                  datasets: [
-                      {
-                        label: 'Region 2',
-                        backgroundColor: this.getColorbyHeat(this.state.sensorTemp4),
-                        borderColor: 'rgba(255,255,255,.55)',
-                        data: [23, 24, 22, 23, 23]
-                      },
-                    ],
-                  }} options={cardChartOpts1} height={70} />
-              </div>
-            </Card>
-            </Row>
-            <br></br>
+          {sensors} 
+          <br></br>
           </Col>
           <Col>
         <div>
