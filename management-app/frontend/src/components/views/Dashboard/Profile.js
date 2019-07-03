@@ -21,10 +21,10 @@ import './Profile.css'
 
 const brandPrimary = getStyle('--primary')
 
-/* const brandWarning= getStyle('--warning')
+const brandWarning= getStyle('--warning')
 const brandSuccess = getStyle('--success')
 const brandInfo = getStyle('--info')
-const brandDanger = getStyle('--danger') */
+const brandDanger = getStyle('--danger')
 
 // Card Chart 1
 const cardChartData1 = {
@@ -84,19 +84,6 @@ const cardChartData1 = {
   }
   
   
-  // Card Chart 2
-  const cardChartData2 = {
-   labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-  datasets: [
-      {
-        label: 'Region 2',
-        backgroundColor: brandPrimary,
-        borderColor: 'rgba(255,255,255,.55)',
-        data: [23, 24, 22, 23, 23]
-      },
-    ],
-  };
-  
  
   
   // Card Chart 3
@@ -125,15 +112,7 @@ const cardChartData1 = {
       },
     ],
   };
-  
-  function getColorbyHeat() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-          color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    }
+
   
 function getColor() {
   var letters = '0123456789ABCDEF'.split('');
@@ -145,14 +124,14 @@ function getColor() {
   }
 
   let mainChart = {
-    labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+    labels: ['a','b','Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
     datasets: [
       {
         label: 'My First dataset',
         backgroundColor: 'transparent',
-        borderColor: brandPrimary,
+        borderColor: getColor(),
         pointHoverBackgroundColor: '#fff',
-        borderWidth: 2,
+        borderWidth: 5,
         data: []
       },
     ],
@@ -236,8 +215,9 @@ class Profile extends Component{
     }
 
   }
-
-  getMale =  async() => {
+  
+ 
+   getMale =  async() => {
     
     const url = "/get-male";
     return axios.get(url, {
@@ -398,15 +378,21 @@ class Profile extends Component{
    
       let presentState = {...this.state}
 
-      presentState.sensorTemp4 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+       presentState.sensorTemp4 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+       let datasets = []
+       if(mainChart.datasets[0].data.length != 30){
 
-
-      let datasets = []
-      console.log(res.data.length)
       mainChart.datasets[0].data.push(res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree);
       let data = {}
       data["data"] = mainChart.datasets[0].data
-      datasets.push(data)
+      datasets.push(data) 
+       }
+       else{
+
+        mainChart.datasets[0].data = []
+      }
+  
+
       this.setState({
           ...presentState,datasets
       },()=> console.log(this.state.datasets))
@@ -488,54 +474,6 @@ trigger() {
     }, 5000);
   }
 
-  openModal() {
-      this.setState({
-          visible : true
-      });
-  }
-
-  closeModal() {
-      this.setState({
-          visible : false
-      });
-  }
-  
-  openModal2() {
-    this.setState({
-        visible2 : true
-    });
-  }
-
-  closeModal2() {
-    this.setState({
-        visible2: false
-    });
-  }
-
-  openModal3() {
-
-  this.setState({
-      visible3 : true
-  });
-  }
-
-  closeModal3() {
-  this.setState({
-      visible3: false
-  });
-  }
-
-  openModal4() {
-  this.setState({
-      visible4 : true
-  });
-  }
-
-  closeModal4() {
-  this.setState({
-      visible4: false
-  });
-  }
 
   avmodal() {
   var x =  (this.state.sensorTemp1 +  this.state.sensorTemp2 +  this.state.sensorTemp3 + this.state.sensorTemp4)/4
@@ -545,6 +483,11 @@ trigger() {
   return y
 }
 
+getColorbyHeat(x) {
+  if(x >= '20'){
+    return brandDanger
+  }else {return 'rgba(0,0,0,.0)'}
+  }
   render(){
     
       return(
@@ -555,49 +498,87 @@ trigger() {
           <Col  xs="4" sm="3">
 
           <Row>
-            <Card className="text-white bg-primary">
+            <Card style={{background: this.getColorbyHeat(this.state.sensorTemp1)}}>
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.sensorTemp1} °C</div>
                 <div>Sensor 1</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
+                <Line data={ 
+                  {labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+                   datasets: [
+                     {
+                      label: 'Region 2',
+                      backgroundColor: this.getColorbyHeat(this.state.sensorTemp1),
+                      borderColor: 'rgba(255,255,255,.55)',
+                      data: [23, 24, 22, 23, 23]
+                    },
+                  ],}}options={cardChartOpts1} height={70} />
               </div>
             </Card>
             </Row>
             <br></br>
             <Row>
-             <Card className="text-white bg-primary">
+             <Card style={{background: this.getColorbyHeat(this.state.sensorTemp2)}}>
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.sensorTemp2} °C		</div>
                 <div>Sensor 2</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData1} options={cardChartOpts1} height={70} />
+                <Line data={{
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+                datasets: [
+                    {
+                      label: 'Region 2',
+                      backgroundColor: this.getColorbyHeat(this.state.sensorTemp2),
+                      borderColor: 'rgba(255,255,255,.55)',
+                      data: [23, 24, 22, 23, 23]
+                    },
+                  ],}}options={cardChartOpts1} height={70} />
               </div>
             </Card>
             </Row>
             <br></br>
             <Row>
-               <Card className="text-white bg-primary">
+               <Card style={{background: this.getColorbyHeat(this.state.sensorTemp3)}}>
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.sensorTemp3} °C</div>
                 <div>Sensor 3</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData3} options={cardChartOpts1} height={70} />
+                <Line data={ {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+                datasets: [
+                    {
+                      label: 'Region 2',
+                      backgroundColor: this.getColorbyHeat(this.state.sensorTemp3),
+                      borderColor: 'rgba(255,255,255,.55)',
+                      data: [23, 24, 22, 23, 23]
+                    },
+                  ],
+                }} options={cardChartOpts1} height={70} />
               </div>
             </Card>
             </Row>
             <br></br>
              <Row>
-              <Card className="text-white bg-primary">
+              <Card style={{background: this.getColorbyHeat(this.state.sensorTemp4)}}>
               <CardBody className="pb-0">
                 <div className="text-value">{this.state.sensorTemp4} °C</div>
                 <div>Sensor 4</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Line data={cardChartData4} options={cardChartOpts1} height={70} />
+                <Line data={{
+                  labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+                  datasets: [
+                      {
+                        label: 'Region 2',
+                        backgroundColor: this.getColorbyHeat(this.state.sensorTemp4),
+                        borderColor: 'rgba(255,255,255,.55)',
+                        data: [23, 24, 22, 23, 23]
+                      },
+                    ],
+                  }} options={cardChartOpts1} height={70} />
               </div>
             </Card>
             </Row>
