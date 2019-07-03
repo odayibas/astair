@@ -1,4 +1,6 @@
 import axios from 'axios'
+import {set as setCookie, get as getCookie} from 'es-cookie';
+
 
 export const register  = newUser => {
     return axios
@@ -21,7 +23,7 @@ export const login = user =>{
         password:  user.password
     })
     .then(res =>{
-        localStorage.setItem('usertoken',  res.data)
+        setCookie('usertoken',  res.data, {path: '' })
         return res.data
     })
     .catch(err =>{

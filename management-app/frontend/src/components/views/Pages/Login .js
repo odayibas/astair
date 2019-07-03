@@ -1,16 +1,28 @@
 import React, {Component} from 'react'
 import  {login} from "./UserFunctions"
-
+import {
+    MDBMask, MDBRow,
+    MDBCol, MDBIcon,
+    MDBBtn, MDBView, MDBContainer, MDBCard, MDBCardBody, MDBInput, MDBFormInline
+    } from "mdbreact";
+import "./Login.css"
 class Login extends Component {
     constructor(){
         super()
         this.state = {
             email:'',
-            password:''
+            password:'',
+            collapseID:""
         }
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
+
+    toggleCollapse = collapseID => () =>
+    this.setState(prevState => ({
+    collapseID: prevState.collapseID !== collapseID ? collapseID : ""
+  }));
+
 
     onChange(e){
         this.setState({[e.target.name]: e.target.value})
@@ -37,11 +49,37 @@ class Login extends Component {
     }
 
     render(){
-        return(
+        const overlay = (
+            <div id="sidenav-overlay" style={{ backgroundColor: "transparent" }} onClick={this.toggleCollapse("navbarCollapse")} />
+            );
+            return(
             <div>
-            <div className="container">
-                <div className="row">
-                    <div className= "col-md-6 mt-5 mx-auto">
+            <MDBView>
+        <MDBMask className="d-flex justify-content-center align-items-center gradient">
+          <MDBContainer>
+            <MDBRow>
+              <div className="white-text text-center text-md-left col-md-6 mt-xl-5 mb-5">
+                <h1 className="h1-responsive font-weight-bold">
+                  Welcome to ASTAiR!{" "}
+                </h1>
+                <hr className="hr-light" />
+                <h6 className="mb-4">
+                  Watch our video to learn more
+                </h6>
+                <a href="https://www.youtube.com/watch?v=RpF21VuUxXg">
+                       <button  type="submit"
+                       className="btn btn-primary">
+                           Watch
+                           </button>
+                </a>
+              </div>
+              <MDBCol md="6" xl="5" className="mb-4">
+                <MDBCard id="classic-card">
+                  <MDBCardBody className="z-depth-2 white-text">
+                    <h3 className="text-center">
+                      <MDBIcon icon="user" /> Sign in:
+                    </h3>
+                    <hr className="hr-light" />
                         <form noValidate onSubmit={this.onSubmit}>
                             <h1  className=  "h3 mb-3 font-weight-normal">Please sign in! </h1>
                             <div className="form-group">
@@ -65,13 +103,24 @@ class Login extends Component {
                                 Submit
                             </button>
                         </form>
-                    </div>
-                </div>
-            </div>
-            </div>
+                        </MDBCardBody>
+                </MDBCard>
+              </MDBCol>
+            </MDBRow>
+          </MDBContainer>
+        </MDBMask>
+      </MDBView>
+      </div>
+
             
         )
     }
 }
 
 export default Login
+
+
+
+
+
+

@@ -8,6 +8,9 @@ import { AppSwitch } from '@coreui/react'
 import Modal from 'react-awesome-modal';
 import jwt_decode from 'jwt-decode'
 import './Monitor.css'
+import {set as setCookie, get as getCookie} from 'es-cookie';
+import {Redirect} from 'react-router-dom'
+
 
 class Monitor extends Component {
 
@@ -188,6 +191,9 @@ render() {
 
 
 };
+/* if(!getCookie("usertoken")){
+  return (<Redirect to='/'/>)}
+  else{ */
     return (
       <div >
         <div>     
@@ -196,7 +202,7 @@ render() {
                </div>
               <div>
                 <div id="accordion">
-                  <Card className="mb-0">
+                  <Card className="mb-0 bg-white">
                     <CardHeader id="headingOne">
                       <Button block color="link" className="m-0 p-0" onClick={() => this.toggleAccordion(0)} aria-expanded={this.state.accordion[0]} aria-controls="collapseOne">
                         <center><h5 className="m-0 p-0">Click here for outdoor weather conditions</h5></center>
@@ -377,7 +383,8 @@ render() {
 
         </div>
     );
-  }
+ //}
+}
 }
 
 export default Monitor;
