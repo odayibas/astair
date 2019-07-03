@@ -129,7 +129,7 @@ function getColor() {
       {
         label: 'My First dataset',
         backgroundColor: 'transparent',
-        borderColor: getColor(),
+        borderColor: 'rgb(0,0,0)',
         pointHoverBackgroundColor: '#fff',
         borderWidth: 5,
         data: []
