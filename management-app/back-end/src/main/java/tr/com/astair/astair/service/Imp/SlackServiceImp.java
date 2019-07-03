@@ -1,5 +1,6 @@
 package tr.com.astair.astair.service.Imp;
 
+import org.hibernate.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.Slack;
@@ -19,20 +20,45 @@ public class SlackServiceImp implements SlackService {
         this.slackRepository = slackRepository;
     }
 
-    public WeatherP1 getPollResults(Integer poll_id) {
-        WeatherP1 wp1 = new WeatherP1();
-        wp1.setCold(slackRepository.getPollResults(poll_id, "Cold"));
-        wp1.setHot(slackRepository.getPollResults(poll_id, "Hot"));
-        wp1.setNice(slackRepository.getPollResults(poll_id, "Nice"));
-        return wp1;
+    public WeatherP1 getPollResults() {
+        try {
+            WeatherP1 wp1 = new WeatherP1();
+            wp1.setCold(slackRepository.getPollResults("Soguk"));
+            wp1.setHot(slackRepository.getPollResults("Sicak"));
+            wp1.setNice(slackRepository.getPollResults("Guzel"));
+            return wp1;
+        } catch (
+                QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
-    public List<Slack> getPollAllResults(Integer poll_id) {
-        return slackRepository.getPollAllResults(poll_id);
+    public WeatherP1 getPollResultsByZone(Integer zone) {
+        try {
+            WeatherP1 wp1 = new WeatherP1();
+            wp1.setCold(slackRepository.getPollResultsByZone("Soguk", zone));
+            wp1.setHot(slackRepository.getPollResultsByZone("Sicak", zone));
+            wp1.setNice(slackRepository.getPollResultsByZone("Guzel", zone));
+            return wp1;
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
+    public List<Slack> getPollAllResults() {
+        try {
+            return slackRepository.getPollAllResults();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public List<Slack> get() {
-        return slackRepository.findAll();
+        try {
+            return slackRepository.findAll();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
 }
