@@ -17,6 +17,7 @@ import {
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import './Profile.css'
+import { isNumberLiteralTypeAnnotation } from '@babel/types';
 
 const brandPrimary = getStyle('--primary')
 
@@ -223,7 +224,10 @@ class Profile extends Component{
         sensorTemp: {},
         male:null,
         female: null,
-        datasets:[]
+        datasets:[],
+        hot: null,
+        nice : null,
+        cold : null
     }  
 
 
@@ -304,8 +308,7 @@ class Profile extends Component{
   }
 
   getSensorData= async() => {
-    
-    const url = "/sensor/get-all";
+    const url = "/sensor/get-last/";
     return axios.get(url, {
       mode: 'no-cors',
       headers: {
@@ -432,6 +435,33 @@ class Profile extends Component{
         })
     })
   }
+
+
+  getSlack =  async() => {
+    
+    const url = "/slack/get-poll-result-hot-cold-nice";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+   
+      console.log(res.data)
+      let presentState = {...this.state}
+      presentState.cold = res.data.cold
+      presentState.nice = res.data.nice
+      presentState.hot = res.data.hot
+  
+
+      this.setState({
+          ...presentState
+        })
+    })
+  }
+ 
  
   getOutdoorData = async() => {
 
@@ -464,12 +494,13 @@ class Profile extends Component{
   trigger() {
     let newTime = Date.now() - this.props.date;
    setInterval(() => { 
-       //   this.getSensorData().then(data => {})
-          // this.getSensorData().then(data => {})
+
+   // this.getSensorData().then(data => {})
           this.getSensorData1().then(data => {})
           this.getSensorData2().then(data => {})
           this.getSensorData3().then(data => {})
-          this.getSensorData4().then(data => {})
+          this.getSensorData4().then(data => {}) 
+          this.getSlack().then(data => {}) 
           this.getcompVisionControllerData().then(data => {})
           this.getOutdoorData().then(data => {})
           this.getMale().then(data => {})
@@ -478,11 +509,18 @@ class Profile extends Component{
   }
 
 
-  avmodal() {
+  avgmodal() {
   var x =  (this.state.sensorTemp[1] +  this.state.sensorTemp[2] +  this.state.sensorTemp[3] + this.state.sensorTemp[4])/4
   x = x * 100   
   x = parseInt(x)
   var y = x/100
+  return y
+}
+
+slack100(a) {
+  var x =  (this.state.hot +  this.state.cold +  this.state.nice)
+  a = a * 100   
+  var y = a / x
   return y
 }
 
@@ -493,7 +531,7 @@ return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map
       <Card style={{background: sensor.color}}>
         <CardBody className="pb-0">
           <div className="text-value">{sensor.temp} °C</div>
-          <div>Sensor {i+1}</div>
+          <div>INDOOR {i+1}</div>
         </CardBody> 
         <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
           <Line data={ 
@@ -511,6 +549,8 @@ return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map
       </Row>
 ))
 }
+
+
 
   render(){
 
@@ -535,11 +575,11 @@ return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map
           <Row className="text-center">
             <Col sm={12} md className="mb-sm-2 mb-0">
               <strong>Hot</strong>
-              <Progress className="progress-xs mt-2" color="danger" value="80" />
-              <strong>Good</strong>
-              <Progress className="progress-xs mt-2" color="success" value="40" />
+              <Progress className="progress-xs mt-2" color="danger" value={this.slack100(this.state.hot)} />
+              <strong>Nice</strong>
+              <Progress className="progress-xs mt-2" color="success" value={this.slack100(this.state.nice)}/>
               <strong>Cold</strong>
-              <Progress className="progress-xs mt-2" color="primary" value="40" />
+              <Progress className="progress-xs mt-2" color="primary" value={this.slack100(this.state.cold)} />
             </Col>
              <Col >
               <Card style={{padding : '20px'}}>
@@ -575,7 +615,7 @@ return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map
                 <CardBody className="pb-0">  
                   <div className="bg-transparent">
                   <h4> INDOOR </h4>
-                  <h2>  {this.avmodal()} °C </h2>               
+                  <h2>  {this.avgmodal()} °C </h2>               
                   </div>
                 </CardBody>
               </Card>
