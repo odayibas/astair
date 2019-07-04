@@ -3,7 +3,7 @@ import  {login} from "./UserFunctions"
 import {
     MDBMask, MDBRow,
     MDBCol, MDBIcon,
-    MDBBtn, MDBView, MDBContainer, MDBCard, MDBCardBody, MDBInput, MDBFormInline
+     MDBView, MDBContainer, MDBCard, MDBCardBody
     } from "mdbreact";
 import "./Login.css"
 class Login extends Component {

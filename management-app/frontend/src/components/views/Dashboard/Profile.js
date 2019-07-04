@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 // import jwt_decode from 'jwt-decode'
 import axios from 'axios'
-import { Bar, Doughnut, Line, Pie, Polar, Radar } from 'react-chartjs-2';
-import Modal from 'react-awesome-modal';
+import {Line } from 'react-chartjs-2';
 import {
   Button,
   ButtonGroup,
@@ -20,11 +19,6 @@ import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import './Profile.css'
 
 const brandPrimary = getStyle('--primary')
-
-const brandWarning= getStyle('--warning')
-const brandSuccess = getStyle('--success')
-const brandInfo = getStyle('--info')
-const brandDanger = getStyle('--danger')
 
 // Card Chart 1
 const cardChartData1 = {
@@ -113,16 +107,6 @@ const cardChartData1 = {
     ],
   };
 
-  
-function getColor() {
-  var letters = '0123456789ABCDEF'.split('');
-  var color = '#';
-  for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
   let mainChart = {
     labels: ['a','b','Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
     datasets: [
@@ -184,6 +168,43 @@ function getColor() {
   };
 
 
+let green = 'rgba(211, 84, 0, 1)';
+let red = 'rgba(252, 214, 112, 1)';
+
+function interpolateColor(color1, color2, factor) {
+    if (arguments.length < 3) {
+        factor = 0.5;
+    }
+    let result = color1.slice();
+    let color = 'rgb(';
+    for (let i = 0; i < 3; i++) {
+        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+        color += result[i]
+        color += i != 2 ? ',' : '';
+    }
+    color += ')';
+    return color;
+};
+
+function interpolateColors(color1, color2, steps) {
+    var stepFactor = 1 / ((steps.length == 1 ? 2 : steps.length)- 1),
+        interpolatedColorArray = [];
+        
+    let newArr = [];
+  
+    color1 = color1.match(/\d+/g).map(Number);
+    color2 = color2.match(/\d+/g).map(Number);
+
+    for (var i = 0; i < steps.length; i++) {
+        newArr.push({
+          region:steps[i][1],
+          temp : steps[i][0],  
+          color : interpolateColor(color1, color2, stepFactor * i)
+        })
+    }
+    return newArr;
+}
+
 class Profile extends Component{
   constructor(){
     super()
@@ -191,10 +212,6 @@ class Profile extends Component{
         first_name : '',
         last_name : '',
         email : '',
-        visible : '',
-        visible2 : '',
-        visible3 : '',
-        visible4 : '',
         temp: null,
         currentWeather: null,
         dailySummary: null,
@@ -203,29 +220,14 @@ class Profile extends Component{
         visibility: null,
         timezone : null,
         sensorData : [],
-        sensorTemp: null,
-        sensorTemp1: null,
-        sensorTemp2: null,
-        sensorTemp3: null,
-        sensorTemp4: null,
-        people : null,
+        sensorTemp: {},
         male:null,
         female: null,
-        selectedOption: '',
         datasets:[]
     }  
-    this.radioChange = this.radioChange.bind(this);
 
 
   }
-  radioChange(e) {
-    this.setState({
-      selectedOption: e.currentTarget.value
-    });
-  }
-  
-  
- 
    getMale =  async() => {
     
     const url = "/get-male";
@@ -237,8 +239,7 @@ class Profile extends Component{
      
     })
     .then((res) => {
-      console.log(res.data)
-      console.log("taken")
+
       let presentState = {...this.state}
 
       presentState.male= res.data
@@ -263,8 +264,7 @@ class Profile extends Component{
      
     })
     .then((res) => {
-      console.log(res.data)
-      console.log("taken")
+
       let presentState = {...this.state}
 
       presentState.female= res.data
@@ -290,8 +290,6 @@ class Profile extends Component{
      
     })
     .then((res) => {
-      console.log(res.data)
-      console.log("taken")
       let presentState = {...this.state}
 
       presentState.people= res.data
@@ -301,6 +299,31 @@ class Profile extends Component{
         ...presentState
     })
 
+
+    })
+  }
+
+  getSensorData= async() => {
+    
+    const url = "/sensor/get-all";
+    return axios.get(url, {
+      mode: 'no-cors',
+      headers: {
+        'Access-Control-Allow-Origin': true,
+      },
+     
+    })
+    .then((res) => {
+      
+      console.log(res)
+      let presentState = {...this.state}
+
+
+      presentState.sensorTemp[1] =  res.data[res.data.length - 1].sensor_degree 
+
+      this.setState({
+        ...presentState
+    })
 
     })
   }
@@ -319,7 +342,7 @@ class Profile extends Component{
       
       let presentState = {...this.state}
 
-      presentState.sensorTemp1 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+      presentState.sensorTemp[1] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
 
       this.setState({
         ...presentState
@@ -341,7 +364,7 @@ class Profile extends Component{
     .then((res) => {
       let presentState = {...this.state}
 
-      presentState.sensorTemp2 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+      presentState.sensorTemp[2] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
 
       this.setState({
         ...presentState
@@ -364,7 +387,7 @@ class Profile extends Component{
 
       let presentState = {...this.state}
 
-      presentState.sensorTemp3 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+      presentState.sensorTemp[3] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
 
       this.setState({
         ...presentState
@@ -387,7 +410,7 @@ class Profile extends Component{
    
       let presentState = {...this.state}
 
-       presentState.sensorTemp4 = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
+       presentState.sensorTemp[4] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
        let datasets = []
       
        if(mainChart.datasets[0].data.length != 30){
@@ -406,42 +429,10 @@ class Profile extends Component{
 
       this.setState({
           ...presentState,datasets
-      },()=> console.log(this.state.datasets))
-
+        })
     })
   }
  
- /*  getSensorData =  async() => {
-    
-    const url = "/sensor/get-all";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
-    .then((res) => {
-
-      let presentState = {...this.state}
-      presentState.sensorData = res.data
-
-      presentState.sensorTemp = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
-
-
-      let datasets = []
-      console.log(res.data.length)
-      mainChart.datasets[0].data.push(res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree);
-      let data = {}
-      data["data"] = mainChart.datasets[0].data
-      datasets.push(data)
-      this.setState({
-          ...presentState,datasets
-      },()=> console.log(this.state.datasets))
-
-    })
-  }
-  */
   getOutdoorData = async() => {
 
     const url = "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/eda3e07c6d1ebeb49dd8a4353a0666a9/39.925533,32.866287?units=si";
@@ -470,10 +461,11 @@ class Profile extends Component{
 
  }
 
-trigger() {
+  trigger() {
     let newTime = Date.now() - this.props.date;
    setInterval(() => { 
        //   this.getSensorData().then(data => {})
+          // this.getSensorData().then(data => {})
           this.getSensorData1().then(data => {})
           this.getSensorData2().then(data => {})
           this.getSensorData3().then(data => {})
@@ -487,34 +479,29 @@ trigger() {
 
 
   avmodal() {
-  var x =  (this.state.sensorTemp1 +  this.state.sensorTemp2 +  this.state.sensorTemp3 + this.state.sensorTemp4)/4
+  var x =  (this.state.sensorTemp[1] +  this.state.sensorTemp[2] +  this.state.sensorTemp[3] + this.state.sensorTemp[4])/4
   x = x * 100   
   x = parseInt(x)
   var y = x/100
   return y
 }
 
-getColorbyHeat(x) {
-  if(x >= '20'){
-    return brandDanger
-  }else {return 'rgba(0,0,0,.0)'}
-  }
-  render(){
-    const sensors =(
-      <div>
-      <Row>
-      <Card style={{background: this.getColorbyHeat(this.state.sensorTemp1)}}>
+
+getSensors = (sensorArr) => {
+return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
+  <Row style={{marginBottom : 5}}>
+      <Card style={{background: sensor.color}}>
         <CardBody className="pb-0">
-          <div className="text-value">{this.state.sensorTemp1} °C</div>
-          <div>Sensor 1</div>
-        </CardBody>
+          <div className="text-value">{sensor.temp} °C</div>
+          <div>Sensor {i+1}</div>
+        </CardBody> 
         <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
           <Line data={ 
             {labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
              datasets: [
                {
-                label: 'Region 2',
-                backgroundColor: this.getColorbyHeat(this.state.sensorTemp1),
+                label: `Region ${i}`,
+                backgroundColor: sensor.color,
                 borderColor: 'rgba(255,255,255,.55)',
                 data: [23, 24, 22, 23, 23]
               },
@@ -522,173 +509,25 @@ getColorbyHeat(x) {
         </div>
       </Card>
       </Row>
-      <br></br>
-      <Row>
-       <Card style={{background: this.getColorbyHeat(this.state.sensorTemp2)}}>
-        <CardBody className="pb-0">
-          <div className="text-value">{this.state.sensorTemp2} °C		</div>
-          <div>Sensor 2</div>
-        </CardBody>
-        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-          <Line data={{
-          labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-          datasets: [
-              {
-                label: 'Region 2',
-                backgroundColor: this.getColorbyHeat(this.state.sensorTemp2),
-                borderColor: 'rgba(255,255,255,.55)',
-                data: [23, 24, 22, 23, 23]
-              },
-            ],}}options={cardChartOpts1} height={70} />
-        </div>
-      </Card>
-      </Row>
-      <br></br>
-      <Row>
-         <Card style={{background: this.getColorbyHeat(this.state.sensorTemp3)}}>
-        <CardBody className="pb-0">
-          <div className="text-value">{this.state.sensorTemp3} °C</div>
-          <div>Sensor 3</div>
-        </CardBody>
-        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-          <Line data={ {
-          labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-          datasets: [
-              {
-                label: 'Region 2',
-                backgroundColor: this.getColorbyHeat(this.state.sensorTemp3),
-                borderColor: 'rgba(255,255,255,.55)',
-                data: [23, 24, 22, 23, 23]
-              },
-            ],
-          }} options={cardChartOpts1} height={70} />
-        </div>
-      </Card>
-      </Row>
-      <br></br>
-       <Row>
-        <Card style={{background: this.getColorbyHeat(this.state.sensorTemp4)}}>
-        <CardBody className="pb-0">
-          <div className="text-value">{this.state.sensorTemp4} °C</div>
-          <div>Sensor 4</div>
-        </CardBody>
-        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-          <Line data={{
-            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-            datasets: [
-                {
-                  label: 'Region 2',
-                  backgroundColor: this.getColorbyHeat(this.state.sensorTemp4),
-                  borderColor: 'rgba(255,255,255,.55)',
-                  data: [23, 24, 22, 23, 23]
-                },
-              ],
-            }} options={cardChartOpts1} height={70} />
-        </div>
-      </Card>
-      </Row> 
-      </div>
-      )
+))
+}
 
-      const ac =(
-        <div>
-        <Row>
-        <Card >
-          <CardBody className="pb-0">
-            <div className="text-value">{this.state.sensorTemp1} °C</div>
-            <div>Sensor 1</div>
-          </CardBody>
-          <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-            <Line data={ 
-              {labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-               datasets: [
-                 {
-                  label: 'Region 2',
-                  backgroundColor: this.getColorbyHeat(this.state.sensorTemp1),
-                  borderColor: 'rgba(255,255,255,.55)',
-                  data: [23, 24, 22, 23, 23]
-                },
-              ],}}options={cardChartOpts1} height={70} />
-          </div>
-        </Card>
-        </Row>
-        <br></br>
-        <Row>
-         <Card >
-          <CardBody className="pb-0">
-            <div className="text-value">{this.state.sensorTemp2} °C		</div>
-            <div>Sensor 2</div>
-          </CardBody>
-          <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-            <Line data={{
-            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-            datasets: [
-                {
-                  label: 'Region 2',
-                  backgroundColor: this.getColorbyHeat(this.state.sensorTemp2),
-                  borderColor: 'rgba(255,255,255,.55)',
-                  data: [23, 24, 22, 23, 23]
-                },
-              ],}}options={cardChartOpts1} height={70} />
-          </div>
-        </Card>
-        </Row>
-        <br></br>
-        <Row>
-           <Card >
-          <CardBody className="pb-0">
-            <div className="text-value">{this.state.sensorTemp3} °C</div>
-            <div>Sensor 3</div>
-          </CardBody>
-          <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-            <Line data={ {
-            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-            datasets: [
-                {
-                  label: 'Region 2',
-                  backgroundColor: this.getColorbyHeat(this.state.sensorTemp3),
-                  borderColor: 'rgba(255,255,255,.55)',
-                  data: [23, 24, 22, 23, 23]
-                },
-              ],
-            }} options={cardChartOpts1} height={70} />
-          </div>
-        </Card>
-        </Row>
-        <br></br>
-         <Row>
-          <Card >
-          <CardBody className="pb-0">
-            <div className="text-value">{this.state.sensorTemp4} °C</div>
-            <div>Sensor 4</div>
-          </CardBody>
-          <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-            <Line data={{
-              labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-              datasets: [
-                  {
-                    label: 'Region 2',
-                    backgroundColor: this.getColorbyHeat(this.state.sensorTemp4),
-                    borderColor: 'rgba(255,255,255,.55)',
-                    data: [23, 24, 22, 23, 23]
-                  },
-                ],
-              }} options={cardChartOpts1} height={70} />
-          </div>
-        </Card>
-        </Row> 
-        </div>
-        )
+  render(){
 
+    const sensorArr = interpolateColors(red, green,[
+      [this.state.sensorTemp[1],1],
+      [this.state.sensorTemp[2],2],
+      [this.state.sensorTemp[3],3],
+      [this.state.sensorTemp[4],4]
+    ].sort((sensor, sensor2) => (sensor[0] - sensor2[0])))
 
-    
       return(
      
       	
         <div style={{width: '100% !important',margin: 'auto',height: '100%',minWidth:1700,marginTop: '40px'}}>
           <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
           <Col  xs="4" sm="3">
-          {sensors} 
+          {this.getSensors(sensorArr)}
           <br></br>
           </Col>
           <Col>
