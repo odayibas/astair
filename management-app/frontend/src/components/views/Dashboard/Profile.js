@@ -326,9 +326,6 @@ class Profile extends Component{
       this.setState({
         ...presentState
     })
-    .catch(e => {
-      console.log(e.message)
-    })
 
 
     })
