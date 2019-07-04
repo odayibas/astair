@@ -527,7 +527,7 @@ slack100(a) {
 
 getSensors = (sensorArr) => {
 return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
-  <Row style={{marginBottom : 5}}>
+  <Row style={{marginBottom : 20}}>
       <Card style={{background: sensor.color}}>
         <CardBody className="pb-0">
           <div className="text-value">{sensor.temp} °C</div>
