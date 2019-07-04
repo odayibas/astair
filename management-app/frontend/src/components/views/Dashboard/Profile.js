@@ -13,10 +13,14 @@ import {
   Progress,
   Row,
 } from 'reactstrap';
-
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import './Profile.css'
+
+const arr1 = [{ "sensor": "temp1", period: 500, "url": "/get/sensor/1"}]
+const arr2 = [{ "sensor": "temp1", period: 500, "url": "/get/sensor/2"}]
+const arr3 = [{ "sensor": "temp1", period: 500, "url": "/get/sensor/3"}]
+const arr4 = [{ "sensor": "temp1", period: 500, "url": "/get/sensor/4"}]
 
 const brandPrimary = getStyle('--primary')
 var tempValue = "0";
@@ -33,7 +37,9 @@ const cardChartData1 = {
       },
     ],
   };
-  
+
+
+
   const cardChartOpts1 = {
     tooltips: {
       enabled: false,
@@ -182,6 +188,7 @@ const cardChartData1 = {
   };
   
   const barChartOpts = {
+    animation: false,
     tooltips: {
       enabled: false,
       custom: CustomTooltips
@@ -209,7 +216,7 @@ const cardChartData1 = {
   };
 
 
-let orange = 'rgba(211, 84, 0, 1)';
+let orange = 'rgba(214, 69, 65, 1)';
 let red = 'rgba(252, 214, 112, 1)';
 
 function interpolateColor(color1, color2, factor) {
@@ -318,6 +325,9 @@ class Profile extends Component{
 
       this.setState({
         ...presentState
+    })
+    .catch(e => {
+      console.log(e.message)
     })
 
 
@@ -510,9 +520,10 @@ class Profile extends Component{
   
        let datasets2 = []
 
-        barChart.datasets[0].data.push(presentState.cold );
-        barChart.datasets[0].data.push(presentState.nice );
-        barChart.datasets[0].data.push(presentState.hot );
+       barChart.datasets[0].data.push(presentState.cold );
+       barChart.datasets[0].data.push(presentState.nice );
+       barChart.datasets[0].data.push(presentState.hot );
+    
 
         let data = {}
         data["data"] = barChart.datasets[0].data
@@ -568,7 +579,7 @@ class Profile extends Component{
           this.getOutdoorData().then(data => {})
           this.getMale().then(data => {})
           this.getFemale().then(data => {})
-    }, 500);
+    }, 5000);
   }
 
 getChart = () => {
@@ -581,17 +592,17 @@ getChart = () => {
     else{
       return(
         <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-        <Bar data={barChart} options={barChartOpts} height={300} />
+        <Bar data={barChart} options={barChartOpts} height={300} redraw/>
       </div>)
     }
 }
   
 getSensors = (sensorArr) => {
 return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
-  <Row style={{marginBottom : 20}}>
+  <Row style={{marginBottom : 20,  paddingLeft : '20px'}}>
       <Card style={{background: sensor.color}}>
         <CardBody className="pb-0">
-          <div className="text-value">{sensor.temp} °C</div>
+          <div className="text-value">{sensor.temp}°C</div>
           <div>INDOOR {i+1}</div>
         </CardBody> 
         <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
