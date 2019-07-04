@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import jwt_decode from 'jwt-decode'
 import axios from 'axios'
-import {Line } from 'react-chartjs-2';
+import {Line,Bar } from 'react-chartjs-2';
 import {
   Button,
   ButtonGroup,
@@ -17,10 +17,10 @@ import {
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import './Profile.css'
-import { isNumberLiteralTypeAnnotation } from '@babel/types';
 
 const brandPrimary = getStyle('--primary')
-
+var tempValue = "0";
+var loadValue = 0;
 // Card Chart 1
 const cardChartData1 = {
   labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
@@ -109,10 +109,9 @@ const cardChartData1 = {
   };
 
   let mainChart = {
-    labels: ['a','b','Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+    labels: [],
     datasets: [
       {
-        label: 'My First dataset',
         backgroundColor: 'transparent',
         borderColor: 'rgb(0,0,0)',
         pointHoverBackgroundColor: '#fff',
@@ -120,10 +119,10 @@ const cardChartData1 = {
         data: []
       },
     ],
-  };
-  
-  const mainChartOpts = {
-    animation : false,
+   };
+   
+   const mainChartOpts = {
+    animation: false,
     tooltips: {
       enabled: false,
       custom: CustomTooltips,
@@ -131,7 +130,7 @@ const cardChartData1 = {
       mode: 'index',
       position: 'nearest',
       callbacks: {
-        labelColor: function(tooltipItem, chart) {
+        labelColor: function (tooltipItem, chart) {
           return { backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor }
         }
       }
@@ -154,22 +153,63 @@ const cardChartData1 = {
             min: 20,
             maxTicksLimit: 5,
             stepSize: Math.ceil(33 / 5),
-            max: 33,
+            max: 30,
           },
         }],
     },
     elements: {
       point: {
-        radius: 0,
+        radius: 2,
         hitRadius: 10,
         hoverRadius: 4,
         hoverBorderWidth: 3,
       },
     },
+   };
+
+  let barChart = {
+  labels: ['Hot', 'Good','Cold'],
+  datasets: [
+    {
+      label: 'Slack',
+      backgroundColor: 'black',
+      borderColor: brandPrimary,
+      pointHoverBackgroundColor: '#fff',
+      data: [],
+    },
+  ],
+
+  };
+  
+  const barChartOpts = {
+    tooltips: {
+      enabled: false,
+      custom: CustomTooltips
+    },
+    maintainAspectRatio: false,
+    legend: {
+      display: false,
+    },
+    scales: {
+      xAxes: [
+        {
+          display: false,
+          barPercentage: 0.6,
+        }],
+        yAxes: [
+          {
+            ticks: {
+              min: 0,
+              maxTicksLimit: 5,
+              stepSize: Math.ceil(33 / 5),
+              max: 15,
+            },
+          }],
+    },
   };
 
 
-let green = 'rgba(211, 84, 0, 1)';
+let orange = 'rgba(211, 84, 0, 1)';
 let red = 'rgba(252, 214, 112, 1)';
 
 function interpolateColor(color1, color2, factor) {
@@ -220,16 +260,19 @@ class Profile extends Component{
         humidity: null,
         visibility: null,
         timezone : null,
-        sensorData : [],
         sensorTemp: {},
         male:null,
         female: null,
         datasets:[],
+        datasets2 : [],
         hot: null,
         nice : null,
-        cold : null
+        cold : null,
+        radioSelected: 1,
+
     }  
 
+    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
   }
    getMale =  async() => {
@@ -272,7 +315,6 @@ class Profile extends Component{
       let presentState = {...this.state}
 
       presentState.female= res.data
-
 
       this.setState({
         ...presentState
@@ -399,43 +441,54 @@ class Profile extends Component{
     })
   }
 
-  getSensorData4 =  async() => {
-    
+  getSensorData4 = async () => {
     const url = "/sensor/get-zone/4";
     return axios.get(url, {
       mode: 'no-cors',
       headers: {
         'Access-Control-Allow-Origin': true,
       },
-     
     })
-    .then((res) => {
-   
-      let presentState = {...this.state}
-
-       presentState.sensorTemp[4] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
-       let datasets = []
-      
-       if(mainChart.datasets[0].data.length != 30){
-
-        mainChart.datasets[0].data.push(res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree);
-        let data = {}
-        data["data"] = mainChart.datasets[0].data
-        datasets.push(data) 
-       }
-       else{
-        mainChart.datasets[0].data.shift();
-        datasets.push(res.data[res.data.length - 1].sensor_degree ) ;
-        
-      }
-  
-
-      this.setState({
-          ...presentState,datasets
-        })
-    })
+      .then((res) => {
+ 
+        let presentState = { ...this.state }
+        presentState.sensorTemp[4] = res.data[res.data.length - 1].sensor_degree
+        var currentDate = new Date(res.data[res.data.length - 1].date_time);
+        var clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+ 
+        if(loadValue == 0)
+        {
+            for (var i = res.data.length - 20; i < res.data.length; i++) {
+                presentState.sensorTemp[4] = res.data[i].sensor_degree;
+                mainChart.datasets[0].data.push(presentState.sensorTemp[4]);
+                currentDate = new Date(res.data[i].date_time);
+                clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+                mainChart.labels.push(clock);
+                mainChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, mainChart.datasets[0].data) - 2;
+                mainChartOpts.scales.yAxes[0].ticks.max = Math.max.apply(Math, mainChart.datasets[0].data) + 2;
+            }
+            loadValue = 1;
+        }
+ 
+        if(tempValue != clock)
+        {
+          let datasets = []
+          mainChart.datasets[0].data.push(presentState.sensorTemp[4]);
+          mainChart.labels.push(clock);
+          tempValue = clock;
+          if(mainChart.datasets[0].data.length > 20)
+          {
+              mainChart.datasets[0].data.shift();
+              mainChart.labels.shift();
+          }
+          this.setState({
+            ...presentState, datasets
+          })
+          mainChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, mainChart.datasets[0].data) - 2;
+          mainChartOpts.scales.yAxes[0].ticks.max = Math.max.apply(Math, mainChart.datasets[0].data) + 2;
+        }
+      })
   }
-
 
   getSlack =  async() => {
     
@@ -455,9 +508,19 @@ class Profile extends Component{
       presentState.nice = res.data.nice
       presentState.hot = res.data.hot
   
+       let datasets2 = []
 
+        barChart.datasets[0].data.push(presentState.cold );
+        barChart.datasets[0].data.push(presentState.nice );
+        barChart.datasets[0].data.push(presentState.hot );
+
+        let data = {}
+        data["data"] = barChart.datasets[0].data
+        datasets2.push(data) 
+
+  
       this.setState({
-          ...presentState
+          ...presentState,datasets2
         })
     })
   }
@@ -508,23 +571,21 @@ class Profile extends Component{
     }, 500);
   }
 
-
-  avgmodal() {
-  var x =  (this.state.sensorTemp[1] +  this.state.sensorTemp[2] +  this.state.sensorTemp[3] + this.state.sensorTemp[4])/4
-  x = x * 100   
-  x = parseInt(x)
-  var y = x/100
-  return y
+getChart = () => {
+  if(this.state.radioSelected == 1){
+    return(
+    <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
+      <Line data={mainChart} options={mainChartOpts} height={300} redraw/>
+    </div>)
+    }
+    else{
+      return(
+        <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
+        <Bar data={barChart} options={barChartOpts} height={300} />
+      </div>)
+    }
 }
-
-slack100(a) {
-  var x =  (this.state.hot +  this.state.cold +  this.state.nice)
-  a = a * 100   
-  var y = a / x
-  return y
-}
-
-
+  
 getSensors = (sensorArr) => {
 return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
   <Row style={{marginBottom : 20}}>
@@ -548,13 +609,33 @@ return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map
       </Card>
       </Row>
 ))
+  }
+
+
+avgmodal() {
+  var x =  (this.state.sensorTemp[1] +  this.state.sensorTemp[2] +  this.state.sensorTemp[3] + this.state.sensorTemp[4])/4
+  x = x * 100   
+  x = parseInt(x)
+  var y = x/100
+  return y
+}
+
+slack100(a) {
+  var x =  (this.state.hot +  this.state.cold +  this.state.nice)
+  a = a * 100   
+  var y = a / x
+  return y
 }
 
 
-
+onRadioBtnClick(radioSelected) {
+  this.setState({
+    radioSelected: radioSelected,
+  });
+}
   render(){
 
-    const sensorArr = interpolateColors(red, green,[
+    const sensorArr = interpolateColors(red, orange,[
       [this.state.sensorTemp[1],1],
       [this.state.sensorTemp[2],2],
       [this.state.sensorTemp[3],3],
@@ -605,7 +686,6 @@ return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map
                 <h2>{this.state.female}	</h2>
                 </Col>
                 </Row>
-
               </CardBody>
            
             </Card>
@@ -632,17 +712,15 @@ return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map
                     <div className="small text-muted"></div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
-                    <Button color="primary" className="float-right"><i className="icon-cloud-download"></i></Button>
                     <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
                       <ButtonGroup className="mr-3" aria-label="First group">
-                        <Button color="outline-secondary">INDOOR</Button>
-                      </ButtonGroup>
+                      <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>INDOOR</Button>
+                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>SLACK</Button>                      
+                        </ButtonGroup>
                     </ButtonToolbar>
                   </Col>
                 </Row>
-                <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-                  <Line data={mainChart} options={mainChartOpts} height={300} redraw/>
-                </div>
+                {this.getChart()}
               </CardBody>
             </Card>
           </Col>
