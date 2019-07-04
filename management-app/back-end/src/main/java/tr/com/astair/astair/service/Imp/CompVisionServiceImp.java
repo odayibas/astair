@@ -1,12 +1,11 @@
 package tr.com.astair.astair.service.Imp;
 
+import org.hibernate.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.ComputerVision;
 import tr.com.astair.astair.repository.ComputerVisionRepo;
 import tr.com.astair.astair.service.ComputerVisionService;
-
 
 import java.util.List;
 
@@ -22,42 +21,78 @@ public class CompVisionServiceImp implements ComputerVisionService {
 
 
     public Integer getAvePeopleCnt() {
-        return computerVisionRepo.getAvePeopleCount();
+        try {
+            return computerVisionRepo.getAvePeopleCount();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public Integer getAveFemaleCnt() {
-        return computerVisionRepo.getAveFemaleCount();
+        try {
+            return computerVisionRepo.getAveFemaleCount();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public Integer getAveMaleCnt() {
-        return computerVisionRepo.getAveMaleCount();
+        try {
+            return computerVisionRepo.getAveMaleCount();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public List<ComputerVision> getTodaysData() {
-        return computerVisionRepo.getTodaysData();
+        try {
+            return computerVisionRepo.getTodaysData();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public List<ComputerVision> get() {
-        return computerVisionRepo.findAll();
+        try {
+            return computerVisionRepo.findAll();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public List<ComputerVision> getLimited() {
-        return computerVisionRepo.findTop30ByOrderByDateDesc();
+        try {
+            return computerVisionRepo.findTop30ByOrderByDateDesc();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public Integer getPersonCount() {
-        ComputerVision x = computerVisionRepo.findTopByOrderByDateDesc();
-        return x.getOccupancy();
+        try {
+            ComputerVision x = computerVisionRepo.findTopByOrderByDateDesc();
+            return x.getOccupancy();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public Integer getFemaleCount() {
-        ComputerVision x = computerVisionRepo.findTopByOrderByDateDesc();
-        return x.getFemale_count();
+        try {
+            ComputerVision x = computerVisionRepo.findTopByOrderByDateDesc();
+            return x.getFemale_count();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public Integer getMaleCount() {
-        ComputerVision x = computerVisionRepo.findTopByOrderByDateDesc();
-        return x.getMale_count();
+        try {
+            ComputerVision x = computerVisionRepo.findTopByOrderByDateDesc();
+            return x.getMale_count();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
 }

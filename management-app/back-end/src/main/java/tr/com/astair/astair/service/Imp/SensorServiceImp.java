@@ -1,12 +1,12 @@
 package tr.com.astair.astair.service.Imp;
 
+import org.hibernate.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.Sensor;
 import tr.com.astair.astair.repository.SensorRepository;
 import tr.com.astair.astair.service.SensorService;
-
 
 import java.util.List;
 
@@ -21,24 +21,44 @@ public class SensorServiceImp implements SensorService {
     }
 
     public List<Sensor> get() {
-        return sensorRepository.findAll();
+        try {
+            return sensorRepository.findAll();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public List<Sensor> getByZone(Integer ac_zone) {
-        Example<Sensor> sExample = Example.of(new Sensor(ac_zone));
-        return sensorRepository.findAll(sExample);
+        try {
+            Example<Sensor> sExample = Example.of(new Sensor(ac_zone));
+            return sensorRepository.findAll(sExample);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public List<Sensor> getLimited(Integer ac_id) {
-        return sensorRepository.getIdforManage(ac_id);
+        try {
+            return sensorRepository.getIdforManage(ac_id);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public Float getSensorDegreeAve(Integer ac_id) {
-        return sensorRepository.getSensorDegreeAve(ac_id);
+        try {
+            return sensorRepository.getSensorDegreeAve(ac_id);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public Float getAllSensorDegreeAve() {
-        return sensorRepository.getAllSensorDegreeAve();
+        try {
+            return sensorRepository.getAllSensorDegreeAve();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
 

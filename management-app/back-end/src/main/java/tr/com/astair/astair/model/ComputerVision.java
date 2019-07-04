@@ -3,15 +3,16 @@ package tr.com.astair.astair.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
-
 
 @Entity
 @Table(name = "computervision")
 public class ComputerVision implements Serializable {
-
 
     @Id
     @Column(name = "data_time")

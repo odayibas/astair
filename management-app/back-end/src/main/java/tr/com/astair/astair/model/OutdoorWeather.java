@@ -1,7 +1,8 @@
-/*
 package tr.com.astair.astair.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,36 +18,47 @@ public class OutdoorWeather implements Serializable {
     private Long id;
 
     @Column(name = "temperature")
+    @JsonProperty("temperature")
     private Float temperature;
 
     @Column(name = "apparent_temperature")
+    @JsonProperty("apparentTemperature")
     private Float apparentTemperature;
 
     @Column(name = "currently_summary")
+    @JsonProperty("summary")
     private String currently_summary;
 
     @Column(name = "daily_summary")
+    @JsonProperty("")
     private String daily_summary;
 
     @Column(name = "dew_point")
+    @JsonProperty("dewPoint")
     private Float dew_point;
 
     @Column(name = "humidity")
+    @JsonProperty("humidity")
     private Float humidity;
 
     @Column(name = "visibility")
+    @JsonProperty("visibility")
     private Float visibility;
 
     @Column(name = "cloud_cover")
+    @JsonProperty("cloudCover")
     private Float cloud_cover;
 
     @Column(name = "wind_speed")
+    @JsonProperty("windSpeed")
     private Float wind_speed;
 
     @Column(name = "precip_probability")
+    @JsonProperty("precipProbability")
     private Float precip_probability;
 
     @Column(name = "time_zone")
+    @JsonProperty("time")
     private String time;
 
     public OutdoorWeather() {
@@ -163,4 +175,3 @@ public class OutdoorWeather implements Serializable {
         this.time = time_zone;
     }
 }
-*/

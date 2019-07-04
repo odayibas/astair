@@ -1,10 +1,11 @@
-package tr.com.astair.astair.controller.api;
+package tr.com.astair.astair.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import tr.com.astair.astair.controller.SensorControllerApi;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import tr.com.astair.astair.controller.api.SensorControllerApi;
 import tr.com.astair.astair.model.Sensor;
 import tr.com.astair.astair.service.SensorService;
 
