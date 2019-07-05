@@ -35,12 +35,14 @@ render(){
             <Col sm={12} md className="mb-sm-2 mb-0">
               <Card style={{padding : '30px'}}>
                 <CardTitle><h4>Slack</h4></CardTitle>
-              <strong>Hot</strong>
-              <Progress className="progress-xs mt-2" color="danger" value={this.slack100(this.props.hot)} />
-              <strong>Nice</strong>
-              <Progress className="progress-xs mt-2" color="success" value={this.slack100(this.props.nice)}/>
-              <strong>Cold</strong>
+                <strong>Cold %{this.slack100(this.props.cold)}</strong>
               <Progress className="progress-xs mt-2" color="primary" value={this.slack100(this.props.cold)} />
+              <strong>Nice %{this.slack100(this.props.nice)}</strong>
+              <Progress className="progress-xs mt-2" color="success" value={this.slack100(this.props.nice)}/>
+
+              <strong>Hot %{this.slack100(this.props.hot)}</strong>
+              <Progress className="progress-xs mt-2" color="danger" value={this.slack100(this.props.hot)} />
+            
               </Card>
             </Col>
              <Col >
