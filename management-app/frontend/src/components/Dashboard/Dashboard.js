@@ -258,10 +258,8 @@ class Dashboard extends Component{
       this.setState({
         ...presentState
     })
-
-
-    })
-  }
+  })
+}
   
 
   drawCharts(index,res){
@@ -370,9 +368,10 @@ class Dashboard extends Component{
   //this.getSensorData4().then(data => {}) 
     this.getSlack().then(data => {}) 
     this.getcompVisionControllerData().then(data => {})
-    this.getOutdoorData().then(data => {})
     this.getMale().then(data => {})
     this.getFemale().then(data => {})
+    this.getOutdoorData().then(data => {})
+
     }, 5000);
   }  
 

@@ -1,6 +1,8 @@
 
 import React, {Component} from 'react'
 
+import "./index.css"
+
 class Charts extends Component{
     constructor(props){
         super(props)

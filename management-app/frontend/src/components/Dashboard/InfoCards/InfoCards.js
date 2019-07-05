@@ -44,7 +44,7 @@ render(){
               </Card>
             </Col>
              <Col >
-              <Card style={{padding : '75px'}}>
+              <Card style={{padding : '75px'}} >
                 <CardBody className="pb-0">  
                 <div   className="text-value"> <h4> OUTDOOR </h4>
                 <h2> {this.props.temp} °C </h2>
@@ -74,8 +74,8 @@ render(){
            
             </Card>
             </Col>
-            <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-              <Card style={{padding : '75px'}} >
+            <Col >
+              <Card style={{padding : '70px'}} >
                 <CardBody className="pb-0">  
                   <div className="bg-transparent">
                   <h4> INDOOR </h4>
