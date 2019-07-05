@@ -17,11 +17,6 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import './Profile.css'
 
-const arr1 = [{ "sensor": "temp1", period: 500, "url": "/get/sensor/1"}]
-const arr2 = [{ "sensor": "temp1", period: 500, "url": "/get/sensor/2"}]
-const arr3 = [{ "sensor": "temp1", period: 500, "url": "/get/sensor/3"}]
-const arr4 = [{ "sensor": "temp1", period: 500, "url": "/get/sensor/4"}]
-
 const brandPrimary = getStyle('--primary')
 var tempValue = "0";
 var loadValue = 0;
@@ -85,34 +80,6 @@ const cardChartData1 = {
   }
   
   
- 
-  
-  // Card Chart 3
-  const cardChartData3 = {
-   labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-  datasets: [
-      {
-        label: 'Region 2',
-        backgroundColor: brandPrimary,
-        borderColor: 'rgba(255,255,255,.55)',
-        data: [23, 24, 22, 23, 23]
-      },
-    ],
-  };
-  
-  
-  // Card Chart 4
-  const cardChartData4 = {
-   labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-  datasets: [
-      {
-        label: 'Region 2',
-        backgroundColor: brandPrimary,
-        borderColor: 'rgba(255,255,255,.55)',
-        data: [23, 24, 22, 23, 23]
-      },
-    ],
-  };
 
   let mainChart = {
     labels: [],
@@ -276,10 +243,13 @@ class Profile extends Component{
         nice : null,
         cold : null,
         radioSelected: 1,
+        selected : 1
 
     }  
 
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+    this.onRadioBtnClickPpl= this.onRadioBtnClickPpl.bind(this);
+
 
   }
    getMale =  async() => {
@@ -356,7 +326,7 @@ class Profile extends Component{
     })
   }
 
-  getSensorData= async() => {
+ /*  getSensorData= async() => {
     const url = "/sensor/get-last/";
     return axios.get(url, {
       mode: 'no-cors',
@@ -377,8 +347,10 @@ class Profile extends Component{
         ...presentState
     })
 
+    }).catch((err) =>{
+      console.log(err)
     })
-  }
+  } */
 
   getSensorData1 =  async() => {
     
@@ -497,7 +469,8 @@ class Profile extends Component{
       })
   }
 
-  getSlack =  async() => {
+  
+ getSlack =  async() => {
     
     const url = "/slack/get-poll-result-hot-cold-nice";
     return axios.get(url, {
@@ -565,17 +538,16 @@ class Profile extends Component{
   trigger() {
     let newTime = Date.now() - this.props.date;
    setInterval(() => { 
-
-   // this.getSensorData().then(data => {})
-          this.getSensorData1().then(data => {})
-          this.getSensorData2().then(data => {})
-          this.getSensorData3().then(data => {})
-          this.getSensorData4().then(data => {}) 
-          this.getSlack().then(data => {}) 
-          this.getcompVisionControllerData().then(data => {})
-          this.getOutdoorData().then(data => {})
-          this.getMale().then(data => {})
-          this.getFemale().then(data => {})
+ //   this.getSensorData().then(data => {})
+    this.getSensorData1().then(data => {})
+    this.getSensorData2().then(data => {})
+    this.getSensorData3().then(data => {})
+    this.getSensorData4().then(data => {}) 
+    this.getSlack().then(data => {}) 
+    this.getcompVisionControllerData().then(data => {})
+    this.getOutdoorData().then(data => {})
+    this.getMale().then(data => {})
+    this.getFemale().then(data => {})
     }, 5000);
   }
 
@@ -599,8 +571,7 @@ return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map
   <Row style={{marginBottom : 20,  paddingLeft : '20px'}}>
       <Card style={{background: sensor.color}}>
         <CardBody className="pb-0">
-          <div className="text-value">{sensor.temp}°C</div>
-          <div>INDOOR {i+1}</div>
+          <div className="text-value"> <h5>INDOOR {i+1} </h5><h4 style = {{textAlign : 'right'}}>{sensor.temp}°C</h4></div>
         </CardBody> 
         <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
           <Line data={ 
@@ -641,6 +612,44 @@ onRadioBtnClick(radioSelected) {
     radioSelected: radioSelected,
   });
 }
+
+onRadioBtnClickPpl(selected) {
+  this.setState({
+    selected: selected,
+  });
+}
+
+getPeople(){
+
+  if(this.state.selected == 1){
+ return( <CardBody className="pb-0">
+    <div className="text-value">   
+      <h4>People</h4>
+      <h2>{this.state.people}	</h2>
+    </div>
+    </CardBody>)
+  }
+  else if(this.state.selected == 2){
+    return(<CardBody className="pb-0">
+      <div className="text-value">   
+       <h4>Male</h4>
+         <h2>{this.state.male}</h2>
+      </div>
+      </CardBody>)
+    }
+    else{
+      return(
+      <CardBody className="pb-0">
+      <div className="text-value">   
+       <h4>Female</h4>
+         <h2>{this.state.female}</h2>
+      </div>
+      </CardBody>)
+
+    }
+}
+
+
   render(){
 
     const sensorArr = interpolateColors(red, orange,[
@@ -681,21 +690,17 @@ onRadioBtnClick(radioSelected) {
             </Col>
             <Col >
             <Card>
-              <CardBody className="pb-0">
-                <div className="text-value">   <h4>People Count</h4></div>
-                <h2>{this.state.people}	</h2>
-                <Row>
-                  <Col>
-                <div className="text-value">    <h4>Male</h4></div>
-                <h2> {this.state.male}	</h2>
-                </Col>
-                <Col>
-                <div className="text-value"> <h4>Female</h4>	</div>
-                <h2>{this.state.female}	</h2>
-                </Col>
-                </Row>
-              </CardBody>
-           
+              <CardTitle>
+              <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
+                      <ButtonGroup aria-label="First group">
+                      <Button color="outline-secondary" onClick={() => this.onRadioBtnClickPpl(1)} active={this.state.selected === 1}>People</Button>
+                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClickPpl(2)} active={this.state.selected === 2}>Male</Button>          
+                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClickPpl(3)} active={this.state.selected === 3}>Female</Button>                              
+                        </ButtonGroup>
+                    </ButtonToolbar>
+              </CardTitle>
+              {this.getPeople()}
+            
             </Card>
             </Col>
             <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
@@ -720,7 +725,7 @@ onRadioBtnClick(radioSelected) {
                     <div className="small text-muted"></div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
-                    <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
+                    <ButtonToolbar className="float-middle" aria-label="Toolbar with button groups">
                       <ButtonGroup className="mr-3" aria-label="First group">
                       <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>INDOOR</Button>
                         <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>SLACK</Button>                      
