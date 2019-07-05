@@ -89,14 +89,15 @@ trackers = []
 trackableObjects = {}
 
 # initialize the total number of frames processed thus far, along
-# with the total number of objects that have moved either up or down
+# with the total number of person in the office, and gender predictions of them
 totalFrames = 0
-
 totalCount = 0
-arr = []
-arr_twolines = []
 totalMale = 0
 totalFemale = 0
+
+# two dynamic array for debugging some problems
+arr = []  # arr states that a person is moved up or down lastly
+arr_two_lines = []  # arr_two_lines states that a person's position on the screen according to the lines
 
 # start the frames per second throughput estimator
 fps = FPS().start()
@@ -190,11 +191,18 @@ while True:
                 gender_preds = gender_net.forward()
                 gender = gender_list[gender_preds[0].argmax()]
 
-                overlay_text = "%s" % (gender)
+                overlay_text = "%s" % gender
                 cv2.putText(frame, overlay_text, (startX - 10, startY - 10), 1, 1, (255, 0, 0), 1, cv2.LINE_AA)
-                cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
+                # cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
 
-
+    # delete first 80 element of arrays when their size is 100
+    # aim is prevent from more memory usage
+    if len(arr) == 100:
+        i = 0
+        while i < 80:
+            del arr[0]
+            del arr_two_lines[0]
+            i += 1
 
 
     # otherwise, we should utilize our object *trackers* rather than
@@ -255,40 +263,47 @@ while True:
             direction = centroid[1] - np.mean(y)
             to.centroids.append(centroid)
 
-            if len(arr) == objectID:
-                arr.append(0)
+            # if our array's first 80*k elements deleted, set objectID for new appends
+            if objectID >= 100:
+                objectID = ((objectID-100) % 80) + 20
 
-            if len(arr_twolines) == objectID:
-                arr_twolines.append("init")
+            if 10 > objectID >= 80 and len(arr) < 80:
+                objectID -= 80
+
+            # initialize new element for every object
+            if len(arr) == objectID:
+                arr.append("init")
+
+            if len(arr_two_lines) == objectID:
+                arr_two_lines.append("init")
 
             if to.counted:
-                if aboveLinePos - centroid[1] > 0 and arr[objectID] == 1:
+                if aboveLinePos - centroid[1] > 0 and arr[objectID] == "up":
                     print("out, can be recounted")
                     to.counted = False
-                elif centroid[1] - belowLinePos > 0 and arr[objectID] == 2:
+                elif centroid[1] - belowLinePos > 0 and arr[objectID] == "down":
                     print("in, can be recounted")
                     to.counted = False
 
             # check to see if the object has been counted or not
             if not to.counted:
 
-                # if object intersect with above line
-
                 # if the direction is negative (indicating the object
                 # is moving up) AND the centroid is above the center
                 # line, count the object
                 if direction < -5 and 0 < aboveLinePos - centroid[1] < 20:  # upper from above line case
-                    if arr[objectID] != 1 and (
-                            arr_twolines[objectID] == "upper_below" or arr_twolines[objectID] == "init"):
-                        record = connector.select_latest_row()
-                        if record[1] == 'sysAdmin' and record[2] != totalCount:
+                    if arr[objectID] != "up" and (
+                            arr_two_lines[objectID] == "upper_below" or arr_two_lines[objectID] == "init"):
+                        record = connector.select_latest_row()  # Take the latest row from database
+                        if record[1] == 'sysAdmin' and record[2] != totalCount:  # If an admin update exist change
+                            #  Set the values(inside,male,female) to the admin inputs
                             totalCount = record[2]
                             totalMale = record[3]
                             totalFemale = record[4]
 
                         to.counted = True
-                        arr[objectID] = 1
-                        arr_twolines[objectID] = "upper_above"
+                        arr[objectID] = "up"
+                        arr_two_lines[objectID] = "upper_above"
 
                         if gender == "Male":
                             totalMale += -1
@@ -299,24 +314,27 @@ while True:
 
                         connector.insert_table(datetime.datetime.now(), 'Cam', totalCount, totalMale, totalFemale)
 
-                elif direction < 0 and 0 < belowLinePos - centroid[1] < 35:  # upper from below line case
-                    arr_twolines[objectID] = "upper_below"
+                elif direction < 0 and 0 < belowLinePos - centroid[1] < 20:  # upper from below line case
+                    arr_two_lines[objectID] = "upper_below"
 
                 # if the direction is positive (indicating the object
                 # is moving down) AND the centroid is below the
                 # center line, count the object
                 elif direction > 5 and 0 < centroid[1] - belowLinePos < 20:  # lower from below line case
-                    if arr[objectID] != 2 and (
-                            arr_twolines[objectID] == "lower_above" or arr_twolines[objectID] == "init"):
-                        record = connector.select_latest_row()
-                        if record[1] == 'sysAdmin' and record[2] != totalCount:
+                    if arr[objectID] != "down" and (
+                            arr_two_lines[objectID] == "lower_above" or arr_two_lines[objectID] == "init"):
+                        record = connector.select_latest_row()  # take the latest row from database
+                        if record[1] == 'sysAdmin' and record[2] != totalCount:  # If an admin update exist change
                             totalCount = record[2]
                             totalMale = record[3]
                             totalFemale = record[4]
 
                         to.counted = True
-                        arr[objectID] = 2
-                        arr_twolines[objectID] = "lower_below"
+
+                        # This object moved down lastly
+                        arr[objectID] = "down"
+                        # And its position is lower of the below line
+                        arr_two_lines[objectID] = "lower_below"
 
                         if gender == "Male":
                             totalMale += 1
@@ -325,10 +343,11 @@ while True:
                         totalCount += 1
                         count = True
 
+                        # Insert
                         connector.insert_table(datetime.datetime.now(), 'Cam', totalCount, totalMale, totalFemale)
 
-                elif direction > 0 and 0 < centroid[1] - aboveLinePos < 35:  # lower from above line case
-                    arr_twolines[objectID] = "lower_above"
+                elif direction > 0 and 0 < centroid[1] - aboveLinePos < 20:  # lower from above line case
+                    arr_two_lines[objectID] = "lower_above"
 
         # store the trackable object in our dictionary
         trackableObjects[objectID] = to
@@ -336,7 +355,7 @@ while True:
         # draw both the ID of the object and the centroid of the
         # object on the output frame
         text = "ID {}".format(objectID)
-        # cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
+        cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
         cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
@@ -392,5 +411,5 @@ else:
 # close any open windows
 cv2.destroyAllWindows()
 
+# disconnect from database
 connector.disconnect_db()
-
