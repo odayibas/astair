@@ -10,11 +10,10 @@ import {
   CardBody,
   CardTitle,
   Col,
-  Progress,
   Row,
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import { getStyle } from '@coreui/coreui/dist/js/coreui-utilities'
 
 import SensorCards from './SensorCards/SensorCards';
 import InfoCards from './InfoCards/InfoCards'
@@ -174,7 +173,6 @@ class Dashboard extends Component{
       this.setState({
         ...presentState
     })
-
 
     })
   }
@@ -456,7 +454,7 @@ class Dashboard extends Component{
       return(
      
       	
-        <div style={{width: '100% !important',margin: 'auto',height: '100%',minWidth:1700,marginTop: '40px'}}>
+        <div style={{width: '100% !important',margin: 'auto',height: '100%',marginTop: '40px'}}>
             <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
                 <Col  xs="4" sm="3">
                     <SensorCards sensorTemp = {this.state.sensorTemp}/>
@@ -491,7 +489,6 @@ class Dashboard extends Component{
                 </Card>
                 </Col>
             </Row>
-
                         </div>
                     </div>
               </Col>

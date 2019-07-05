@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 
 import {
   Card,
+  CardTitle,
   CardBody,
   Col,
   Progress,
@@ -32,15 +33,18 @@ render(){
     return(
         <Row className="text-center">
             <Col sm={12} md className="mb-sm-2 mb-0">
+              <Card style={{padding : '30px'}}>
+                <CardTitle><h4>Slack</h4></CardTitle>
               <strong>Hot</strong>
               <Progress className="progress-xs mt-2" color="danger" value={this.slack100(this.props.hot)} />
               <strong>Nice</strong>
               <Progress className="progress-xs mt-2" color="success" value={this.slack100(this.props.nice)}/>
               <strong>Cold</strong>
               <Progress className="progress-xs mt-2" color="primary" value={this.slack100(this.props.cold)} />
+              </Card>
             </Col>
              <Col >
-              <Card style={{padding : '41px'}}>
+              <Card style={{padding : '75px'}}>
                 <CardBody className="pb-0">  
                 <div   className="text-value"> <h4> OUTDOOR </h4>
                 <h2> {this.props.temp} °C </h2>
@@ -49,7 +53,7 @@ render(){
               </Card>
             </Col>
             <Col >
-            <Card>
+            <Card style={{padding : '35px'}} >
               <CardBody className="pb-0">
                 <div className="text-value">
                     <h4>People Count</h4></div>
@@ -71,7 +75,7 @@ render(){
             </Card>
             </Col>
             <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-              <Card style={{padding : '41px'}}>
+              <Card style={{padding : '75px'}} >
                 <CardBody className="pb-0">  
                   <div className="bg-transparent">
                   <h4> INDOOR </h4>

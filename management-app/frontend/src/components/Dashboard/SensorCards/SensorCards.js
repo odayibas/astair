@@ -2,14 +2,8 @@ import React, {Component} from 'react'
 
 import {Line,Bar } from 'react-chartjs-2';
 import {
-  Button,
-  ButtonGroup,
-  ButtonToolbar,
   Card,
   CardBody,
-  CardTitle,
-  Col,
-  Progress,
   Row,
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
@@ -125,11 +119,10 @@ class SensorCards extends Component{
 
 getSensors = (sensorArr) => {
     return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
-    <Row style={{marginBottom : 20,  paddingLeft : '20px'}}>
+    <Row style={{marginBottom : 20, paddingLeft : 60}}>
         <Card style={{background: sensor.color}}>
             <CardBody className="pb-0">
-            <div className="text-value">{sensor.temp}°C</div>
-            <div>INDOOR {i+1}</div>
+            <div> <h5>INDOOR {i+1} </h5><h4 style = {{textAlign : 'right'}}>{sensor.temp}°C</h4></div>
             </CardBody> 
             <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
             <Line data={ 

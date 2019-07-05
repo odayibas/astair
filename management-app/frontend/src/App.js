@@ -9,7 +9,7 @@ function App() {
     <Router>
       <div className="App">
         <Navbar/>
-        <div style={{paddingTop: '100px'}}>
+        <div style={{paddingTop: '50px'}}>
         <Route  exact path="/dashboard" component={Dashboard}/>
         </div>
       </div>
