@@ -27,7 +27,7 @@ class InfoCards extends Component{
         var x =  (this.props.hot +  this.props.cold +  this.props.nice)
         a = a * 100   
         var y = a / x
-        return y
+        return parseInt(y)
       }
 render(){
     return(

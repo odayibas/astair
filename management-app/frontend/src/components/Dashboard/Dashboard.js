@@ -178,90 +178,6 @@ class Dashboard extends Component{
     
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
   }
-
-  getSensorData1 =  async() => {
-    
-    const url = "/sensor/get-zone/1";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
-    .then((res) => {
-      
-      let presentState = {...this.state}
-
-      presentState.sensorTemp[1] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
-
-      this.setState({
-        ...presentState
-    })
-
-    })
-  }
-
-  getSensorData2 =  async() => {
-    
-    const url = "/sensor/get-zone/2";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
-    .then((res) => {
-      let presentState = {...this.state}
-
-      presentState.sensorTemp[2] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
-
-      this.setState({
-        ...presentState
-    })
-
-    })
-  }
-
-  getSensorData3 =  async() => {
-    
-    const url = "/sensor/get-zone/3";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
-    .then((res) => {
-
-      let presentState = {...this.state}
-
-      presentState.sensorTemp[3] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
-
-      this.setState({
-        ...presentState
-    })
-
-    })
-  }
-
-  getSensorData4 =  async() => {
-    
-    const url = "/sensor/get-zone/4";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
-    .then((res) => {
-   
-      this.drawLineChart(res);
-  })
-}
     getcompVisionControllerData =  async() => {
     
     const url = "/get-all";
@@ -321,13 +237,33 @@ class Dashboard extends Component{
 
     }
 
+    getSensorData = async() =>{
+      Promise.all([
+        axios.get('/sensor/get-zone/1'),
+        axios.get('/sensor/get-zone/2'),
+        axios.get('/sensor/get-zone/3'),
+        axios.get('/sensor/get-zone/4')
+      ])
+      .then(([res1, res2, res3, res4]) => {
+        let presentState = {...this.state}
+        presentState.sensorTemp[1] = res1.data[res1.data.length - 1].sensor_degree
+        presentState.sensorTemp[2] = res2.data[res2.data.length - 1].sensor_degree
+        presentState.sensorTemp[3] = res3.data[res3.data.length - 1].sensor_degree
+        presentState.sensorTemp[4] = res4.data[res4.data.length - 1].sensor_degree
+
+        this.drawLineChart(res4);
+        this.setState({
+          ...presentState
+      })
+    });
+
+
+    }
+
     trigger() {
     let newTime = Date.now() - this.props.date;
    setInterval(() => { 
-    this.getSensorData1().then(data => {})
-    this.getSensorData2().then(data => {})
-    this.getSensorData3().then(data => {})
-    this.getSensorData4().then(data => {})
+    this.getSensorData().then(data =>{})
     this.getSlack().then(data => {}) 
     this.getcompVisionControllerData().then(data => {})
     this.getOutdoorData().then(data => {})
