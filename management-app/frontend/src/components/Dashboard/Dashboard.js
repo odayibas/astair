@@ -15,71 +15,14 @@ import {
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
-import './Profile.css'
+
+import SensorCards from './SensorCards/SensorCards';
+import InfoCards from './InfoCards/InfoCards'
 
 const brandPrimary = getStyle('--primary')
 var tempValue = "0";
 var loadValue = 0;
-// Card Chart 1
-const cardChartData1 = {
-  labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-  datasets: [
-      {
-        label: 'Region 2',
-        backgroundColor: brandPrimary,
-        borderColor: 'rgba(255,255,255,.55)',
-        data: [23, 24, 22, 23, 23]
-      },
-    ],
-  };
 
-
-
-  const cardChartOpts1 = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    legend: {
-      display: false,
-    },
-    scales: {
-      xAxes: [
-        {
-          gridLines: {
-            color: 'transparent',
-            zeroLineColor: 'transparent',
-          },
-          ticks: {
-            fontSize: 2,
-            fontColor: 'transparent',
-          },
-  
-        }],
-      yAxes: [
-        {
-          display: false,
-          ticks: {
-            display: false,
-            min: Math.min.apply(Math, cardChartData1.datasets[0].data) - 5,
-            max: Math.max.apply(Math, cardChartData1.datasets[0].data) + 5,
-          },
-        }],
-    },
-    elements: {
-      line: {
-        borderWidth: 1,
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    }
-  }
-  
-  
 
   let mainChart = {
     labels: [],
@@ -183,44 +126,8 @@ const cardChartData1 = {
   };
 
 
-let orange = 'rgba(214, 69, 65, 1)';
-let red = 'rgba(252, 214, 112, 1)';
 
-function interpolateColor(color1, color2, factor) {
-    if (arguments.length < 3) {
-        factor = 0.5;
-    }
-    let result = color1.slice();
-    let color = 'rgb(';
-    for (let i = 0; i < 3; i++) {
-        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-        color += result[i]
-        color += i != 2 ? ',' : '';
-    }
-    color += ')';
-    return color;
-};
-
-function interpolateColors(color1, color2, steps) {
-    var stepFactor = 1 / ((steps.length == 1 ? 2 : steps.length)- 1),
-        interpolatedColorArray = [];
-        
-    let newArr = [];
-  
-    color1 = color1.match(/\d+/g).map(Number);
-    color2 = color2.match(/\d+/g).map(Number);
-
-    for (var i = 0; i < steps.length; i++) {
-        newArr.push({
-          region:steps[i][1],
-          temp : steps[i][0],  
-          color : interpolateColor(color1, color2, stepFactor * i)
-        })
-    }
-    return newArr;
-}
-
-class Profile extends Component{
+class Dashboard extends Component{
   constructor(){
     super()
       this.state = {
@@ -242,15 +149,10 @@ class Profile extends Component{
         hot: null,
         nice : null,
         cold : null,
-        radioSelected: 1,
-        selected : 1
-
-    }  
-
+        radioSelected: 1
+    }
+    
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
-    this.onRadioBtnClickPpl= this.onRadioBtnClickPpl.bind(this);
-
-
   }
    getMale =  async() => {
     
@@ -325,32 +227,6 @@ class Profile extends Component{
 
     })
   }
-
- /*  getSensorData= async() => {
-    const url = "/sensor/get-last/";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
-    .then((res) => {
-      
-      console.log(res)
-      let presentState = {...this.state}
-
-
-      presentState.sensorTemp[1] =  res.data[res.data.length - 1].sensor_degree 
-
-      this.setState({
-        ...presentState
-    })
-
-    }).catch((err) =>{
-      console.log(err)
-    })
-  } */
 
   getSensorData1 =  async() => {
     
@@ -551,201 +427,79 @@ class Profile extends Component{
     }, 5000);
   }
 
-getChart = () => {
-  if(this.state.radioSelected == 1){
-    return(
-    <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-      <Line data={mainChart} options={mainChartOpts} height={300} redraw/>
-    </div>)
-    }
-    else{
+  getChart = () => {
+    if(this.state.radioSelected == 1){
       return(
-        <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-        <Bar data={barChart} options={barChartOpts} height={300} redraw/>
+      <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
+        <Line data={mainChart} options={mainChartOpts} height={300} redraw/>
       </div>)
-    }
-}
+      }
+      else{
+        return(
+          <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
+          <Bar data={barChart} options={barChartOpts} height={300} redraw/>
+        </div>)
+      }
+  }
   
-getSensors = (sensorArr) => {
-return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
-  <Row style={{marginBottom : 20,  paddingLeft : '20px'}}>
-      <Card style={{background: sensor.color}}>
-        <CardBody className="pb-0">
-          <div className="text-value"> <h5>INDOOR {i+1} </h5><h4 style = {{textAlign : 'right'}}>{sensor.temp}°C</h4></div>
-        </CardBody> 
-        <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-          <Line data={ 
-            {labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
-             datasets: [
-               {
-                label: `Region ${i}`,
-                backgroundColor: sensor.color,
-                borderColor: 'rgba(255,255,255,.55)',
-                data: [23, 24, 22, 23, 23]
-              },
-            ],}}options={cardChartOpts1} height={70} />
-        </div>
-      </Card>
-      </Row>
-))
+  
+  onRadioBtnClick(radioSelected) {
+    this.setState({
+      radioSelected: radioSelected,
+    });
   }
-
-
-avgmodal() {
-  var x =  (this.state.sensorTemp[1] +  this.state.sensorTemp[2] +  this.state.sensorTemp[3] + this.state.sensorTemp[4])/4
-  x = x * 100   
-  x = parseInt(x)
-  var y = x/100
-  return y
-}
-
-slack100(a) {
-  var x =  (this.state.hot +  this.state.cold +  this.state.nice)
-  a = a * 100   
-  var y = a / x
-  return y
-}
-
-
-onRadioBtnClick(radioSelected) {
-  this.setState({
-    radioSelected: radioSelected,
-  });
-}
-
-onRadioBtnClickPpl(selected) {
-  this.setState({
-    selected: selected,
-  });
-}
-
-getPeople(){
-
-  if(this.state.selected == 1){
- return( <CardBody className="pb-0">
-    <div className="text-value">   
-      <h4>People</h4>
-      <h2>{this.state.people}	</h2>
-    </div>
-    </CardBody>)
-  }
-  else if(this.state.selected == 2){
-    return(<CardBody className="pb-0">
-      <div className="text-value">   
-       <h4>Male</h4>
-         <h2>{this.state.male}</h2>
-      </div>
-      </CardBody>)
-    }
-    else{
-      return(
-      <CardBody className="pb-0">
-      <div className="text-value">   
-       <h4>Female</h4>
-         <h2>{this.state.female}</h2>
-      </div>
-      </CardBody>)
-
-    }
-}
 
 
   render(){
 
-    const sensorArr = interpolateColors(red, orange,[
-      [this.state.sensorTemp[1],1],
-      [this.state.sensorTemp[2],2],
-      [this.state.sensorTemp[3],3],
-      [this.state.sensorTemp[4],4]
-    ].sort((sensor, sensor2) => (sensor[0] - sensor2[0])))
 
       return(
      
       	
         <div style={{width: '100% !important',margin: 'auto',height: '100%',minWidth:1700,marginTop: '40px'}}>
-          <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
-          <Col  xs="4" sm="3">
-          {this.getSensors(sensorArr)}
-          <br></br>
-          </Col>
-          <Col>
-        <div>
-          <Row className="text-center">
-            <Col sm={12} md className="mb-sm-2 mb-0">
-              <strong>Hot</strong>
-              <Progress className="progress-xs mt-2" color="danger" value={this.slack100(this.state.hot)} />
-              <strong>Nice</strong>
-              <Progress className="progress-xs mt-2" color="success" value={this.slack100(this.state.nice)}/>
-              <strong>Cold</strong>
-              <Progress className="progress-xs mt-2" color="primary" value={this.slack100(this.state.cold)} />
-            </Col>
-             <Col >
-              <Card style={{padding : '20px'}}>
-                <CardBody className="pb-0">  
-                <div className="text-value"> <h4> OUTDOOR </h4>
-                <h2> {this.state.temp} °C </h2>
-                </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col >
-            <Card>
-              <CardTitle>
-              <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
-                      <ButtonGroup aria-label="First group">
-                      <Button color="outline-secondary" onClick={() => this.onRadioBtnClickPpl(1)} active={this.state.selected === 1}>People</Button>
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClickPpl(2)} active={this.state.selected === 2}>Male</Button>          
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClickPpl(3)} active={this.state.selected === 3}>Female</Button>                              
-                        </ButtonGroup>
-                    </ButtonToolbar>
-              </CardTitle>
-              {this.getPeople()}
-            
-            </Card>
-            </Col>
-            <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-              <Card style={{padding :'20px'}}>
-                <CardBody className="pb-0">  
-                  <div className="bg-transparent">
-                  <h4> INDOOR </h4>
-                  <h2>  {this.avgmodal()} °C </h2>               
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>   
-        <div style={{paddingTop :'30px'}}>
-        <Row>
-          <Col>
-            <Card style={{background: 'transparent'}}>
-              <CardBody style={{background: 'transparent'}}>
-                <Row>
-                  <Col sm="5">
-                    <CardTitle className="mb-0">Average Temperatures</CardTitle>
-                    <div className="small text-muted"></div>
-                  </Col>
-                  <Col sm="7" className="d-none d-sm-inline-block">
-                    <ButtonToolbar className="float-middle" aria-label="Toolbar with button groups">
-                      <ButtonGroup className="mr-3" aria-label="First group">
-                      <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>INDOOR</Button>
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>SLACK</Button>                      
-                        </ButtonGroup>
-                    </ButtonToolbar>
-                  </Col>
-                </Row>
-                {this.getChart()}
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+            <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
+                <Col  xs="4" sm="3">
+                    <SensorCards sensorTemp = {this.state.sensorTemp}/>
+                </Col>
+                <Col>
+                    <div>
+                        <InfoCards temp = {this.state.temp} sensorTemp = {this.state.sensorTemp} hot = {this.state.hot} nice={this.state.nice} cold = {this.state.cold} 
+                        people = {this.state.people} female = {this.state.female} male = {this.state.male} />
+                        <div style={{paddingTop :'30px'}}>
+                        <Row>
+                <Col>
+                <Card style={{background: 'transparent'}}>
+                    <CardBody style={{background: 'transparent'}}>
+                        <Row>
+                            <Col sm="5">
+                                <CardTitle className="mb-0">Average Temperatures</CardTitle>
+                                <div className="small text-muted">
+
+                                </div>
+                            </Col>
+                                <Col sm="7" className="d-none d-sm-inline-block">
+                                    <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
+                                        <ButtonGroup className="mr-3" aria-label="First group">
+                                            <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>INDOOR</Button>
+                                            <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>SLACK</Button>                      
+                                        </ButtonGroup>
+                                    </ButtonToolbar>
+                                </Col>
+                            </Row>
+                            {this.getChart()}
+                        </CardBody>
+                </Card>
+                </Col>
+            </Row>
+
+                        </div>
+                    </div>
+              </Col>
+            </div>
         </div>
-      </div>
-     </Col>
-   </div>
-    </div>
 
         )
     }
 }
 
-export default  Profile
+export default  Dashboard

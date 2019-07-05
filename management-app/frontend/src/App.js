@@ -1,24 +1,16 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom'
-import Landing from './components/views/Pages/Landing'
-import Login from './components/views/Pages/Login '
-import Navbar from './components/Navbar'
-import Register from './components/views/Pages/Register'
-import Profile from './components/views/Dashboard/Profile'
-import Monitor from './components/views/Monitor/Monitor'
+
+import Navbar from './components/Navbar/Navbar'
+import Dashboard from './components/Dashboard/Dashboard'
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Navbar/>
-        <Route  exact path="/" component={Landing}/>
         <div style={{paddingTop: '100px'}}>
-        <Route  exact path="/register" component={Register}/>
-        <Route  exact path="/login" component={Login}/>
-        <Route  exact path="/profile" component={Profile}/>
-        <Route  exact path="/monitor" component={Monitor}/>
-
+        <Route  exact path="/dashboard" component={Dashboard}/>
         </div>
       </div>
 

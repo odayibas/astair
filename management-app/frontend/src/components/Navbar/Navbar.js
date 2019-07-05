@@ -30,7 +30,7 @@ class Navbar extends Component{
                       <h5>Dashboard</h5>  
                     </Link>
                 </li>
-                <li className = "nav -item">
+                 <li className = "nav -item">
                     <Link to= "/monitor" className="nav-link">
                        <h5>Monitor</h5> 
                     </Link>
@@ -39,7 +39,7 @@ class Navbar extends Component{
                     <a  href ="" onClick={this.logout.bind(this)} className="nav-link">
                        <h5>Logout</h5> 
                     </a>
-                </li>
+                </li> 
             </ul>
         )
 
@@ -57,8 +57,13 @@ class Navbar extends Component{
                        <h5>Home</h5>
                     </Link>
                 </li>
+                <li className = "nav -item">
+                    <Link to= "/dashboard" className="nav-link">
+                      <h5>Dashboard</h5>  
+                    </Link>
+                </li>
             </ul>
-            {getCookie('usertoken') ? userLink : loginRegLink}
+            {/* {getCookie('usertoken') ? userLink : loginRegLink} */}
             </div>
             </nav>
 
