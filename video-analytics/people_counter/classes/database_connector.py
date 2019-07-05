@@ -1,5 +1,5 @@
 import psycopg2
-
+import datetime
 
 class DatabaseConnector:
     def __init__(self, connection, cursor):
@@ -10,7 +10,8 @@ class DatabaseConnector:
     def connect_db(self):
         print('\nConnecting to the PostgreSQL database...')
         self.connection = psycopg2.connect(
-            "postgres://astair:astair1234@10.154.4.28:5432/postgres")
+            "postgres://ieeqrnduqiqxzh:1a73349164864823f58c9ffed9cffb5ef95a7461d4407637cde89dafff352020@ec2"
+            "-46-137-113-157.eu-west-1.compute.amazonaws.com:5432/d879gk0v4thape")
         self.cursor = self.connection.cursor()  # create a cursor
 
     def select_from_table(self):
