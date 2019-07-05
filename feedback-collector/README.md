@@ -1,5 +1,4 @@
 # Feedback Collector
-TODO: write a brief description (input, output, function of the subsystem, deployment method, etc...)
 
 **Description**
 
@@ -32,18 +31,44 @@ You can install slack app by clicking below button. After that choose the channe
 
 **Sending Message**
 
-App takes Slack token for reaching API. With this token app can call APIs that has permission from slack app. Our app uses chat.postmessage api for sending message and users.list for gathering every singed in user's userid. App uses these userids for sending them direct messages with chat.postmessage api. Message is created in json format. Slack app sends every info about user's action with request to python app for interactivity.
+App takes Slack token for reaching API. With this token app can call APIs that has permission from slack app. Our app uses chat.postmessage api for sending message and users.list for gathering every singed in user's userid. App uses these userids for sending them direct messages with chat.postmessage api. Message is created in json format. Slack app sends every info about user's action with request to python app for interactivity. User interactions from slack channel will be sent to python flask app. Flask app process those data and responds to slack. Meanwhile app also records data to database 
 
 **Air Condition Survey**
 
+This survey asks users how they feel the current weather condition. There are three options to answer. When user clicks any of options, chosed button, user informations and timestamp will be recorded to database. Rule based model will drive this survey and send it to users when it needed. Also users can send this survey manually or scheduled by hours.
+
+![](Images/Screenshot from 2019-07-05 07-34-04.png)
+
+**Location Survey**
+
+In office air conditioner effects different areas. More air conditioner means more area will be effected. We need to record which user is effected by which air conditioner. This survey contains only one dropdown menu to let users choose which location they are belong to. Like so when air conditon survey sent users answers will be rocorded according to their location.
+
+![](Images/Screenshot from 2019-07-05 08-19-53.png)
+
+**Slash Commands**
+![](Images/Screenshot from 2019-07-05 08-32-14.png)
+
+There are several slash commands to allow users control the slack app. Slack app functionalities are accessable via these slash commands
+
+- /hot /cold
+This commands for let users notify the Model when there is something unordinary situation about air condition. Users type /hot when they feel hot and /cold for feel cold. When three user in same location uses same command model will be notifed. These three command must be sent in a hour. Every hour database resets old slash commands.
+
+- /sendsurvey
+This command send air condition survey to all users.
+
+- /onsurveyschedule
+This command stars schedule for sending air condition survey to all users. Schedule will be set survey by hours. Time interval must be written beside the command. /onsurveyschedule 3 will be set schedule with 3 hour interval.
+
+- /offsurveyschedule
+This command stops schedule of air condition survey.
+
+- /location
+When user types this command location survey will be sent to only that user. This command is for when there is change in any user location.
+
+- /locationall
+This command sends location survey to all user.
 
 **Deployment**
 
 Python app deployed to Heroku server. 
 
-- TODO: Dockerised deployment
-
-- TODO: Installing slack app
-- TODO: How to use app
-- TODO: How to use input parameters
-- TODO: Add images
