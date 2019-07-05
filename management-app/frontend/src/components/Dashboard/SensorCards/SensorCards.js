@@ -119,7 +119,7 @@ class SensorCards extends Component{
 
 getSensors = (sensorArr) => {
     return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
-    <Row style={{marginBottom : 20, paddingLeft : 60}}>
+    <Row style={{marginTop : 10 ,marginBottom : 20, paddingLeft : 60}}>
         <Card style={{background: sensor.color}}>
             <CardBody className="pb-0">
             <div> <h5>INDOOR {i+1} </h5><h4 style = {{textAlign : 'right'}}>{sensor.temp}°C</h4></div>
