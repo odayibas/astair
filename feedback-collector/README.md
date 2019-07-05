@@ -46,6 +46,8 @@ In office air conditioner effects different areas. More air conditioner means mo
 <img src="Images/Screenshot%20from%202019-07-05 08-19-53.png">
 
 **Slash Commands**
+
+
 <img src="Images/Screenshot%20from%202019-07-05 08-32-14.png">
 
 There are several slash commands to allow users control the slack app. Slack app functionalities are accessable via these slash commands
