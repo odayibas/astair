@@ -10,6 +10,7 @@ import tr.com.astair.astair.controller.api.ACControllerApi;
 import tr.com.astair.astair.model.AC;
 import tr.com.astair.astair.service.ACService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,8 +33,11 @@ public class ACController implements ACControllerApi {
         }
     }
 
-    public ResponseEntity<AC> getAC(@PathVariable Long id) {
-        AC ac = acService.getById(id);
+    public ResponseEntity<List<AC>> getLastACRecords() {
+        List<AC> ac =  new ArrayList<>();
+        for(int i=0;i<acService.getACCount();++i){
+           ac.add(acService.getLast(i+1));
+        }
         if (ac == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -48,19 +52,5 @@ public class ACController implements ACControllerApi {
         return new ResponseEntity<>(ac, HttpStatus.OK);
     }
 
-    public ResponseEntity<AC> updateAC(@RequestBody AC ac) {
-        if (ac.getId() == null || acService.getById(ac.getId()) == null)
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        acService.update(ac);
-        return new ResponseEntity<>(null, HttpStatus.OK);
-
-    }
-
-    public ResponseEntity<Void> deleteById(@PathVariable AC ac) {
-        if (ac.getId() == null || acService.getById(ac.getId()) == null)
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        acService.delete(ac);
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
 
 }

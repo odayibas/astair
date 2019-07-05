@@ -1,11 +1,17 @@
 package tr.com.astair.astair.model;
 
-public class WeatherP1 {
+public class WeatherPollResult {
+
+    /*Sometimes, we’re only interested in a subset or a custom view of an entity’s attributes.
+     For such cases, we can make use of projections.We can also include new data calculated from our resource attributes.
+     This class to return weather poll results */
+
+
     private Integer Hot;
     private Integer Cold;
     private Integer Nice;
 
-    public WeatherP1() {
+    public WeatherPollResult() {
     }
 
     public Integer getHot() {

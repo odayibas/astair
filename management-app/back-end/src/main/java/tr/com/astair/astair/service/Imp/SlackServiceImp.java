@@ -4,7 +4,7 @@ import org.hibernate.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.Slack;
-import tr.com.astair.astair.model.WeatherP1;
+import tr.com.astair.astair.model.WeatherPollResult;
 import tr.com.astair.astair.repository.SlackRepository;
 import tr.com.astair.astair.service.SlackService;
 
@@ -20,9 +20,9 @@ public class SlackServiceImp implements SlackService {
         this.slackRepository = slackRepository;
     }
 
-    public WeatherP1 getPollResults() {
+    public WeatherPollResult getPollResults() {
         try {
-            WeatherP1 wp1 = new WeatherP1();
+            WeatherPollResult wp1 = new WeatherPollResult();
             wp1.setCold(slackRepository.getPollResults("Soguk"));
             wp1.setHot(slackRepository.getPollResults("Sicak"));
             wp1.setNice(slackRepository.getPollResults("Guzel"));
@@ -33,9 +33,9 @@ public class SlackServiceImp implements SlackService {
         }
     }
 
-    public WeatherP1 getPollResultsByZone(Integer zone) {
+    public WeatherPollResult getPollResultsByZone(Integer zone) {
         try {
-            WeatherP1 wp1 = new WeatherP1();
+            WeatherPollResult wp1 = new WeatherPollResult();
             wp1.setCold(slackRepository.getPollResultsByZone("Soguk", zone));
             wp1.setHot(slackRepository.getPollResultsByZone("Sicak", zone));
             wp1.setNice(slackRepository.getPollResultsByZone("Guzel", zone));

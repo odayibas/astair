@@ -19,4 +19,9 @@ public interface ACService {
     //get all AC data
     public List<AC> get();
 
+    //get last record of given ac
+    public AC getLast(Integer ac_id) ;
+
+    //get ac count
+    public Integer getACCount();
 }

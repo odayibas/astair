@@ -2,6 +2,7 @@ package tr.com.astair.astair.service;
 
 import tr.com.astair.astair.model.Sensor;
 
+
 import java.util.List;
 
 
@@ -21,5 +22,8 @@ public interface SensorService {
 
     // get average degree of all sensor
     public Float getAllSensorDegreeAve();
+
+    // recently get degree of a sensor
+    public List<Sensor> getSensorLastDegree();
 
 }

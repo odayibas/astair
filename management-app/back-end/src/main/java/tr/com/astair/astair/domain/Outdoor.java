@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties
 public class Outdoor {
 
+    /*To be able to turn json to data from api we need these classes*/
+
     public CurrentData currently;
     public DailyData daily;
     public String timezone;

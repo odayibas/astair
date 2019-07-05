@@ -1,7 +1,7 @@
 package tr.com.astair.astair.service;
 
 import tr.com.astair.astair.model.Slack;
-import tr.com.astair.astair.model.WeatherP1;
+import tr.com.astair.astair.model.WeatherPollResult;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ public interface SlackService {
     public List<Slack> getPollAllResults();
 
     //get last poll results as hot,cold,good
-    public WeatherP1 getPollResults();
+    public WeatherPollResult getPollResults();
 
     //get last poll results as hot,cold,good by zone
-    public WeatherP1 getPollResultsByZone(Integer zone);
+    public WeatherPollResult getPollResultsByZone(Integer zone);
 
 }

@@ -9,22 +9,13 @@ import java.util.List;
 public interface ACControllerApi {
 
 
-    @PostMapping("/AC/save")
-    ResponseEntity<AC> saveAC(@RequestBody AC ac);
-
-    @PutMapping("/AC/update")
-    public ResponseEntity<AC> updateAC(@RequestBody AC ac);
-
-    @DeleteMapping("/AC/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable AC ac);
-
-
     //get current AC record by id
-    @GetMapping("/AC/get/{id}")
-    public ResponseEntity<AC> getAC(@PathVariable Long id);
+    @GetMapping("/AC/get-last-records")
+    public ResponseEntity<List<AC>>  getLastACRecords();
 
     //get all ACs data
     @GetMapping("/AC/get-all")
     public ResponseEntity<List<AC>> getAllAC();
+
 
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import tr.com.astair.astair.model.Sensor;
 
+
 import java.util.List;
 
 
@@ -31,4 +32,7 @@ public interface SensorControllerApi {
     @GetMapping("/sensor/get-zone/{id}")
     ResponseEntity<List<Sensor>> getByZone(@PathVariable Integer id);
 
+    // get last degree data of all sensors
+    @GetMapping("/sensor/last-data-of-all-sensors")
+    ResponseEntity<List<Sensor>> getAllLastDegrees();
 }

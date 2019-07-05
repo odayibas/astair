@@ -38,8 +38,12 @@ public class ACServiceImp implements ACService {
         acRepository.delete(ac);
     }
 
-    public List<AC> getLimited(Long id) {
-        return acRepository.getIdforManage(id);
+    public AC getLast(Integer ac_id) {
+        return acRepository.getIdforManage(ac_id);
+    }
+
+    public Integer getACCount(){
+        return acRepository.getACCount();
     }
 
 }

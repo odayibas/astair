@@ -25,7 +25,7 @@ public interface CompVisionControllerApi {
     @GetMapping("/get-all")
     public ResponseEntity<List<ComputerVision>> getAll();
 
-    //get all data
+    //get today's all data
     @GetMapping("/get-today")
     public ResponseEntity<List<ComputerVision>> getTodaysData();
 

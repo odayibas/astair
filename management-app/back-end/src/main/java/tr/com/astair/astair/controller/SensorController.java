@@ -65,4 +65,12 @@ public class SensorController implements SensorControllerApi {
         return new ResponseEntity(test, HttpStatus.OK);
     }
 
+    public ResponseEntity<List<Sensor>> getAllLastDegrees() {
+        List<Sensor> sensorResults  = sensorService.getSensorLastDegree();
+        if (sensorResults == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(sensorResults, HttpStatus.OK);
+    }
+
 }

@@ -14,6 +14,10 @@ public class AC implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "ac_id")
+    private Integer ac_id;
+
+
     @Column(name = "ac_mode")
     private String ac_mode;
 
@@ -33,7 +37,8 @@ public class AC implements Serializable {
 
     }
 
-    public AC(String ac_mode, Float ac_degree, String ac_fan_speed, String active, String ac_time) {
+    public AC(Integer ac_id, String ac_mode, Float ac_degree, String ac_fan_speed, String active, String ac_time) {
+        this.ac_id = ac_id;
         this.ac_mode = ac_mode;
         this.ac_degree = ac_degree;
         this.ac_fan_speed = ac_fan_speed;
@@ -87,5 +92,13 @@ public class AC implements Serializable {
 
     public void setAc_time(String ac_time) {
         this.ac_time = ac_time;
+    }
+
+    public Integer getAc_id() {
+        return ac_id;
+    }
+
+    public void setAc_id(Integer ac_id) {
+        this.ac_id = ac_id;
     }
 }

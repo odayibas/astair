@@ -8,6 +8,7 @@ import tr.com.astair.astair.model.Sensor;
 import tr.com.astair.astair.repository.SensorRepository;
 import tr.com.astair.astair.service.SensorService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,6 +54,22 @@ public class SensorServiceImp implements SensorService {
         }
     }
 
+    public List<Sensor> getSensorLastDegree() {
+        try {
+            List<Sensor> s = new ArrayList<>();
+            for (int i = 0; i < sensorRepository.getSensorCount(); ++i) {
+                Sensor temp = new Sensor();
+                temp.setSensor_degree(sensorRepository.getSensorLastDegree(i + 1));
+                temp.setAc_id(i + 1);
+                s.add(temp);
+            }
+            return s;
+
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
     public Float getAllSensorDegreeAve() {
         try {
             return sensorRepository.getAllSensorDegreeAve();
@@ -60,6 +77,5 @@ public class SensorServiceImp implements SensorService {
             throw new QueryException(e.getMessage());
         }
     }
-
 
 }
