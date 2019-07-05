@@ -8,27 +8,34 @@ easier. Slack app can be installed to any slack team easily. User feedbacks will
 
 **Installation of App**
 
-<a href="https://slack.com/oauth/authorize?client_id=651298496866.653672972275&scope=incoming-webhook,bot,chat:write:bot,chat:write:user,users:read,commands"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a>
+You can install slack app by clicking below button. After that choose the channel that app will be installed.
+(Database connection must be already exist before app installation. Slack access token will be stored in database after installation.)
 
+<a href="https://slack.com/oauth/authorize?client_id=651298496866.653672972275&scope=incoming-webhook,bot,chat:write:bot,chat:write:user,users:read,commands"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a>
 
 
 **Input Parameters**
 
-  - Slack API Token
   - Postgresql Database Connection Infos
   
 **Output Parameters**
 
+  - Slack Air Condition Survey
+  - Slack Location of Employee Survey
   - Slack Username
   - Slack UserID
   - Channel ID
   - Selected Answer
   - Timestamp of Selection
   - Survey ID
-  
+
+
 **Sending Message**
 
 App takes Slack token for reaching API. With this token app can call APIs that has permission from slack app. Our app uses chat.postmessage api for sending message and users.list for gathering every singed in user's userid. App uses these userids for sending them direct messages with chat.postmessage api. Message is created in json format. Slack app sends every info about user's action with request to python app for interactivity.
+
+**Air Condition Survey**
+
 
 **Deployment**
 
