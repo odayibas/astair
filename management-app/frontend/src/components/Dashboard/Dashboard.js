@@ -153,6 +153,43 @@ class Dashboard extends Component{
     
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
   }
+
+
+ request= async(index,arr) => {
+  const url = 'sensor/get-zone/';
+ 
+      return axios.get( url + index,  {
+        mode: 'no-cors',
+        headers: {
+          'Access-Control-Allow-Origin': true,
+        },
+ 
+      })
+ 
+      .then((res) => {
+        let presentState = {...this.state}
+ 
+        var currentDate = new Date(res.data[res.data.length - 1].date_time);
+        var clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+        presentState.sensorTemp[index]= res.data[res.data.length - 1].sensor_degree
+        if(index == '4')
+        this.drawCharts(index,res)
+ 
+        this.setState({
+        ...presentState
+      })
+ 
+      });
+    }
+    
+    getSensorData = async(arr) => {
+    let index = 1;
+    for(var i = 1; i<=arr.length ;  i++){
+      this.request(index,arr);
+      index++;
+    }
+  }
+
    getMale =  async() => {
     
     const url = "/get-male";
@@ -225,95 +262,20 @@ class Dashboard extends Component{
 
     })
   }
+  
 
-  getSensorData1 =  async() => {
+  drawCharts(index,res){
     
-    const url = "/sensor/get-zone/1";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
-    .then((res) => {
-      
-      let presentState = {...this.state}
+    let presentState = { ...this.state }
+    presentState.sensorTemp[4] = res.data[res.data.length - 1].sensor_degree
+    var currentDate = new Date(res.data[res.data.length - 1].date_time);
+    var clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
 
-      presentState.sensorTemp[1] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
-
-      this.setState({
-        ...presentState
-    })
-
-    })
-  }
-
-  getSensorData2 =  async() => {
-    
-    const url = "/sensor/get-zone/2";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
-    .then((res) => {
-      let presentState = {...this.state}
-
-      presentState.sensorTemp[2] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
-
-      this.setState({
-        ...presentState
-    })
-
-    })
-  }
-
-  getSensorData3 =  async() => {
-    
-    const url = "/sensor/get-zone/3";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
-    .then((res) => {
-
-      let presentState = {...this.state}
-
-      presentState.sensorTemp[3] = res.data.length > 0 && res.data[res.data.length - 1].sensor_degree && res.data[res.data.length - 1].sensor_degree
-
-      this.setState({
-        ...presentState
-    })
-
-    })
-  }
-
-  getSensorData4 = async () => {
-    const url = "/sensor/get-zone/4";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-    })
-      .then((res) => {
- 
-        let presentState = { ...this.state }
-        presentState.sensorTemp[4] = res.data[res.data.length - 1].sensor_degree
-        var currentDate = new Date(res.data[res.data.length - 1].date_time);
-        var clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
- 
         if(loadValue == 0)
         {
             for (var i = res.data.length - 20; i < res.data.length; i++) {
-                presentState.sensorTemp[4] = res.data[i].sensor_degree;
-                mainChart.datasets[0].data.push(presentState.sensorTemp[4]);
+                presentState.sensorTemp[index] = res.data[i].sensor_degree;
+                mainChart.datasets[0].data.push(presentState.sensorTemp[index]);
                 currentDate = new Date(res.data[i].date_time);
                 clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
                 mainChart.labels.push(clock);
@@ -334,14 +296,9 @@ class Dashboard extends Component{
               mainChart.datasets[0].data.shift();
               mainChart.labels.shift();
           }
-          this.setState({
-            ...presentState, datasets
-          })
-          mainChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, mainChart.datasets[0].data) - 2;
-          mainChartOpts.scales.yAxes[0].ticks.max = Math.max.apply(Math, mainChart.datasets[0].data) + 2;
-        }
-      })
+
   }
+}
 
   
  getSlack =  async() => {
@@ -404,26 +361,31 @@ class Dashboard extends Component{
   })
 
   }
-  componentDidMount(){     
-  this.trigger()
-
- }
 
   trigger() {
     let newTime = Date.now() - this.props.date;
    setInterval(() => { 
- //   this.getSensorData().then(data => {})
-    this.getSensorData1().then(data => {})
-    this.getSensorData2().then(data => {})
-    this.getSensorData3().then(data => {})
-    this.getSensorData4().then(data => {}) 
+    this.getSensorData([1,2,3,4]);
+   
+  //this.getSensorData4().then(data => {}) 
     this.getSlack().then(data => {}) 
     this.getcompVisionControllerData().then(data => {})
     this.getOutdoorData().then(data => {})
     this.getMale().then(data => {})
     this.getFemale().then(data => {})
     }, 5000);
+  }  
+
+  componentDidMount(){     
+    this.trigger()
+   }
+
+  onRadioBtnClick(radioSelected) {
+    this.setState({
+      radioSelected: radioSelected,
+    });
   }
+
 
   getChart = () => {
     if(this.state.radioSelected == 1){
@@ -439,21 +401,9 @@ class Dashboard extends Component{
         </div>)
       }
   }
-  
-  
-  onRadioBtnClick(radioSelected) {
-    this.setState({
-      radioSelected: radioSelected,
-    });
-  }
-
 
   render(){
-
-
       return(
-     
-      	
         <div style={{width: '100% !important',margin: 'auto',height: '100%',marginTop: '40px'}}>
             <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
                 <Col  xs="4" sm="3">
