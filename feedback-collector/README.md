@@ -37,7 +37,7 @@ App takes Slack token for reaching API. With this token app can call APIs that h
 
 This survey asks users how they feel the current weather condition. There are three options to answer. When user clicks any of options, chosed button, user informations and timestamp will be recorded to database. Rule based model will drive this survey and send it to users when it needed. Also users can send this survey manually or scheduled by hours.
 
-![](Images/Screenshot%20from%202019-07-05 07-34-04.png)
+<img src="Images/Screenshot%20from%202019-07-05 07-34-04.png">
 
 **Location Survey**
 
