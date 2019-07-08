@@ -10,6 +10,10 @@ import {
 } from 'reactstrap';
 
 
+import  People from "@material-ui/icons/Wc";
+import Cloud from "@material-ui/icons/Cloud";
+import Office from "@material-ui/icons/BusinessCenter";
+
 class InfoCards extends Component{
     constructor(props){
         super(props)
@@ -46,8 +50,9 @@ render(){
               </Card>
             </Col>
              <Col >
-              <Card style={{padding : '75px'}} >
-                <CardBody className="pb-0">  
+              <Card style={{padding : '65px'}} >
+              <CardBody className="pb-0" icon>
+               <Cloud/>
                 <div   className="text-value"> <h4> OUTDOOR </h4>
                 <h2> {this.props.temp} °C </h2>
                 </div>
@@ -55,8 +60,9 @@ render(){
               </Card>
             </Col>
             <Col >
-            <Card style={{padding : '35px'}} >
-              <CardBody className="pb-0">
+            <Card style={{padding : '25px'}} >
+            <CardBody className="pb-0" icon>
+             <People/>
                 <div className="text-value">
                     <h4>People Count</h4></div>
                     <h2>{this.props.people}	</h2>
@@ -77,8 +83,9 @@ render(){
             </Card>
             </Col>
             <Col >
-              <Card style={{padding : '70px'}} >
-                <CardBody className="pb-0">  
+              <Card style={{padding : '65px'}} >
+              <CardBody className="pb-0" icon>
+               <Office/>
                   <div className="bg-transparent">
                   <h4> INDOOR </h4>
                   <h2>  {this.avgmodal()} °C </h2>               

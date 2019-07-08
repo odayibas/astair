@@ -18,6 +18,7 @@ import { getStyle, hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities'
 import SensorCards from './SensorCards/SensorCards';
 import InfoCards from './InfoCards/InfoCards'
 
+
 const brandPrimary = getStyle('--primary')
 const brandInfo = getStyle('--info')
 const brandDanger = getStyle('--danger')
@@ -262,7 +263,7 @@ class Dashboard extends Component{
 
     trigger() {
     let newTime = Date.now() - this.props.date;
-   setInterval(() => { 
+    setInterval(() => { 
     this.getSensorData().then(data =>{})
     this.getSlack().then(data => {}) 
     this.getcompVisionControllerData().then(data => {})
@@ -289,9 +290,9 @@ class Dashboard extends Component{
 
      let datasets2 = []
 
-     barChart.datasets[0].data.push(presentState.cold );
-     barChart.datasets[0].data.push(presentState.nice );
-     barChart.datasets[0].data.push(presentState.hot );
+     barChart.datasets[0].data.push(presentState.cold);
+     barChart.datasets[0].data.push(presentState.nice);
+     barChart.datasets[0].data.push(presentState.hot);
   
      if(Math.min.apply(Math, barChart.datasets[0].data) != 0){
       barChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, barChart.datasets[0].data) - 2;
@@ -369,8 +370,8 @@ class Dashboard extends Component{
           for (var i = res.data.length - 20; i < res.data.length; i++) {
             presentState.people= (res.data[res.data.length - 1].female_count)+ (res.data[res.data.length - 1].male_count)
             mainChart.datasets[1].data.push(presentState.people);
-            mainChartOpts.scales.yAxes[1].ticks.min = Math.min.apply(Math, mainChart.datasets[0].data) - 1;
-            mainChartOpts.scales.yAxes[1].ticks.max = Math.max.apply(Math, mainChart.datasets[0].data) + 1;
+            mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 1);
+            mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 1);
           }
           loadValue2 = 1;
       }
@@ -383,8 +384,8 @@ class Dashboard extends Component{
             mainChart.datasets[1].data.shift();
         }
 
-        mainChartOpts.scales.yAxes[1].ticks.min = Math.min.apply(Math, mainChart.datasets[0].data) - 1;
-        mainChartOpts.scales.yAxes[1].ticks.max = Math.max.apply(Math, mainChart.datasets[0].data) + 1;
+        mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 1);
+        mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 1);
         this.setState({
           ...presentState,datasets3
       })
