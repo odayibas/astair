@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import jwt_decode from 'jwt-decode'
 import axios from 'axios'
-import {Line,Bar } from 'react-chartjs-2';
+import {Doughnut,Bar } from 'react-chartjs-2';
 import {
   Button,
   ButtonGroup,
@@ -22,19 +22,23 @@ import InfoCards from './InfoCards/InfoCards'
 const brandPrimary = getStyle('--primary')
 const brandInfo = getStyle('--info')
 const brandDanger = getStyle('--danger')
+const brandSuccess = getStyle('--success')
 
 
-var tempValue = "0";
-var loadValue = 0;
 
-var tempValue2 = "0";
-var loadValue2 = 0;
+  var tempValue = "0";
+  var loadValue = 0;
+
+  var tempValue2 = "0";
+  var loadValue2 = 0;
 
   let mainChart = {
     labels: [],
+    responsive : true,
     datasets: [
       {
         label: 'AVERAGE TEMPERATURE',
+        type:'line',
         backgroundColor: hexToRgba(brandInfo, 10),
         borderColor: brandInfo,
         pointHoverBackgroundColor: '#fff',
@@ -43,6 +47,7 @@ var loadValue2 = 0;
       },
       {
         label: 'PEOPLE COUNT',
+        type: 'bar',
         backgroundColor: hexToRgba(brandDanger, 10),
         borderColor: brandDanger,
         pointHoverBackgroundColor: '#fff',
@@ -68,8 +73,12 @@ var loadValue2 = 0;
     },
     maintainAspectRatio: false,
     legend: {
-      display: false,
-    },
+      labels: {
+      fontSize: 20,
+      boxWidth: 20
+    }
+  },
+  maintainAspectRatio: false,
     scales: {
       xAxes: [
         {
@@ -79,20 +88,16 @@ var loadValue2 = 0;
         }],
       yAxes: [{
           type: 'linear',
-          position: 'left',
+          position: 'right',
           ticks: {
             min: 0,
-            maxTicksLimit: 5,
-            stepSize: Math.ceil(30 / 5),
             max: 30,
           },
         },{
           type: 'linear',
-          position: 'right',
+          position: 'left',
           ticks: {
             min: 0,
-            maxTicksLimit: 5,
-            stepSize: Math.ceil(30 / 5),
             max: 30,
           }
         }],
@@ -109,12 +114,23 @@ var loadValue2 = 0;
 
   let barChart = {
   labels: ['Cold', 'Nice','Hot'],
+  responsive : true,
   datasets: [
     {
       label: 'Slack',
-      backgroundColor:  hexToRgba(brandInfo, 50),
-      borderColor: brandPrimary,
-      pointHoverBackgroundColor: '#fff',
+      borderColor: 'rgba(255,99,132,1)',
+      borderWidth: 1,
+      backgroundColor: [
+        brandPrimary,
+        brandSuccess,
+        brandDanger
+        ],
+        hoverBackgroundColor: [
+        brandPrimary,
+        brandSuccess,
+        brandDanger
+        ],
+      hoverBorderColor: 'rgba(255,99,132,1)',
       data: [],
     },
   ],
@@ -125,29 +141,17 @@ var loadValue2 = 0;
     animation: false,
     tooltips: {
       enabled: false,
-      custom: CustomTooltips
+      custom: CustomTooltips,
+  
+    },
+    legend: {
+        labels: {
+        fontSize: 30,
+        boxWidth: 30
+      }
     },
     maintainAspectRatio: false,
-    legend: {
-      display: false,
-    },
-    scales: {
-      xAxes: [
-        {
-          display: false,
-          barPercentage: 0.6,
-        }],
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero : true,
-              min: 0,
-              maxTicksLimit: 5,
-              stepSize: Math.ceil(33 / 5),
-              max: 15,
-            },
-          }],
-    },
+
   };
 
 
@@ -169,12 +173,10 @@ class Dashboard extends Component{
         sensorTemp: {},
         male:null,
         female: null,
-        datasets:[],
-        datasets2 : [],
         hot: null,
         nice : null,
         cold : null,
-        radioSelected: 1
+        radioSelected: 1,
     }
     
     this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
@@ -190,10 +192,21 @@ class Dashboard extends Component{
      
     })
     .then((res) => {
-      let presentState = {...this.state}
-      console.log(res)
+      let presentState = { ...this.state }
+      presentState.male = res.data[res.data.length - 1].male_count
+      presentState.female = res.data[res.data.length - 1].female_count
+      presentState.people= (presentState.male + presentState.female)
+      if(presentState.people != res.data[res.data.length - 1].male_count )
       this.drawPeopleChart(res)
-  })
+
+      this.setState({
+        ...presentState
+    })
+      })
+      .catch((error) => {
+        console.log(error)
+      }
+      )
     }
   
     getSlack =  async() => {
@@ -208,7 +221,17 @@ class Dashboard extends Component{
     })
     .then((res) => {
       
-      this.drawBarChart(res)
+      let presentState = {...this.state}
+      presentState.cold = res.data.cold
+      presentState.nice = res.data.nice
+      presentState.hot = res.data.hot
+
+      this.drawSlackChart(res)
+
+      this.setState({
+        ...presentState
+    })
+
         
     })
     }
@@ -253,6 +276,7 @@ class Dashboard extends Component{
         presentState.sensorTemp[4] = res4.data[res4.data.length - 1].sensor_degree
 
         this.drawLineChart(res4);
+
         this.setState({
           ...presentState
       })
@@ -282,38 +306,24 @@ class Dashboard extends Component{
     });
     }
 
-    drawBarChart(res){
+    drawSlackChart(res){
     let presentState = {...this.state}
     presentState.cold = res.data.cold
     presentState.nice = res.data.nice
     presentState.hot = res.data.hot
 
-     let datasets2 = []
+
+    for(var i = 0 ; i<3 ; i++)
+    barChart.datasets[0].data.shift()
 
      barChart.datasets[0].data.push(presentState.cold);
      barChart.datasets[0].data.push(presentState.nice);
      barChart.datasets[0].data.push(presentState.hot);
   
-     if(Math.min.apply(Math, barChart.datasets[0].data) != 0){
-      barChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, barChart.datasets[0].data) - 2;
-     }
-     else {
-      barChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, barChart.datasets[0].data);
-     }
-
-     barChartOpts.scales.yAxes[0].ticks.max = Math.max.apply(Math, barChart.datasets[0].data) + 2;
-
-      let data = {}
-      data["data"] = barChart.datasets[0].data
-      datasets2.push(data) 
-
 
     this.setState({
-        ...presentState,datasets2
+        ...presentState
       })
-
-
-
     }
 
     drawLineChart(res){
@@ -331,10 +341,8 @@ class Dashboard extends Component{
                 currentDate = new Date(res.data[i].date_time);
                 clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
                 mainChart.labels.push(clock);
-                mainChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, mainChart.datasets[0].data) - 2;
+                mainChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, mainChart.datasets[0].data) -2;
                 mainChartOpts.scales.yAxes[0].ticks.max = Math.max.apply(Math, mainChart.datasets[0].data) + 2;
-
-                console.log(mainChartOpts.scales.yAxes[0].ticks.min)
             }
             loadValue = 1;
           
@@ -358,25 +366,21 @@ class Dashboard extends Component{
     }
 
     drawPeopleChart(res){
-  let presentState = { ...this.state }
-  presentState.male = res.data[res.data.length - 1].male_count
-  presentState.female = res.data[res.data.length - 1].female_count
-  presentState.people= (res.data[res.data.length - 1].female_count)+ (res.data[res.data.length - 1].male_count)
-  var currentDate = new Date(res.data[res.data.length - 1].date_time);
-  var clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+
+
+      let presentState = { ...this.state }
 
       if(loadValue2 == 0)
       {
           for (var i = res.data.length - 20; i < res.data.length; i++) {
             presentState.people= (res.data[res.data.length - 1].female_count)+ (res.data[res.data.length - 1].male_count)
             mainChart.datasets[1].data.push(presentState.people);
-            mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 1);
-            mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 1);
+            mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
+            mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 1);
           }
           loadValue2 = 1;
       }
 
-     
         let datasets3 = []
         mainChart.datasets[1].data.push(presentState.people);
         if(mainChart.datasets[1].data.length > 20)
@@ -384,8 +388,13 @@ class Dashboard extends Component{
             mainChart.datasets[1].data.shift();
         }
 
-        mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 1);
-        mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 1);
+        mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
+        mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 1);
+
+      let data = {}
+      data["data"] =  mainChart.datasets[1].data
+      datasets3.push(data) 
+
         this.setState({
           ...presentState,datasets3
       })
@@ -393,18 +402,19 @@ class Dashboard extends Component{
     }
   
     getChart = () => {
-    if(this.state.radioSelected == 1){
+
+      if(this.state.radioSelected == 1){
       return(
-      <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-        <Line data={mainChart} options={mainChartOpts} height={300} redraw/>
+      <div style={{ height: '400px', marginTop: '10px' }}>
+        <Bar data={mainChart} options={mainChartOpts} height={400} redraw/>
       </div>)
       }
-      else{
+       else if(this.state.radioSelected == 2){
         return(
-          <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-          <Bar data={barChart} options={barChartOpts} height={300} redraw/>
+          <div style={{ height: 400 + 'px'}}>
+          <Doughnut data={barChart} options={barChartOpts} height={400} redraw/>
         </div>)
-      }
+      } 
     }
 
     render(){
@@ -418,7 +428,7 @@ class Dashboard extends Component{
                   <div>
                     <InfoCards temp = {this.state.temp} sensorTemp = {this.state.sensorTemp} hot = {this.state.hot} nice={this.state.nice} cold = {this.state.cold} 
                     people = {this.state.people} female = {this.state.female} male = {this.state.male} />
-                    <div style={{paddingTop :'30px'}}>
+                    <div style={{paddingTop :'20px'}}>
                     <Row>
                     <Col>
                       <Card style={{background: 'transparent'}}>
@@ -431,7 +441,7 @@ class Dashboard extends Component{
                             <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
                               <ButtonGroup className="mr-3" aria-label="First group">
                                 <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>INDOOR</Button>
-                                <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>SLACK</Button>                      
+                                <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2) } active={this.state.radioSelected === 2}>SLACK</Button>                      
                               </ButtonGroup>
                             </ButtonToolbar>
                           </Col>

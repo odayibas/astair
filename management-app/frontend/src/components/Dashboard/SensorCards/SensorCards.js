@@ -7,7 +7,7 @@ import {
   Row,
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import { getStyle} from '@coreui/coreui/dist/js/coreui-utilities'
 
 const brandPrimary = getStyle('--primary')
 
@@ -119,7 +119,7 @@ class SensorCards extends Component{
 
 getSensors = (sensorArr) => {
     return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
-    <Row style={{marginTop : 10 ,marginBottom : 20, paddingLeft : 60}}>
+    <Row style={{margin: 20}}>
         <Card style={{background: sensor.color}}>
             <CardBody className="pb-0">
             <div> <h5>INDOOR {i+1} </h5><h4 style = {{textAlign : 'right'}}>{sensor.temp}°C</h4></div>

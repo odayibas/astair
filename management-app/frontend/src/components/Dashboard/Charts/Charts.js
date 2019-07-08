@@ -4,35 +4,8 @@ import React, {Component} from 'react'
 class Charts extends Component{
     constructor(props){
         super(props)
-        this.state ={
-            radioSelected: 1
-        }
-        
-        this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
 
     }
-
-    getChart = () => {
-        if(this.state.radioSelected == 1){
-          return(
-          <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-            <Line data={mainChart} options={mainChartOpts} height={300} redraw/>
-          </div>)
-          }
-          else{
-            return(
-              <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-              <Bar data={barChart} options={barChartOpts} height={300} redraw/>
-            </div>)
-          }
-      }
-      
-      
-      onRadioBtnClick(radioSelected) {
-        this.setState({
-          radioSelected: radioSelected,
-        });
-      }
 
 
     render(){
@@ -57,7 +30,6 @@ class Charts extends Component{
                                     </ButtonToolbar>
                                 </Col>
                             </Row>
-                            {this.getChart()}
                         </CardBody>
                 </Card>
                 </Col>

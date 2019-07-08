@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
 import {Link, withRouter} from 'react-router-dom'
-import  Cookies from 'es-cookie';
 import {get as getCookie, remove as removeCookie } from 'es-cookie';
 
 class Navbar extends Component{
 
     logout(e){
         e.preventDefault()
-        localStorage.removeItem('usertoken')
+        removeCookie('usertoken')
         this.props.history.push('/')
 
     }
@@ -26,13 +25,8 @@ class Navbar extends Component{
         const userLink =(
             <ul className ="navbar-nav">
                 <li className = "nav -item">
-                    <Link to= "/profile" className="nav-link">
+                    <Link to= "/dashboard" className="nav-link">
                       <h5>Dashboard</h5>  
-                    </Link>
-                </li>
-                 <li className = "nav -item">
-                    <Link to= "/monitor" className="nav-link">
-                       <h5>Monitor</h5> 
                     </Link>
                 </li>
                 <li className = "nav -item">
@@ -57,15 +51,11 @@ class Navbar extends Component{
                        <h5>Home</h5>
                     </Link>
                 </li>
-                <li className = "nav -item">
-                    <Link to= "/dashboard" className="nav-link">
-                      <h5>Dashboard</h5>  
-                    </Link>
-                </li>
+ 
             </ul>
-            {/* {getCookie('usertoken') ? userLink : loginRegLink} */}
+         {getCookie('usertoken') ? userLink : loginRegLink}
             </div>
-            </nav>
+             </nav>
 
            
 
