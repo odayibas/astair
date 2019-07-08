@@ -7,12 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "computervision")
-public class ComputerVision implements Serializable {
+public class ComputerVision {
 
     @Id
     @Column(name = "data_time")

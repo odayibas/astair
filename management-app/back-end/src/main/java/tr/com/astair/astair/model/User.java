@@ -69,9 +69,10 @@ import javax.validation.constraints.Size;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 	@Id
+	@NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
-    private long id;
+    private Long id;
 	
 	@NotNull
     @Size(min=1, message="Username should have at least 1 characters")
@@ -83,15 +84,16 @@ public class User {
 	@Column(name="user_password")
 	private String password;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	//@ManyToMany(fetch = FetchType.EAGER)
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	public String getUsername() {
 		return username;
 	}

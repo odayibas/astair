@@ -11,11 +11,11 @@ public interface ACControllerApi {
 
     //get current AC record by id
     @GetMapping("/AC/get-last-records")
-    public ResponseEntity<List<AC>>  getLastACRecords();
+    ResponseEntity<List<AC>>  getLastACRecords();
 
     //get all ACs data
     @GetMapping("/AC/get-all")
-    public ResponseEntity<List<AC>> getAllAC();
+    ResponseEntity<List<AC>> getAllAC();
 
 
 }

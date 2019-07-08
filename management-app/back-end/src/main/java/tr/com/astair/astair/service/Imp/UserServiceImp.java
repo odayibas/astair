@@ -54,7 +54,7 @@ public class UserServiceImp implements UserService {
 	private UserRepository userRepository;
 
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(Long id) {
 		if(userRepository.existsById(id)) {
 			userRepository.deleteById(id);
 			return true;
@@ -74,7 +74,7 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override 
-	public User getUserAccordingToId(long id) {
+	public User getUserAccordingToId(Long id) {
 		return userRepository.findById(id).get();
 	}
 	
@@ -88,7 +88,7 @@ public class UserServiceImp implements UserService {
 	public Long addUser(User user) {
 		List<User> list = userRepository.findAllByUsername(user.getUsername());
 		if (list.size() > 0) {
-			long a = -1;
+			Long a = -1l;
 			return a;
 		}
 		else {
@@ -119,7 +119,7 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public void deleteUser(long id) {
+	public void deleteUser(Long id) {
 		userRepository.deleteById(id);
 		
 	}
@@ -140,11 +140,11 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public User findUserAccordingToUsername(String username) {
-		 List<User> userEntitiyList = userRepository.findAllByUsername(username);
-		 if(userEntitiyList.size() > 0) {
+		 List<User> userEntityList = userRepository.findAllByUsername(username);
+		 if(userEntityList.size() > 0) {
 			 return null;
 		 }
-		return userEntitiyList.get(0);
+		return userEntityList.get(0);
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override  
-	public User getUserByIdOne(long id) {
+	public User getUserByIdOne(Long id) {
 		Optional<User> userEntity = this.userRepository.findById(id);
 		if (userEntity.isPresent()) {
 		    return userEntity.get();

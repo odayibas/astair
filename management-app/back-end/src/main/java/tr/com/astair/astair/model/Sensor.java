@@ -3,12 +3,12 @@ package tr.com.astair.astair.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 @Entity
 @Table(name = "sensor")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Sensor implements Serializable {
+public class Sensor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,10 +27,17 @@ public class Sensor implements Serializable {
 
     }
 
-    public Sensor(Integer ac_id) {
+    public Sensor(Integer ac_id, String date_time, Float sensor_degree) {
         this.ac_id = ac_id;
+        this.date_time = date_time;
+        this.sensor_degree = sensor_degree;
     }
 
+    /*
+	public Sensor(Integer ac_id) {
+        this.ac_id = ac_id;
+    }
+	
     public Sensor(String date_time) {
         this.date_time = date_time;
     }
@@ -39,6 +46,7 @@ public class Sensor implements Serializable {
         this.ac_id = ac_id;
         this.sensor_degree = sensor_degree;
     }
+    */
 
     public Long getId() {
         return id;
