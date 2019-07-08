@@ -16,3 +16,25 @@ public interface UserControllerApi {
     public ResponseEntity<User> update(@RequestBody User user);
 }
 */
+package tr.com.astair.astair.controller.api;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import tr.com.astair.astair.model.User;
+
+public interface UserControllerApi {
+	@PostMapping(value="register")
+	ResponseEntity<Long> registerUser(@RequestBody User user);
+	
+	@GetMapping(value="{id}")
+	ResponseEntity<User> getUserByIdToUsername(@PathVariable("id") long id);
+	
+	@GetMapping(value="login/{username}/{password}")
+    ResponseEntity<Long> loginUser(@PathVariable("username")String username,@PathVariable("password") String password);
+	
+	@PutMapping(value="update")
+	ResponseEntity<User> updateUser(@RequestBody User user);
+	
+	@DeleteMapping(value="delete/{id}")
+	ResponseEntity<Void> deleteUser(@PathVariable("id") long id);
+}

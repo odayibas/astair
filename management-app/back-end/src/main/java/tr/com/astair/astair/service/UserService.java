@@ -2,7 +2,6 @@
 package tr.com.astair.astair.service;
 
 import tr.com.astair.astair.model.User;
-
 import java.util.List;
 
 
@@ -17,3 +16,22 @@ public interface UserService {
     public void update(User test);
 }
 */
+package tr.com.astair.astair.service;
+import tr.com.astair.astair.model.User;
+import java.util.*;
+
+public interface UserService {
+	boolean delete(long id);
+	void update(User user); //save
+	boolean checkUniqueUsernames(String username);
+	User findUsernameandPassword(String username,String password);
+	User getUserAccordingToId(long id);
+	Collection<User> findAll();
+	User getUserByIdOne(long id);
+	List<User> getAllUsers();
+	User findUserAccordingToUsername(String username);
+	Long addUser(User user);
+	Long login(String username,String password);
+	void updateUser(User user);
+	void deleteUser(long id);
+}
