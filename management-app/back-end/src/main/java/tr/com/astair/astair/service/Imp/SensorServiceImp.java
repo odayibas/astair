@@ -31,7 +31,8 @@ public class SensorServiceImp implements SensorService {
 
     public List<Sensor> getByZone(Integer ac_zone) {
         try {
-            Example<Sensor> sExample = Example.of(new Sensor(ac_zone));
+            //Example<Sensor> sExample = Example.of(new Sensor(ac_zone));
+            Example<Sensor> sExample = Example.of(new Sensor(ac_zone, null, null));
             return sensorRepository.findAll(sExample);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());

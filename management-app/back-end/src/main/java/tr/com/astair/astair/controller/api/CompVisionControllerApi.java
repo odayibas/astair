@@ -8,42 +8,39 @@ import tr.com.astair.astair.model.ComputerVision;
 import java.util.List;
 
 public interface CompVisionControllerApi {
-
     //get today's average people count
     @GetMapping("/get-average-people-count")
-    public ResponseEntity<Integer> getAvePeopleCnt();
+    ResponseEntity<Integer> getAvePeopleCnt();
 
     //get today's average female count
     @GetMapping("/get-average-female-count")
-    public ResponseEntity<Integer> getAveFemaleCnt();
+    ResponseEntity<Integer> getAveFemaleCnt();
 
     //get today's average male count
     @GetMapping("/get-average-male-count")
-    public ResponseEntity<Integer> getAveMaleCnt();
+    ResponseEntity<Integer> getAveMaleCnt();
 
     //get all data
     @GetMapping("/get-all")
-    public ResponseEntity<List<ComputerVision>> getAll();
+    ResponseEntity<List<ComputerVision>> getAll();
 
     //get today's all data
     @GetMapping("/get-today")
-    public ResponseEntity<List<ComputerVision>> getTodaysData();
+    ResponseEntity<List<ComputerVision>> getTodaysData();
 
     //get last 30 records
     @GetMapping("/get-limited")
-    public ResponseEntity<List<ComputerVision>> getLimited();
+    ResponseEntity<List<ComputerVision>> getLimited();
 
     //get current people count
     @GetMapping("/get-people")
-    public ResponseEntity<ComputerVision> getPeopleCount();
+    ResponseEntity<ComputerVision> getPeopleCount();
 
     //get current female count
     @GetMapping("/get-female")
-    public ResponseEntity<ComputerVision> getFemaleCount();
+    ResponseEntity<ComputerVision> getFemaleCount();
 
     //get current male count
     @GetMapping("/get-male")
-    public ResponseEntity<ComputerVision> getMaleCount();
-
-
+    ResponseEntity<ComputerVision> getMaleCount();
 }

@@ -17,7 +17,6 @@ public class AC implements Serializable {
     @Column(name = "ac_id")
     private Integer ac_id;
 
-
     @Column(name = "ac_mode")
     private String ac_mode;
 
@@ -33,9 +32,7 @@ public class AC implements Serializable {
     @Column(name = "ac_time")
     private String ac_time;
 
-    public AC() {
-
-    }
+    public AC() {}
 
     public AC(Integer ac_id, String ac_mode, Float ac_degree, String ac_fan_speed, String active, String ac_time) {
         this.ac_id = ac_id;

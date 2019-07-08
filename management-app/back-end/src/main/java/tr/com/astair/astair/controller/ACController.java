@@ -38,9 +38,8 @@ public class ACController implements ACControllerApi {
         for(int i=0;i<acService.getACCount();++i){
            ac.add(acService.getLast(i+1));
         }
-        if (ac == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        if (ac.isEmpty())
+			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(ac, HttpStatus.OK);
     }
 
