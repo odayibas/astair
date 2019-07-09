@@ -22,15 +22,19 @@ public class Sensor {
 
     @Column(name = "date_time")
     private String date_time;
+    
+    @Column(name = "humidity")
+    private Float humidity;
 
     public Sensor() {
 
     }
 
-    public Sensor(Integer ac_id, String date_time, Float sensor_degree) {
+    public Sensor(Integer ac_id, String date_time, Float sensor_degree, Float humidity) {
         this.ac_id = ac_id;
         this.date_time = date_time;
         this.sensor_degree = sensor_degree;
+        this.humidity = humidity;
     }
 
     /*
@@ -55,6 +59,14 @@ public class Sensor {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    public Integer getAc_id() {
+        return ac_id;
+    }
+
+    public void setAc_id(Integer ac_id) {
+        this.ac_id = ac_id;
+    }
 
     public Float getSensor_degree() {
         return sensor_degree;
@@ -71,12 +83,12 @@ public class Sensor {
     public void setDate_time(String date_time) {
         this.date_time = date_time;
     }
-
-    public Integer getAc_id() {
-        return ac_id;
+    
+    public Float getSensor_humidity() {
+    	return humidity;
     }
-
-    public void setAc_id(Integer ac_id) {
-        this.ac_id = ac_id;
+    
+    public void setSensor_humidity(Float humidity) {
+    	this.humidity = humidity;
     }
 }
