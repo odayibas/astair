@@ -35,4 +35,13 @@ public interface SensorControllerApi {
     // get last degree data of all sensors
     @GetMapping("/sensor/last-data-of-all-sensors")
     ResponseEntity<List<Sensor>> getAllLastDegrees();
+    
+    //get last 30 records average degree of a sensor
+    @GetMapping("/sensor/get-avg-humidity/{id}")
+    ResponseEntity<Float> getSensorHumidityAvg(@PathVariable Integer id);
+
+    //get last 30 records average degree of all sensor
+    @GetMapping("/sensor/get-avg-humidity")
+    ResponseEntity<Float> getAllSensorsAvgHumidity();
+    
 }

@@ -72,5 +72,22 @@ public class SensorController implements SensorControllerApi {
         }
         return new ResponseEntity<>(sensorResults, HttpStatus.OK);
     }
+    
+    public ResponseEntity<Float> getSensorHumidityAvg(@PathVariable Integer id){
+        Float test = sensorService.getSensorHumidityAvg(id);
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(test, HttpStatus.OK);
+    }
+    
+    public ResponseEntity<Float> getAllSensorsAvgHumidity() {
+        Float test = sensorService.getAllSensorsAvgHumidity();
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(test, HttpStatus.OK);
+    }
+    
 
 }

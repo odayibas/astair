@@ -9,21 +9,27 @@ import java.util.List;
 public interface SensorService {
 
     //get all sensor data
-    public List<Sensor> get();
+    List<Sensor> get();
 
     //get all sensor data of a sensor
-    public List<Sensor> getByZone(Integer id);
+    List<Sensor> getByZone(Integer id);
 
     //get last 30 records of a sensor
-    public List<Sensor> getLimited(Integer id);
+    List<Sensor> getLimited(Integer id);
 
     // get average degree of a sensor
-    public Float getSensorDegreeAve(Integer ac_id);
+    Float getSensorDegreeAve(Integer ac_id);
 
     // get average degree of all sensor
-    public Float getAllSensorDegreeAve();
+    Float getAllSensorDegreeAve();
 
     // recently get degree of a sensor
-    public List<Sensor> getSensorLastDegree();
+    List<Sensor> getSensorLastDegree();
+    
+    // get average humidity of a sensor
+    Float getSensorHumidityAvg(Integer ac_id);
+    
+    // get average humidity of all sensor
+    Float getAllSensorsAvgHumidity();
 
 }

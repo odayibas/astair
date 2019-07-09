@@ -22,8 +22,8 @@ public class Slack {
     private Integer vote_id;
 
 
-    @Column(name = "date_time")
-    private Timestamp date_time;
+    @Column(name = "data_time")
+    private Timestamp data_time;
 
     public Slack() {
     }
@@ -72,10 +72,10 @@ public class Slack {
     }
 
     public Timestamp getDate_time() {
-        return date_time;
+        return data_time;
     }
 
-    public void setDate_time(Timestamp date_time) {
-        this.date_time = date_time;
+    public void setDate_time(Timestamp data_time) {
+        this.data_time = data_time;
     }
 }
