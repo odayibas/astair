@@ -428,7 +428,7 @@ const urlArr = ['1', '2','3','4']
       }
        else if(this.state.radioSelected === 2){
         return(
-          <div style={{ height: '500px' }}>
+          <div style={{ height: '400px' }}>
           <Doughnut data={barChart} options={barChartOpts} height={400} redraw/>
         </div>)
       } 
