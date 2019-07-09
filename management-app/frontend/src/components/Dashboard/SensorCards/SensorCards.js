@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 
-import {Line,Bar } from 'react-chartjs-2';
+import {Line} from 'react-chartjs-2';
 import {
   Card,
+  Col,
   CardBody,
   Row,
 } from 'reactstrap';
@@ -102,8 +103,9 @@ function interpolateColors(color1, color2, steps) {
 
     for (var i = 0; i < steps.length; i++) {
         newArr.push({
-          region:steps[i][1],
           temp : steps[i][0],  
+          humudity : steps[i][1],
+          region : steps[i][2],
           color : interpolateColor(color1, color2, stepFactor * i)
         })
     }
@@ -119,10 +121,12 @@ class SensorCards extends Component{
 
 getSensors = (sensorArr) => {
     return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
-    <Row style={{margin: 20}}>
+    <Row style={{margin: 20, marginTop : "-20px"}}>
         <Card style={{background: sensor.color}}>
             <CardBody className="pb-0">
-            <div> <h5>INDOOR {i+1} </h5><h4 style = {{textAlign : 'right'}}>{sensor.temp}°C</h4></div>
+            <div> <h5>INDOOR {i+1} </h5></div>
+            <Col><div><h4 style = {{textAlign : 'right'}}>{sensor.temp}°C</h4></div></Col>
+            <Col><div><h4 style = {{textAlign : 'right'}}> % {sensor.humudity}</h4> </div></Col>
             </CardBody> 
             <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
             <Line data={ 
@@ -142,10 +146,10 @@ getSensors = (sensorArr) => {
 render(){     
 
     const sensorArr = interpolateColors(red, orange,[
-        [this.props.sensorTemp[1],1],
-        [this.props.sensorTemp[2],2],
-        [this.props.sensorTemp[3],3],
-        [this.props.sensorTemp[4],4]
+        [this.props.sensorTemp[1],this.props.sensorHum[1],1],
+        [this.props.sensorTemp[2],this.props.sensorHum[2],2],
+        [this.props.sensorTemp[3],this.props.sensorHum[3],3],
+        [this.props.sensorTemp[4],this.props.sensorHum[4],4]
       ].sort((sensor, sensor2) => (sensor[0] - sensor2[0])))
     
       return(

@@ -15,7 +15,6 @@ function App() {
         <div style={{paddingTop: '100px'}}>
         <Route  exact path="/login" component={Login}/>
         <Route  exact path="/dashboard" component={Dashboard}/>
-
         </div>
       </div>
 

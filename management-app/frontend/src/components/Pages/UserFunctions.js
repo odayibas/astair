@@ -4,17 +4,17 @@ import {set as setCookie} from 'es-cookie';
 
 export const login = user =>{
     return axios
-    .post( "http://10.154.4.28:8090/login/" + user.username +'/' + user.password, {
+    .get( "/user/login/" + user.username +'/' + user.password, {
         username : user.username,
         password:  user.password
     })
     .then(res =>{
-        if(res != '-1') {
+        if(!(res.data === -2 || res.data === -1)) {
         setCookie('usertoken',  res.data)
         }
+        
         return res.data
-
-
+     
 
     })
     .catch(err =>{

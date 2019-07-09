@@ -60,13 +60,13 @@ render(){
               </Card>
             </Col>
             <Col >
-            <Card style={{padding : '25px'}} >
+            <Card style={{padding : '65px'}} >
             <CardBody className="pb-0" icon>
              <People/>
                 <div className="text-value">
                     <h4>People Count</h4></div>
                     <h2>{this.props.people}	</h2>
-                <Row>
+              {/*   <Row>
                   <Col>
                 <div className="text-value">
                     <h4>Male</h4></div>
@@ -77,7 +77,7 @@ render(){
                     <h4>Female</h4></div>
                     <h2>{this.props.female}	</h2>
                 </Col>
-                </Row>
+                </Row> */}
               </CardBody>
            
             </Card>

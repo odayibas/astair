@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import jwt_decode from 'jwt-decode'
 import axios from 'axios'
-import {Doughnut,Bar } from 'react-chartjs-2';
+import {Doughnut,Bar,Line } from 'react-chartjs-2';
 import {
   Button,
   ButtonGroup,
@@ -15,6 +15,8 @@ import {
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities'
 
+import {get as getCookie} from 'es-cookie'
+import {Redirect} from 'react-router-dom'
 import SensorCards from './SensorCards/SensorCards';
 import InfoCards from './InfoCards/InfoCards'
 
@@ -24,12 +26,10 @@ const brandInfo = getStyle('--info')
 const brandDanger = getStyle('--danger')
 const brandSuccess = getStyle('--success')
 
-
+const urlArr = ['1', '2','3','4']
 
   var tempValue = "0";
   var loadValue = 0;
-
-  var tempValue2 = "0";
   var loadValue2 = 0;
 
   let mainChart = {
@@ -47,7 +47,7 @@ const brandSuccess = getStyle('--success')
       },
       {
         label: 'PEOPLE COUNT',
-        type: 'bar',
+        type: 'line',
         backgroundColor: hexToRgba(brandDanger, 10),
         borderColor: brandDanger,
         pointHoverBackgroundColor: '#fff',
@@ -78,7 +78,6 @@ const brandSuccess = getStyle('--success')
       boxWidth: 20
     }
   },
-  maintainAspectRatio: false,
     scales: {
       xAxes: [
         {
@@ -88,18 +87,19 @@ const brandSuccess = getStyle('--success')
         }],
       yAxes: [{
           type: 'linear',
-          position: 'right',
-          ticks: {
-            min: 0,
-            max: 30,
-          },
-        },{
-          type: 'linear',
           position: 'left',
           ticks: {
             min: 0,
             max: 30,
           }
+        },
+        {
+          type: 'linear',
+          position: 'right',
+          ticks: {
+            min: 0,
+            max: 30,
+          },
         }],
     },
     elements: {
@@ -156,31 +156,35 @@ const brandSuccess = getStyle('--success')
 
 
 
-class Dashboard extends Component{
-  constructor(){
-    super()
-      this.state = {
-        first_name : '',
-        last_name : '',
-        email : '',
-        temp: null,
-        currentWeather: null,
-        dailySummary: null,
-        dew: null,
-        humidity: null,
-        visibility: null,
-        timezone : null,
-        sensorTemp: {},
-        male:null,
-        female: null,
-        hot: null,
-        nice : null,
-        cold : null,
-        radioSelected: 1,
-    }
+
+  class Dashboard extends Component{
+    constructor(){
+      super()
+        this.state = {
+          first_name : '',
+          last_name : '',
+          email : '',
+          temp: null,
+          currentWeather: null,
+          dailySummary: null,
+          dew: null,
+          humidity: null,
+          visibility: null,
+          timezone : null,
+          sensorTemp: {},
+          sensorHum : {},
+          male:null,
+          female: null,
+          hot: null,
+          nice : null,
+          cold : null,
+          radioSelected: 1,
+          _isMounted : false
+      }  
     
-    this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
+      this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
   }
+
     getcompVisionControllerData =  async() => {
     
     const url = "/get-all";
@@ -189,15 +193,17 @@ class Dashboard extends Component{
       headers: {
         'Access-Control-Allow-Origin': true,
       },
-     
+
     })
     .then((res) => {
       let presentState = { ...this.state }
+      
       presentState.male = res.data[res.data.length - 1].male_count
       presentState.female = res.data[res.data.length - 1].female_count
       presentState.people= (presentState.male + presentState.female)
-      if(presentState.people != res.data[res.data.length - 1].male_count )
-      this.drawPeopleChart(res)
+      
+        /* if(presentState.people !== res.data[res.data.length - 1].male_count )
+        this.drawPeopleChart(res) */
 
       this.setState({
         ...presentState
@@ -222,6 +228,7 @@ class Dashboard extends Component{
     .then((res) => {
       
       let presentState = {...this.state}
+      
       presentState.cold = res.data.cold
       presentState.nice = res.data.nice
       presentState.hot = res.data.hot
@@ -244,9 +251,11 @@ class Dashboard extends Component{
       headers: {
         'Access-Control-Allow-Origin': true,
       },
+
     })
     .then((res) => {
       let presentState = {...this.state};
+      
       presentState.temp = res.data.currently.apparentTemperature;
       presentState.currentWeather = res.data.currently.summary;
       presentState.dailySummary = res.data.hourly.summary;
@@ -262,46 +271,55 @@ class Dashboard extends Component{
     }
 
     getSensorData = async() =>{
-      Promise.all([
-        axios.get('/sensor/get-zone/1'),
-        axios.get('/sensor/get-zone/2'),
-        axios.get('/sensor/get-zone/3'),
-        axios.get('/sensor/get-zone/4')
-      ])
-      .then(([res1, res2, res3, res4]) => {
-        let presentState = {...this.state}
-        presentState.sensorTemp[1] = res1.data[res1.data.length - 1].sensor_degree
-        presentState.sensorTemp[2] = res2.data[res2.data.length - 1].sensor_degree
-        presentState.sensorTemp[3] = res3.data[res3.data.length - 1].sensor_degree
-        presentState.sensorTemp[4] = res4.data[res4.data.length - 1].sensor_degree
 
-        this.drawLineChart(res4);
+      const apiUrl = '/sensor/get-zone/'
 
-        this.setState({
-          ...presentState
-      })
-    });
+      const responses = await Promise.all(
+        urlArr.map(url => 
+           axios(apiUrl+ url).
+            then((res) => {
+              let presentState = {...this.state}
 
-
-    }
+              presentState.sensorTemp[parseInt(url)] = res.data[res.data.length - 1].sensor_degree
+              presentState.sensorHum[parseInt(url)] = res.data[res.data.length - 1].sensor_humidity
+              
+              if(parseInt(url) === 4)
+              this.drawLineChart(res)
+              
+              this.setState({
+                ...presentState
+          })
+        })
+      )
+    );
+  }
 
     trigger() {
     let newTime = Date.now() - this.props.date;
-    setInterval(() => { 
-    this.getSensorData().then(data =>{})
-    this.getSlack().then(data => {}) 
-    this.getcompVisionControllerData().then(data => {})
-    this.getOutdoorData().then(data => {})
+      setInterval(() => { 
+        this.getSensorData().then(data =>{})
+        this.getSlack().then(data => {}) 
+        this.getOutdoorData().then(data => {})
+      }, 5000);
+    let newTime2 = Date.now() - this.props.date;
+      setInterval(() => { 
+        this.getcompVisionControllerData().then(data => {})
+      }, 1000);
 
-    }, 5000);
     }  
 
-    componentDidMount(){     
-    this.trigger()
+    componentDidMount(){  
+      this._isMounted = true;
+       if (this._isMounted) {
+        this.trigger()
+      }
     }
 
+    componentWillUnmount(){
+      this._isMounted = false;
+    }
     onRadioBtnClick(radioSelected) {
-    this.setState({
+      this.setState({
       radioSelected: radioSelected,
     });
     }
@@ -333,7 +351,7 @@ class Dashboard extends Component{
     var currentDate = new Date(res.data[res.data.length - 1].date_time);
     var clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
 
-        if(loadValue == 0)
+        if(loadValue === 0)
         {
             for (var i = res.data.length - 20; i < res.data.length; i++) {
                 presentState.sensorTemp[4] = res.data[i].sensor_degree;
@@ -348,9 +366,8 @@ class Dashboard extends Component{
           
         }
  
-        if(tempValue != clock)
+        if(tempValue !== clock)
         {
-          let datasets = []
           mainChart.datasets[0].data.push(presentState.sensorTemp[4]);
           mainChart.labels.push(clock);
           tempValue = clock;
@@ -370,7 +387,7 @@ class Dashboard extends Component{
 
       let presentState = { ...this.state }
 
-      if(loadValue2 == 0)
+      if(loadValue2 === 0)
       {
           for (var i = res.data.length - 20; i < res.data.length; i++) {
             presentState.people= (res.data[res.data.length - 1].female_count)+ (res.data[res.data.length - 1].male_count)
@@ -403,26 +420,27 @@ class Dashboard extends Component{
   
     getChart = () => {
 
-      if(this.state.radioSelected == 1){
+      if(this.state.radioSelected === 1){
       return(
       <div style={{ height: '400px', marginTop: '10px' }}>
-        <Bar data={mainChart} options={mainChartOpts} height={400} redraw/>
+        <Line data={mainChart} options={mainChartOpts} height={400} redraw/>
       </div>)
       }
-       else if(this.state.radioSelected == 2){
+       else if(this.state.radioSelected === 2){
         return(
-          <div style={{ height: 400 + 'px'}}>
+          <div style={{ height: '500px' }}>
           <Doughnut data={barChart} options={barChartOpts} height={400} redraw/>
         </div>)
       } 
     }
 
     render(){
+      if(getCookie('usertoken')){     
       return(
         <div style={{width: '100% !important',margin: 'auto',height: '100%',marginTop: '40px'}}>
             <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '100%'}}>
                 <Col  xs="4" sm="3">
-                    <SensorCards sensorTemp = {this.state.sensorTemp}/>
+                    <SensorCards sensorHum = {this.state.sensorHum} sensorTemp = {this.state.sensorTemp}/>
                 </Col>
                 <Col>
                   <div>
@@ -458,6 +476,12 @@ class Dashboard extends Component{
         </div>
 
         )
+        
+      }
+        else{
+          return <Redirect to='/login'/>;
+      }
+      
     }
 }
 

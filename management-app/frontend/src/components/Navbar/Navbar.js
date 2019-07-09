@@ -30,7 +30,7 @@ class Navbar extends Component{
                     </Link>
                 </li>
                 <li className = "nav -item">
-                    <a  href ="" onClick={this.logout.bind(this)} className="nav-link">
+                    <a href="" onClick={this.logout.bind(this)} className="nav-link">
                        <h5>Logout</h5> 
                     </a>
                 </li> 
@@ -39,12 +39,12 @@ class Navbar extends Component{
 
         return(
 
-            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style={{paddingTop: '10px'}}>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+            <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style={{paddingTop: '20px'}}>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#"><h2>ASTAiR</h2></a>  
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <div className="navbar-brand"><h2>ASTAiR</h2></div>  
+            <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul className="navbar-nav">
                 <li className="nav-item">
                     <Link to= "/"  className ="nav-link">
