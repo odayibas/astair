@@ -184,7 +184,7 @@ const urlArr = ['1', '2','3','4']
      
       presentState.people= (res.data)
       
-     //this.drawPeopleChart(res)
+    // this.drawPeopleChart(res)
 
       this.setState({
         ...presentState
@@ -401,7 +401,7 @@ const urlArr = ['1', '2','3','4']
       if(this.state.radioSelected === 1){
       return(
       <div style={{ height: '400px', marginTop: '10px' }}>
-        <Line data={mainChart} options={mainChartOpts} height={400} redraw/>
+        <Bar data={mainChart} options={mainChartOpts} height={400} redraw/>
       </div>)
       }
        else if(this.state.radioSelected === 2){
