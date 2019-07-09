@@ -20,7 +20,7 @@ public class DarkSkyController {
 
     @GetMapping
     public Outdoor getOutdoor() {
-        String Url = "https://api.darksky.net/forecast/ad2e612b7b164a37c0e1c77b75544aa8/39.925533,32.866287?units=si";
+        String Url = "https://api.darksky.net/forecast/f31a2aba5c564c041bff47dea985c048/39.908065,32.751893?units=si";
 
         ResponseEntity<Outdoor> response = restTemplate.exchange(Url, HttpMethod.GET, null, new ParameterizedTypeReference<Outdoor>() {
         });
