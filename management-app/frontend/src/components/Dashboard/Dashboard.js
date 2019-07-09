@@ -45,15 +45,6 @@ const urlArr = ['1', '2','3','4']
         borderWidth: 4,
         data: []
       },
-      {
-        label: 'PEOPLE COUNT',
-        type: 'line',
-        backgroundColor: hexToRgba(brandDanger, 10),
-        borderColor: brandDanger,
-        pointHoverBackgroundColor: '#fff',
-        borderWidth: 2,
-        data: [],
-      },
     ],
    };
    
@@ -91,15 +82,8 @@ const urlArr = ['1', '2','3','4']
           ticks: {
             min: 0,
             max: 30,
-          }
-        },
-        {
-          type: 'linear',
-          position: 'right',
-          ticks: {
-            min: 0,
-            max: 30,
           },
+          id: "y-axis-0",
         }],
     },
     elements: {
@@ -187,7 +171,7 @@ const urlArr = ['1', '2','3','4']
 
     getcompVisionControllerData =  async() => {
     
-    const url = "/get-all";
+    const url = "/get-people";
     return axios.get(url, {
       mode: 'no-cors',
       headers: {
@@ -197,13 +181,10 @@ const urlArr = ['1', '2','3','4']
     })
     .then((res) => {
       let presentState = { ...this.state }
+     
+      presentState.people= (res.data)
       
-      presentState.male = res.data[res.data.length - 1].male_count
-      presentState.female = res.data[res.data.length - 1].female_count
-      presentState.people= (presentState.male + presentState.female)
-      
-        /* if(presentState.people !== res.data[res.data.length - 1].male_count )
-        this.drawPeopleChart(res) */
+     //this.drawPeopleChart(res)
 
       this.setState({
         ...presentState
@@ -246,7 +227,7 @@ const urlArr = ['1', '2','3','4']
  
     getOutdoorData = async() => {
 
-    const url = "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/eda3e07c6d1ebeb49dd8a4353a0666a9/39.925533,32.866287?units=si";
+    const url = "/outdoor";
     return axios.get(url, {
       headers: {
         'Access-Control-Allow-Origin': true,
@@ -255,14 +236,15 @@ const urlArr = ['1', '2','3','4']
     })
     .then((res) => {
       let presentState = {...this.state};
+      console.log(res.data)
       
       presentState.temp = res.data.currently.apparentTemperature;
-      presentState.currentWeather = res.data.currently.summary;
+      /* presentState.currentWeather = res.data.currently.summary;
       presentState.dailySummary = res.data.hourly.summary;
       presentState.dew = res.data.currently.dewPoint;
       presentState.humidity = res.data.currently.humidity;
       presentState.visibility = res.data.currently.visibility;
-      presentState.timezone = res.data.timezone;
+      presentState.timezone = res.data.timezone; */
       this.setState({
           ...presentState
       })
@@ -390,7 +372,7 @@ const urlArr = ['1', '2','3','4']
       if(loadValue2 === 0)
       {
           for (var i = res.data.length - 20; i < res.data.length; i++) {
-            presentState.people= (res.data[res.data.length - 1].female_count)+ (res.data[res.data.length - 1].male_count)
+            presentState.people=res.data
             mainChart.datasets[1].data.push(presentState.people);
             mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
             mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 1);
@@ -398,7 +380,6 @@ const urlArr = ['1', '2','3','4']
           loadValue2 = 1;
       }
 
-        let datasets3 = []
         mainChart.datasets[1].data.push(presentState.people);
         if(mainChart.datasets[1].data.length > 20)
         {
@@ -408,12 +389,9 @@ const urlArr = ['1', '2','3','4']
         mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
         mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 1);
 
-      let data = {}
-      data["data"] =  mainChart.datasets[1].data
-      datasets3.push(data) 
-
+      
         this.setState({
-          ...presentState,datasets3
+          ...presentState
       })
 
     }
