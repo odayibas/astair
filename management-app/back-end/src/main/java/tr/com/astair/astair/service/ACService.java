@@ -7,21 +7,21 @@ import java.util.List;
 
 public interface ACService {
 
-    public AC save(AC ac);
+    AC save(AC ac);
 
-    public void update(AC ac);
+    void update(AC ac);
 
-    public void delete(AC ac);
+    void delete(AC ac);
 
     //get AC data by Id
-    public AC getById(Long id);
+    AC getById(Long id);
 
     //get all AC data
-    public List<AC> get();
+    List<AC> get();
 
-    //get last record of given ac
-    public AC getLast(Integer ac_id) ;
+    //get last record of given AC
+    AC getLast(Integer ac_id) ;
 
-    //get ac count
-    public Integer getACCount();
+    //get AC count
+    Integer getACCount();
 }

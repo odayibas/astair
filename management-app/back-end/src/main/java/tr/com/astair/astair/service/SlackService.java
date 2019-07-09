@@ -8,15 +8,15 @@ import java.util.List;
 public interface SlackService {
 
     //get all Slack data
-    public List<Slack> get();
+    List<Slack> get();
 
     //get last poll data
-    public List<Slack> getPollAllResults();
+    List<Slack> getPollAllResults();
 
     //get last poll results as hot,cold,good
-    public WeatherPollResult getPollResults();
+    WeatherPollResult getPollResults();
 
     //get last poll results as hot,cold,good by zone
-    public WeatherPollResult getPollResultsByZone(Integer zone);
+    WeatherPollResult getPollResultsByZone(Integer zone);
 
 }
