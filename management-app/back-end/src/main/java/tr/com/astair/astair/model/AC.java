@@ -50,6 +50,14 @@ public class AC implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    public Integer getAc_id() {
+        return ac_id;
+    }
+
+    public void setAc_id(Integer ac_id) {
+        this.ac_id = ac_id;
+    }
 
     public String getAc_mode() {
         return ac_mode;
@@ -89,13 +97,5 @@ public class AC implements Serializable {
 
     public void setAc_time(String ac_time) {
         this.ac_time = ac_time;
-    }
-
-    public Integer getAc_id() {
-        return ac_id;
-    }
-
-    public void setAc_id(Integer ac_id) {
-        this.ac_id = ac_id;
     }
 }
