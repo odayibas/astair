@@ -8,31 +8,31 @@ import java.util.List;
 public interface ComputerVisionService {
 
     //get average people count of today
-    public Integer getAvePeopleCnt();
+    Integer getAvePeopleCnt();
 
     //get average female count of today
-    public Integer getAveFemaleCnt();
+    Integer getAveFemaleCnt();
 
     //get average male count of today
-    public Integer getAveMaleCnt();
+    Integer getAveMaleCnt();
 
     //get today's data
-    public List<ComputerVision> getTodaysData();
+    List<ComputerVision> getTodaysData();
 
 
     //get all computer vision data
-    public List<ComputerVision> get();
+    List<ComputerVision> get();
 
     //get current person count
-    public Integer getPersonCount();
+    Integer getPersonCount();
 
     //get current female count
-    public Integer getFemaleCount();
+    Integer getFemaleCount();
 
     //get current male count
-    public Integer getMaleCount();
+    Integer getMaleCount();
 
     //get last 30 record of data
-    public List<ComputerVision> getLimited();
+    List<ComputerVision> getLimited();
 
 }

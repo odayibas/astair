@@ -54,7 +54,7 @@ public class SensorController implements SensorControllerApi {
         if (test == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(test, HttpStatus.OK);
+        return new ResponseEntity<Float>(test, HttpStatus.OK);
     }
 
     public ResponseEntity<Float> getAllSensorDegreeAve() {
@@ -62,7 +62,7 @@ public class SensorController implements SensorControllerApi {
         if (test == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(test, HttpStatus.OK);
+        return new ResponseEntity<Float>(test, HttpStatus.OK);
     }
 
     public ResponseEntity<List<Sensor>> getAllLastDegrees() {
@@ -78,7 +78,7 @@ public class SensorController implements SensorControllerApi {
         if (test == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(test, HttpStatus.OK);
+        return new ResponseEntity<Float>(test, HttpStatus.OK);
     }
     
     public ResponseEntity<Float> getAllSensorsAvgHumidity() {
@@ -86,7 +86,7 @@ public class SensorController implements SensorControllerApi {
         if (test == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(test, HttpStatus.OK);
+        return new ResponseEntity<Float>(test, HttpStatus.OK);
     }
     
 

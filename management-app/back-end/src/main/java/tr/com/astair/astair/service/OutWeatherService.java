@@ -8,13 +8,13 @@ import java.util.List;
 public interface OutWeatherService {
 
     //save outdoor data to database
-    public OutdoorWeather save(OutdoorWeather oWeather);
+    OutdoorWeather save(OutdoorWeather oWeather);
 
     //get all outdoor data from database
-    public List<OutdoorWeather> get();
+    List<OutdoorWeather> get();
 
     //get last outdoor weather record
-    public OutdoorWeather getlast();
+    OutdoorWeather getlast();
 
 
 }
