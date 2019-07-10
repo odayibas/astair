@@ -29,7 +29,6 @@ const brandDanger = getStyle('--danger')
 const brandSuccess = getStyle('--success')
 
 const urlArr = ['1', '2','3','4']
-
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
   var tempValue = "0";
@@ -349,7 +348,7 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND
                 currentDate = new Date(res.data[i].date_time);
                 clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
                 mainChart.labels.push(clock);
-                if(presentState.sensorTemp[4] >= presentState.people ){
+                if(presentState.sensorTemp[4] > presentState.people ){
                   mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 2);
                   mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 2);
                 }
@@ -374,16 +373,17 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND
           {
               mainChart.datasets[0].data.shift();
               mainChart.labels.shift();
-              if(presentState.sensorTemp[4] > presentState.people ){
-                mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 2);
-                mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 2);
-              }
-              else
-              {
-                mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 2);
-                mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
-    
-              }
+             
+          }
+          if(presentState.sensorTemp[4] > presentState.people ){
+            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 2);
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 2);
+          }
+          else
+          {
+            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 2);
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
+
           } 
 
           
@@ -424,6 +424,7 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND
         {
             mainChart.datasets[1].data.shift();
 
+        }
         if(presentState.sensorTemp[4] > presentState.people ){
           mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 1);
           mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 1);
@@ -433,7 +434,6 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND
           mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
           mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 1);
 
-        }
         }
 
 
