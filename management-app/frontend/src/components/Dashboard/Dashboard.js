@@ -403,8 +403,8 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND
             mainChart.datasets[1].data.push(presentState.people);
 
             if(presentState.sensorTemp[4] > presentState.people ){
-              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
-              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 1);
+              mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
+              mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 1);
             }
             else
             {
