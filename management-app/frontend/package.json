@@ -62,6 +62,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://10.154.4.28:8090"
+  }
 }

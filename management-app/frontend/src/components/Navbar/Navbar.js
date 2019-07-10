@@ -46,14 +46,8 @@ class Navbar extends Component{
             <div className="navbar-brand"><h2>ASTAiR</h2></div>  
             <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul className="navbar-nav">
-                <li className="nav-item">
-                    <Link to= "/"  className ="nav-link">
-                       <h5>Home</h5>
-                    </Link>
-                </li>
- 
             </ul>
-         {getCookie('usertoken') ? userLink : loginRegLink}
+            {getCookie('usertoken') ? userLink : loginRegLink}
             </div>
              </nav>
 

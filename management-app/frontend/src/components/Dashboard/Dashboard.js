@@ -19,7 +19,8 @@ import {get as getCookie} from 'es-cookie'
 import {Redirect} from 'react-router-dom'
 import SensorCards from './SensorCards/SensorCards';
 import InfoCards from './InfoCards/InfoCards'
-import { async } from 'q';
+import {remove as removeCookie } from 'es-cookie';
+
 
 
 const brandPrimary = getStyle('--primary')
@@ -28,6 +29,7 @@ const brandDanger = getStyle('--danger')
 const brandSuccess = getStyle('--success')
 
 const urlArr = ['1', '2','3','4']
+const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
   var tempValue = "0";
   var loadValue = 0;
@@ -190,14 +192,7 @@ const urlArr = ['1', '2','3','4']
 
     getcompVisionControllerData =  async() => {
     
-    const url = "/get-all";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-
-    })
+    return axios.get(urlServer + "/get-all")
     .then((res) => {
       let presentState = { ...this.state }
      
@@ -217,14 +212,7 @@ const urlArr = ['1', '2','3','4']
   
     getSlack =  async() => {
     
-    const url = "/slack/get-poll-result-hot-cold-nice";
-    return axios.get(url, {
-      mode: 'no-cors',
-      headers: {
-        'Access-Control-Allow-Origin': true,
-      },
-     
-    })
+    return axios.get(urlServer + "/slack/get-poll-result-hot-cold-nice")
     .then((res) => {
       
       let presentState = {...this.state}
@@ -272,11 +260,9 @@ const urlArr = ['1', '2','3','4']
 
     getSensorData = async() =>{
 
-      const apiUrl = '/sensor/get-zone/'
-
       const responses = await Promise.all(
         urlArr.map(url => 
-           axios(apiUrl+ url).
+           axios(urlServer + '/sensor/get-zone/'+ url).
             then((res) => {
               let presentState = {...this.state}
 
@@ -310,6 +296,11 @@ const urlArr = ['1', '2','3','4']
 
     componentDidMount(){  
 
+      window.onpopstate  = (e) => {
+        removeCookie('usertoken')
+        this.props.history.push('/')
+
+        }
         this.trigger()
     
     }
@@ -358,8 +349,8 @@ const urlArr = ['1', '2','3','4']
                 clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
                 mainChart.labels.push(clock);
                 if(presentState.sensorTemp[4] >= presentState.people ){
-                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 2);
-                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
+                  mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 2);
+                  mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
                 }
                 else
                 {
