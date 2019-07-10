@@ -19,6 +19,7 @@ import {get as getCookie} from 'es-cookie'
 import {Redirect} from 'react-router-dom'
 import SensorCards from './SensorCards/SensorCards';
 import InfoCards from './InfoCards/InfoCards'
+import { async } from 'q';
 
 
 const brandPrimary = getStyle('--primary')
@@ -44,6 +45,15 @@ const urlArr = ['1', '2','3','4']
         pointHoverBackgroundColor: '#fff',
         borderWidth: 4,
         data: []
+      },
+      {
+        label: 'PEOPLE COUNT',
+        type: 'bar',
+        backgroundColor: hexToRgba(brandDanger, 10),
+        borderColor: brandDanger,
+        pointHoverBackgroundColor: '#fff',
+        borderWidth: 2,
+        data: [],
       },
     ],
    };
@@ -84,6 +94,15 @@ const urlArr = ['1', '2','3','4']
             max: 30,
           },
           id: "y-axis-0",
+        },
+        {
+          type: 'linear',
+          position: 'right',
+          ticks: {
+            min: 0,
+            max: 30,
+          },
+          id: "y-axis-1",
         }],
     },
     elements: {
@@ -171,7 +190,7 @@ const urlArr = ['1', '2','3','4']
 
     getcompVisionControllerData =  async() => {
     
-    const url = "/get-people";
+    const url = "/get-all";
     return axios.get(url, {
       mode: 'no-cors',
       headers: {
@@ -182,9 +201,9 @@ const urlArr = ['1', '2','3','4']
     .then((res) => {
       let presentState = { ...this.state }
      
-      presentState.people= (res.data)
+      presentState.people= (res.data[res.data.length -1].occupancy)
       
-    // this.drawPeopleChart(res)
+     this.drawPeopleChart(res)
 
       this.setState({
         ...presentState
@@ -223,11 +242,11 @@ const urlArr = ['1', '2','3','4']
         
     })
     }
- 
+
  
     getOutdoorData = async() => {
 
-    const url = "/outdoor";
+    const url = "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/eda3e07c6d1ebeb49dd8a4353a0666a9/39.925533,32.866287?units=si";
     return axios.get(url, {
       headers: {
         'Access-Control-Allow-Origin': true,
@@ -236,7 +255,6 @@ const urlArr = ['1', '2','3','4']
     })
     .then((res) => {
       let presentState = {...this.state};
-      console.log(res.data)
       
       presentState.temp = res.data.currently.apparentTemperature;
       /* presentState.currentWeather = res.data.currently.summary;
@@ -291,15 +309,12 @@ const urlArr = ['1', '2','3','4']
     }  
 
     componentDidMount(){  
-      this._isMounted = true;
-       if (this._isMounted) {
+
         this.trigger()
-      }
+    
     }
 
-    componentWillUnmount(){
-      this._isMounted = false;
-    }
+
     onRadioBtnClick(radioSelected) {
       this.setState({
       radioSelected: radioSelected,
@@ -330,6 +345,7 @@ const urlArr = ['1', '2','3','4']
     
     let presentState = { ...this.state }
     presentState.sensorTemp[4] = res.data[res.data.length - 1].sensor_degree
+   
     var currentDate = new Date(res.data[res.data.length - 1].date_time);
     var clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
 
@@ -341,13 +357,22 @@ const urlArr = ['1', '2','3','4']
                 currentDate = new Date(res.data[i].date_time);
                 clock = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
                 mainChart.labels.push(clock);
-                mainChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, mainChart.datasets[0].data) -2;
-                mainChartOpts.scales.yAxes[0].ticks.max = Math.max.apply(Math, mainChart.datasets[0].data) + 2;
+                if(presentState.sensorTemp[4] >= presentState.people ){
+                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 2);
+                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
+                }
+                else
+                {
+                  mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 2);
+                  mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 2);
+    
+                }
             }
             loadValue = 1;
           
         }
  
+
         if(tempValue !== clock)
         {
           mainChart.datasets[0].data.push(presentState.sensorTemp[4]);
@@ -357,25 +382,46 @@ const urlArr = ['1', '2','3','4']
           {
               mainChart.datasets[0].data.shift();
               mainChart.labels.shift();
-          }  
-          mainChartOpts.scales.yAxes[0].ticks.min = Math.min.apply(Math, mainChart.datasets[0].data) - 2;
-          mainChartOpts.scales.yAxes[0].ticks.max = Math.max.apply(Math, mainChart.datasets[0].data) + 2;
+          } 
 
+          if(presentState.sensorTemp[4] > presentState.people ){
+            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 2);
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 2);
+          }
+          else
+          {
+            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 2);
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
+
+          }
         }
+
+
     }
 
     drawPeopleChart(res){
 
 
       let presentState = { ...this.state }
+      presentState.people = res.data[res.data.length - 1].occupancy
 
       if(loadValue2 === 0)
       {
           for (var i = res.data.length - 20; i < res.data.length; i++) {
-            presentState.people=res.data
+            presentState.people=res.data[i].occupancy
             mainChart.datasets[1].data.push(presentState.people);
-            mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
-            mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 1);
+
+            if(presentState.sensorTemp[4] > presentState.people ){
+              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
+              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 1);
+            }
+            else
+            {
+              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 1);
+              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 1);
+
+            }
+            
           }
           loadValue2 = 1;
       }
@@ -386,8 +432,16 @@ const urlArr = ['1', '2','3','4']
             mainChart.datasets[1].data.shift();
         }
 
-        mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
-        mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 1);
+        if(presentState.sensorTemp[4] > presentState.people ){
+          mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 1);
+          mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 1);
+        }
+        else
+        {
+          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 1);
+          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 1);
+
+        }
 
       
         this.setState({
@@ -400,13 +454,13 @@ const urlArr = ['1', '2','3','4']
 
       if(this.state.radioSelected === 1){
       return(
-      <div style={{ height: '400px', marginTop: '10px' }}>
+      <div className="chart-wrapper" style={{ height: '400px' }}>
         <Bar data={mainChart} options={mainChartOpts} height={400} redraw/>
       </div>)
       }
        else if(this.state.radioSelected === 2){
         return(
-          <div style={{ height: '400px' }}>
+          <div className="chart-wrapper" style={{ height: '400px' }}>
           <Doughnut data={barChart} options={barChartOpts} height={400} redraw/>
         </div>)
       } 
@@ -433,7 +487,7 @@ const urlArr = ['1', '2','3','4']
                           <Col sm="5">
                             <CardTitle className="mb-0">AVG. TEMPERATURES-PEOPLE COUNT</CardTitle>
                           </Col>
-                          <Col sm="7" className="d-none d-sm-inline-block">
+                          <Col>
                             <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
                               <ButtonGroup className="mr-3" aria-label="First group">
                                 <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>INDOOR</Button>

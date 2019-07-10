@@ -125,8 +125,8 @@ getSensors = (sensorArr) => {
         <Card style={{background: sensor.color}}>
             <CardBody className="pb-0">
             <div> <h5>INDOOR {i+1} </h5></div>
-            <Col><div><h4 style = {{textAlign : 'right'}}>{sensor.temp}°C</h4></div></Col>
-            <Col><div><h4 style = {{textAlign : 'right'}}> % {sensor.humudity}</h4> </div></Col>
+            <Col><div><h4 style = {{textAlign : 'right'}}>Temperature : {sensor.temp}°C</h4></div></Col>
+            <Col><div><h4 style = {{textAlign : 'right'}}>Humidity : {sensor.humudity} % </h4> </div></Col>
             </CardBody> 
             <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
             <Line data={ 

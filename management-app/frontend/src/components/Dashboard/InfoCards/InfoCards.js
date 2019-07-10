@@ -64,7 +64,7 @@ render(){
             <CardBody className="pb-0" icon>
              <People/>
                 <div className="text-value">
-                    <h4>People Count</h4></div>
+                    <h4>PEOPLE</h4></div>
                     <h2>{this.props.people}	</h2>
               {/*   <Row>
                   <Col>
