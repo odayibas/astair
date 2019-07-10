@@ -22,10 +22,19 @@ import cv2
 import time
 import dlib
 import datetime
+import threading
+import queue
 
 connection, cursor = None, None
 connector = DatabaseConnector(connection, cursor)
 connector.connect_db()
+
+# ADJUSTMENT PARAMS
+
+conf = 0.45
+skipFrames = 20
+frameWidth = 350
+
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -39,9 +48,9 @@ ap.add_argument("-i", "--input", type=str,
                 help="path to optional input video file")
 ap.add_argument("-o", "--output", type=str,
                 help="path to optional output video file")
-ap.add_argument("-c", "--confidence", type=float, default=0.4,
+ap.add_argument("-c", "--confidence", type=float, default=conf,
                 help="minimum probability to filter weak detections")
-ap.add_argument("-s", "--skip-frames", type=int, default=30,
+ap.add_argument("-s", "--skip-frames", type=int, default=skipFrames,
                 help="# of skip frames between detections")
 args = vars(ap.parse_args())
 
@@ -54,6 +63,7 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
 # load our serialized model from disk
 print("[INFO] loading model...")
 net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
+# net = cv2.dnn.readNetFromCaffe("mobilenet_ssd/oxford102.prototxt", "mobilenet_ssd/oxford102.caffemodel")
 
 gender_net = cv2.dnn.readNetFromCaffe("gender_models/deploy_gender.prototxt",
                                       "gender_models/gender_net.caffemodel")
@@ -84,7 +94,7 @@ gender_list = ['Male', 'Female']
 # instantiate our centroid tracker, then initialize a list to store
 # each of our dlib correlation trackers, followed by a dictionary to
 # map each unique object ID to a TrackableObject
-ct = CentroidTracker(maxDisappeared=40, maxDistance=50)
+ct = CentroidTracker(maxDisappeared=40, maxDistance=60)
 trackers = []
 trackableObjects = {}
 
@@ -95,6 +105,8 @@ totalCount = 0
 totalMale = 0
 totalFemale = 0
 
+kill = False
+
 # two dynamic array for debugging some problems
 arr = []  # arr states that a person is moved up or down lastly
 arr_two_lines = []  # arr_two_lines states that a person's position on the screen according to the lines
@@ -102,24 +114,64 @@ arr_two_lines = []  # arr_two_lines states that a person's position on the scree
 # start the frames per second throughput estimator
 fps = FPS().start()
 
+print("Loading last data")
+record = connector.select_latest_row()
+totalCount = record[2]
+totalMale = record[3]
+totalFemale = record[4]
+
+# if record[1] == 'sysAdmin':
+#     totalCount = record[2]
+#     totalMale = record[3]
+#     totalFemale = record[4]
+
+# ----------------------------------------------------------------- THREAD VARIABLES #
+
+counter = 0
+q = queue.Queue(maxsize=1000000)
+
+
+def loadFrames():
+    global counter
+    while not kill:
+        frame = vs.read()
+        frame = frame[1]
+        counter += 1
+        frame = imutils.resize(frame, width=frameWidth)
+        q.put(frame)
+        if q.qsize() > 4:
+            print("Thread 1: Frame", counter, " Current queue size:", q.qsize())
+
+
+streamThread = threading.Thread(target=loadFrames, args=())
+streamThread.daemon = True
+streamThread.start()
+# ---------------------------------------------------------------------------------- #
+
 # loop over frames from the video stream
 while True:
     # grab the next frame and handle if we are reading from either
     # VideoCapture or VideoStream
-    frame = vs.read()
-    frame = frame[1] if args.get("input", False) else frame
 
-    # if we are viewing a video and we did not grab a frame then we
-    # have reached the end of the video
-    if args["input"] is not None and frame is None:
-        break
+    # frame = vs.read()
+    # frame = frame[1] if args.get("input", False) else frame
+    #
+    # # if we are viewing a video and we did not grab a frame then we
+    # # have reached the end of the video
+    # if args["input"] is not None and frame is None:
+    #     break
 
     # resize the frame to have a maximum width of 500 pixels (the
     # less data we have, the faster we can process it), then convert
     # the frame from BGR to RGB for dlib
-    frame = imutils.resize(frame, width=500)
-    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    # frame = imutils.resize(frame, width=250)
 
+
+    frame = q.get()
+
+    # print("Thread 2 is working. ")
+    rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # if the frame dimensions are empty, set them
     if W is None or H is None:
         (H, W) = frame.shape[:2]
@@ -137,6 +189,33 @@ while True:
     status = "Waiting"
     rects = []
 
+    # delete first 80 element of arrays when their size is 100
+    # aim is prevent from more memory usage
+
+    if len(arr) >= 100: # son 20 den yeni array oluştur?
+        i = 0
+        while i < 80:
+            del arr[0]
+            del arr_two_lines[0]
+            i += 1
+
+    for tracker in trackers:
+        # set the status of our system to be 'tracking' rather
+        # than 'waiting' or 'detecting'
+        status = "Tracking"
+
+        # update the tracker and grab the updated position
+        tracker.update(rgb)
+        pos = tracker.get_position()
+
+        # unpack the position object
+        startX = int(pos.left())
+        startY = int(pos.top())
+        endX = int(pos.right())
+        endY = int(pos.bottom())
+
+        # add the bounding box coordinates to the rectangles list
+        rects.append((startX, startY, endX, endY))
     # check to see if we should run a more computationally expensive
     # object detection method to aid our tracker
     if totalFrames % args["skip_frames"] == 0:
@@ -183,53 +262,20 @@ while True:
                 # utilize it during skip frames
                 trackers.append(tracker)
 
-                face_img = frame[startY:endY, startX:endX].copy()
-                blob2 = cv2.dnn.blobFromImage(face_img, 1, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
+                # face_img = frame[startY:endY, startX:endX].copy()
+                # blob2 = cv2.dnn.blobFromImage(face_img, 1, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
 
-                # Predict gender
-                gender_net.setInput(blob2)
-                gender_preds = gender_net.forward()
-                gender = gender_list[gender_preds[0].argmax()]
-
-                overlay_text = "%s" % gender
-                cv2.putText(frame, overlay_text, (startX - 10, startY - 10), 1, 1, (255, 0, 0), 1, cv2.LINE_AA)
+                # # Predict gender
+                # gender_net.setInput(blob2)
+                # gender_preds = gender_net.forward()
+                # gender = gender_list[gender_preds[0].argmax()]
+                #
+                # overlay_text = "%s" % gender
+                # cv2.putText(frame, "Person", (startX - 10, startY - 10), 1, 1, (255, 0, 0), 1, cv2.LINE_AA)
                 # cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
-
-    # delete first 80 element of arrays when their size is 100
-    # aim is prevent from more memory usage
-    if len(arr) == 100:
-        i = 0
-        while i < 80:
-            del arr[0]
-            del arr_two_lines[0]
-            i += 1
-
 
     # otherwise, we should utilize our object *trackers* rather than
     # object *detectors* to obtain a higher frame processing throughput
-    else:
-        # loop over the trackers
-        for tracker in trackers:
-            # set the status of our system to be 'tracking' rather
-            # than 'waiting' or 'detecting'
-            status = "Tracking"
-
-            # update the tracker and grab the updated position
-            tracker.update(rgb)
-            pos = tracker.get_position()
-
-            # unpack the position object
-            startX = int(pos.left())
-            startY = int(pos.top())
-            endX = int(pos.right())
-            endY = int(pos.bottom())
-
-            # add the bounding box coordinates to the rectangles list
-            rects.append((startX, startY, endX, endY))
-
-    # draw a horizontal line in the center of the frame -- once an
-    # object crosses this line we will determine whether they were
-    # moving 'up' or 'down'
 
     aboveLinePos = args["numerator"] * H // args["denominator"]
     belowLinePos = (args["numerator"] + 5) * H // args["denominator"]
@@ -267,7 +313,7 @@ while True:
             if objectID >= 100:
                 objectID = ((objectID-100) % 80) + 20
 
-            if 10 > objectID >= 80 and len(arr) < 80:
+            if 100 > objectID and objectID >= 80 and len(arr) < 80:
                 objectID -= 80
 
             # initialize new element for every object
@@ -279,10 +325,10 @@ while True:
 
             if to.counted:
                 if aboveLinePos - centroid[1] > 0 and arr[objectID] == "up":
-                    print("out, can be recounted")
+                    print("*** OUT ***")
                     to.counted = False
                 elif centroid[1] - belowLinePos > 0 and arr[objectID] == "down":
-                    print("in, can be recounted")
+                    print("*** IN ***")
                     to.counted = False
 
             # check to see if the object has been counted or not
@@ -291,43 +337,41 @@ while True:
                 # if the direction is negative (indicating the object
                 # is moving up) AND the centroid is above the center
                 # line, count the object
+
                 if direction < -5 and 0 < aboveLinePos - centroid[1] < 20:  # upper from above line case
                     if arr[objectID] != "up" and (
                             arr_two_lines[objectID] == "upper_below" or arr_two_lines[objectID] == "init"):
-                        record = connector.select_latest_row()  # Take the latest row from database
-                        if record[1] == 'sysAdmin' and record[2] != totalCount:  # If an admin update exist change
-                            #  Set the values(inside,male,female) to the admin inputs
-                            totalCount = record[2]
-                            totalMale = record[3]
-                            totalFemale = record[4]
 
                         to.counted = True
                         arr[objectID] = "up"
                         arr_two_lines[objectID] = "upper_above"
 
-                        if gender == "Male":
-                            totalMale += -1
-                        elif gender == "Female":
-                            totalFemale += -1
+                        # if gender == "Male":
+                        #     totalMale += -1
+                        # elif gender == "Female":
+                        #     totalFemale += -1
+                        record = connector.select_latest_row()
+                        if record[1] == 'sysAdmin':
+                            totalCount = record[2]
+                            totalMale = record[3]
+                            totalFemale = record[4]
                         totalCount += -1
+                        totalMale = totalCount // 2
+                        totalFemale = totalCount - totalMale
+                        connector.insert_table(datetime.datetime.now(), 'Cam', totalCount, totalMale,
+                                               totalFemale)
+
                         count = True
 
-                        connector.insert_table(datetime.datetime.now(), 'Cam', totalCount, totalMale, totalFemale)
-
-                elif direction < 0 and 0 < belowLinePos - centroid[1] < 20:  # upper from below line case
-                    arr_two_lines[objectID] = "upper_below"
+                elif objectID < len(arr_two_lines) and direction < 0 and 0 < belowLinePos - centroid[1] < 20:  # upper from below line case
+                    arr_two_lines[objectID] = "upper_below" # OUT OF RANGE ERROR
 
                 # if the direction is positive (indicating the object
                 # is moving down) AND the centroid is below the
                 # center line, count the object
-                elif direction > 5 and 0 < centroid[1] - belowLinePos < 20:  # lower from below line case
+                elif objectID < len(arr_two_lines) and direction > 5 and 0 < centroid[1] - belowLinePos < 20:  # lower from below line case
                     if arr[objectID] != "down" and (
                             arr_two_lines[objectID] == "lower_above" or arr_two_lines[objectID] == "init"):
-                        record = connector.select_latest_row()  # take the latest row from database
-                        if record[1] == 'sysAdmin' and record[2] != totalCount:  # If an admin update exist change
-                            totalCount = record[2]
-                            totalMale = record[3]
-                            totalFemale = record[4]
 
                         to.counted = True
 
@@ -336,17 +380,24 @@ while True:
                         # And its position is lower of the below line
                         arr_two_lines[objectID] = "lower_below"
 
-                        if gender == "Male":
-                            totalMale += 1
-                        elif gender == "Female":
-                            totalFemale += 1
+                        # if gender == "Male":
+                        #     totalMale += 1
+                        # elif gender == "Female":
+                        #     totalFemale += 1
+                        record = connector.select_latest_row()
+                        if record[1] == 'sysAdmin':
+                            totalCount = record[2]
+                            totalMale = record[3]
+                            totalFemale = record[4]
                         totalCount += 1
+                        totalMale = totalCount // 2
+                        totalFemale = totalCount - totalMale
+                        connector.insert_table(datetime.datetime.now(), 'Cam', totalCount, totalMale,
+                                               totalFemale)
+
                         count = True
 
-                        # Insert
-                        connector.insert_table(datetime.datetime.now(), 'Cam', totalCount, totalMale, totalFemale)
-
-                elif direction > 0 and 0 < centroid[1] - aboveLinePos < 20:  # lower from above line case
+                elif objectID < len(arr_two_lines)  and direction > 0 and 0 < centroid[1] - aboveLinePos < 20:  # lower from above line case
                     arr_two_lines[objectID] = "lower_above"
 
         # store the trackable object in our dictionary
@@ -355,7 +406,7 @@ while True:
         # draw both the ID of the object and the centroid of the
         # object on the output frame
         text = "ID {}".format(objectID)
-        cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
+        cv2.rectangle(frame, (startX, startY), (endX, endY), (255, 0, 255), 2)
         cv2.putText(frame, text, (centroid[0] - 10, centroid[1] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         cv2.circle(frame, (centroid[0], centroid[1]), 4, (0, 255, 0), -1)
@@ -385,6 +436,8 @@ while True:
 
     # if the `q` key was pressed, break from the loop
     if key == ord("q"):
+        print("KILLED")
+        kill = True
         break
     # increment the total number of frames processed thus far and
     # then update the FPS counter
@@ -410,6 +463,3 @@ else:
 
 # close any open windows
 cv2.destroyAllWindows()
-
-# disconnect from database
-connector.disconnect_db()
