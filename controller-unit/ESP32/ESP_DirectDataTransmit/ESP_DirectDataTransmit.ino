@@ -2,11 +2,11 @@
 #include <PubSubClient.h>
 
 // Replace the next variables with your SSID/Password combination
-const char* ssid = "<Your SSID>";
-const char* password = "<Your Password>";
+const char* ssid = "AstarusPi";
+const char* password = "astarus123";
 
 // Add your MQTT Broker IP address, example:
-const char* mqtt_server = "Raspberry's IP";
+const char* mqtt_server = "192.168.5.1";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -44,7 +44,7 @@ void setup() {
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
   MAC = String(GetChipID());
-  
+  //topic = "Astair/"+ String(GetChipID()) + "/AC";
   topic_1 = "Astair/"+ MAC + "/AC/CONF/SET/PWR";
   topic_2 = "Astair/"+ MAC + "/AC/CONF/SET/FAN";
   topic_3 = "Astair/"+ MAC + "/AC/CONF/SET/MODE";
@@ -52,6 +52,8 @@ void setup() {
 
   topic_5 = "Astair/"+ String(GetChipID()) + "/AC/CONF/GET";
   
+  //topic_1.toCharArray(buf,50);
+  //client.subscribe(topic);
   
   cl_name = "ESP32_" + String(GetChipID());
   cl_name.toCharArray(clientName,25);
@@ -66,7 +68,6 @@ byte charRead=0x00;
 
 int readState = 0;
 int writeState = 0;
-unsigned int schuler = 0;
 
 void loop() {  
   Serial.println(client.connected());
@@ -122,22 +123,17 @@ void loop() {
      delay(50);
    }
 
-    if(schuler%50 == 0){
-      float temperat = ((int)Act_Temperature - 32)/1.8;
-      
-      String Data = strMode+","+ String(Des_Temperature,HEX)+"," + strFan+
-                    ","+ String(Des_OnOff);
-      Serial.println("DATA:::: " + Data + " asd: " + String(temperat));
-                   
-      memset(buf,0,50);
-      topic_5.toCharArray(buf,50);
-      Data.toCharArray(buf1,25);
-      client.publish(buf,buf1);
-      delay(50);
-      
-    }
+    float temperat = ((int)Act_Temperature - 32)/1.8;
     
-    schuler++;
+    String Data = strMode+","+ String(Des_Temperature,HEX)+"," + strFan+
+                  ","+ String(Des_OnOff);
+    Serial.println("DATA:::: " + Data + " asd: " + String(temperat));
+                 
+    memset(buf,0,50);
+    topic_5.toCharArray(buf,50);
+    Data.toCharArray(buf1,25);
+    client.publish(buf,buf1);
+    delay(50);
 }
 
 void callback(char* topic, byte* message, unsigned int length) {
@@ -152,6 +148,8 @@ void callback(char* topic, byte* message, unsigned int length) {
   }
   Serial.println();
 
+
+  // Changes the output state according to the message
   if (String(topic) == "Astair/"+ MAC + "/AC/CONF/SET/PWR") {
     Serial.print("Changing output to ");
     if(messageTemp == "ON"){
@@ -500,6 +498,10 @@ String GetChipID(){
   unsigned long l2 = (unsigned long)chipid;
   String result = String(l1, HEX) + String(l2,HEX),rr = "";  
   result.toUpperCase();
+ /* for(int i = 10; i >= 0 ; i+=2){
+      rr += result.substring(i,i+2);
+  }*/
+  //result = result.substring(10) + result.substring(0,10);
   Serial.println(rr + "\n");
   Serial.println(result);
   return result;
