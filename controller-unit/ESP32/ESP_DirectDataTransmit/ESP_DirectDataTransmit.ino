@@ -6,7 +6,7 @@ const char* ssid = "<Your SSID>";
 const char* password = "<Your Password>";
 
 // Add your MQTT Broker IP address, example:
-const char* mqtt_server = "<Your Raspberry's IP>";
+const char* mqtt_server = "Raspberry's IP";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -33,19 +33,23 @@ void WriteAll(byte *frame);
 
 byte dTemperatureCreate(int temp);
 byte arr[12];
-
+String MAC;
 void setup() {
+  // put your setup code here, to run once:
+  //Serial.begin(115200);
   Serial.begin(115200);
   Serial2.begin(1200, SERIAL_8E1);
     
   setup_wifi();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
+  MAC = String(GetChipID());
+  
+  topic_1 = "Astair/"+ MAC + "/AC/CONF/SET/PWR";
+  topic_2 = "Astair/"+ MAC + "/AC/CONF/SET/FAN";
+  topic_3 = "Astair/"+ MAC + "/AC/CONF/SET/MODE";
+  topic_4 = "Astair/"+ MAC + "/AC/CONF/SET/TEMP";
 
-  topic_1 = "Astair/"+ String(GetChipID()) + "/AC/CONF/SET/PWR";
-  topic_2 = "Astair/"+ String(GetChipID()) + "/AC/CONF/SET/FAN";
-  topic_3 = "Astair/"+ String(GetChipID()) + "/AC/CONF/SET/MODE";
-  topic_4 = "Astair/"+ String(GetChipID()) + "/AC/CONF/SET/TEMP";
   topic_5 = "Astair/"+ String(GetChipID()) + "/AC/CONF/GET";
   
   
@@ -62,8 +66,11 @@ byte charRead=0x00;
 
 int readState = 0;
 int writeState = 0;
+unsigned int schuler = 0;
 
 void loop() {  
+  Serial.println(client.connected());
+  reconnect();
   if (!client.connected()) {
     digitalWrite(5, HIGH);   
     delay(1000);                       
@@ -115,18 +122,22 @@ void loop() {
      delay(50);
    }
 
-    float temperat = ((int)Act_Temperature - 32)/1.8;
+    if(schuler%50 == 0){
+      float temperat = ((int)Act_Temperature - 32)/1.8;
+      
+      String Data = strMode+","+ String(Des_Temperature,HEX)+"," + strFan+
+                    ","+ String(Des_OnOff);
+      Serial.println("DATA:::: " + Data + " asd: " + String(temperat));
+                   
+      memset(buf,0,50);
+      topic_5.toCharArray(buf,50);
+      Data.toCharArray(buf1,25);
+      client.publish(buf,buf1);
+      delay(50);
+      
+    }
     
-    String Data = strMode+","+ strFan+
-                  ","+String(Des_Temperature,HEX)+","+
-                  String(temperat)+","+ String(Des_OnOff);
-    Serial.println("DATA:::: " + Data + " Temperature: " + String(temperat));
-                 
-    memset(buf,0,50);
-    topic_5.toCharArray(buf,50);
-    Data.toCharArray(buf1,25);
-    client.publish(buf,buf1);
-    delay(2000);
+    schuler++;
 }
 
 void callback(char* topic, byte* message, unsigned int length) {
@@ -141,7 +152,7 @@ void callback(char* topic, byte* message, unsigned int length) {
   }
   Serial.println();
 
-  if (String(topic) == "Astair/Test/AC/PWR") {
+  if (String(topic) == "Astair/"+ MAC + "/AC/CONF/SET/PWR") {
     Serial.print("Changing output to ");
     if(messageTemp == "ON"){
       Serial.println("PWR:: ON");
@@ -154,7 +165,7 @@ void callback(char* topic, byte* message, unsigned int length) {
       BuildTxFrame(arr,Des_Mode, Des_Fan, Des_Temperature, Act_Temperature, Des_OnOff, Des_Sensor);
     }
   }
-  else if (String(topic) == "Astair/Test/AC/MODE") {
+  else if (String(topic) == "Astair/"+ MAC + "/AC/CONF/SET/MODE") {
     Serial.print("Changing output to ");
     if(messageTemp == "COOL"){
       Serial.println("MODE:: COOL");
@@ -187,7 +198,7 @@ void callback(char* topic, byte* message, unsigned int length) {
       BuildTxFrame(arr,Des_Mode, Des_Fan, Des_Temperature, Act_Temperature, Des_OnOff, Des_Sensor);
     }
   }
-  else if (String(topic) == "Astair/Test/AC/FAN") {
+  else if (String(topic) == "Astair/"+ MAC + "/AC/CONF/SET/FAN") {
     Serial.print("Changing output to ");
     if(messageTemp == "LOW"){
       Serial.println("FAN:: LOW");
@@ -214,7 +225,7 @@ void callback(char* topic, byte* message, unsigned int length) {
       BuildTxFrame(arr,Des_Mode, Des_Fan, Des_Temperature, Act_Temperature, Des_OnOff, Des_Sensor);
     }
   }
-  else if(String(topic) == "Astair/Test/AC/TEMP"){
+  else if(String(topic) == "Astair/"+ MAC + "/AC/CONF/SET/TEMP"){
     //messageTemp.toInt();
     Des_Temperature = dTemperatureCreate(messageTemp.toInt());
     BuildTxFrame(arr,Des_Mode, Des_Fan, Des_Temperature, Act_Temperature, Des_OnOff, Des_Sensor);
@@ -489,10 +500,6 @@ String GetChipID(){
   unsigned long l2 = (unsigned long)chipid;
   String result = String(l1, HEX) + String(l2,HEX),rr = "";  
   result.toUpperCase();
- /* for(int i = 10; i >= 0 ; i+=2){
-      rr += result.substring(i,i+2);
-  }*/
-  //result = result.substring(10) + result.substring(0,10);
   Serial.println(rr + "\n");
   Serial.println(result);
   return result;
