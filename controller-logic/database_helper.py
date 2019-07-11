@@ -63,13 +63,12 @@ class DatabaseConnector:
         result = ()
         survey_table = "survey"
         vote_table = "weatherpoll"
-        map = self.get_column_map(survey_table)
-        last = self.get_last_row(survey_table)[0]
-        time = last[map["data_time"]].strftime("%Y-%m-%d %H:%M:%S")
-        
+        q = "select * from survey order by id desc limit 1;" 
+        self.cursor.execute(q)
+        vote_id = self.cursor.fetchone()[0]
         votes = ["Soguk", "Guzel", "Sicak"]
         for v in votes:
-            q = "select count(id) from " + vote_table + " where data_time > '" + time + "' and vote = '" + v + "';"
+            q = "select count(id) from " + vote_table + " where vote_id = '" + str(vote_id) + "' and vote = '" + v + "';"
             self.cursor.execute(q)
             result += self.cursor.fetchall()[0]
         return result
@@ -90,3 +89,12 @@ class DatabaseConnector:
             result[i] = (r[map["sensor_degree"]], r[map["humidity"]])
             i += 1
         return result
+
+    def get_ac_situation(self, id):
+        ac_table = "ac"
+        q = "select * from " + ac_table + " ac_id = " + str(id) + " order by id desc limit 1;"
+        self.cursor.execute(q)
+        map = self.get_column_map(ac_table)
+        r = self.cursor.fetchone()[0]
+        return (r[map["ac_mode"]], r[map["ac_degree"]], r[map["ac_fan_speed"]], r[map["active"]])
+        

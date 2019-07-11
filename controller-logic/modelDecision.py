@@ -18,7 +18,7 @@ def decisionModel(db):
 
     #receiveTempParameters()
     sensor_data = db.get_last_sensor_data()
-
+    print(sensor_data)
     temperature = sensor_data[4][0]
     humidity = sensor_data[4][1]
 
@@ -36,7 +36,6 @@ def decisionModel(db):
         #pmvModel.display(pmv, ppd, airTemp)
         #pmvModel.writeFile(pmv, ppd, airTemp)
     else:
-        #receiveVoteParameters()
         (cold, good, hot) = db.get_last_survey_results()
         degree = voteBasedModel.voteBaseModel(hot, good, cold, temperature)
         print("Currently it is {} degree and humidity is {}%. A/C should be set to {} degree.".format(temperature, humidity, degree))
