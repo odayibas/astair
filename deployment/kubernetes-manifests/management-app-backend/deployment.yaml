@@ -1,0 +1,148 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: management-backend
+  namespace: astair
+type: Opaque
+data:
+  postgresql-username: dXNlcm5hbWUK
+  postgresql-password: cGFzc3dvcmQK
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: management-backend
+  namespace: astair
+data:
+  postgresql-url: "postgres-url-here"
+  hikari-connection-timeout: "20000"
+  hikari-maximum-pool-size: "5"
+  spring-data-driver-class-name: "org.postgresql.Driver"
+  hibernate-ddl-auto: "update"
+  hibernate-sql-log-level: "DEBUG"
+  server-port: "8090"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: management-backend-service
+  namespace: astair
+  labels:    
+    app: management-backend
+    release: system
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8090
+  selector:
+    app: management-backend
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: management-backend
+  labels:        
+    app: management-backend
+    release: system
+  namespace: astair
+spec: 
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: management-backend
+  template: 
+    metadata:
+      labels:        
+        app: management-backend
+        release: system
+    spec:
+      containers:
+        - image: astar.azurecr.io/astair-management-app-back-end:0.0.2
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "400Mi"
+              cpu: "500m"
+            limits:
+              memory: "800Mi"
+              cpu: "700m"
+          livenessProbe:
+            httpGet:
+              path: /astair-management-backend/actuator/health
+              port: 8090
+            failureThreshold: 5
+            initialDelaySeconds: 40
+            periodSeconds: 5
+            timeoutSeconds: 6
+          readinessProbe:
+            httpGet:
+              path: /astair-management-backend/actuator/health
+              port: 8090
+            failureThreshold: 5
+            initialDelaySeconds: 40
+            periodSeconds: 5
+            timeoutSeconds: 6
+          name: management-backend
+          ports: 
+            - containerPort: 8090
+          env:
+            - name: JAVA_OPTS
+              value: "-Dspring.profiles.active=deployment -Duser.timezone=Europe/Istanbul -Xms600m -Xmx600m"
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: management-backend
+                  key: server-port
+            - name: HIKARI_CONNECTION_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: management-backend
+                  key: hikari-connection-timeout
+            - name: HIKARI_MAXIMUM_POOL_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: management-backend
+                  key: hikari-maximum-pool-size
+            - name: POSTGRESQL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: management-backend
+                  key: postgresql-url
+            - name: POSTGRESQL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: management-backend
+                  key: postgresql-username
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: management-backend
+                  key: postgresql-password
+            - name: SPRING_DATA_DRIVER_CLASS_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: management-backend
+                  key: spring-data-driver-class-name
+            - name: HIBERNATE_DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: management-backend
+                  key: hibernate-ddl-auto
+            - name: HIBERNATE_SQL_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: management-backend
+                  key: hibernate-sql-log-level
+      imagePullSecrets:
+        - name: astar-docker-registry-secret

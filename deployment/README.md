@@ -35,3 +35,23 @@ Run a command in a new container for backend and frontend. As follows:
 `docker run -d -p 8090:8090 astair-backend`
 
 `docker run -d -p 3000:3000 astair-frontend`
+
+# Deploy ASTAiR to Kubernetes
+
+Create namespace, cluster issuer, certificate and ingress:
+
+```bash
+for manifest in namespace certificate clusterissuer ingress; 
+do 
+    kubectl apply -f $manifest.yaml
+done
+```
+
+Deploy management-app-backend,feedback-collector and management-app-frontend:
+
+```bash
+for manifest in management-app-backend feedback-collector management-app-frontend; 
+do 
+    kubectl apply -f $manifest.yaml
+done
+```
