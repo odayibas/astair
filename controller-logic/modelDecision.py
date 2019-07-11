@@ -1,17 +1,27 @@
 import pmvModel
 import voteBasedModel
+import schedule
+import time
+from database_helper import DatabaseConnector
 
-def receiveTempParameters():
+def receiveTempParameters(db):
     pass
 
-def receiveVoteParameters():
+def receiveVoteParameters(db):
+    db.get_last_survey_results()
     pass
 
-def receivePMVParameters():
+def receivePMVParameters(db):
     pass
 
-def decisionModel():
+def decisionModel(db):
+
     #receiveTempParameters()
+    sensor_data = db.get_last_sensor_data()
+
+    temperature = sensor_data[4][0]
+    humidity = sensor_data[4][1]
+
     airTemp = 27
     newMeanTemp = 26
     oldMeanTemp = 23.5
@@ -27,9 +37,21 @@ def decisionModel():
         #pmvModel.writeFile(pmv, ppd, airTemp)
     else:
         #receiveVoteParameters()
-        hotValues = 30
-        coldValues = 10
-        goodValues = 15
-        degree = voteBasedModel.voteBaseModel(hotValues, goodValues, coldValues, airTemp)
-        #voteBasedModel.display(degree)
-        #voteBasedModel.writeFile(degree)
+        (cold, good, hot) = db.get_last_survey_results()
+        degree = voteBasedModel.voteBaseModel(hot, good, cold, temperature)
+        print("Currently it is {} degree and humidity is {}%. A/C should be set to {} degree.".format(temperature, humidity, degree))
+
+def start():
+    
+    db = DatabaseConnector()
+    db.connect_db()
+
+    decisionModel(db)
+
+    # # After every 10mins work() is called.
+    # schedule.every(3).seconds.do(decisionModel, db = db)
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)
+
+start()
