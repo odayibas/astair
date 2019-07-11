@@ -3,21 +3,28 @@ import React, {Component} from 'react'
 import {Line} from 'react-chartjs-2';
 import {
   Card,
-  Col,
   CardBody,
   Row,
 } from 'reactstrap';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle} from '@coreui/coreui/dist/js/coreui-utilities'
 
+import axios from 'axios'
+
+import  AC from "@material-ui/icons/AcUnit";
+import Humidity from "@material-ui/icons/Opacity";
+
 const brandPrimary = getStyle('--primary')
+
+const urlArr = ['1','2','3','4']
+const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
 let orange = 'rgba(214, 69, 65, 1)';
 let red = 'rgba(252, 214, 112, 1)';
 
 
-// Card Chart 1
-const cardChartData1 = {
+
+const sensorData = {
     labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
     datasets: [
         {
@@ -28,10 +35,9 @@ const cardChartData1 = {
         },
       ],
     };
-  
-  
-  
-    const cardChartOpts1 = {
+
+
+const sensorOpts = {
       tooltips: {
         enabled: false,
         custom: CustomTooltips
@@ -58,8 +64,8 @@ const cardChartData1 = {
             display: false,
             ticks: {
               display: false,
-              min: Math.min.apply(Math, cardChartData1.datasets[0].data) - 5,
-              max: Math.max.apply(Math, cardChartData1.datasets[0].data) + 5,
+              min: Math.min.apply(Math, sensorData.datasets[0].data) - 5,
+              max: Math.max.apply(Math, sensorData.datasets[0].data) + 5,
             },
           }],
       },
@@ -73,6 +79,7 @@ const cardChartData1 = {
           hoverRadius: 4,
         },
       }
+
     }
     
     
@@ -104,7 +111,7 @@ function interpolateColors(color1, color2, steps) {
     for (var i = 0; i < steps.length; i++) {
         newArr.push({
           temp : steps[i][0],  
-          humudity : steps[i][1],
+          humidity : steps[i][1],
           region : steps[i][2],
           color : interpolateColor(color1, color2, stepFactor * i)
         })
@@ -113,24 +120,65 @@ function interpolateColors(color1, color2, steps) {
 }
 
 
+
+
+
 class SensorCards extends Component{
     constructor(props){
         super(props)
     }
+    componentDidMount(){
+
+      let newTime = Date.now() - this.props.date;
+      setInterval(() => { 
+      //  this.getacData().then(data => {})
+      }, 5000);
+
+    }
 
 
-getSensors = (sensorArr) => {
-    return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
-    <Row style={{margin: 20, marginTop : "-20px"}}>
-        <Card style={{background: sensor.color}}>
+    getacData = async () =>{
+
+      const responses = await Promise.all(
+        urlArr.map(url => 
+           axios(urlServer + '/AC/get-zone/'+ url).
+            then((res) => { 
+              this.props.ac[parseInt(url)] = {
+                "ac_id" : res.data[res.data.length - 1].ac_id,
+                "ac_degree" : res.data[res.data.length - 1].ac_degree,
+                "ac_mode" : res.data[res.data.length - 1].ac_mode,
+                "ac_fan_speed": res.data[res.data.length - 1]. ac_fan_speed,
+                "active" : res.data[res.data.length - 1].active 
+              }  
+              this.setState({
+                ac : this.props.ac
+              });
+              //  this.drawTempChart(res)
+    
+        })
+      )
+    );
+    }
+    
+    callbackSensor(ac){
+      this.props.callbackSensor(ac);
+    }
+
+
+    getSensors = (sensorArr) => {
+      return sensorArr.sort((sensor, sensor2) => (sensor.region - sensor2.region)).map((sensor, i) => (
+        <Row style={{margin: 20, marginTop : "-20px"}}>
+          <Card style={{background: sensor.color}}>
             <CardBody className="pb-0">
-            <div> <h5>INDOOR {i+1} </h5></div>
-            <Col><div><h4 style = {{textAlign : 'right'}}>Temperature : {sensor.temp}°C</h4></div></Col>
-            <Col><div><h4 style = {{textAlign : 'right'}}>Humidity : {sensor.humudity} % </h4> </div></Col>
+            <div> <h3>INDOOR {i+1} </h3></div>
+            <div><h4>{sensor.temp}°C</h4></div>
+            <div><h4 style = {{textAlign : 'right'}}> <AC/> : {sensor.temp}  </h4> </div>
+            <div><h4 style = {{textAlign : 'right'}}> <Humidity/> : {sensor.humidity} % </h4> </div>
+
             </CardBody> 
-            <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+            <div className="chart-wrapper mx-3" style={{ height: '40px' }}>
             <Line data={ 
-            {labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],    
+            {labels: ['', '', '', '', ''],    
              datasets: [
                {
                 label: `Region ${i}`,
@@ -138,10 +186,10 @@ getSensors = (sensorArr) => {
                 borderColor: 'rgba(255,255,255,.55)',
                 data: [23, 24, 22, 23, 23]
               },
-            ],}}options={cardChartOpts1} height={70} />
+            ],}}options={sensorOpts} height={40} />
             </div>
-        </Card>
-    </Row>))}
+          </Card>
+       </Row>))}
 
 render(){     
 
@@ -149,13 +197,13 @@ render(){
         [this.props.sensorTemp[1],this.props.sensorHum[1],1],
         [this.props.sensorTemp[2],this.props.sensorHum[2],2],
         [this.props.sensorTemp[3],this.props.sensorHum[3],3],
-        [this.props.sensorTemp[4],this.props.sensorHum[4],4]
+        [this.props.sensorTemp[4],this.props.sensorHum[4],4],
       ].sort((sensor, sensor2) => (sensor[0] - sensor2[0])))
     
       return(
-          <div>
-          {this.getSensors(sensorArr)}
-          </div>
+      <div>
+      {this.getSensors(sensorArr)}
+      </div>
 
             )
         }

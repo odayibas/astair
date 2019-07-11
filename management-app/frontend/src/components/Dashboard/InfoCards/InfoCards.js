@@ -30,12 +30,33 @@ class InfoCards extends Component{
       slack100(a) {
         var x =  (this.props.hot +  this.props.cold +  this.props.nice)
         a = a * 100   
-        var y = a / x
-        return parseInt(y)
+        var y = parseInt(a / x)
+        return y
       }
 render(){
     return(
         <Row className="text-center">
+           <Col >
+            <Card style={{padding : '65px'}} >
+              <CardBody className="pb-0" icon>
+               <Cloud/>
+                <div   className="text-value"> <h4> OUTDOOR </h4>
+                <h2> {this.props.temp} °C </h2>
+                </div>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col >
+              <Card style={{padding : '65px'}} >
+              <CardBody className="pb-0" icon>
+               <Office/>
+                  <div className="bg-transparent">
+                  <h4> INDOOR </h4>
+                  <h2>  {this.avgmodal()} °C </h2>               
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
             <Col sm={12} md className="mb-sm-2 mb-0">
               <Card style={{padding : '30px'}}>
                 <CardTitle><h4>Slack</h4></CardTitle>
@@ -50,17 +71,7 @@ render(){
               </Card>
             </Col>
              <Col >
-              <Card style={{padding : '65px'}} >
-              <CardBody className="pb-0" icon>
-               <Cloud/>
-                <div   className="text-value"> <h4> OUTDOOR </h4>
-                <h2> {this.props.temp} °C </h2>
-                </div>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col >
-            <Card style={{padding : '65px'}} >
+             <Card style={{padding : '65px'}} >
             <CardBody className="pb-0" icon>
              <People/>
                 <div className="text-value">
@@ -78,20 +89,8 @@ render(){
                     <h2>{this.props.female}	</h2>
                 </Col>
                 </Row> */}
-              </CardBody>
-           
+              </CardBody>           
             </Card>
-            </Col>
-            <Col >
-              <Card style={{padding : '65px'}} >
-              <CardBody className="pb-0" icon>
-               <Office/>
-                  <div className="bg-transparent">
-                  <h4> INDOOR </h4>
-                  <h2>  {this.avgmodal()} °C </h2>               
-                  </div>
-                </CardBody>
-              </Card>
             </Col>
           </Row>   
     )}
