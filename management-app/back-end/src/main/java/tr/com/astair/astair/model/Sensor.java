@@ -26,9 +26,7 @@ public class Sensor {
     @Column(name = "humidity")
     private Float humidity;
 
-    public Sensor() {
-
-    }
+    public Sensor() {}
 
     public Sensor(Integer ac_id, String date_time, Float sensor_degree, Float humidity) {
         this.ac_id = ac_id;

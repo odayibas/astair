@@ -32,7 +32,7 @@ public class User {
 	@Column(name="user_password")
 	private String password;
 	
-	//@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	
 	public Long getId() {
 		return id;

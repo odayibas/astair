@@ -1,6 +1,8 @@
 package tr.com.astair.astair.service.Imp;
 
+import org.hibernate.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.AC;
 import tr.com.astair.astair.repository.ACRepository;
@@ -22,12 +24,21 @@ public class ACServiceImp implements ACService {
         return acRepository.save(ac);
     }
 
-    public AC getById(Long id) {
-        return acRepository.getOne(id);
+    public List<AC> getByZone(Integer ac_zone) {
+        try {
+            Example<AC> acExample = Example.of(new AC(ac_zone, null, null, null,null,null));
+            return acRepository.findAll(acExample);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public List<AC> get() {
-        return acRepository.findAll();
+        try {
+            return acRepository.findAll();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
     }
 
     public void update(AC ac) {
@@ -45,5 +56,20 @@ public class ACServiceImp implements ACService {
     public Integer getACCount(){
         return acRepository.getACCount();
     }
-
+    
+    public Float getACDegreeAvg(Integer ac_id) {
+        try {
+            return acRepository.getACDegreeAvg(ac_id);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+    
+    public Float getAllACDegreeAvg() {
+        try {
+            return acRepository.getAllACDegreeAvg();
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
 }

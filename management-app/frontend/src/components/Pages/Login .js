@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import  {login} from "./UserFunctions"
-import {get as getCookie, remove as removeCookie } from 'es-cookie';
 
 
 class Login extends Component {
@@ -43,12 +42,6 @@ class Login extends Component {
         })
     }
 
-    componentDidMount(){
-        window.addEventListener(
-            "beforeunload",
-            removeCookie('usertoken')
-        );
-    }
     render(){
 
         

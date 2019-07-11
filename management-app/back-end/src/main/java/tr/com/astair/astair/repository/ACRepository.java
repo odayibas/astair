@@ -13,5 +13,13 @@ public interface ACRepository extends JpaRepository<AC, Long> {
 
     @Query(nativeQuery = true, value = "select MAX(ac_id) from ac ")
     Integer getACCount();
+    
+    // get average degree of all AC
+    @Query(nativeQuery = true, value = "select AVG(ac_degree) as ac_degree  from(select * from AC ac ORDER BY Id desc LIMIT 30) as ac1")
+    Float getAllACDegreeAvg();
+    
+    // get average degree of a sensor
+    @Query(nativeQuery = true, value = "select AVG(ac_degree) as ac_degree  from(select * from AC ac where ac.ac_id = :ac_id ORDER BY Id desc LIMIT 30)as ac group by ac.ac_id having ac.ac_id = :ac_id ")
+    Float getACDegreeAvg(@Param("ac_id") Integer ac_id);
 
 }

@@ -20,7 +20,8 @@ WORKDIR /usr/src/app
 # copy over the built artifact from the maven image
 COPY --from=maven target/*.jar .
 
-# set the startup command to run binary and expose it
-EXPOSE 8090
+# expose the port
+EXPOSE ${SERVER_PORT}
 
-CMD java -jar *.jar
+# set the startup command
+CMD java ${JAVA_OPTS} -jar *.jar

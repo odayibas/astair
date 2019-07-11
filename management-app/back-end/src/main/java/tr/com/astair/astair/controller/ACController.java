@@ -3,7 +3,6 @@ package tr.com.astair.astair.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.astair.astair.controller.api.ACControllerApi;
@@ -12,7 +11,6 @@ import tr.com.astair.astair.service.ACService;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 @RestController
 public class ACController implements ACControllerApi {
@@ -51,5 +49,31 @@ public class ACController implements ACControllerApi {
         return new ResponseEntity<>(ac, HttpStatus.OK);
     }
 
+	@Override
+	public ResponseEntity<List<AC>> getByZone(Integer id) {
+		List<AC> test = acService.getByZone(id);
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(test, HttpStatus.OK);
+	}
 
+	@Override
+	public ResponseEntity<Float> getACDegreeAvg(Integer id) {
+		Float test = acService.getACDegreeAvg(id);
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<Float>(test, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Float> getAllACDegreeAvg() {
+		Float test = acService.getAllACDegreeAvg();
+        if (test == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<Float>(test, HttpStatus.OK);
+	}
 }
+

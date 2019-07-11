@@ -12,7 +12,6 @@ from slackclient import SlackClient
 from cryptography.fernet import Fernet
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'XYZ')
 
 db_conn = databaseOperations.connect_db()
 key = Fernet.generate_key()
@@ -34,7 +33,7 @@ def getUserList():
     for i in range(len(members)):
         useri=members[i]
         userinfo[useri["name"]]=useri["id"]
-    return userinfo    
+    return userinfo
 
 def sendLocationSurveyOneUser(username):
     
@@ -56,11 +55,15 @@ def response_Interactive_Message(responseurl,text="Thanks :)"):
     "text": text
 }
     x = requests.post(responseurl,data=json.dumps(resdata))
-@app.route('/')
+@app.route('/feedback-collector')
 def index():
     return "App for Slack results (Services)"
 
-@app.route("/slack/oauth", methods=["GET"])
+@app.route('/feedback-collector/health')
+def health():
+    return "UP"
+
+@app.route("/feedback-collector/slack/oauth", methods=["GET"])
 def oauth():
     client_id=os.environ["CLIENT_ID"]
     client_secret=os.environ["CLIENT_SECRET"]
@@ -75,7 +78,7 @@ def oauth():
 
     return make_response("App Installed",200)
 
-@app.route("/slack/returns", methods=["POST"])
+@app.route("/feedback-collector/slack/returns", methods=["POST"])
 def message_actions():
     
     form_json = json.loads(request.form["payload"])
@@ -112,7 +115,7 @@ def message_actions():
     
     return make_response(returnText,200)
 
-@app.route("/slack/airSurvey", methods=["POST"])
+@app.route("/feedback-collector/slack/airSurvey", methods=["POST"])
 def sendAirSurvey(creater="Auto"):
     
     sc = SlackClient(decryptToken())
@@ -127,7 +130,7 @@ def sendAirSurvey(creater="Auto"):
     databaseOperations.addSurvey(db_conn,creater)
     return make_response("Success",200)
 
-@app.route("/slack/locationSurvey", methods=["POST"])
+@app.route("/feedback-collector/slack/locationSurvey", methods=["POST"])
 def sendLocationSurvey():
     
     sc = SlackClient(decryptToken())
@@ -143,7 +146,7 @@ def sendLocationSurvey():
     
     return make_response("Success",200)
 
-@app.route("/slack/slash", methods=["POST"])
+@app.route("/feedback-collector/slack/slash", methods=["POST"])
 def collectSlashRequests():
     username=request.form["user_name"]
     command=request.form["command"]
@@ -179,7 +182,7 @@ def collectSlashRequests():
         return make_response(ret,200)
     else:
         return make_response("This command is not exist.",200)
-@app.route('/slack/setSchedule', methods=["POST"])
+@app.route('/feedback-collector/slack/setSchedule', methods=["POST"])
 def setSchedule(hourSlash):
     hour = request.form.get("hour")
     print("schedule setted "+str(hour)+ " hours")
@@ -187,16 +190,16 @@ def setSchedule(hourSlash):
     print("schedule added")
     return make_response("Success",200)
 
-@app.route('/slack/removeSchedule', methods=["POST"])
+@app.route('/feedback-collector/slack/removeSchedule', methods=["POST"])
 def removeSchedule():
     scheduler.remove_job("surveyschedule")
     print("Schedule removed")
     return make_response("Success",200)
 
-@app.route("/slack/heya", methods=["POST"])
+@app.route("/feedback-collector/slack/heya", methods=["POST"])
 def retret():
     
     return make_response("Success",200)
 
 if (__name__ == '__main__'):
-   app.run()
+   app.run(debug=True,host='0.0.0.0',port=5000)

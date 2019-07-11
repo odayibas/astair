@@ -4,7 +4,7 @@ import psycopg2
 import os
 from datetime import datetime
 def connect_db():
-   return psycopg2.connect(os.environ.get('DATABASE_URL'))
+   return psycopg2.connect(os.environ.get('POSTGRESQL_URL'))
 
 def addVoteRecord(connection,username,vote):
     userid=isUserExist(connection,username,"PersonalInfo")
@@ -175,4 +175,3 @@ def setToken(connection,token,username):
     connection.commit()
     cursor.close()
     return True
-        

@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: management-frontend
+  namespace: astair
+data:
+  react-app-astair-management-backend: "https://astair.northeurope.cloudapp.azure.com/astair-management-backend"
+  react-app-port: "3000"
+  skip-preflight-check: "true"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: management-frontend-service
+  namespace: astair
+  labels:    
+    app: management-frontend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+  selector:
+    app: management-frontend
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: management-frontend
+  labels:        
+    app: management-frontend
+  namespace: astair
+spec: 
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: management-frontend
+  template:
+    metadata:
+      labels:        
+        app: management-frontend
+    spec:
+      containers: 
+        - image: astar.azurecr.io/astair-management-app-frontend:0.0.2
+          name: management-frontend
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "200m"
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            failureThreshold: 5
+            timeoutSeconds: 6
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 20
+            failureThreshold: 5
+            periodSeconds: 5
+            timeoutSeconds: 6
+          ports:
+            - containerPort: 3000
+          env:
+            - name: REACT_APP_ASTAIR_MANAGEMENT_BACKEND
+              valueFrom:
+                configMapKeyRef:
+                  name: management-frontend
+                  key: react-app-astair-management-backend
+            - name: REACT_APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: management-frontend
+                  key: react-app-port
+            - name: SKIP_PREFLIGHT_CHECK
+              valueFrom:
+                configMapKeyRef:
+                  name: management-frontend
+                  key: skip-preflight-check
+      terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: astar-docker-registry-secret
