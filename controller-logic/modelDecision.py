@@ -1,7 +1,5 @@
 import pmvModel
 import voteBasedModel
-import schedule
-import time
 from database_helper import DatabaseConnector
 
 def receiveTempParameters(db):

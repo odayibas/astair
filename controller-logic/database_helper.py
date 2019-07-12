@@ -63,7 +63,7 @@ class DatabaseConnector:
         result = ()
         survey_table = "survey"
         vote_table = "weatherpoll"
-        q = "select * from survey order by id desc limit 1;" 
+        q = "select * from " + survey_table + " order by id desc limit 1;" 
         self.cursor.execute(q)
         vote_id = self.cursor.fetchone()[0]
         votes = ["Soguk", "Guzel", "Sicak"]
