@@ -25,8 +25,9 @@ def gather_data(db):
     sensor_data = db.get_last_sensor_data()
     survey_data = db.get_last_survey_results()
     ac_data = db.get_ac_situation()
-    print(sensor_data, survey_data, ac_data, sep="\n" + 40 * "*" + "\n")
-        
+    outdoor_data = db.get_outdoor_weather()
+    print(sensor_data, survey_data, ac_data, outdoor_data, sep="\n" + 40 * "*" + "\n")
+
 def start():
     
     db = DatabaseConnector()

@@ -1,5 +1,6 @@
 import psycopg2
 from datetime import datetime
+import requests
 
 class DatabaseConnector:
 
@@ -125,3 +126,8 @@ class DatabaseConnector:
             result[r[map["ac_id"]]] = (r[map["ac_mode"]], r[map["ac_degree"]], r[map["ac_fan_speed"]], r[map["active"]])
         return result
     
+    def get_outdoor_weather(self): # Should be done in back-end (Fix it later)
+        url = "https://api.darksky.net/forecast/f31a2aba5c564c041bff47dea985c048/39.908065,32.751893?units=si"
+        r = requests.get(url)
+        response = r.json()
+        return (response["currently"])["apparentTemperature"]
