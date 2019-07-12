@@ -10,11 +10,16 @@ class DatabaseConnector:
     # Establishing database connection
     def connect_db(self):
         print("Connecting to the database...")
-        self.connection = psycopg2.connect(
-            "postgres://ieeqrnduqiqxzh:1a73349164864823f58c9ffed9cffb5ef95a7461d4407637cde89dafff352020@ec2"
-            "-46-137-113-157.eu-west-1.compute.amazonaws.com:5432/d879gk0v4thape")
-        self.cursor = self.connection.cursor()
+        try :
+            self.connection = psycopg2.connect(
+                "postgres://ieeqrnduqiqxzh:1a73349164864823f58c9ffed9cffb5ef95a7461d4407637cde89dafff352020@ec2"
+                "-46-137-113-157.eu-west-1.compute.amazonaws.com:5432/d879gk0v4thape")
+            self.cursor = self.connection.cursor()
+        except:
+            print("Error: Could not connect to the database.")
+            return 1
         print("Connected to the database successfully.")
+        return 0
 
     def get_table(self, tablename):
         query = "select * from " + tablename + ";"
@@ -59,18 +64,37 @@ class DatabaseConnector:
         result = self.cursor.fetchall()
         return result
 
+    def get_user_locations(self):
+        result = {}
+        table = self.get_table("personalinfo")
+        map = self.get_column_map("personalinfo")
+        for r in table:
+            result[r[map["id"]]] = r[map["ac_id"]]
+        return result
+
     def get_last_survey_results(self):
-        result = ()
+        result = {}
         survey_table = "survey"
         vote_table = "weatherpoll"
+        user_locations = self.get_user_locations()
         q = "select * from " + survey_table + " order by id desc limit 1;" 
         self.cursor.execute(q)
         vote_id = self.cursor.fetchone()[0]
-        votes = ["Soguk", "Guzel", "Sicak"]
-        for v in votes:
-            q = "select count(id) from " + vote_table + " where vote_id = '" + str(vote_id) + "' and vote = '" + v + "';"
-            self.cursor.execute(q)
-            result += self.cursor.fetchall()[0]
+        q = "select * from " + vote_table + " where vote_id = " + str(vote_id) + ";"
+        self.cursor.execute(q)
+        r = self.cursor.fetchall()
+        map = self.get_column_map(vote_table)
+        vote_map = {"Soguk" : 0, "Guzel" : 1, "Sicak" : 2}
+
+        for record in r:
+            ac_id = user_locations[record[map["user_id"]]]
+            vote = vote_map[record[map["vote"]]]
+            if ac_id in result:
+                result[ac_id][vote] += 1            
+            else:
+                result[ac_id] = [0, 0, 0]
+                result[ac_id][vote] = 1
+
         return result
 
     def get_last_sensor_data(self):
@@ -90,11 +114,14 @@ class DatabaseConnector:
             i += 1
         return result
 
-    def get_ac_situation(self, id):
+    def get_ac_situation(self):
+        result = {}
         ac_table = "ac"
-        q = "select * from " + ac_table + " ac_id = " + str(id) + " order by id desc limit 1;"
+        q = " select * from " + ac_table + " where id in (select max(id) from " + ac_table + " group by ac_id);"
         self.cursor.execute(q)
+        records = self.cursor.fetchall()
         map = self.get_column_map(ac_table)
-        r = self.cursor.fetchone()[0]
-        return (r[map["ac_mode"]], r[map["ac_degree"]], r[map["ac_fan_speed"]], r[map["active"]])
-        
+        for r in records:
+            result[r[map["ac_id"]]] = (r[map["ac_mode"]], r[map["ac_degree"]], r[map["ac_fan_speed"]], r[map["active"]])
+        return result
+    
