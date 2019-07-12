@@ -1,0 +1,17 @@
+releaseApp: management-app-backend-k8s
+releaseNamespace: astair
+
+imageRepository: astar.azurecr.io/astair-management-app-backend
+imageTag: 0.0.2
+imagePullPolicy: Always
+
+replicas: 3
+namespace: astair
+serverPort: 8090
+
+cpuLimit: "700m"
+cpuRequest: "500m"
+memoryLimit: "800Mi"
+memoryRequest: "400Mi"
+
+livenessProbeHealthCheckEndpoint: /astair-management-backend/actuator/health

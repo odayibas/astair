@@ -1,0 +1,18 @@
+releaseApp: feedback-collector-k8s
+releaseNamespace: astair
+
+imageRepository: astar.azurecr.io/astair-feedback-collector
+imageTag: 0.0.2
+imagePullPolicy: Always
+
+replicas: 3
+namespace: astair
+applicationPort: 5000
+
+cpuLimit: "500m"
+cpuRequest: "300m"
+memoryLimit: "600Mi"
+memoryRequest: "400Mi"
+
+timezone: Europe/Istanbul
+livenessProbeHealthCheckEndpoint: /feedback-collector/health

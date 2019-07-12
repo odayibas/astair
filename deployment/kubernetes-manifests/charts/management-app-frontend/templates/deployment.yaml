@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: {{ template "management_app_frontend.full_name" . }}
+  labels:
+    {{- include "management_app_frontend.release_labels" . | indent 8 }}
+  namespace: {{ .Values.namespace }}
+spec: 
+  replicas: {{ .Values.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ template "management_app_frontend.full_name" . }}
+  template: 
+    metadata:
+      labels: 
+        {{- include "management_app_frontend.release_labels" . | indent 8 }}
+      annotations:
+        checksum/config-map: {{ include (print $.Chart.Name "/templates/configmap.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - image: {{ .Values.imageRepository }}:{{ .Values.imageTag }}
+          resources:
+            limits:
+              cpu: {{ .Values.cpuLimit }}
+              memory: {{ .Values.memoryLimit }}
+            requests:
+              cpu: {{ .Values.cpuRequest }}
+              memory: {{ .Values.memoryRequest }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbeHealthCheckEndpoint }}
+              port: {{ .Values.reactAppPort }}
+            failureThreshold: 5
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 6
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbeHealthCheckEndpoint }}
+              port: {{ .Values.reactAppPort }}
+            failureThreshold: 5
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 6
+          name: {{ template "management_app_frontend.full_name" . }}
+          ports: 
+            - containerPort: {{ .Values.reactAppPort }}
+          env:
+            - name: REACT_APP_ASTAIR_MANAGEMENT_BACKEND
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_frontend.full_name" . }}
+                  key: react-app-astair-management-backend
+            - name: REACT_APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_frontend.full_name" . }}
+                  key: react-app-port
+            - name: SKIP_PREFLIGHT_CHECK
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_frontend.full_name" . }}
+                  key: skip-preflight-check
+      terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: astar-docker-registry-secret
