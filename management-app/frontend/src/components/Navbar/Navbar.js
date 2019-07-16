@@ -19,7 +19,7 @@ class Navbar extends Component{
                 <div className="navbar-brand"><h4>ASTAiR</h4></div>  
                 <ul className ="navbar-nav">
                 <li className = "nav -item">
-                    <Link to= "/" className="nav-link">
+                    <Link to= "/login" className="nav-link">
                     <h5>Login</h5> 
                     </Link>
                 </li>

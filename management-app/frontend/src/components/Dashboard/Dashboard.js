@@ -26,18 +26,23 @@ class Dashboard extends Component{
           humidity: null,
           visibility: null,
           timezone : null,
-          sensor : [{}],
-          sensorTemp: {},
-          sensorHum : {},
-          ac : [
-            {
-              ac_id : "",
-              ac_degree : "",
-              ac_mode : "",
-              ac_fan_speed : "",
-              active : "",
-            }
-          ],
+          sensor : [{
+            temp :"",
+            hum : ""
+
+          },
+        ],
+        sensorTemp: {},
+        sensorHum : {},
+        ac : [
+          {
+            ac_id : "",
+            ac_degree : "",
+            ac_mode : "",
+            ac_fan_speed : "",
+            active : "",
+          }
+        ],
           hot: null,
           nice : null,
           cold : null,
@@ -145,7 +150,7 @@ class Dashboard extends Component{
         )
       }
       else{
-        return <Redirect to='/'/>;
+        return <Redirect to='/login'/>;
       }
     }
     

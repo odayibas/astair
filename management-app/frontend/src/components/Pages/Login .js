@@ -31,7 +31,7 @@ class Login extends Component {
         .then(res =>{
           console.log (res)
           if(res === -2 || res === -1) {
-            return  this.props.history.push('/')
+            return  this.props.history.push('/login')
           }
           else{
             return this.props.history.push('/dashboard');

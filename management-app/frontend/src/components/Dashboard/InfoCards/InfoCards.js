@@ -15,10 +15,6 @@ import Cloud from "@material-ui/icons/Cloud";
 import Office from "@material-ui/icons/BusinessCenter";
 
 class InfoCards extends Component{
-    constructor(props){
-        super(props)
-    }
-
     avgmodal() {
         var x =  (this.props.sensorTemp[1] +  this.props.sensorTemp[2] +  this.props.sensorTemp[3] + this.props.sensorTemp[4])/4
         x = x * 100   
