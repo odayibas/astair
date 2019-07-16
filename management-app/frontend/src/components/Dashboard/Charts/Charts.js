@@ -24,6 +24,8 @@ const brandPrimary = getStyle('--primary')
 const brandInfo = getStyle('--info')
 const brandDanger = getStyle('--danger')
 const brandSuccess = getStyle('--success')
+const brandWarning = getStyle('--warning')
+
 
 
   var tempValue = "0";
@@ -36,21 +38,32 @@ const brandSuccess = getStyle('--success')
     responsive : true,
     datasets: [
       {
-        label: 'AVERAGE TEMPERATURE',
+        label: 'SENSOR',
         type:'line',
-        backgroundColor: hexToRgba(brandInfo, 10),
-        borderColor: brandInfo,
+      //  backgroundColor: hexToRgba('#f9690e', 10),
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderColor: '#f9690e',
         pointHoverBackgroundColor: '#fff',
         borderWidth: 4,
         data: []
       },
       {
-        label: 'PEOPLE COUNT',
+        label: 'PEOPLE',
         type: 'bar',
-        backgroundColor: hexToRgba(brandDanger, 10),
-        borderColor: brandDanger,
+        backgroundColor: hexToRgba('#663399', 10),
+        borderColor: '#663399',
         pointHoverBackgroundColor: '#fff',
         borderWidth: 2,
+        data: [],
+      },
+      {
+        label: 'AC',
+        type: 'line',
+        // backgroundColor: hexToRgba(brandPrimary, 10),
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderColor: brandPrimary,
+        pointHoverBackgroundColor: '#fff',
+        borderWidth: 4,
         data: [],
       },
     ],
@@ -89,7 +102,7 @@ const brandSuccess = getStyle('--success')
           position: 'left',
           ticks: {
             min: 0,
-            max: 100,
+            max: 90,
           },
           id: "y-axis-0",
         },
@@ -98,7 +111,7 @@ const brandSuccess = getStyle('--success')
           position: 'right',
           ticks: {
             min: 0,
-            max: 100,
+            max: 90,
           },
           id: "y-axis-1",
         }],
@@ -182,7 +195,7 @@ const brandSuccess = getStyle('--success')
       .catch((error) => {
             console.log(error)
           })
-        }
+    }
       
     getSlack =  async() => {
     
@@ -203,9 +216,8 @@ const brandSuccess = getStyle('--success')
 
       return axios.get(urlServer + "/sensor/get-ave-degree")
       .then((res) => {
-
-
           this.drawTempChart(res)
+          this.drawACChart()
           
       })
     }
@@ -218,8 +230,6 @@ const brandSuccess = getStyle('--success')
               then((res) => {    
                 this.props.sensorTemp[parseInt(url)]= res.data[res.data.length - 1].sensor_degree
                 this.props.sensorHum[parseInt(url)]= res.data[res.data.length - 1].sensor_humidity
-              //  this.drawTempChart(res)
-
           })
         )
       );
@@ -249,28 +259,28 @@ const brandSuccess = getStyle('--success')
     
     this.state.avgsensor = res.data
    
-   /*      if(loadValue === 0)
-        { */
+         if(loadValue === 0)
+        { 
             for (var i = mainChart.datasets[0].data.length ; i < 20 ; i++) {
               this.state.avgsensor = res.data
               mainChart.datasets[0].data.push( this.state.avgsensor);
 
-               /* 
+              
                 if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
-                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 5);
-                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 5);
+                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
+                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
                 }
                 else
                 {
-                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 5);
-                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 5);
+                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
+                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
     
-                } */
+                } 
             }
-/*             loadValue = 1;
+             loadValue = 1;
           
         }
-  */
+  
 
 
           mainChart.datasets[0].data.push( this.state.avgsensor);
@@ -278,19 +288,19 @@ const brandSuccess = getStyle('--success')
         while (mainChart.datasets[0].data.length > 20)
           {
               mainChart.datasets[0].data.shift();
-          //    mainChart.labels.shift();
+          //   mainChart.labels.shift();
              
           }
-     /*      if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
-            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 5);
-            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 5);
+          if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
+            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
           }
           else
           {
-            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 5);
-            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 5);
+            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
 
-          }  */
+          } 
 
 
     }
@@ -307,17 +317,17 @@ const brandSuccess = getStyle('--success')
             presentState.people=res.data[i].occupancy
             mainChart.datasets[1].data.push(presentState.people);
 
-         /*    if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
-              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 5);
-              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 5);
+            if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
+              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
+              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
             }
             else
             {
-              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 5);
-              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 5);
+              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
+              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
 
             }
-             */
+            
           }
           loadValue2 = 1;
       }
@@ -328,23 +338,37 @@ const brandSuccess = getStyle('--success')
             mainChart.datasets[1].data.shift();
 
         }
-     /*    if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
-          mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 5);
-          mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 5);
+        if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
+          mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
+          mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
         }
         else
         {
-          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 5);
-          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 5);
+          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
+          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
 
         }
 
 
-       */
+      
         this.setState({
           ...presentState
       })
 
+    }
+    
+    drawACChart(){
+   
+       for (var i = mainChart.datasets[0].data.length ; i < 20 ; i++) {
+          mainChart.datasets[2].data.push(this.props.ac[1] && this.props.ac[1].ac_degree);
+      }
+            
+        mainChart.datasets[2].data.push(this.props.ac[1] &&this.props.ac[1].ac_degree);
+        
+        while (mainChart.datasets[2].data.length > 20){
+        mainChart.datasets[2].data.shift();    
+      }
+    
     }
   
     getChart = () => {
@@ -379,7 +403,6 @@ const brandSuccess = getStyle('--success')
     }  
 
     componentDidMount(){
-
     this.trigger()
 
     }
@@ -387,9 +410,9 @@ const brandSuccess = getStyle('--success')
     callback(cold, nice ,hot){
       this.props.callback(cold, nice ,hot);
     }
+
     callback2(people){
       this.props.callback2(people)
-
     }
 
     render(){
