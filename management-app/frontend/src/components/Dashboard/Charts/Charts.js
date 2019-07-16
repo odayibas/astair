@@ -189,8 +189,8 @@ const brandWarning = getStyle('--warning')
       return axios.get(urlServer + "/get-all")
       .then((res) => {
         var people= (res.data[res.data.length -1].occupancy)
-        
-        this.callback(people)
+
+        this.callbackPeople(people)
         this.drawPeopleChart(res)
       })
       .catch((error) => {
@@ -206,10 +206,7 @@ const brandWarning = getStyle('--warning')
              var cold = res.data.cold
              var nice = res.data.nice
              var hot = res.data.hot
-             
-            this.callback(cold)
-            this.callback(nice)
-            this.callback(hot)
+            this.callbackSlack(cold,nice,hot)
             this.drawSlackChart(res)
             
         })
@@ -410,14 +407,15 @@ const brandWarning = getStyle('--warning')
 
     }
 
-    callback(x){
-      this.props.callback(x);
+    callbackSlack(cold,nice,hot){
+      console.log(nice)
+      this.props.callbackSlack(cold,nice,hot);
     }
 
-/*     callback2(people){
-      this.props.callback2(people)
+    callbackPeople(people){
+      this.props.callbackPeople(people)
     }
- */
+
     render(){
         return(
             <Row>

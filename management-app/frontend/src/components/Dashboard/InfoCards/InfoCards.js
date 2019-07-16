@@ -30,6 +30,8 @@ class InfoCards extends Component{
         return y
       }
 render(){
+
+
     return(
         <Row className="text-center">
            <Col >

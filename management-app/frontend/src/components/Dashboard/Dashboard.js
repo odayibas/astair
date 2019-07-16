@@ -27,12 +27,12 @@ class Dashboard extends Component{
           humidity: null,
           visibility: null,
           timezone : null,
-          sensor : [{
+          /* sensor : [{
             temp :"",
             hum : ""
 
           },
-        ],
+        ], */
         sensorTemp: {},
         sensorHum : {},
         ac : [
@@ -49,8 +49,9 @@ class Dashboard extends Component{
           cold : null,
           people : null
       }  
-      this.callback = this.callback.bind(this);
+      this.callbackSlack = this.callbackSlack.bind(this);
       this.callbackAC = this.callbackAC.bind(this);
+      this.callbackPeople = this.callbackPeople.bind(this);
 
     
   }
@@ -95,11 +96,14 @@ class Dashboard extends Component{
         }); */
     }
 
-    callback(x){
+    callbackSlack(cold, nice, hot){
       this.setState(
         {
-          x : x
-       })
+          cold : cold,
+          nice : nice,
+          hot : hot
+        })
+       
     }
 
     callbackAC(ac){
@@ -107,6 +111,12 @@ class Dashboard extends Component{
         ac : ac
      })
     }
+    callbackPeople(people){
+      this.setState({
+        people : people
+     })
+    }
+ 
  
     render(){
       if(getCookie('usertoken')){     
@@ -116,19 +126,19 @@ class Dashboard extends Component{
                
                   <Col  xs="4" sm="3">
                     <SensorCards sensorHum = {this.state.sensorHum} sensorTemp = {this.state.sensorTemp} 
-                    callback ={this.callback} callbackAC ={this.callbackAC} ac = {this.state.ac}/>
+                     callbackAC ={this.callbackAC} ac = {this.state.ac}/>
                   </Col>
                   <Col>
                     <div style={{paddingTop :'30px'}}>
                     <Charts sensorTemp = {this.state.sensorTemp} sensorHum = {this.state.sensorHum}  
-                        callback ={this.callback} /* callback2 = {this.callback2} */  ac = {this.state.ac}/>
+                        callbackSlack ={this.callbackSlack} callbackPeople= {this.callbackPeople}  ac = {this.state.ac}/>
                       <div style={{paddingTop :'30px'}}>
                       <InfoCards temp = {this.state.temp} sensorTemp = {this.state.sensorTemp} 
                       hot = {this.state.hot} nice={this.state.nice} cold = {this.state.cold} 
                       people = {this.state.people} />
                     </div>
                     <div style={{paddingTop :'30px'}}>
-                      <ACInfo  callback ={this.callback} ac = {this.state.ac} />
+                      <ACInfo ac = {this.state.ac} />
                     </div>
                   </div>
                  

@@ -155,9 +155,7 @@ class SensorCards extends Component{
     callbackAC(ac){
       this.props.callbackAC(ac);
     } 
-    callback(x){
-      this.props.callback(x);
-    }
+ 
 
 
 
