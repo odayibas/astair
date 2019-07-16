@@ -84,11 +84,11 @@ class Dashboard extends Component{
         this.props.history.push('/')
 
         }
-      window.addEventListener("beforeunload", (ev) => 
+  /*     window.addEventListener("beforeunload", (ev) => 
         {  
         ev.preventDefault();
        removeCookie('usertoken');
-        });
+        }); */
     }
 
     callback(cold, nice, hot){
