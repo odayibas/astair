@@ -10,7 +10,7 @@ easier. Slack app can be installed to any slack team easily. User feedbacks will
 You can install slack app by clicking below button. After that choose the channel that app will be installed.
 (Database connection must be already exist before app installation. Slack access token will be stored in database after installation.)
 
-<a href="https://slack.com/oauth/authorize?client_id=651298496866.653672972275&scope=incoming-webhook,bot,chat:write:bot,chat:write:user,users:read,commands"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a>
+<a href="https://slack.com/oauth/authorize?client_id=682988836772.695933872453&scope=incoming-webhook,commands,chat:write:bot,chat:write:user,channels:write,bot,users:read"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"></a>
 
 
 **Input Parameters**
