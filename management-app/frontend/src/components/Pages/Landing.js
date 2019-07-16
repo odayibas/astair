@@ -5,10 +5,11 @@ class Landing extends  Component {
     render() {
         return(
             <div>
-                 <div className = "jumbotron  mt-5" >
-                 <div className = "col-sm-8 mx-auto" >
-                     </div>
-                 </div>
+               
+               
+                 <div style={{width : '100%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
+                    <img height={665} src="/assets/logo_transparent.png"/>
+                </div>                 
               </div>
         )
     }

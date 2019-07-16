@@ -8,7 +8,7 @@ export const login = user =>{
     return axios
     .get( urlServer + "/user/login/" + user.username +'/' + user.password, {
         username : user.username,
-        password:  user.password
+        password:  user.password,
     })
     .then(res =>{
         if(!(res.data === -2 || res.data === -1)) {

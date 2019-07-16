@@ -4,15 +4,12 @@ html, body{
 }
 
 body {
-  background-image: url("/assets/ASTAiR.png");
-  background-size: 75%;
-  background-repeat: no-repeat;
-  background-position:75% 0;
-  content : 'fit';
-  margin: 0;
+
+
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -21,7 +18,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
 
 .card {
   background: #ffffff;
@@ -36,30 +32,30 @@ code {
     margin-bottom: .75rem; }
   .card .card-body {
     padding: 15px; }
-    .card .card-body.table-full-width {
-      padding-left: 0;
-      padding-right: 0; }
-    .card .card-body .card-title {
-      color: #27293d;
-      text-transform: inherit;
-      font-weight: 300;
-      margin-bottom: .75rem; }
-    .card .card-body .card-description, .card .card-body .card-category {
-      color: #ffffff; }
+  .card .card-body.table-full-width {
+    padding-left: 0;
+    padding-right: 0; }
+  .card .card-body .card-title {
+    color: #27293d;
+    text-transform: inherit;
+    font-weight: 300;
+    margin-bottom: .75rem; }
+  .card .card-body .card-description, .card .card-body .card-category {
+    color: #ffffff; }
   .card .card-header {
     padding: 15px 15px 0;
     border: 0;
     color: #27293d; }
-    .card .card-header:not([data-background-color]) {
-      background-color: transparent; }
-    .card .card-header .card-title {
-      color: #27293d;
-      font-weight: 100; }
-    .card .card-header .card-category {
-      color: #393c63;
-      margin-bottom: 5px;
-      font-weight: 300; }
+  .card .card-header:not([data-background-color]) {
+    background-color: transparent; }
+  .card .card-header .card-title {
+    color: #27293d;
+    font-weight: 100; }
+  .card .card-header .card-category {
+    color: #393c63;
+    margin-bottom: 5px;
+    font-weight: 300; }
   .card .map {
     border-radius: 0.2857rem; }
-    .card .map.map-big {
-      height: 420px; }
+  .card .map.map-big {
+    height: 420px; }
