@@ -9,6 +9,7 @@ import {Redirect} from 'react-router-dom'
 import InfoCards from './InfoCards/InfoCards'
 import Charts from './Charts/Charts'
 import SensorCards from './SensorCards/SensorCards';
+import ACInfo from './ACInfo/ACInfo';
 
 import {remove as removeCookie } from 'es-cookie';
 
@@ -49,9 +50,7 @@ class Dashboard extends Component{
           people : null
       }  
       this.callback = this.callback.bind(this);
-      this.callback2 = this.callback2.bind(this);
       this.callbackAC = this.callbackAC.bind(this);
-
 
     
   }
@@ -96,19 +95,10 @@ class Dashboard extends Component{
         }); */
     }
 
-    callback(cold, nice, hot){
+    callback(x){
       this.setState(
         {
-          cold: cold,
-          hot : hot,
-          nice: nice,
-       }
-      )
-    }
-
-    callback2(people){
-      this.setState({
-          people : people
+          x : x
        })
     }
 
@@ -117,7 +107,7 @@ class Dashboard extends Component{
         ac : ac
      })
     }
-
+ 
     render(){
       if(getCookie('usertoken')){     
         return(
@@ -126,16 +116,19 @@ class Dashboard extends Component{
                
                   <Col  xs="4" sm="3">
                     <SensorCards sensorHum = {this.state.sensorHum} sensorTemp = {this.state.sensorTemp} 
-                    callbackAC ={this.callbackAC} ac = {this.state.ac}/>
+                    callback ={this.callback} callbackAC ={this.callbackAC} ac = {this.state.ac}/>
                   </Col>
                   <Col>
                     <div style={{paddingTop :'30px'}}>
                     <Charts sensorTemp = {this.state.sensorTemp} sensorHum = {this.state.sensorHum}  
-                        callback ={this.callback} callback2 = {this.callback2}  ac = {this.state.ac}/>
+                        callback ={this.callback} /* callback2 = {this.callback2} */  ac = {this.state.ac}/>
                       <div style={{paddingTop :'30px'}}>
                       <InfoCards temp = {this.state.temp} sensorTemp = {this.state.sensorTemp} 
                       hot = {this.state.hot} nice={this.state.nice} cold = {this.state.cold} 
                       people = {this.state.people} />
+                    </div>
+                    <div style={{paddingTop :'30px'}}>
+                      <ACInfo  callback ={this.callback} ac = {this.state.ac} />
                     </div>
                   </div>
                  

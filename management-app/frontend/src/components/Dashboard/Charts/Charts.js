@@ -189,7 +189,8 @@ const brandWarning = getStyle('--warning')
       return axios.get(urlServer + "/get-all")
       .then((res) => {
         var people= (res.data[res.data.length -1].occupancy)
-        this.callback2(people)
+        
+        this.callback(people)
         this.drawPeopleChart(res)
       })
       .catch((error) => {
@@ -206,7 +207,9 @@ const brandWarning = getStyle('--warning')
              var nice = res.data.nice
              var hot = res.data.hot
              
-            this.callback(cold,nice,hot)
+            this.callback(cold)
+            this.callback(nice)
+            this.callback(hot)
             this.drawSlackChart(res)
             
         })
@@ -339,8 +342,8 @@ const brandWarning = getStyle('--warning')
 
         }
         if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
-          mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-          mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
+          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
+          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
         }
         else
         {
@@ -360,10 +363,10 @@ const brandWarning = getStyle('--warning')
     drawACChart(){
    
        for (var i = mainChart.datasets[0].data.length ; i < 20 ; i++) {
-          mainChart.datasets[2].data.push(this.props.ac[1] && this.props.ac[1].ac_degree);
+          mainChart.datasets[2].data.push(this.props.ac[1] && this.props.ac[0].ac_degree);
       }
             
-        mainChart.datasets[2].data.push(this.props.ac[1] &&this.props.ac[1].ac_degree);
+        mainChart.datasets[2].data.push(this.props.ac[1] &&this.props.ac[0].ac_degree);
         
         while (mainChart.datasets[2].data.length > 20){
         mainChart.datasets[2].data.shift();    
@@ -407,14 +410,14 @@ const brandWarning = getStyle('--warning')
 
     }
 
-    callback(cold, nice ,hot){
-      this.props.callback(cold, nice ,hot);
+    callback(x){
+      this.props.callback(x);
     }
 
-    callback2(people){
+/*     callback2(people){
       this.props.callback2(people)
     }
-
+ */
     render(){
         return(
             <Row>
