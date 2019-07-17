@@ -8,7 +8,7 @@ class Landing extends  Component {
                
                
                  <div style={{width : '100%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
-                    <img height={665} src="/assets/logo_transparent.png"/>
+                    <img height={665} src="/assets/image.png"/>
                 </div>                 
               </div>
         )

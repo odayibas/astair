@@ -145,7 +145,7 @@ class Dashboard extends Component{
                 </Col>
               </div>
               <div style={{height : '10%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
-              <img height={300} src="/assets/twitter_header_photo_1.png"/>
+              <img height={300} src="/assets/image.png"/>
              </div>
        
           </div>

@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Link, withRouter} from 'react-router-dom'
 import {get as getCookie, remove as removeCookie } from 'es-cookie';
-import logo from './logo_transparent.png'; // Tell Webpack this JS file uses this image
 
 
 class Navbar extends Component{
@@ -30,11 +29,7 @@ class Navbar extends Component{
 
         const userLink =(
             <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <div className="navbar-brand"><img src={logo} 
-                alt="Logo" 
-                width="80"
-                height="80"
-                className="d-inline-block align-top"/></div>  
+                <div className="navbar-brand"><img height={70} src="/assets/image.png"/></div>  
             <ul className ="navbar-nav">
                 <li className = "nav -item">
                     <Link to= "/dashboard" className="nav-link">

@@ -359,11 +359,11 @@ const brandWarning = getStyle('--warning')
     
     drawACChart(){
    
-       for (var i = mainChart.datasets[0].data.length ; i < 20 ; i++) {
-          mainChart.datasets[2].data.push(this.props.ac[1] && this.props.ac[0].ac_degree);
+       for (var i = mainChart.datasets[2].data.length ; i < 20 ; i++) {
+          mainChart.datasets[2].data.push(this.props.ac[0] && this.props.ac[0].ac_degree);
       }
             
-        mainChart.datasets[2].data.push(this.props.ac[1] &&this.props.ac[0].ac_degree);
+        mainChart.datasets[2].data.push(this.props.ac[0] &&this.props.ac[0].ac_degree);
         
         while (mainChart.datasets[2].data.length > 20){
         mainChart.datasets[2].data.shift();    
@@ -408,7 +408,6 @@ const brandWarning = getStyle('--warning')
     }
 
     callbackSlack(cold,nice,hot){
-      console.log(nice)
       this.props.callbackSlack(cold,nice,hot);
     }
 

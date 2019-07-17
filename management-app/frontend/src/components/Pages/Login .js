@@ -50,7 +50,7 @@ class Login extends Component {
         return(
             <div style={{width : '100%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
                 <div style={{width : '50%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
-                    <img height={665} src="/assets/logo_transparent.png"/>
+                    <img height={660} src="/assets/image.png"/>
                 </div>
                 <div style ={{width : '50%'}}>
                     <div className="row">
