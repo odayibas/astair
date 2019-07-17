@@ -13,6 +13,7 @@ import ACInfo from './ACInfo/ACInfo';
 
 import {remove as removeCookie } from 'es-cookie';
 
+const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
 
 class Dashboard extends Component{
@@ -44,6 +45,8 @@ class Dashboard extends Component{
             active : "",
           }
         ],
+          avgsensor : null,
+          avgac : null,
           hot: null,
           nice : null,
           cold : null,
@@ -55,6 +58,14 @@ class Dashboard extends Component{
 
     
   }
+
+
+    getACAverage = () => {
+      return axios.get(urlServer + "/AC/get-avg-degree")
+      .then((res) => {
+        this.state.avgac = res.data
+      })
+    }
 
     getOutdoorData = async() => {
 
@@ -81,6 +92,8 @@ class Dashboard extends Component{
       let newTime = Date.now() - this.props.date;
       setInterval(() => { 
         this.getOutdoorData().then(data => {})
+        this.getACAverage().then(data => {})
+
 
       }, 5000);
 
@@ -89,11 +102,6 @@ class Dashboard extends Component{
         this.props.history.push('/')
 
         }
-  /*     window.addEventListener("beforeunload", (ev) => 
-        {  
-        ev.preventDefault();
-       removeCookie('usertoken');
-        }); */
     }
 
     callbackSlack(cold, nice, hot){
@@ -130,10 +138,10 @@ class Dashboard extends Component{
                   </Col>
                   <Col>
                     <div style={{paddingTop :'30px'}}>
-                    <Charts sensorTemp = {this.state.sensorTemp} sensorHum = {this.state.sensorHum}  
+                    <Charts sensorTemp = {this.state.sensorTemp} sensorHum = {this.state.sensorHum}  temp = {this.state.temp}
                         callbackSlack ={this.callbackSlack} callbackPeople= {this.callbackPeople}  ac = {this.state.ac}/>
                       <div style={{paddingTop :'30px'}}>
-                      <InfoCards temp = {this.state.temp} sensorTemp = {this.state.sensorTemp} 
+                      <InfoCards temp = {this.state.temp} /* avgsensor = {this.state.avgsensor} */ sensorTemp = {this.state.sensorTemp} 
                       hot = {this.state.hot} nice={this.state.nice} cold = {this.state.cold} 
                       people = {this.state.people} />
                     </div>
@@ -145,10 +153,10 @@ class Dashboard extends Component{
                 </Col>
               </div>
               <div style={{height : '10%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
-              <img height={300} src="/assets/image.png"/>
-             </div>
-       
-          </div>
+            <img height={200} src="/assets/Logo-Astair-w.png"/>
+           </div>
+        </div>
+     
        
         )
       }

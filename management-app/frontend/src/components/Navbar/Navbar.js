@@ -15,14 +15,24 @@ class Navbar extends Component{
     render(){
         const loginRegLink =(
             <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <div className="navbar-brand"><h4>ASTAiR</h4></div>  
+            <div className="navbar-brand"><h4>ASTAiR</h4></div>  
                 <ul className ="navbar-nav">
-                <li className = "nav -item">
+                    <li className = "nav -item">
+                    <Link to= "/" className="nav-link">
+                    <h5>Home</h5> 
+                    </Link>
+                    </li>
+                    <li className = "nav -item">
                     <Link to= "/login" className="nav-link">
                     <h5>Login</h5> 
                     </Link>
-                </li>
-            </ul>
+                    </li>
+                    {/* <li className = "nav -item">
+                    <Link to= "/form" className="nav-link">
+                    <h5>Form</h5> 
+                    </Link>
+                    </li> */}
+                </ul>
             </div>
 
         )
@@ -32,14 +42,19 @@ class Navbar extends Component{
                 <div className="navbar-brand"><img height={70} src="/assets/image.png"/></div>  
             <ul className ="navbar-nav">
                 <li className = "nav -item">
-                    <Link to= "/dashboard" className="nav-link">
-                      <h5>Dashboard</h5>  
-                    </Link>
+                <Link to= "/" className="nav-link">
+                <h5>Home</h5> 
+                </Link>
                 </li>
                 <li className = "nav -item">
-                    <a href="" onClick={this.logout.bind(this)} className="nav-link">
-                       <h5>Logout</h5> 
-                    </a>
+                <Link to= "/dashboard" className="nav-link">
+                <h5>Dashboard</h5>  
+                </Link>
+                </li>
+                <li className = "nav -item">
+                <a href="" onClick={this.logout.bind(this)} className="nav-link">
+                <h5>Logout</h5> 
+                </a>
                 </li> 
             </ul>
             </div>

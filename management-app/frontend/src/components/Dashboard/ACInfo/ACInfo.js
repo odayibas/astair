@@ -16,7 +16,7 @@ import  AC from "@material-ui/icons/AcUnit";
 class ACInfo extends Component{
 
     OnOff(x) {
-        if(x == 0)
+        if(x === "0")
         return  <div><h4 style = {{textAlign : 'right'}}> Active: OFF </h4> </div>
         else
         return <div><h4 style = {{textAlign : 'right'}}> Active: ON </h4> </div>
@@ -29,7 +29,7 @@ class ACInfo extends Component{
                 <Col style={{margin: 20, marginTop : "-20px"}}>
                   <Card  style={{background: hexToRgba('#663399', 10)}}>
                     <CardBody className="pb-0">
-                        <div> <h3 style = {{textAlign : 'center'}}> <AC/> REGION {i+1} AC INFO </h3></div>
+                        <div><h3 style = {{textAlign : 'center'}}> <AC/> REGION {i+1} AC INFO </h3></div>
                         <div><h4 style = {{textAlign : 'center'}}>Degree: {this.props.ac[i].ac_degree} °C</h4> </div>
                         <div><h4 style = {{textAlign : 'center'}}> Mode:{this.props.ac[i].ac_mode}  </h4> </div>
                         <div><h4 style = {{textAlign : 'center'}}> Fan Speed:{this.props.ac[i].ac_fan_speed}  </h4> </div>

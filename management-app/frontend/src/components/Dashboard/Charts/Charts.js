@@ -38,13 +38,14 @@ const brandWarning = getStyle('--warning')
     responsive : true,
     datasets: [
       {
-        label: 'SENSOR',
+        label: 'INDOOR',
         type:'line',
       //  backgroundColor: hexToRgba('#f9690e', 10),
         backgroundColor: 'rgba(0,0,0,0)',
         borderColor: '#f9690e',
         pointHoverBackgroundColor: '#fff',
         borderWidth: 4,
+        yAxisID: 'y-axis-0',
         data: []
       },
       {
@@ -54,10 +55,11 @@ const brandWarning = getStyle('--warning')
         borderColor: '#663399',
         pointHoverBackgroundColor: '#fff',
         borderWidth: 2,
+        yAxisID: 'y-axis-1',
         data: [],
       },
       {
-        label: 'AC',
+        label: 'OUTDOOR',
         type: 'line',
         // backgroundColor: hexToRgba(brandPrimary, 10),
         backgroundColor: 'rgba(0,0,0,0)',
@@ -212,17 +214,15 @@ const brandWarning = getStyle('--warning')
         })
     }
     
-    getAverage = () => {
-
-      return axios.get(urlServer + "/sensor/get-ave-degree")
+    getSensorAverage = () => {
+    return axios.get(urlServer + "/sensor/get-ave-degree")
       .then((res) => {
           this.drawTempChart(res)
-          this.drawACChart()
-          
+          this.drawOutdoorChart()
+                  
       })
     }
-
-
+    
     getSensorData = async() =>{
         const responses = await Promise.all(
           urlArr.map(url => 
@@ -234,7 +234,7 @@ const brandWarning = getStyle('--warning')
         )
       );
     }
-
+    
     drawSlackChart(res){
     let presentState = {...this.state}
     presentState.cold = res.data.cold
@@ -265,17 +265,11 @@ const brandWarning = getStyle('--warning')
               this.state.avgsensor = res.data
               mainChart.datasets[0].data.push( this.state.avgsensor);
 
-              
-                if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
-                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
-                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
-                }
-                else
-                {
+            
                   mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
-    
-                } 
+                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
+
+
             }
              loadValue = 1;
           
@@ -291,17 +285,10 @@ const brandWarning = getStyle('--warning')
           //   mainChart.labels.shift();
              
           }
-          if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
-            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
-            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
-          }
-          else
-          {
+         
             mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
-
-          } 
-
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
+        
 
     }
 
@@ -317,16 +304,9 @@ const brandWarning = getStyle('--warning')
             presentState.people=res.data[i].occupancy
             mainChart.datasets[1].data.push(presentState.people);
 
-            if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
               mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
-              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
-            }
-            else
-            {
-              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
               mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
 
-            }
             
           }
           loadValue2 = 1;
@@ -338,16 +318,10 @@ const brandWarning = getStyle('--warning')
             mainChart.datasets[1].data.shift();
 
         }
-        if(Math.min.apply(Math, mainChart.datasets[0].data) > Math.min.apply(Math, mainChart.datasets[1].data)){
-          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
-        }
-        else
-        {
-          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
-          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
+     
 
-        }
+          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
+          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
 
 
       
@@ -357,13 +331,13 @@ const brandWarning = getStyle('--warning')
 
     }
     
-    drawACChart(){
+    drawOutdoorChart(){
    
        for (var i = mainChart.datasets[2].data.length ; i < 20 ; i++) {
-          mainChart.datasets[2].data.push(this.props.ac[0] && this.props.ac[0].ac_degree);
+          mainChart.datasets[2].data.push(this.props.temp);
       }
             
-        mainChart.datasets[2].data.push(this.props.ac[0] &&this.props.ac[0].ac_degree);
+        mainChart.datasets[2].data.push(this.props.temp);
         
         while (mainChart.datasets[2].data.length > 20){
         mainChart.datasets[2].data.shift();    
@@ -392,7 +366,7 @@ const brandWarning = getStyle('--warning')
         let newTime = Date.now() - this.props.date;
           setInterval(() => { 
             this.getSensorData().then(data =>{})
-            this.getAverage().then(data => {})
+            this.getSensorAverage().then(data => {})
             this.getSlack().then(data => {}) 
           }, 5000);
         let newTime2 = Date.now() - this.props.date;

@@ -29,9 +29,8 @@ class InfoCards extends Component{
         var y = parseInt(a / x)
         return y
       }
+
 render(){
-
-
     return(
         <Row className="text-center">
            <Col >
