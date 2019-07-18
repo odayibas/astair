@@ -4,7 +4,7 @@ import psycopg2
 import os
 from datetime import datetime
 def connect_db():
-   return psycopg2.connect(os.environ.get('POSTGRESQL_URL'))
+    return psycopg2.connect(os.environ.get('POSTGRESQL_URL'))
 
 def addVoteRecord(connection,username,vote):
     userid=isUserExist(connection,username,"PersonalInfo")
@@ -59,13 +59,13 @@ def isUserExist(connection,username,dbTableName):
 def getACzones(connection):
     ids=[]
     cursor=connection.cursor()
-    postgres_select_query=""" Select ac_id from AC """
+    postgres_select_query=""" select distinct ac_id from ac order by ac_id """
     cursor.execute(postgres_select_query)
     zones=cursor.fetchall()
     cursor.close()
-    for a in zones:
-        b=a[0]
-        ids.append(b)
+    for zone in zones:
+        ac_id = zone[0]
+        ids.append(ac_id)
     print(ids)
     return ids
 
@@ -175,3 +175,4 @@ def setToken(connection,token,username):
     connection.commit()
     cursor.close()
     return True
+        
