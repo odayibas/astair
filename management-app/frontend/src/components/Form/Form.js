@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Badge, CardFooter,Button, Card, CardBody, CardHeader, Col, Collapse, Fade,  Row} from 'reactstrap'
 import { Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 import { Select } from '@material-ui/core';
+import {Redirect} from 'react-router-dom'
 
 
 class SlackForm extends Component {
@@ -32,8 +33,9 @@ class SlackForm extends Component {
 
       }
       else{
-        alert("Your choice is  " + this.state.vote + " and " + "Region " + this.state.region)
-             /*  axios.post('/user', {
+        alert("Your choices are  " + this.state.vote + " and " + "Region " + this.state.region)
+            
+        /*  axios.post('/user', {
         firstName: 'Fred',
         lastName: 'Flintstone'
       })
@@ -43,7 +45,7 @@ class SlackForm extends Component {
       .catch(function (error) {
         console.log(error);
       });
- */
+      */
 
       }
 

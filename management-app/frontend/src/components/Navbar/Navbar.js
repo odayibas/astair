@@ -15,7 +15,7 @@ class Navbar extends Component{
     render(){
         const loginRegLink =(
             <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <div className="navbar-brand"><h4>ASTAiR</h4></div>  
+            <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png"/></div>  
                 <ul className ="navbar-nav">
                     <li className = "nav -item">
                     <Link to= "/" className="nav-link">
@@ -39,7 +39,7 @@ class Navbar extends Component{
 
         const userLink =(
             <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <div className="navbar-brand"><img height={70} src="/assets/image.png"/></div>  
+                <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png"/></div>  
             <ul className ="navbar-nav">
                 <li className = "nav -item">
                 <Link to= "/" className="nav-link">

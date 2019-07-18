@@ -153,7 +153,7 @@ class Dashboard extends Component{
                 </Col>
               </div>
               <div style={{height : '10%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
-            <img height={200} src="/assets/Logo-Astair-w.png"/>
+            <img height={150} src="/assets/Logo-Astair-w.png"/>
            </div>
         </div>
      

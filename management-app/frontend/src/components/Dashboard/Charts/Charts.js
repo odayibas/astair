@@ -58,7 +58,7 @@ const brandWarning = getStyle('--warning')
         yAxisID: 'y-axis-1',
         data: [],
       },
-      {
+     /*  {
         label: 'OUTDOOR',
         type: 'line',
         // backgroundColor: hexToRgba(brandPrimary, 10),
@@ -67,7 +67,7 @@ const brandWarning = getStyle('--warning')
         pointHoverBackgroundColor: '#fff',
         borderWidth: 4,
         data: [],
-      },
+      }, */
     ],
    };
    
@@ -218,7 +218,7 @@ const brandWarning = getStyle('--warning')
     return axios.get(urlServer + "/sensor/get-ave-degree")
       .then((res) => {
           this.drawTempChart(res)
-          this.drawOutdoorChart()
+        //  this.drawOutdoorChart()
                   
       })
     }
@@ -266,8 +266,8 @@ const brandWarning = getStyle('--warning')
               mainChart.datasets[0].data.push( this.state.avgsensor);
 
             
-                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
+                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 15);
+                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 15);
 
 
             }
@@ -286,8 +286,8 @@ const brandWarning = getStyle('--warning')
              
           }
          
-            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
+            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 15);
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 15);
         
 
     }
@@ -304,8 +304,8 @@ const brandWarning = getStyle('--warning')
             presentState.people=res.data[i].occupancy
             mainChart.datasets[1].data.push(presentState.people);
 
-              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
-              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
+              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 15);
+              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 15);
 
             
           }
@@ -320,8 +320,8 @@ const brandWarning = getStyle('--warning')
         }
      
 
-          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 10);
-          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
+          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 15);
+          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 15);
 
 
       

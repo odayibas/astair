@@ -31,13 +31,12 @@ class Login extends Component {
         .then(res =>{
           console.log (res)
           if(res === -2 || res === -1) {
-            
-            let newTime = Date.now() - this.props.date;
+              
             alert('Invalid Credentials')   
             return  this.props.history.push('/login')
           }
           else{
-            let newTime = Date.now() - this.props.date;
+
             alert('Login Successful')
             return this.props.history.push('/dashboard');
 
