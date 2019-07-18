@@ -1,3 +1,4 @@
+
 package tr.com.astair.astair.model;
 
 import javax.validation.constraints.NotNull;

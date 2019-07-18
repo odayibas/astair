@@ -30,8 +30,8 @@ public class MqttController {
         mqttMessage.setQos(messagePublishModel.getQos());
         mqttMessage.setRetained(messagePublishModel.getRetained());
 
-       // Mqtt.getInstance().publish(messagePublishModel.getTopic(), mqttMessage);
-        Mqtt.getInstance().publish("webapp", new MqttMessage("Done".getBytes()));
+        Mqtt.getInstance().publish(messagePublishModel.getTopic(), mqttMessage);
+       // Mqtt.getInstance().publish("Astair/MODEL/AC", new MqttMessage("1,COOL,HIGH,26,OFF".getBytes()));
     }
 
     @GetMapping("subscribe")
