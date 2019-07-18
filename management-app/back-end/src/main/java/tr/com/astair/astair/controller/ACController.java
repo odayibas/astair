@@ -3,6 +3,7 @@ package tr.com.astair.astair.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.astair.astair.controller.api.ACControllerApi;
@@ -27,7 +28,7 @@ public class ACController implements ACControllerApi {
             ac = acService.save(ac);
             return new ResponseEntity<>(ac, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -37,14 +38,14 @@ public class ACController implements ACControllerApi {
            ac.add(acService.getLast(i+1));
         }
         if (ac.isEmpty())
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>((List<AC>) null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(ac, HttpStatus.OK);
     }
 
     public ResponseEntity<List<AC>> getAllAC() {
         List<AC> ac = acService.get();
         if (ac == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((List<AC>) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(ac, HttpStatus.OK);
     }
@@ -53,7 +54,7 @@ public class ACController implements ACControllerApi {
 	public ResponseEntity<List<AC>> getByZone(Integer id) {
 		List<AC> test = acService.getByZone(id);
         if (test == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((List<AC>) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(test, HttpStatus.OK);
 	}
@@ -62,7 +63,7 @@ public class ACController implements ACControllerApi {
 	public ResponseEntity<Float> getACDegreeAvg(Integer id) {
 		Float test = acService.getACDegreeAvg(id);
         if (test == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((Float) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<Float>(test, HttpStatus.OK);
 	}
@@ -71,7 +72,7 @@ public class ACController implements ACControllerApi {
 	public ResponseEntity<Float> getAllACDegreeAvg() {
 		Float test = acService.getAllACDegreeAvg();
         if (test == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((Float) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<Float>(test, HttpStatus.OK);
 	}
