@@ -8,10 +8,10 @@ public interface UserControllerApi{
 	@PostMapping(value="/user/register")
 	ResponseEntity<Long> registerUser(@RequestBody User user);
 	
-	@GetMapping(value="/user/{id}")
+	@PostMapping(value="/user/{id}")
 	ResponseEntity<User> getUserByIdToUsername(@PathVariable("id") Long id);
 	
-	@GetMapping(value="/user/login/{username}/{password}")
+	@PostMapping(value="/user/login/{username}/{password}")
     ResponseEntity<Long> loginUser(@PathVariable("username") String username, @PathVariable("password") String password);
 	
 	@PutMapping(value="/user/update")

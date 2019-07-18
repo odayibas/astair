@@ -5,6 +5,10 @@ import Navbar from './components/Navbar/Navbar'
 import Dashboard from './components/Dashboard/Dashboard'
 import Login from './components/Pages/Login '
 import Landing  from './components/Pages/Landing'
+import Monitor from './components/Monitor/Monitor'
+import SlackForm from './components/Form/Form'
+
+
 function App() {
   return (
     <Router>
@@ -14,6 +18,10 @@ function App() {
         <Route  exact path="/" component={Landing}/>
         <Route  exact path="/login" component={Login}/>
         <Route  exact path="/dashboard" component={Dashboard}/>
+        <Route  exact path="/monitor" component={Monitor}/>
+        <Route  exact path="/form" component={SlackForm}/>
+
+
         </div>
       </div>
 

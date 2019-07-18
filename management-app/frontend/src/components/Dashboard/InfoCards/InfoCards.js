@@ -29,6 +29,7 @@ class InfoCards extends Component{
         var y = parseInt(a / x)
         return y
       }
+
 render(){
     return(
         <Row className="text-center">
@@ -73,18 +74,6 @@ render(){
                 <div className="text-value">
                     <h4>PEOPLE</h4></div>
                     <h2>{this.props.people}	</h2>
-              {/*   <Row>
-                  <Col>
-                <div className="text-value">
-                    <h4>Male</h4></div>
-                    <h2> {this.props.male}	</h2>
-                </Col>
-                <Col>
-                <div className="text-value">
-                    <h4>Female</h4></div>
-                    <h2>{this.props.female}	</h2>
-                </Col>
-                </Row> */}
               </CardBody>           
             </Card>
             </Col>

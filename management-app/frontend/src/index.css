@@ -19,13 +19,13 @@ code {
     monospace;
 }
 
-.card {
-  background: #ffffff;
-  border: 0;
-  position: relative;
-  width: 100%;
-  margin-bottom: 30px;
-  box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1); }
+  .card {
+    background: #ffffff;
+    border: 0;
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1); }
   .card label {
     color: #ffffff; }
   .card .card-title {
@@ -59,3 +59,26 @@ code {
     border-radius: 0.2857rem; }
   .card .map.map-big {
     height: 420px; }
+
+  .pageMain {
+    width: '100% !important';
+    margin: 'auto';
+    height: '100%';
+    margin-top: '40px';
+
+  }
+
+  .pageBody{
+    left:'10px',;
+    right:'10px';
+    display : 'flex' ;
+    padding : '30px';
+    width : '100%'; 
+    height: '90%';
+  }
+
+  .center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }

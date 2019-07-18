@@ -31,10 +31,15 @@ class Login extends Component {
         .then(res =>{
           console.log (res)
           if(res === -2 || res === -1) {
+              
+            alert('Invalid Credentials')   
             return  this.props.history.push('/login')
           }
           else{
+
+            alert('Login Successful')
             return this.props.history.push('/dashboard');
+
           }
         
         })
@@ -50,7 +55,7 @@ class Login extends Component {
         return(
             <div style={{width : '100%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
                 <div style={{width : '50%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
-                    <img height={665} src="/assets/logo_transparent.png"/>
+                    <img height={500} src="/assets/image.png"/>
                 </div>
                 <div style ={{width : '50%'}}>
                     <div className="row">
