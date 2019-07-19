@@ -15,10 +15,6 @@ import Cloud from "@material-ui/icons/Cloud";
 import Office from "@material-ui/icons/BusinessCenter";
 
 class InfoCards extends Component{
-    constructor(props){
-        super(props)
-    }
-
     avgmodal() {
         var x =  (this.props.sensorTemp[1] +  this.props.sensorTemp[2] +  this.props.sensorTemp[3] + this.props.sensorTemp[4])/4
         x = x * 100   
@@ -33,6 +29,7 @@ class InfoCards extends Component{
         var y = parseInt(a / x)
         return y
       }
+
 render(){
     return(
         <Row className="text-center">
@@ -77,18 +74,6 @@ render(){
                 <div className="text-value">
                     <h4>PEOPLE</h4></div>
                     <h2>{this.props.people}	</h2>
-              {/*   <Row>
-                  <Col>
-                <div className="text-value">
-                    <h4>Male</h4></div>
-                    <h2> {this.props.male}	</h2>
-                </Col>
-                <Col>
-                <div className="text-value">
-                    <h4>Female</h4></div>
-                    <h2>{this.props.female}	</h2>
-                </Col>
-                </Row> */}
               </CardBody>           
             </Card>
             </Col>

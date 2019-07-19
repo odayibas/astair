@@ -5,6 +5,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import tr.com.astair.astair.controller.api.OWControllerApi;
@@ -50,14 +51,14 @@ public class OutWeatherController implements OWControllerApi {
 
             return new ResponseEntity<>(ow, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity<List<OutdoorWeather>> getAllDB() {
         List<OutdoorWeather> owList = outWeatherService.get();
         if (owList == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((List<OutdoorWeather>) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(owList, HttpStatus.OK);
     }
@@ -65,7 +66,7 @@ public class OutWeatherController implements OWControllerApi {
     public ResponseEntity<OutdoorWeather> get() {
         OutdoorWeather ow = outWeatherService.getlast();
         if (ow == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(ow, HttpStatus.OK);
     }

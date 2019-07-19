@@ -4,6 +4,11 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Navbar from './components/Navbar/Navbar'
 import Dashboard from './components/Dashboard/Dashboard'
 import Login from './components/Pages/Login '
+import Landing  from './components/Pages/Landing'
+import Monitor from './components/Monitor/Monitor'
+import SlackForm from './components/Form/Form'
+import ACControl from './components/ACControl/ACControl';
+
 
 function App() {
   return (
@@ -11,9 +16,13 @@ function App() {
       <div className="App">
         <Navbar/>
         <div style={{paddingTop: '100px'}}>
-        <Route  exact path="/" component={Login}/>
+        <Route  exact path="/" component={Landing}/>
         <Route  exact path="/login" component={Login}/>
         <Route  exact path="/dashboard" component={Dashboard}/>
+        <Route  exact path="/monitor" component={Monitor}/>
+        {/* <Route  exact path="/form" component={SlackForm}/> */}
+        <Route  exact path="/ac" component={ACControl}/>
+
         </div>
       </div>
 
