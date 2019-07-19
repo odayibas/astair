@@ -9,7 +9,7 @@ class AC:
         self.topic = topic
         self.broker = IP
         self.client = mqtt.Client("P1") #create new instance
-        self.client.on_message=self.on_message #attach function to callback
+        # self.client.on_message=self.on_message #attach function to callback
         self.client.connect(self.broker) #connect to broker
 
     def create_config_string(self, id = "-", mode = "-", fan = "-", temp = "-", power = "-" ):
@@ -26,7 +26,7 @@ class AC:
             print("Invalid fan speed. (LOW, MEDIUM, HIGH)")
 
     def power_on(self, id):
-        #print(self.create_config_string(id = id, power = "1"))
+        print(self.create_config_string(id = id, power = "ON"))
         self.client.publish("Astair/MODEL/AC",self.create_config_string(id = id, power = "ON"))
     
     def power_off(self, id):
@@ -52,25 +52,19 @@ class AC:
             print("Invalid mode. (COOL, FAN, DRY, HEAT, AUTO)")
         elif not (temp == "-" or (16 <= temp and temp <= 30)):
             print("Invalid temperature value. (16-30)")
-        elif not (power == "-" or power == 1 or power == 0):
-            print("Invalid power value. (0-1)")
+        elif not (power == "-" or power == "ON" or power == "OFF"):
+            print("Invalid power value. (ON-OFF)")
         elif not (speed == "-" or speed == "LOW" or speed == "MEDIUM" or speed == "HIGH"):
             print("Invalid fan speed. (LOW, MEDIUM, HIGH)")
         else:
             #print(self.create_config_string(id = id, mode = mode, fan = speed, temp = temp, power = power))
             self.client.publish("Astair/MODEL/AC",self.create_config_string(id = id, mode = mode, fan = speed, temp = temp, power = power))
 
-    def test(self, temp): 
-        #self.client.publish("Astair/9CEEBBA4AE30/AC/CONF/SET/TEMP", str(temp))
-        #print("AC is set to", str(temp))
-        #time.sleep(5)
-        self.client.publish("Astair/9CEEBBA4AE30/AC/CONF/SET/PWR", "OFF")
-        #time.sleep(5)
-        #self.client.publish("Astair/9CEEBBA4AE30/AC/CONF/SET/FAN", "HIGH")
-        print("AC is on fire!")
-
-    def on_message(self, client, userdata, message):
-        print("message received " ,str(message.payload.decode("utf-8")))
-        print("message topic=",message.topic)
-        print("message qos=",message.qos)
-        print("message retain flag=",message.retain)
+    def test(self):
+        self.client.publish("Astair/MODEL/AC", "1,-,-,-,OFF")
+    #
+    # def on_message(self, client, userdata, message):
+    #     print("message received " ,str(message.payload.decode("utf-8")))
+    #     print("message topic=",message.topic)
+    #     print("message qos=",message.qos)
+    #     print("message retain flag=",message.retain)
