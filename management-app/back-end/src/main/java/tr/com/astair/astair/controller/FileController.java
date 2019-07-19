@@ -60,14 +60,14 @@ public class FileController implements FileControllerApi {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(dbFile.getFileType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
+                //.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + dbFile.getFileName() + "\"")
                 .body(new ByteArrayResource(dbFile.getData()));
     }
     
     public ResponseEntity<List<DBFile>> getAll() {
         List<DBFile> dbFile = DBFileStorageService.get();
         if (dbFile == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((List<DBFile>) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(dbFile, HttpStatus.OK);
     }

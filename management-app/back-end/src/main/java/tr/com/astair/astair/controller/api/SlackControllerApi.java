@@ -8,22 +8,22 @@ import tr.com.astair.astair.model.WeatherPollResult;
 
 import java.util.List;
 
-public interface SlackControllerApi { //post larin hepsi get ti
+public interface SlackControllerApi {
 
     //get poll result hot,cold,good
-    @PostMapping("/slack/get-poll-result-hot-cold-nice")
+    @GetMapping("/slack/get-poll-result-hot-cold-nice")
     ResponseEntity<WeatherPollResult> getPollResults();
 
     //get poll result hot,cold,good by zone
-    @PostMapping("/slack/get-poll-result-by-zone-hot-cold-nice/{zone}")
+    @GetMapping("/slack/get-poll-result-by-zone-hot-cold-nice/{zone}")
     ResponseEntity<WeatherPollResult> getPollResultsByZone(@PathVariable Integer zone);
 
     //get poll result
-    @PostMapping("/slack/get-poll-all-result")
+    @GetMapping("/slack/get-poll-all-result")
     ResponseEntity<List<Slack>> getPollAllResult();
 
     //get all data
-    @PostMapping("/slack/get-all-data")
+    @GetMapping("/slack/get-all-data")
     ResponseEntity<List<Slack>> getAll();
 
 }

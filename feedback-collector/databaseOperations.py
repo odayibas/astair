@@ -162,7 +162,7 @@ def getLastSurveyID(connection):
 
 def getToken(connection):
     cursor=connection.cursor()
-    postgres_select_query="SELECT token FROM systemadmin LIMIT 1"
+    postgres_select_query="SELECT token FROM systemadmin order by id desc LIMIT 1"
     cursor.execute(postgres_select_query)
     token=cursor.fetchone()
     token=token[0]

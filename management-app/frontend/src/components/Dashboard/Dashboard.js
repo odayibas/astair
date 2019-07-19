@@ -3,15 +3,13 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import {Col} from 'reactstrap';
 
-import {get as getCookie} from 'es-cookie'
+import {remove as removeCookie ,get as getCookie} from 'es-cookie'
 import {Redirect} from 'react-router-dom'
 
 import InfoCards from './InfoCards/InfoCards'
 import Charts from './Charts/Charts'
 import SensorCards from './SensorCards/SensorCards';
 import ACInfo from './ACInfo/ACInfo';
-
-import {remove as removeCookie } from 'es-cookie';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
