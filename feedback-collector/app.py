@@ -182,6 +182,7 @@ def collectSlashRequests():
         return make_response(ret,200)
     else:
         return make_response("This command is not exist.",200)
+
 @app.route('/feedback-collector/slack/setSchedule', methods=["POST"])
 def setSchedule(hourSlash):
     hour = request.form.get("hour")
@@ -198,8 +199,7 @@ def removeSchedule():
 
 @app.route("/feedback-collector/slack/heya", methods=["POST"])
 def retret():
-    
     return make_response("Success",200)
 
 if (__name__ == '__main__'):
-   app.run(debug=True,host='0.0.0.0',port=5000)
+    app.run(debug=True,host='0.0.0.0',port=5000)

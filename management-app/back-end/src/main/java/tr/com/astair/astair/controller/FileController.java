@@ -67,7 +67,7 @@ public class FileController implements FileControllerApi {
     public ResponseEntity<List<DBFile>> getAll() {
         List<DBFile> dbFile = DBFileStorageService.get();
         if (dbFile == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((List<DBFile>) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(dbFile, HttpStatus.OK);
     }
