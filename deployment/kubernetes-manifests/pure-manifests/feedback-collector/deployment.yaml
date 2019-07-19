@@ -16,7 +16,7 @@ metadata:
   name: feedback-collector
   namespace: astair
 data:
-  postgresql-url: "postgresql-url-here"
+  postgresql-url: "jdbc:postgresql://13.79.246.198:5432/astair?user=astair&password=astairPostgres2019."
 
 ---
 
@@ -59,7 +59,7 @@ spec:
         app: feedback-collector
     spec:
       containers:
-        - image: astar.azurecr.io/astair-feedback-collector:0.0.2
+        - image: astar.azurecr.io/astair-feedback-collector:0.0.3
           imagePullPolicy: Always
           resources:
             requests:

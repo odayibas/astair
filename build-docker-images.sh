@@ -41,7 +41,7 @@ do
     echo "Building the $directory docker image..."
     docker build -t $docker_registry/astair-management-app-$directory:$image_version .
 
-    # echo "Pushing the $directory docker image..."
-    # docker push $docker_registry/astair-management-app-$directory:$image_version
-    # cd ..
+    echo "Pushing the $directory docker image..."
+    docker push $docker_registry/astair-management-app-$directory:$image_version
+    cd ..
 done

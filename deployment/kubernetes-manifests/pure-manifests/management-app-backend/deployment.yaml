@@ -5,8 +5,8 @@ metadata:
   namespace: astair
 type: Opaque
 data:
-  postgresql-username: dXNlcm5hbWUK
-  postgresql-password: cGFzc3dvcmQK
+  postgresql-username: YXN0YWly
+  postgresql-password: YXN0YWlyUG9zdGdyZXMyMDE5Lg==
 
 ---
 
@@ -16,7 +16,7 @@ metadata:
   name: management-backend
   namespace: astair
 data:
-  postgresql-url: "postgres-url-here"
+  postgresql-url: jdbc:postgresql://13.79.246.198:5432/astair?user=astair&password=astairPostgres2019.
   hikari-connection-timeout: "20000"
   hikari-maximum-pool-size: "5"
   spring-data-driver-class-name: "org.postgresql.Driver"
@@ -52,7 +52,7 @@ metadata:
     release: system
   namespace: astair
 spec: 
-  replicas: 3
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -68,7 +68,7 @@ spec:
         release: system
     spec:
       containers:
-        - image: astar.azurecr.io/astair-management-app-back-end:0.0.2
+        - image: astar.azurecr.io/astair-management-app-back-end:0.0.3
           imagePullPolicy: Always
           resources:
             requests:
