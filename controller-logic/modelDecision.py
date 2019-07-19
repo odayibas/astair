@@ -2,11 +2,16 @@ import pmvModel
 import voteBasedModel
 from database_helper import DatabaseConnector
 from ac_control import AC
+from q_learning import QModel
 
-def decisionModel(data, ac_id):
+def decisionModel(data, ac_id, model):
+
+    if data[0] == {} or data[1] == {}:
+        return
 
     survey_data = (data[1])[ac_id]
     sensor_data = (data[0])[ac_id]
+    ac_data = (data[2])[ac_id]
     print(sensor_data)
     temperature = sensor_data[0]
     humidity = sensor_data[1]
@@ -17,20 +22,23 @@ def decisionModel(data, ac_id):
     airTemp = 27
     newMeanTemp = 26
     oldMeanTemp = 23.5
- 
-    if(abs(newMeanTemp - oldMeanTemp) < 2):
-        #receivePMVParameters()
-        velocity = 0.2
-        rh = 60
-        met = 1.2
-        clo = 0.3
-        pmv, ppd = pmvModel.pmv(airTemp,newMeanTemp, velocity, rh, met, clo)
-        #pmvModel.display(pmv, ppd, airTemp)
-        #pmvModel.writeFile(pmv, ppd, airTemp)
-    else:
-        degree = voteBasedModel.voteBaseModel(hot, good, cold, temperature)
-        print("Currently it is {} degree and humidity is {}%. A/C should be set to {} degree.".format(temperature, humidity, degree))
-        return degree
+
+    action = model.forward(cold, good, hot)
+    return ac_data[1] + action
+
+    # if(abs(newMeanTemp - oldMeanTemp) < 2):
+    #     #receivePMVParameters()
+    #     velocity = 0.2
+    #     rh = 60
+    #     met = 1.2
+    #     clo = 0.3
+    #     pmv, ppd = pmvModel.pmv(airTemp,newMeanTemp, velocity, rh, met, clo)
+    #     #pmvModel.display(pmv, ppd, airTemp)
+    #     #pmvModel.writeFile(pmv, ppd, airTemp)
+    # else:
+    #     degree = voteBasedModel.voteBaseModel(hot, good, cold, temperature)
+    #     print("Currently it is {} degree and humidity is {}%. A/C should be set to {} degree.".format(temperature, humidity, degree))
+    #     return degree
 
 def gather_data(db):
     sensor_data = db.get_last_sensor_data()
@@ -44,13 +52,18 @@ def start():
 
     ac = AC("Astair/+/+/#", "10.154.3.45")
     db = DatabaseConnector()
+    model = QModel()
 
     if db.connect_db() == 1:
         return
 
-    # newDegree = int(decisionModel(gather_data(db), ac_id = 1))
+    while True:
+        data = gather_data(db)
+        new_ac_conf = decisionModel(data, 4, model)
+        ac.set_temp(4, new_ac_conf)
+        print("AC is set to ", new_ac_conf)
 
-    # ac.power_on(1)
-    ac.test()
+        input()
+
 
 start()

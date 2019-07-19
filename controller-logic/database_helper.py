@@ -13,8 +13,7 @@ class DatabaseConnector:
         print("Connecting to the database...")
         try :
             self.connection = psycopg2.connect(
-                "postgres://ieeqrnduqiqxzh:1a73349164864823f58c9ffed9cffb5ef95a7461d4407637cde89dafff352020@ec2"
-                "-46-137-113-157.eu-west-1.compute.amazonaws.com:5432/d879gk0v4thape")
+                "database_url")
             self.cursor = self.connection.cursor()
         except:
             print("Error: Could not connect to the database.")
@@ -85,11 +84,13 @@ class DatabaseConnector:
         self.cursor.execute(q)
         r = self.cursor.fetchall()
         map = self.get_column_map(vote_table)
-        vote_map = {"Soguk" : 0, "Guzel" : 1, "Sicak" : 2}
+        vote_map = {"Soguk" : 0, "Guzel" : 1, "Sicak" : 2, "Ofiste Degilim" : 4}
 
         for record in r:
             ac_id = user_locations[record[map["user_id"]]]
             vote = vote_map[record[map["vote"]]]
+            if vote == 4:
+                continue # Ofiste değilim.
             if ac_id in result:
                 result[ac_id][vote] += 1            
             else:
