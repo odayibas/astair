@@ -40,8 +40,7 @@ const brandWarning = getStyle('--warning')
       {
         label: 'INDOOR',
         type:'line',
-      //  backgroundColor: hexToRgba('#f9690e', 10),
-        backgroundColor: 'rgba(0,0,0,0)',
+        backgroundColor: hexToRgba('#f9690e', 10),
         borderColor: '#f9690e',
         pointHoverBackgroundColor: '#fff',
         borderWidth: 4,
@@ -202,7 +201,7 @@ const brandWarning = getStyle('--warning')
       
     getSlack =  async() => {
     
-        return axios.get(urlServer + "/slack/get-poll-result-hot-cold-nice")
+        return axios.post(urlServer + "/slack/get-poll-result-hot-cold-nice")
         .then((res) => {
 
              var cold = res.data.cold
@@ -266,8 +265,8 @@ const brandWarning = getStyle('--warning')
               mainChart.datasets[0].data.push( this.state.avgsensor);
 
             
-                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 15);
-                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 15);
+                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
+                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
 
 
             }
@@ -286,8 +285,8 @@ const brandWarning = getStyle('--warning')
              
           }
          
-            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 15);
-            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 15);
+            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
         
 
     }
@@ -304,8 +303,8 @@ const brandWarning = getStyle('--warning')
             presentState.people=res.data[i].occupancy
             mainChart.datasets[1].data.push(presentState.people);
 
-              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 15);
-              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 15);
+              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 2);
+              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
 
             
           }
@@ -320,8 +319,8 @@ const brandWarning = getStyle('--warning')
         }
      
 
-          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 15);
-          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 15);
+          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 2);
+          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
 
 
       

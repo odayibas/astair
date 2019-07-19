@@ -52,6 +52,11 @@ class Navbar extends Component{
                 </Link>
                 </li>
                 <li className = "nav -item">
+                <Link to= "/ac" className="nav-link">
+                <h5>AC Control</h5>  
+                </Link>
+                </li>
+                <li className = "nav -item">
                 <a href="" onClick={this.logout.bind(this)} className="nav-link">
                 <h5>Logout</h5> 
                 </a>
@@ -62,7 +67,7 @@ class Navbar extends Component{
 
         return(
 
-            <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style={{paddingTop: '20px'}}>
+            <nav className="navbar fixed-top navbar-expand-lg navbar-dark " style={{backgroundColor :"#212529",paddingTop: '20px'}}>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
