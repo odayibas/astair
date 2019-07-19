@@ -43,18 +43,14 @@ def gather_data(db):
 def start():
 
     ac = AC("Astair/+/+/#", "10.154.3.45")
-
     db = DatabaseConnector()
+
     if db.connect_db() == 1:
         return
 
-    newDegree = int(decisionModel(gather_data(db), ac_id = 4))
-    ac.test(newDegree)
+    # newDegree = int(decisionModel(gather_data(db), ac_id = 1))
 
-    # # After every 10mins work() is called.
-    # schedule.every(3).minutes.do(decisionModel, db = db)
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(1)
+    # ac.power_on(1)
+    ac.test()
 
 start()
