@@ -79,10 +79,10 @@ def oauth():
     return make_response("App Installed",200)
 
 @app.route("/feedback-collector/slack/returns", methods=["POST"])
-def message_actions():
+def message_actions(): ###### bunu ayarla accessory ye bak comment yaz
     
     form_json = json.loads(request.form["payload"])
-    print(form_json)
+    print("====================", form_json)
     responseurl=form_json["response_url"]
     user = form_json["user"]
     username = user["username"]
@@ -90,15 +90,21 @@ def message_actions():
     returnText="Success"
     
     if "accessory" not in request.form["payload"]:
-        chosen= form_json["actions"]
-        chosen= chosen[0]
-        chosen = chosen["value"]
-        text = "Thanks for voting"
-        print(username)
-        print(chosen)
-        response_Interactive_Message(responseurl,text)
-        returnText= username+" "+chosen
-        databaseOperations.addVoteRecord(db_conn,username,chosen)
+        if form_json["actions"][0]["value"] != "zone":
+            chosen= form_json["actions"]
+            chosen= chosen[0]
+            chosen = chosen["value"]
+            text = "Thanks for voting"
+            print(username)
+            print(chosen)
+            response_Interactive_Message(responseurl,text)
+            returnText= username+" "+chosen
+            databaseOperations.addVoteRecord(db_conn,username,chosen)
+        elif form_json["actions"][0]["value"] == "zone":
+            location = databaseOperations.getPersonLocation(db_conn, username)
+            text = "You are in AC zone: " + str(location)
+            response_Interactive_Message(responseurl, text)
+
     else:
         actions=form_json["actions"]
         actions=actions[0]
@@ -143,6 +149,20 @@ def sendLocationSurvey():
     
     return make_response("Success",200)
 
+
+@app.route("/feedback-collector/slack/checkAcZone", methods=["POST"])
+def checkAcZone():
+    sc = SlackClient(decryptToken())
+    userinfo = getUserList()
+    for val in userinfo.values():
+        sc.api_call(
+            "chat.postMessage",
+            channel=val,
+            blocks=slackMessages.checkAcZone()
+        )
+
+    return make_response("Success", 200)
+
 @app.route("/feedback-collector/slack/slash", methods=["POST"])
 def collectSlashRequests():
     username=request.form["user_name"]
@@ -155,6 +175,7 @@ def collectSlashRequests():
         sendAirSurvey("Manuel")
         return make_response("",200)
     if(command=="/locationall"):
+        checkAcZone()
         sendLocationSurvey()
         return make_response("",200)
     if(command=="/onsurveyschedule"):

@@ -25,24 +25,24 @@ public class CompVisionController implements CompVisionControllerApi {
     }
 
 
-    public ResponseEntity<Integer> getAvePeopleCnt() {
-        Integer test = computerVisionService.getAvePeopleCnt();
+    public ResponseEntity<Integer> getAvgPeopleCnt() {
+        Integer test = computerVisionService.getAvgPeopleCnt();
         if (test == null) {
             return new ResponseEntity<>((Integer) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(test, HttpStatus.OK);
     }
 
-    public ResponseEntity<Integer> getAveFemaleCnt() {
-        Integer test = computerVisionService.getAveFemaleCnt();
+    public ResponseEntity<Integer> getAvgFemaleCnt() {
+        Integer test = computerVisionService.getAvgFemaleCnt();
         if (test == null) {
             return new ResponseEntity<>((Integer) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(test, HttpStatus.OK);
     }
 
-    public ResponseEntity<Integer> getAveMaleCnt() {
-        Integer test = computerVisionService.getAveMaleCnt();
+    public ResponseEntity<Integer> getAvgMaleCnt() {
+        Integer test = computerVisionService.getAvgMaleCnt();
         if (test == null) {
             return new ResponseEntity<>((Integer) null, HttpStatus.BAD_REQUEST);
         }

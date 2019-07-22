@@ -65,6 +65,43 @@ def getAirConSurvey():
       ]
     }]
     return aircondition
+
+def checkAcZone():
+
+    currentZone = [{
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "You can see your AC zone which you are assigned"
+        }
+    },
+        {
+            "type": "section",
+            "block_id": "section567",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Click to see your current zone"
+            }
+
+        },
+        {
+            "type": "actions",
+            "elements": [
+                {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Click",
+
+                    },
+                    "value": "zone"
+
+                }
+            ]
+        }]
+    return currentZone
+
+
 def getLocationSurvey(ids):
     """
     username=request.form["user_name"]  # her kullanici icin username cekmeli, bu yanlis location anketini kim atyiysa onun ac_idsini gosteriyor

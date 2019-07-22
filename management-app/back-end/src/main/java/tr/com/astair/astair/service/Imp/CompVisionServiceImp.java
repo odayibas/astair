@@ -20,25 +20,25 @@ public class CompVisionServiceImp implements ComputerVisionService {
     }
 
 
-    public Integer getAvePeopleCnt() {
+    public Integer getAvgPeopleCnt() {
         try {
-            return computerVisionRepo.getAvePeopleCount();
+            return computerVisionRepo.getAvgPeopleCount();
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }
     }
 
-    public Integer getAveFemaleCnt() {
+    public Integer getAvgFemaleCnt() {
         try {
-            return computerVisionRepo.getAveFemaleCount();
+            return computerVisionRepo.getAvgFemaleCount();
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }
     }
 
-    public Integer getAveMaleCnt() {
+    public Integer getAvgMaleCnt() {
         try {
-            return computerVisionRepo.getAveMaleCount();
+            return computerVisionRepo.getAvgMaleCount();
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }
