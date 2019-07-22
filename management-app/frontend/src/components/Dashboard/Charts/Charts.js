@@ -14,6 +14,7 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities'
 
 import axios from 'axios'
+import { mdiConsoleNetwork } from '@mdi/js';
 
 
 const urlArr = ['1', '2', '3','4']
@@ -174,7 +175,10 @@ const brandWarning = getStyle('--warning')
       super(props)
         this.state = {
           radioSelected: 1,
-          avgsensor : null
+          avgsensor : null,
+
+          interval1 : null,
+          interval2 : null
       }  
     
       this.onRadioBtnClick = this.onRadioBtnClick.bind(this);
@@ -187,8 +191,11 @@ const brandWarning = getStyle('--warning')
     }
 
     getcompVisionControllerData =  async() => {
+      console.log("people request")
+
       return axios.get(urlServer + "/get-all")
       .then((res) => {
+      
         var people= (res.data[res.data.length -1].occupancy)
 
         this.callbackPeople(people)
@@ -200,23 +207,28 @@ const brandWarning = getStyle('--warning')
     }
       
     getSlack =  async() => {
+      console.log("slack request")
+
     
-        return axios.post(urlServer + "/slack/get-poll-result-hot-cold-nice")
+        return axios.get(urlServer + "/slack/get-poll-result-hot-cold-nice")
         .then((res) => {
 
              var cold = res.data.cold
              var nice = res.data.nice
              var hot = res.data.hot
-            this.callbackSlack(cold,nice,hot)
-            this.drawSlackChart(res)
+            
+             this.callbackSlack(cold,nice,hot)
+             this.drawSlackChart(res)
             
         })
     }
     
     getSensorAverage = () => {
+
     return axios.get(urlServer + "/sensor/get-ave-degree")
       .then((res) => {
-          this.drawTempChart(res)
+        this.state.avgsensor = res.data
+        this.drawTempChart(res)
         //  this.drawOutdoorChart()
                   
       })
@@ -235,83 +247,63 @@ const brandWarning = getStyle('--warning')
     }
     
     drawSlackChart(res){
-    let presentState = {...this.state}
-    presentState.cold = res.data.cold
-    presentState.nice = res.data.nice
-    presentState.hot = res.data.hot
 
-
-    for(var i = 0 ; i<3 ; i++)
+    
+      for(var i = 0 ; i<3 ; i++)
     barChart.datasets[0].data.shift()
 
-     barChart.datasets[0].data.push(presentState.cold);
-     barChart.datasets[0].data.push(presentState.nice);
-     barChart.datasets[0].data.push(presentState.hot);
-  
 
-    this.setState({
-        ...presentState
-      })
+     barChart.datasets[0].data.push(this.props.cold);
+     barChart.datasets[0].data.push(this.props.nice);
+     barChart.datasets[0].data.push(this.props.hot);
+  
     }
 
     drawTempChart(res){
-    
-    this.state.avgsensor = res.data
-   
+       
          if(loadValue === 0)
         { 
             for (var i = mainChart.datasets[0].data.length ; i < 20 ; i++) {
               this.state.avgsensor = res.data
               mainChart.datasets[0].data.push( this.state.avgsensor);
-
-            
-                  mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-                  mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
-
-
+              mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
+              mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 20);
             }
              loadValue = 1;
           
         }
-  
-
-
-          mainChart.datasets[0].data.push( this.state.avgsensor);
+        
+        mainChart.datasets[0].data.push( this.state.avgsensor);
 
         while (mainChart.datasets[0].data.length > 20)
           {
               mainChart.datasets[0].data.shift();
-          //   mainChart.labels.shift();
-             
           }
-         
             mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 10);
+            mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 20);
         
 
     }
 
     drawPeopleChart(res){
 
-
-      let presentState = { ...this.state }
-      presentState.people = res.data[res.data.length - 1].occupancy
+     // this.props.people = res.data[res.data.length - 1].occupancy
 
       if(loadValue2 === 0)
       {
           for (var i = res.data.length - 20; i < res.data.length; i++) {
-            presentState.people=res.data[i].occupancy
-            mainChart.datasets[1].data.push(presentState.people);
+           // this.props.people=res.data[i].occupancy
+            mainChart.datasets[1].data.push(this.props.people);
 
-              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 2);
-              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
+              mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 20);
+              mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
 
             
           }
           loadValue2 = 1;
       }
 
-        mainChart.datasets[1].data.push(presentState.people);
+        mainChart.datasets[1].data.push(this.props.people);
         if(mainChart.datasets[1].data.length > 20)
         {
             mainChart.datasets[1].data.shift();
@@ -319,14 +311,8 @@ const brandWarning = getStyle('--warning')
         }
      
 
-          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 2);
-          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 2);
-
-
-      
-        this.setState({
-          ...presentState
-      })
+          mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 20);
+          mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
 
     }
     
@@ -363,16 +349,21 @@ const brandWarning = getStyle('--warning')
    
     trigger() {
         let newTime = Date.now() - this.props.date;
-          setInterval(() => { 
-            this.getSensorData().then(data =>{})
-            this.getSensorAverage().then(data => {})
-            this.getSlack().then(data => {}) 
-          }, 5000);
+        const interval1 = setInterval(() => { 
+          this.getSensorData().then(data =>{})
+          this.getSensorAverage().then(data => {})
+          this.getSlack().then(data => {}) 
+        }, 5000);
         let newTime2 = Date.now() - this.props.date;
-          setInterval(() => { 
+        const interval2 = setInterval(() => { 
           this.getcompVisionControllerData().then(data => {})
-          }, 1000);
+        }, 2000);
     
+        this.setState(prevState => ({
+          ...prevState,
+          interval1,
+          interval2
+        }))
     }  
 
     componentDidMount(){
@@ -386,6 +377,11 @@ const brandWarning = getStyle('--warning')
 
     callbackPeople(people){
       this.props.callbackPeople(people)
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.state.interval1)
+      clearInterval(this.state.interval2)
     }
 
     render(){

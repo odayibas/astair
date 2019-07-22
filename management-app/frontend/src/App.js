@@ -6,7 +6,7 @@ import Dashboard from './components/Dashboard/Dashboard'
 import Login from './components/Pages/Login '
 import Landing  from './components/Pages/Landing'
 import Monitor from './components/Monitor/Monitor'
-import SlackForm from './components/Form/Form'
+import SlackForm from './components/SlackForm/SlackForm'
 import ACControl from './components/ACControl/ACControl';
 
 

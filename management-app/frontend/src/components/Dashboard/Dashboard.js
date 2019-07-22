@@ -96,7 +96,17 @@ class Dashboard extends Component{
       }, 5000);
 
       window.onpopstate  = (e) => {
-        removeCookie('usertoken')
+
+        if(getCookie('admintoken'))
+        {
+            removeCookie('admintoken')
+
+        }
+        else
+        {
+            removeCookie('usertoken')
+
+        }
         this.props.history.push('/')
 
         }
@@ -125,11 +135,10 @@ class Dashboard extends Component{
  
  
     render(){
-      if(getCookie('usertoken')){     
+      if(getCookie('usertoken') || getCookie('admintoken') ){     
         return(
           <div style={{width: '100% !important',margin: 'auto',height: '100%',marginTop: '40px'}}>
-              <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '90%'}}>
-               
+              <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '90%'}}>               
                   <Col  xs="4" sm="3">
                     <SensorCards sensorHum = {this.state.sensorHum} sensorTemp = {this.state.sensorTemp} 
                      callbackAC ={this.callbackAC} ac = {this.state.ac}/>
@@ -137,7 +146,9 @@ class Dashboard extends Component{
                   <Col>
                     <div style={{paddingTop :'30px'}}>
                     <Charts sensorTemp = {this.state.sensorTemp} sensorHum = {this.state.sensorHum}  temp = {this.state.temp}
-                        callbackSlack ={this.callbackSlack} callbackPeople= {this.callbackPeople}  ac = {this.state.ac}/>
+                        callbackSlack ={this.callbackSlack} callbackPeople= {this.callbackPeople}  ac = {this.state.ac}
+                        hot = {this.state.hot} nice={this.state.nice} cold = {this.state.cold}  people = {this.state.people}
+                        />
                       <div style={{paddingTop :'30px'}}>
                       <InfoCards temp = {this.state.temp} /* avgsensor = {this.state.avgsensor} */ sensorTemp = {this.state.sensorTemp} 
                       hot = {this.state.hot} nice={this.state.nice} cold = {this.state.cold} 
@@ -154,8 +165,6 @@ class Dashboard extends Component{
             <img height={150} src="/assets/Logo-Astair-w.png"/>
            </div>
         </div>
-     
-       
         )
       }
       else{

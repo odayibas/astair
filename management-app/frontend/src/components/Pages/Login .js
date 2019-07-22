@@ -23,11 +23,11 @@ class Login extends Component {
     onSubmit(e){
         e.preventDefault()
 
-        const user = {
+        const admin = {
             username : this.state.username,
             password : this.state.password
         }
-        login(user)
+        login(admin)
         .then(res =>{
           console.log (res)
           if(res === -2 || res === -1) {

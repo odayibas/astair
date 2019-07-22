@@ -13,22 +13,25 @@ import {
 import  People from "@material-ui/icons/Wc";
 import Cloud from "@material-ui/icons/Cloud";
 import Office from "@material-ui/icons/BusinessCenter";
+import { parse } from '@babel/parser';
 
 class InfoCards extends Component{
-    avgmodal() {
+    
+  avgmodal() {
         var x =  (this.props.sensorTemp[1] +  this.props.sensorTemp[2] +  this.props.sensorTemp[3] + this.props.sensorTemp[4])/4
         x = x * 100   
         x = parseInt(x)
         var y = x/100
         return y
-      }
-      
-      slack100(a) {
+  }
+  
+  slack100(a) {
         var x =  (this.props.hot +  this.props.cold +  this.props.nice)
         a = a * 100   
-        var y = parseInt(a / x)
+        var y = (a / x) * 10
+        y = parseInt(y) / 10
         return y
-      }
+  }
 
 render(){
     return(
