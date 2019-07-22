@@ -19,11 +19,11 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define NUMFLAKES     10 // Number of snowflakes in the animation example
 
 // Replace the next variables with your SSID/Password combination
-const char* ssid = "AstarusPi";
-const char* password = "astarus123";
+const char* ssid = "";
+const char* password = "";
 
 // Add your MQTT Broker IP address
-const char* mqtt_server = "192.168.5.1";
+const char* mqtt_server = "";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
