@@ -46,7 +46,7 @@ The connection between Sparkfun ESP32 Thing and DS18B20 Temperature Sensor is gi
 
 In our project, Sparkfun ESP32 Thing is used to control air conditioners. The A/C communicates with a 5v logic signal, but Sparkfun ESP32 Thing uses a 3.3v logic signal. Therefore, a level-shifter circuit's are needed between these two. In addition, during our studies it was found that the TX signal was inverted and sent to the A/C. Therefore, an additional inverter circuit is designed. These circuits are shown in Figure 3 and PCB is shown in Figure 4.
 
-![alt text](TX-RX.png)
+![alt text](tx-rx.png)
 ###### Figure 3: Circuit Schema
 
 ![alt text](PCB.png)
