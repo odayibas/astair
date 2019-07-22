@@ -19,7 +19,6 @@ import Temperature from './Temperature'
 import { Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
-import { execFileSync } from 'child_process';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
@@ -29,7 +28,8 @@ class ACControl extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            id : "1",
+            id : "",
+            acNum : "",
             mode : {},
             fan_speed : "",
             temperature : {},
@@ -42,18 +42,21 @@ class ACControl extends Component{
           this.onChange = this.onChange.bind(this);
          // this.handleSubmit = this.handleSubmit.bind(this);
           this.handleChange = this.handleChange.bind(this);
-      }
-      componentWillMount () {
-        this.setState( { isChecked: false } );
-      }
-    
-      onChange = e => {
+        }
 
-        this.setState({
-            [e.target.name]: e.target.value
-          })         
-      }
+        componentWillMount () {
+          this.setState( { isChecked: false } );
+          }
     
+        onChange = e => {
+          this.setState({
+            [e.target.name]: e.target.value
+            })         
+          }
+    
+          onClick = e => {
+            this.setState({ id : e.target.value})         
+            }
       handleChange () {
         this.setState( prevState => ({ 
           isChecked: !prevState.isChecked 
@@ -89,16 +92,28 @@ class ACControl extends Component{
         });
       
       }
+
       render(){
+
+
+
         console.log(this.state)
         if(getCookie('admintoken')){     
         return (
             <div style ={{paddingTop : 20}}>
             <div className = "center" >   
             <Card>
+            <CardBody >
+              <div style = {{alignItems : "right"}}>
+              <Row>
+                <Button onClick={this.onClick} value = "1">1</Button>
+                <Button onClick={this.onClick} value = "2">2</Button>
+                <Button onClick={this.onClick} value = "3">3</Button>
+                <Button onClick={this.onClick} value = "4">4</Button>
+                </Row>     
+              </div>
               <center><h4> MODE </h4></center>
               <Mode mode={this.state.mode}/>
-              <CardBody >
               <Row style = {{paddingLeft : '20%'}}>
              
                 <Col>

@@ -44,7 +44,7 @@ class ACInfo extends Component{
 
 render(){
 
-    const acArr =this.props.ac.sort((sensor, sensor2) => (sensor[0] - sensor2[0]))
+    const acArr =this.props.ac.sort((ac, ac2) => (ac[0] - ac2[0]))
     
 
     return(

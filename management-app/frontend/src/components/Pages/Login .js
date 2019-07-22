@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
-import  {login} from "./UserFunctions"
-
-
+import  {adminlogin} from "./UserFunctions"
 
 
 class Login extends Component {
@@ -27,7 +25,8 @@ class Login extends Component {
             username : this.state.username,
             password : this.state.password
         }
-        login(admin)
+
+        adminlogin(admin)
         .then(res =>{
           console.log (res)
           if(res === -2 || res === -1) {
