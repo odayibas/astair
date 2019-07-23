@@ -1,7 +1,7 @@
 ## Experience 
-    *The communication between the A/C and the Esp32 is provided by the TTL protocol, not the RS485 protocol.
-    *While the RX signal from the air conditioner can directly read the TX signal needs to be sent inversion.
-    *ON TX signal :
+     *The communication between the A/C and the Esp32 is provided by the TTL protocol, not the RS485 protocol.
+     *While the RX signal from the air conditioner can directly read the TX signal needs to be sent inversion.
+     *ON TX signal :
         - 1., 2., 3., 6., 7. and 8.Byte is fixed.
         - 4.Byte : The first 4 bits of 4.Byte indicate the fan speed of the A/C and the last 4 bits indicate the Mode of the A/C.
         - 5.Byte : Displays the measured temperature (° F).
