@@ -8,7 +8,7 @@ import Landing  from './components/Pages/Landing'
 import Monitor from './components/Monitor/Monitor'
 import SlackForm from './components/SlackForm/SlackForm'
 import ACControl from './components/ACControl/ACControl';
-
+import Register from './components/Pages/Register'
 
 function App() {
   return (
@@ -22,6 +22,8 @@ function App() {
         <Route  exact path="/monitor" component={Monitor}/>
         <Route  exact path="/form" component={SlackForm}/>
         <Route  exact path="/ac" component={ACControl}/>
+        <Route  exact path="/register" component={Register}/>
+
 
         </div>
       </div>

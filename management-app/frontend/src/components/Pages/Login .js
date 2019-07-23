@@ -20,27 +20,28 @@ class Login extends Component {
 
     onSubmit(e){
         e.preventDefault()
+        
         const user = {
             username : this.state.username,
-           // role : 1,
+            role : 1,
             password : this.state.password
         }
 
         login(user)
         .then(res =>{
-            console.log (res)
-            if(res === -2 || res === -1) {
-                alert('Invalid Credentials')   
-                return  this.props.history.push('/login')
-            }
-            else{
-                alert('Login Successful')
-                return this.props.history.push('/dashboard');
-            }
+            if(res) 
+            { 
+                if(res === -2 || res === -1 )  {
+                 alert('Invalid Credentials')   
+                 return  this.props.history.push('/login')
+                 }
+                 else{
+                 alert('Login Successful')
+                 return this.props.history.push('/dashboard');
+                 }
+             }
         })
-        .catch(err =>{
-            console.log(err)
-        })
+        
     }
 
     render(){

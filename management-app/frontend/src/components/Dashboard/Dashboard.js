@@ -10,6 +10,7 @@ import InfoCards from './InfoCards/InfoCards'
 import Charts from './Charts/Charts'
 import SensorCards from './SensorCards/SensorCards';
 import ACInfo from './ACInfo/ACInfo';
+import { tsImportEqualsDeclaration } from '@babel/types';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
@@ -48,7 +49,8 @@ class Dashboard extends Component{
           hot: null,
           nice : null,
           cold : null,
-          people : null
+          people : null,
+          interval : null
       }  
       this.callbackSlack = this.callbackSlack.bind(this);
       this.callbackAC = this.callbackAC.bind(this);
@@ -88,13 +90,19 @@ class Dashboard extends Component{
     componentDidMount(){  
 
       let newTime = Date.now() - this.props.date;
-      setInterval(() => { 
+      var interval = setInterval(() => { 
         this.getOutdoorData().then(data => {})
         this.getACAverage().then(data => {})
-
-
       }, 5000);
-    }
+      this.setState({
+        interval : interval 
+      })
+    
+  }
+  componentWillUnmount(){
+    clearInterval(this.state.interval);
+
+  }
 
     callbackSlack(cold, nice, hot){
       this.setState(
@@ -119,6 +127,7 @@ class Dashboard extends Component{
  
  
     render(){
+      console.log(getCookie('usertoken'))
       if(getCookie('usertoken')){     
         return(
           <div style={{width: '100% !important',margin: 'auto',height: '100%',marginTop: '40px'}}>
@@ -134,7 +143,7 @@ class Dashboard extends Component{
                         hot = {this.state.hot} nice={this.state.nice} cold = {this.state.cold}  people = {this.state.people}
                         />
                       <div style={{paddingTop :'30px'}}>
-                      <InfoCards temp = {this.state.temp} /* avgsensor = {this.state.avgsensor} */ sensorTemp = {this.state.sensorTemp} 
+                      <InfoCards temp = {this.state.temp} sensorTemp = {this.state.sensorTemp} 
                       hot = {this.state.hot} nice={this.state.nice} cold = {this.state.cold} 
                       people = {this.state.people} />
                     </div>

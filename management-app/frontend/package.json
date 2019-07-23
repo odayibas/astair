@@ -41,6 +41,7 @@
     "react-router-dom": "^5.0.1",
     "react-splitter-layout": "^4.0.0",
     "react-test-renderer": "^16.8.6",
+    "react-youtube": "^7.9.0",
     "reactstrap": "^8.0.0",
     "recharts": "^1.6.2",
     "simple-line-icons": "^2.4.1"
