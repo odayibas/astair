@@ -10,7 +10,7 @@
     *A new None must be added to the "mem" array for each new sensor.
     *The MAC address of the new sensor and the new A/C must be registered in the MacFinder function.
     *For each new air conditioner, the MAC address must be registered in the idFinder function.
-### Communication diagram:
+### Communication Scheme:
   All sensors, air conditioners and the database need to be communicated with each other. This need was met with Mqtt Broker. Raspberry Pi serves as a gateway here. Data from sensors and air conditioner were transferred to Raspberry Pi with Mqtt Broker. The transferred data was written to the database with Raspberry Pi. The communication scheme is shown in Figure 1.
-![alt text](Sensor_bb.png)
+![alt text](Communication-diagram.png)
 ###### Figure 1: Comminication Scheme
