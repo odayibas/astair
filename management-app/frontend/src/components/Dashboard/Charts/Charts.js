@@ -207,9 +207,6 @@ const brandWarning = getStyle('--warning')
     }
       
     getSlack =  async() => {
-      console.log("slack request")
-
-    
         return axios.get(urlServer + "/slack/get-poll-result-hot-cold-nice")
         .then((res) => {
 
@@ -224,7 +221,6 @@ const brandWarning = getStyle('--warning')
     }
     
     getSensorAverage = () => {
-
     return axios.get(urlServer + "/sensor/get-ave-degree")
       .then((res) => {
         this.state.avgsensor = res.data
@@ -248,7 +244,6 @@ const brandWarning = getStyle('--warning')
     
     drawSlackChart(res){
 
-    
       for(var i = 0 ; i<3 ; i++)
     barChart.datasets[0].data.shift()
 
