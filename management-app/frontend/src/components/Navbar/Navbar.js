@@ -7,56 +7,14 @@ class Navbar extends Component{
 
     logout(e){
         e.preventDefault()
-        if(getCookie('admintoken'))
-        {
-            removeCookie('admintoken')
-
-        }
-        else
-        {
-            removeCookie('usertoken')
-
-        }
-
+        removeCookie('usertoken')
         this.props.history.push('/')
-
     }
 
     
     
     getNavbar(){
-        if (getCookie('admintoken'))
-            {
-                return   (
-                <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png"/></div>  
-            <ul className ="navbar-nav">
-                <li className = "nav -item">
-                    <Link to= "/" className="nav-link">
-                    <h5>Home</h5> 
-                    </Link>
-                </li>
-                <li className = "nav -item">
-                    <Link to= "/dashboard" className="nav-link">
-                    <h5>Dashboard</h5>  
-                    </Link>
-                </li>
-                <li className = "nav -item">
-                    <Link to= "/ac" className="nav-link">
-                    <h5>AC Control</h5>  
-                    </Link>
-                </li>
-                <li className = "nav -item">
-                    <a href="" onClick={this.logout.bind(this)} className="nav-link">
-                    <h5>Logout</h5> 
-                    </a>
-                </li> 
-            </ul>
-            </div>)
-            
-            }
-        else if(getCookie('usertoken')){
-
+         if(getCookie('usertoken')){
             return   (
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png"/></div>  

@@ -94,22 +94,6 @@ class Dashboard extends Component{
 
 
       }, 5000);
-
-      window.onpopstate  = (e) => {
-
-        if(getCookie('admintoken'))
-        {
-            removeCookie('admintoken')
-
-        }
-        else
-        {
-            removeCookie('usertoken')
-
-        }
-        this.props.history.push('/')
-
-        }
     }
 
     callbackSlack(cold, nice, hot){
@@ -135,7 +119,7 @@ class Dashboard extends Component{
  
  
     render(){
-      if(getCookie('usertoken') || getCookie('admintoken') ){     
+      if(getCookie('usertoken')){     
         return(
           <div style={{width: '100% !important',margin: 'auto',height: '100%',marginTop: '40px'}}>
               <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '90%'}}>               

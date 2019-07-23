@@ -36,7 +36,6 @@ class ACControl extends Component{
             active : "",
             message : "",
             isChecked: null,
-
           };
           
           this.onChange = this.onChange.bind(this);
@@ -54,11 +53,12 @@ class ACControl extends Component{
             })         
           }
     
-          onClick = e => {
-            this.setState({ id : e.target.value})         
-            }
-      handleChange () {
-        this.setState( prevState => ({ 
+        onClick = e => {
+          this.setState({ id : e.target.value})         
+        }
+      
+        handleChange () {
+          this.setState( prevState => ({ 
           isChecked: !prevState.isChecked 
         }) , () => console.log(this.state.isChecked) );
         
@@ -95,10 +95,8 @@ class ACControl extends Component{
 
       render(){
 
-
-
         console.log(this.state)
-        if(getCookie('admintoken')){     
+        if(getCookie('usertoken')){     
         return (
             <div style ={{paddingTop : 20}}>
             <div className = "center" >   

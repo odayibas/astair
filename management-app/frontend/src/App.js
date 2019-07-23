@@ -20,7 +20,7 @@ function App() {
         <Route  exact path="/login" component={Login}/>
         <Route  exact path="/dashboard" component={Dashboard}/>
         <Route  exact path="/monitor" component={Monitor}/>
-        {/* <Route  exact path="/form" component={SlackForm}/> */}
+        <Route  exact path="/form" component={SlackForm}/>
         <Route  exact path="/ac" component={ACControl}/>
 
         </div>

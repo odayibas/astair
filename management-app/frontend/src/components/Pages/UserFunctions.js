@@ -6,50 +6,30 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND
 
 export const register  = user => {
     return axios
-    .post( urlServer + "/us/register/", {
+    .post( urlServer + "/user/register/", {
         username : user.username,
+       // role : user.role,
         password : user.password
     })
     .then(res =>{
         console.log("registered")
+        if(!(res.data === -2 || res.data === -1)) {
+            setCookie('usertoken',  res.data)
+            }
     })
 }
 
-
-export const userlogin = user =>{
+export const login = user =>{
     return axios
-    .post( urlServer + "/us/login/" + user.username +'/' + user.password, {
+    .post( urlServer + "/user/login/" + user.username +'/' + user.password, {
         username : user.username,
         password:  user.password,
     })
     .then(res =>{
         if(!(res.data === -2 || res.data === -1)) {
-        setCookie('admintoken',  res.data)
-        }
-        
+        setCookie('usertoken',  res.data)
+        }       
         return res.data
-     
-
-    })
-    .catch(err =>{
-        console.log(err)
-    })
-}
-
-export const adminlogin = admin =>{
-    return axios
-    .post( urlServer + "/user/login/" + admin.username +'/' + admin.password, {
-        username : admin.username,
-        password:  admin.password,
-    })
-    .then(res =>{
-        if(!(res.data === -2 || res.data === -1)) {
-        setCookie('admintoken',  res.data)
-        }
-        
-        return res.data
-     
-
     })
     .catch(err =>{
         console.log(err)
