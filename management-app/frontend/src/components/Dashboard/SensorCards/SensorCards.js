@@ -122,12 +122,27 @@ function interpolateColors(color1, color2, steps) {
 
 
 class SensorCards extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      interval: null
+    }
+  }
     componentDidMount(){
 
       let newTime = Date.now() - this.props.date;
-      setInterval(() => { 
+      const interval =  setInterval(() => { 
         this.getacData().then(data => {})
       }, 5000);
+      this.setState(prevState => ({
+        ...prevState,
+        interval
+      }))
+
+    }
+
+    componentWillUnmount(){
+      clearInterval(this.state.interval)
 
     }
     getacData = async () =>{
@@ -148,7 +163,8 @@ class SensorCards extends Component{
         })
       )
     );
-     this.callbackAC(ac)
+     
+    this.callbackAC(ac)
 
     }
     

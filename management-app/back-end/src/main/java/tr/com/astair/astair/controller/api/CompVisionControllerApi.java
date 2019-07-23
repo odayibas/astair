@@ -10,15 +10,15 @@ import java.util.List;
 public interface CompVisionControllerApi {
     //get today's average people count
     @GetMapping("/get-average-people-count")
-    ResponseEntity<Integer> getAvePeopleCnt();
+    ResponseEntity<Integer> getAvgPeopleCnt();
 
     //get today's average female count
     @GetMapping("/get-average-female-count")
-    ResponseEntity<Integer> getAveFemaleCnt();
+    ResponseEntity<Integer> getAvgFemaleCnt();
 
     //get today's average male count
     @GetMapping("/get-average-male-count")
-    ResponseEntity<Integer> getAveMaleCnt();
+    ResponseEntity<Integer> getAvgMaleCnt();
 
     //get all data
     @GetMapping("/get-all")

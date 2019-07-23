@@ -6,7 +6,7 @@ import Dashboard from './components/Dashboard/Dashboard'
 import Login from './components/Pages/Login '
 import Landing  from './components/Pages/Landing'
 import Monitor from './components/Monitor/Monitor'
-import SlackForm from './components/Form/Form'
+import SlackForm from './components/SlackForm/SlackForm'
 import ACControl from './components/ACControl/ACControl';
 
 
@@ -20,7 +20,7 @@ function App() {
         <Route  exact path="/login" component={Login}/>
         <Route  exact path="/dashboard" component={Dashboard}/>
         <Route  exact path="/monitor" component={Monitor}/>
-        {/* <Route  exact path="/form" component={SlackForm}/> */}
+        <Route  exact path="/form" component={SlackForm}/>
         <Route  exact path="/ac" component={ACControl}/>
 
         </div>

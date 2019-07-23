@@ -33,7 +33,9 @@ class QModel:
 
         self.total_episode = 5
 
-        self.state = None
+        self.state = None # MUST BE CHANGED
+        self.new_state = None
+        self.action = None
 
         # ------------------------------- Loading Model and Epsilon
         self.Q = None
@@ -77,7 +79,7 @@ class QModel:
         return self.reward_table[s1][s2]
 
     def get_action(self, state):
-        if random.uniform(0, 1) > self.epsilon and np.any(self.Q[state]):
+        if True or (random.uniform(0, 1) > self.epsilon and np.any(self.Q[state])):
             # Random
             print("Greedy", end=" ")
             return np.argmax(self.Q[state])
@@ -122,3 +124,32 @@ class QModel:
                 pickle.dump(self.epsilon, f)
 
         print(self.Q)
+
+    def update(self):
+        reward = self.get_reward(self.state, self.new_state)
+        self.train(self.state, self.new_state, reward, self.action)
+
+        self.epsilon -= self.epsilon_decay
+
+        with open("ac.pkl", 'wb') as f:
+            pickle.dump(self.Q, f)
+        with open("epsilon.pkl", "wb") as f:
+            pickle.dump(self.epsilon, f)
+
+        print(self.Q)
+
+    def forward(self, cold, good, hot):
+
+        self.new_state = self.get_state(cold, good, hot)
+
+        print("State is {}.".format(self.new_state), end=" ")
+        new_action = self.get_action(self.new_state)
+        print("Action is {}".format(self.actions[new_action]))
+
+        if self.state is not None and self.action is not None:
+            self.update()
+
+        self.state = self.new_state
+        self.action = new_action
+
+        return self.actions[new_action]

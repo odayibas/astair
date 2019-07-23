@@ -34,9 +34,9 @@ class AC:
         self.client.publish("Astair/MODEL/AC",self.create_config_string(id = id, power = "OFF"))
 
     def set_temp(self, id, temp):
-        #print(self.create_config_string(id = id, temp = temp))
-        if 16 <= temp and temp <= 30: 
-            self.client.publish("Astair/MODEL/AC", self.create_config_string(id = id, temp = temp))
+        if 16 <= temp and temp <= 30:
+            print(self.create_config_string(id=id, temp=temp))
+            # self.client.publish("Astair/MODEL/AC", self.create_config_string(id = id, temp = temp))
         else:
             print("Invalid temperature value. (16-30)")
 

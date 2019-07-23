@@ -2,8 +2,6 @@ import React, {Component} from 'react'
 import  {login} from "./UserFunctions"
 
 
-
-
 class Login extends Component {
     constructor(props){
         super(props)
@@ -22,36 +20,30 @@ class Login extends Component {
 
     onSubmit(e){
         e.preventDefault()
-
         const user = {
             username : this.state.username,
+           // role : 1,
             password : this.state.password
         }
+
         login(user)
         .then(res =>{
-          console.log (res)
-          if(res === -2 || res === -1) {
-              
-            alert('Invalid Credentials')   
-            return  this.props.history.push('/login')
-          }
-          else{
-
-            alert('Login Successful')
-            return this.props.history.push('/dashboard');
-
-          }
-        
+            console.log (res)
+            if(res === -2 || res === -1) {
+                alert('Invalid Credentials')   
+                return  this.props.history.push('/login')
+            }
+            else{
+                alert('Login Successful')
+                return this.props.history.push('/dashboard');
+            }
         })
         .catch(err =>{
             console.log(err)
-           
         })
     }
 
     render(){
-
-        
         return(
             <div style={{width : '100%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
                 <div style={{width : '50%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
