@@ -19,14 +19,13 @@ public class UserController implements UserControllerApi {
 	    this.userService = userService;
 	}
 	
-	public ResponseEntity<Long> registerUser(@RequestBody User user){
+	public ResponseEntity<String> registerUser(@RequestBody User user){
 		Long id = userService.addUser(user);
 		if(id == -1) {
-			new ResponseEntity<>(HttpStatus.CONFLICT);
+		 	return new ResponseEntity<String>("User " + user.getUsername() + " already exists.", HttpStatus.CONFLICT);
 		}
-		String username=user.getUsername();
-		String password= user.getPassword();
-		return loginUser(username,password);
+
+		return new ResponseEntity<String>("User " + user.getUsername() + " registered successfully.", HttpStatus.OK);
 	}
 	
 	
@@ -34,7 +33,7 @@ public class UserController implements UserControllerApi {
 		 User user = userService.getUserByIdOne(id);
 		 return new ResponseEntity<>(user, HttpStatus.OK);
 	}
-	
+
 	public ResponseEntity<Long> loginUser(String username, String password) {
 		return new ResponseEntity<>( (Long) userService.login(username,password), HttpStatus.OK);
 	}

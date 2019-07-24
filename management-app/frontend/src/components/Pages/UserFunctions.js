@@ -13,10 +13,18 @@ export const register  = user => {
     })
     .then(res =>{
 
-        if(res !== -2 || res !== -1 || (res)) {
-            setCookie('usertoken',  res.data)
+        if(res){
+/* 
+            if(res.data !== -2 && res.data !== -1) {
+              console.log(getUserData(res))  
+            } */
+            return res.data
         }
-        return res.data
+
+/*         if(res !== -2 || res !== -1 || (res)) {
+            setCookie('usertoken',  res.data)
+        } 
+        return res.data */
 
     }).catch(err =>{
 
@@ -25,33 +33,38 @@ export const register  = user => {
     })
 }
 
-export const getUserData =  async(res) =>{
-    return await axios
-    .get(urlServer +"/user/"+ res,{
-        
+export const getUserData =  async(value) =>{
+
+    return  axios.post(urlServer +"/user/"+ value)
+    .then(res => {
+        setCookie('usertoken',  res.data.role)
+        console.log(getCookie('usertoken'))
+
+
     });
 }
   
 export const login = user =>{
-    return axios
-    .post( urlServer + "/user/login/" + user.username +'/' + user.password, {
+    
+    return axios.post( urlServer + "/user/login/" + user.username +'/' + user.password, {
         username : user.username,
         role : user.role,
         password:  user.password,
     })
     .then(res =>{
-        console.log(res)
+        if(res){
+        if(res.data !== -2 && res.data !== -1) {
+            var promise1 = Promise.resolve(res.data)
+            promise1
+                .then(function(value) {
+                    getUserData(value)
+                });
 
-        if((res !== -2 || res !== -1) && (res)) {
-            /* const response = getUserData(res)
-            console.log(response) */
-            setCookie('usertoken',  res.data)
         }
-
         return res.data
 
-    })
-    .catch(err =>{
+    }}
+    ).catch(err =>{
         alert(err.response.data)
 
     })

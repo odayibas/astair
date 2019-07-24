@@ -96,7 +96,7 @@ class ACControl extends Component{
       render(){
 
         console.log(this.state)
-        if(getCookie('usertoken')){     
+        if(getCookie('usertoken')== 1){     
         return (
             <div style ={{paddingTop : 20}}>
             <div className = "center" >   

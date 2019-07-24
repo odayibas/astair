@@ -18,13 +18,13 @@ public interface ComputerVisionRepo extends JpaRepository<ComputerVision, Timest
     ComputerVision findTopByOrderByDateDesc();
 
     @Query(nativeQuery = true, value = "SELECT AVG(occupancy) FROM computervision c WHERE c.data_time BETWEEN CURRENT_DATE AND CURRENT_DATE+1")
-    Integer getAvgPeopleCount();
+    Integer getAvePeopleCount();
 
     @Query(nativeQuery = true, value = "SELECT AVG(female_count) FROM computervision c WHERE c.data_time BETWEEN CURRENT_DATE AND CURRENT_DATE+1")
-    Integer getAvgFemaleCount();
+    Integer getAveFemaleCount();
 
     @Query(nativeQuery = true, value = "SELECT AVG(male_count) FROM computervision c WHERE c.data_time BETWEEN CURRENT_DATE AND CURRENT_DATE+1")
-    Integer getAvgMaleCount();
+    Integer getAveMaleCount();
 
     @Query(nativeQuery = true, value = "SELECT * FROM computervision c WHERE c.data_time BETWEEN CURRENT_DATE AND CURRENT_DATE+1")
     List<ComputerVision> getTodaysData();

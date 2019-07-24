@@ -127,8 +127,7 @@ class Dashboard extends Component{
  
  
     render(){
-      console.log(getCookie('usertoken'))
-      if(getCookie('usertoken')){     
+      if(getCookie('usertoken') == 1 || getCookie('usertoken') == 2){     
         return(
           <div style={{width: '100% !important',margin: 'auto',height: '100%',marginTop: '40px'}}>
               <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '90%'}}>               

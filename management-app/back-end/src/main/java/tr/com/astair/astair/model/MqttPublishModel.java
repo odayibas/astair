@@ -17,8 +17,6 @@ public class MqttPublishModel {
     @NotNull
     private Boolean retained;
 
-    @NotNull
-    private Integer qos;
 
 
     public String getTopic() {
@@ -45,11 +43,5 @@ public class MqttPublishModel {
         this.retained = retained;
     }
 
-    public Integer getQos() {
-        return qos;
-    }
 
-    public void setQos(Integer qos) {
-        this.qos = qos;
-    }
 }

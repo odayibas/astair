@@ -191,8 +191,6 @@ const brandWarning = getStyle('--warning')
     }
 
     getcompVisionControllerData =  async() => {
-      console.log("people request")
-
       return axios.get(urlServer + "/get-all")
       .then((res) => {
       
