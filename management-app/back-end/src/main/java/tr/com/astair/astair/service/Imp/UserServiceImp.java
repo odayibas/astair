@@ -1,3 +1,42 @@
+/*
+package tr.com.astair.astair.service.Imp;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import tr.com.astair.astair.model.User;
+import tr.com.astair.astair.repository.UserRepository;
+import tr.com.astair.astair.service.UserService;
+
+import java.util.List;
+
+@Service
+public class UserServiceImp implements UserService {
+
+    UserRepository userRepository;
+
+    @Autowired
+    public UserServiceImp(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User save(User test){
+        return userRepository.save(test);
+    }
+
+    public User get(Long id){
+        return userRepository.getOne(id);
+    }
+
+    public List<User> get(){
+        return userRepository.findAll();
+    }
+
+    public void update(User test){
+        userRepository.save(test);
+    }
+}
+*/
+
 package tr.com.astair.astair.service.Imp;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,26 +87,24 @@ public class UserServiceImp implements UserService {
 	@Override
 	public Long addUser(User user) {
 		List<User> list = userRepository.findAllByUsername(user.getUsername());
+
 		if (list.size() > 0) {
-			Long a = -1l;
-			return a;
+			return -1l;
 		}
-		else {
-			user = userRepository.save(user);
-		}
-		return user.getId();
+
+		return userRepository.save(user).getId();
 	}
 
 	@Override  
 	public Long login(String username,String password) {
         
         List<User> userEntityList = userRepository.findAllByUsername(username);
-        if(userEntityList.size() <=0) {
+        if(userEntityList.size() <= 0) {
         	return -2l; 
         }
         
-        User userE =userEntityList.get(0);
-        if (!userE.getPassword().equals(password)){
+        User userE = userEntityList.get(0);
+        if (!userE.getPassword().equals(password)) {
         	return -1l; 
         }
         return userE.getId();

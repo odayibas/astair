@@ -26,7 +26,11 @@ public class User {
     @Size(min=1, message="Username should have at least 1 characters")
 	@Column(name="username", nullable = false)
 	private String username;
-	
+
+	@NotNull
+	@Column(name="role", nullable = false)
+	private Integer role;
+
 	@NotNull
     @Size(min=1, message="Password should have at least 1 characters")
 	@Column(name="user_password")
@@ -40,6 +44,14 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Integer getRole() {
+		return role;
+	}
+
+	public void setRole(Integer role) {
+		this.role = role;
 	}
 	
 	public String getUsername() {

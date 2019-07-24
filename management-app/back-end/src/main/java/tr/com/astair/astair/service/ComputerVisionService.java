@@ -8,13 +8,13 @@ import java.util.List;
 public interface ComputerVisionService {
 
     //get average people count of today
-    Integer getAvgPeopleCnt();
+    Integer getAvePeopleCnt();
 
     //get average female count of today
-    Integer getAvgFemaleCnt();
+    Integer getAveFemaleCnt();
 
     //get average male count of today
-    Integer getAvgMaleCnt();
+    Integer getAveMaleCnt();
 
     //get today's data
     List<ComputerVision> getTodaysData();
