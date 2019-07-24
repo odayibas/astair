@@ -1,22 +1,10 @@
 apiVersion: v1
-kind: Secret
-metadata:
-  name: management-backend
-  namespace: astair
-type: Opaque
-data:
-  postgresql-username: YXN0YWly
-  postgresql-password: YXN0YWlyUG9zdGdyZXMyMDE5Lg==
-
----
-
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: management-backend
   namespace: astair
 data:
-  postgresql-url: jdbc:postgresql://13.79.246.198:5432/astair?user=astair&password=astairPostgres2019.
+  postgresql-url: "postgres-url-here"
   hikari-connection-timeout: "20000"
   hikari-maximum-pool-size: "5"
   spring-data-driver-class-name: "org.postgresql.Driver"
@@ -66,6 +54,8 @@ spec:
       labels:        
         app: management-backend
         release: system
+      annotations:
+        checksum/config-map: kRhRA5O5rrMr5Bxw9dNM5aa9ab4de578d9e8947c8142f135ec17140baf49b68f
     spec:
       containers:
         - image: astar.azurecr.io/astair-management-app-back-end:0.0.3
@@ -73,10 +63,10 @@ spec:
           resources:
             requests:
               memory: "400Mi"
-              cpu: "500m"
+              cpu: "400m"
             limits:
               memory: "800Mi"
-              cpu: "700m"
+              cpu: "600m"
           livenessProbe:
             httpGet:
               path: /astair-management-backend/actuator/health
@@ -119,16 +109,6 @@ spec:
                 configMapKeyRef:
                   name: management-backend
                   key: postgresql-url
-            - name: POSTGRESQL_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: management-backend
-                  key: postgresql-username
-            - name: POSTGRESQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: management-backend
-                  key: postgresql-password
             - name: SPRING_DATA_DRIVER_CLASS_NAME
               valueFrom:
                 configMapKeyRef:
