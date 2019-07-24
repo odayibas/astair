@@ -1,16 +1,4 @@
 apiVersion: v1
-kind: Secret
-metadata:
-  name: management-backend
-  namespace: astair
-type: Opaque
-data:
-  postgresql-username: dXNlcm5hbWUK
-  postgresql-password: cGFzc3dvcmQK
-
----
-
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: management-backend
@@ -52,7 +40,7 @@ metadata:
     release: system
   namespace: astair
 spec: 
-  replicas: 3
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -66,17 +54,19 @@ spec:
       labels:        
         app: management-backend
         release: system
+      annotations:
+        checksum/config-map: kRhRA5O5rrMr5Bxw9dNM5aa9ab4de578d9e8947c8142f135ec17140baf49b68f
     spec:
       containers:
-        - image: astar.azurecr.io/astair-management-app-back-end:0.0.2
+        - image: astar.azurecr.io/astair-management-app-back-end:0.0.3
           imagePullPolicy: Always
           resources:
             requests:
               memory: "400Mi"
-              cpu: "500m"
+              cpu: "400m"
             limits:
               memory: "800Mi"
-              cpu: "700m"
+              cpu: "600m"
           livenessProbe:
             httpGet:
               path: /astair-management-backend/actuator/health
@@ -119,16 +109,6 @@ spec:
                 configMapKeyRef:
                   name: management-backend
                   key: postgresql-url
-            - name: POSTGRESQL_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: management-backend
-                  key: postgresql-username
-            - name: POSTGRESQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: management-backend
-                  key: postgresql-password
             - name: SPRING_DATA_DRIVER_CLASS_NAME
               valueFrom:
                 configMapKeyRef:

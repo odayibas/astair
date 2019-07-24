@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "management_app_frontend.full_name" . }}
+  namespace: {{ .Values.namespace }}
+data:
+  react-app-astair-management-backend: {{ .Values.reactAppAstairManagementBackend }}
+  react-app-port: {{ .Values.reactAppPort | quote }}
+  skip-preflight-check: {{ .Values.skipPreflightCheck | quote }}

@@ -1,0 +1,20 @@
+releaseApp: management-app-frontend-k8s
+releaseNamespace: astair
+
+imageRepository: astar.azurecr.io/astair-management-app-frontend
+imageTag: 0.0.2
+imagePullPolicy: Always
+
+replicas: 2
+namespace: astair
+
+cpuLimit: "500m"
+cpuRequest: "200m"
+memoryLimit: "500Mi"
+memoryRequest: "100Mi"
+
+livenessProbeHealthCheckEndpoint: "/"
+
+reactAppAstairManagementBackend: "https://astair.northeurope.cloudapp.azure.com/astair-management-backend"
+reactAppPort: "3000"
+skipPreflightCheck: "true"
