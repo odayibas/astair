@@ -14,7 +14,7 @@ class Navbar extends Component{
     
     
     getNavbar(){
-         if(getCookie('usertoken')){
+         if(getCookie('usertoken') == 1){
             return   (
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png"/></div>  
@@ -42,6 +42,34 @@ class Navbar extends Component{
             </ul>
             </div>)
         }
+        else if(getCookie('usertoken') == 2){
+            return (<div className="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png"/></div>  
+        <ul className ="navbar-nav">
+            <li className = "nav -item">
+                <Link to= "/" className="nav-link">
+                <h5>Home</h5> 
+                </Link>
+            </li>
+            <li className = "nav -item">
+                <Link to= "/dashboard" className="nav-link">
+                <h5>Dashboard</h5>  
+                </Link>
+            </li>
+            <li className = "nav -item">
+                <Link to= "/form" className="nav-link">
+                <h5>Form</h5>  
+                </Link>
+            </li>
+            <li className = "nav -item">
+                <a href="" onClick={this.logout.bind(this)} className="nav-link">
+                <h5>Logout</h5> 
+                </a>
+            </li> 
+        </ul>
+        </div>)
+
+        }
       
         else
           { 
@@ -58,7 +86,6 @@ class Navbar extends Component{
                         <h5>Login</h5> 
                         </Link>
                     </li>
-
                 </ul>
             </div>)
               

@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
-import  {register} from "./UserFunctions"
+import axios from 'axios'
+import {get as getCookie, set as setCookie} from 'es-cookie';
 
+const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 class Register extends Component {
     constructor(){
         super()
@@ -25,7 +27,34 @@ class Register extends Component {
             role : 2, //user role is 2 
             password : this.state.password
         }
-        register(user).then(res =>{
+
+    return axios.post( urlServer + "/user/register/", {
+        username : user.username,
+        role : user.role,
+        password : user.password
+    })
+    .then(res =>{
+        console.log(res.data)
+
+        if(res){
+            if(res.data === -2 || res.data === -1 )  {
+                alert('Invalid Credentials')   
+                return  this.props.history.push('/register')
+                }
+                else{
+                alert('Register Successful')
+                return res.data && this.props.history.push('/login');
+                }
+
+        }
+
+    }).catch(err =>{
+
+       alert(err.response.data)
+            
+    })
+
+/*         register(user).then(res =>{
           if(res) 
            { 
                if(res === -2 || res === -1 )  {
@@ -37,7 +66,7 @@ class Register extends Component {
                 return this.props.history.push('/login');
                 }
             }
-        })
+        }) */
     }
 
 
