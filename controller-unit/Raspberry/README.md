@@ -1,10 +1,10 @@
 ## Experiences
     *Database connection should be done in a controlled manner.
     *Each time you enter the database, you must exit the database.
-    *Client names connecting to Mqtt must be different.
-    *You need to be a member to get data with mqtt.
+    *Client names connecting to Mqtt Broker must be different.
+    *You need to be a member to get data with Mqtt Broker.
     *It is based on communication via brokers.
-    *You need to subscribe to receive data with mqtt.
+    *You need to subscribe to receive data with Mqtt Broker.
     *With Topic you can send or receive the desired message.
     *Sensors must be assigned ID based on their MAC address.
     *A new None must be added to the "mem" array for each new sensor.

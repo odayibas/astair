@@ -38,6 +38,12 @@ Run a command in a new container for backend and frontend. As follows:
 
 # Deploy ASTAiR to Kubernetes
 
+Change your directory to `/deployment/kubernetes-manifests/`
+
+```bash
+cd deployment/kubernetes-manifests/
+```
+
 Create namespace, cluster issuer, certificate and ingress:
 
 ```bash
@@ -50,8 +56,19 @@ done
 Deploy management-app-backend,feedback-collector and management-app-frontend:
 
 ```bash
+cd deployment/kubernetes-manifests/pure-manifests
 for manifest in management-app-backend feedback-collector management-app-frontend; 
 do 
-    kubectl apply -f $manifest.yaml
+    kubectl apply -f $manifest/
+done
+```
+
+Tearing down:
+
+```bash
+cd deployment/kubernetes-manifests/pure-manifests
+for manifest in management-app-backend feedback-collector management-app-frontend; 
+do 
+    kubectl delete -f $manifest/
 done
 ```

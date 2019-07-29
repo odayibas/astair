@@ -34,7 +34,7 @@ metadata:
     app: management-frontend
   namespace: astair
 spec: 
-  replicas: 3
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -47,34 +47,13 @@ spec:
     metadata:
       labels:        
         app: management-frontend
+      annotations:
+        checksum/config-map: v7cLoXbjvmnMZwGsS99k5aa9ab4de578d9e8947c8142f135ec17140baf49b68f
     spec:
       containers: 
-        - image: astar.azurecr.io/astair-management-app-frontend:0.0.2
+        - image: astar.azurecr.io/astair-management-app-frontend:0.0.3
           name: management-frontend
           imagePullPolicy: Always
-          resources:
-            requests:
-              memory: "100Mi"
-              cpu: "200m"
-            limits:
-              memory: "500Mi"
-              cpu: "500m"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 20
-            periodSeconds: 5
-            failureThreshold: 5
-            timeoutSeconds: 6
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 20
-            failureThreshold: 5
-            periodSeconds: 5
-            timeoutSeconds: 6
           ports:
             - containerPort: 3000
           env:
