@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: {{ template "feedback_collector.full_name" . }}
+  labels:
+    {{- include "feedback_collector.release_labels" . | indent 8 }}
+  namespace: {{ .Values.namespace }}
+spec: 
+  replicas: {{ .Values.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ template "feedback_collector.full_name" . }}
+  template: 
+    metadata:
+      labels: 
+        {{- include "feedback_collector.release_labels" . | indent 8 }}
+      annotations:
+        checksum/config-map: {{ include (print $.Chart.Name "/templates/configmap.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - image: {{ .Values.imageRepository }}:{{ .Values.imageTag }}
+          resources:
+            limits:
+              cpu: {{ .Values.cpuLimit }}
+              memory: {{ .Values.memoryLimit }}
+            requests:
+              cpu: {{ .Values.cpuRequest }}
+              memory: {{ .Values.memoryRequest }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbeHealthCheckEndpoint }}
+              port: {{ .Values.applicationPort }}
+            failureThreshold: 5
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbeHealthCheckEndpoint }}
+              port: {{ .Values.applicationPort }}
+            failureThreshold: 5
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          name: {{ template "feedback_collector.full_name" . }}
+          ports: 
+            - containerPort: {{ .Values.applicationPort }}
+          env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "feedback_collector.full_name" . }}
+                  key: timezone
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "feedback_collector.full_name" . }}
+                  key: application-port
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "feedback_collector.full_name" . }}
+                  key: workspace-svc-uri
+            - name: POSTGRESQL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "feedback_collector.full_name" . }}
+                  key: query-svc-uri
+      terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: astar-docker-registry-secret

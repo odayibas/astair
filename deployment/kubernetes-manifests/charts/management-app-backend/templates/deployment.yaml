@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: {{ template "management_app_backend.full_name" . }}
+  labels:
+    {{- include "management_app_backend.release_labels" . | indent 8 }}
+  namespace: {{ .Values.namespace }}
+spec: 
+  replicas: {{ .Values.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ template "management_app_backend.full_name" . }}
+  template: 
+    metadata:
+      labels: 
+        {{- include "management_app_backend.release_labels" . | indent 8 }}
+      annotations:
+        checksum/config-map: {{ include (print $.Chart.Name "/templates/configmap.yaml") . | sha256sum }}
+    spec:
+      containers:
+        - image: {{ .Values.imageRepository }}:{{ .Values.imageTag }}
+          resources:
+            limits:
+              cpu: {{ .Values.cpuLimit }}
+              memory: {{ .Values.memoryLimit }}
+            requests:
+              cpu: {{ .Values.cpuRequest }}
+              memory: {{ .Values.memoryRequest }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbeHealthCheckEndpoint }}
+              port: {{ .Values.serverPort }}
+            failureThreshold: 5
+            initialDelaySeconds: 40
+            periodSeconds: 5
+            timeoutSeconds: 6
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbeHealthCheckEndpoint }}
+              port: {{ .Values.serverPort }}
+            failureThreshold: 5
+            initialDelaySeconds: 40
+            periodSeconds: 5
+            timeoutSeconds: 6
+          name: {{ template "management_app_backend.full_name" . }}
+          ports: 
+            - containerPort: {{ .Values.serverPort }}
+          env:
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_backend.full_name" . }}
+                  key: server-port
+            - name: HIKARI_CONNECTION_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_backend.full_name" . }}
+                  key: hikari-connection-timeout
+            - name: HIKARI_MAXIMUM_POOL_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_backend.full_name" . }}
+                  key: hikari-maximum-pool-size
+            - name: POSTGRESQL_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_backend.full_name" . }}
+                  key: postgresql-url
+            - name: POSTGRESQL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "management_app_backend.full_name" . }}
+                  key: postgresql-username
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "management_app_backend.full_name" . }}
+                  key: postgresql-password
+            - name: SPRING_DATA_DRIVER_CLASS_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_backend.full_name" . }}
+                  key: spring-data-driver-class-name
+            - name: HIBERNATE_DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_backend.full_name" . }}
+                  key: hibernate-ddl-auto
+            - name: HIBERNATE_SQL_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "management_app_backend.full_name" . }}
+                  key: hibernate-sql-log-level
+      terminationGracePeriodSeconds: 10
+      imagePullSecrets:
+        - name: astar-docker-registry-secret

@@ -10,6 +10,13 @@ Three screens will be developed for monitoring. These screens are login, dashboa
 
 **Monitoring:** It is the screen for the administrator to view A/C and sensors' information such as their location on the blueprint of the workplace, and current data about the A/C and sensors.
 
+Spring Boot provides all necessary methods. Simply it will provide connection between database and frontend. These methods are visualised by Swagger UI. To run backend application (AstairApplication) first you need to run
+
+- _mvn clean install_
+- _mvn spring-boot:run_
+
+in management-app/backend. Then you can try and execute all the controllers by using Swagger UI at http://127.0.0.1:8090/swagger-ui.html#
+
 **Technologies**
 ---
 **Frontend**
@@ -18,3 +25,8 @@ Three screens will be developed for monitoring. These screens are login, dashboa
   - JavaScript
   - React
   - CoreUI
+
+**Backend**
+  - Java Spring Boot
+  - Maven
+  - Swagger UI

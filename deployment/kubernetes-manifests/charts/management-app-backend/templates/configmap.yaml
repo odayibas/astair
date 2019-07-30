@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "management_app_backend.full_name" . }}
+  namespace: {{ .Values.namespace }}
+data:
+  server-port: {{ .Values.serverPort | quote }}
+  postgresql-url: {{ .Values.postgresqlUrl }}
+  hikari-connection-timeout: {{ .Values.hikariConnectionTimeout | quote }}
+  hikari-maximum-pool-size: {{ .Values.hikariMaximumPoolSize | quote }}
+  spring-data-driver-class-name: {{ .Values.springDataDriverClassName }}
+  hibernate-ddl-auto: {{ .Values.hibernateDdlAuto }}
+  hibernate-sql-log-level: {{ .Values.hibernateSqlLogLevel }}

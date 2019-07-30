@@ -6,8 +6,11 @@ import tr.com.astair.astair.model.User;
 
 public interface UserControllerApi{
 	@PostMapping(value="/user/register")
-	ResponseEntity<Long> registerUser(@RequestBody User user);
+	ResponseEntity<String> registerUser(@RequestBody User user);
 	
+	//@PostMapping(value="/user/{id}")
+	//ResponseEntity<User> getUserByIdToUsername(@PathVariable("id") Long id);
+
 	@PostMapping(value="/user/{id}")
 	ResponseEntity<User> getUserByIdToUsername(@PathVariable("id") Long id);
 	

@@ -1,22 +1,10 @@
 apiVersion: v1
-kind: Secret
-metadata:
-  name: feedback-collector
-  namespace: astair
-type: Opaque
-data:
-  client-id: "todo"
-  client-secret: "todo"
-
----
-
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: feedback-collector
   namespace: astair
 data:
-  postgresql-url: "postgresql-url-here"
+  postgresql-url: "postgres-url-here"
 
 ---
 
@@ -57,17 +45,19 @@ spec:
     metadata:
       labels:        
         app: feedback-collector
+      annotations:
+        checksum/config-map: 6naYyeOwWH6tk787aXYz5aa9ab4de578d9e8947c8142f135ec17140baf49b68f
     spec:
       containers:
-        - image: astar.azurecr.io/astair-feedback-collector:0.0.2
+        - image: astar.azurecr.io/astair-feedback-collector:0.0.3
           imagePullPolicy: Always
           resources:
             requests:
               memory: "400Mi"
-              cpu: "300m"
+              cpu: "200m"
             limits:
               memory: "600Mi"
-              cpu: "500m"
+              cpu: "400m"
           livenessProbe:
             httpGet:
               path: /feedback-collector/health
@@ -90,16 +80,6 @@ spec:
           env:
             - name: TZ
               value: Europe/Istanbul
-            - name: CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: feedback-collector
-                  key: client-id
-            - name: CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: feedback-collector
-                  key: client-secret
             - name: POSTGRESQL_URL
               valueFrom:
                 configMapKeyRef:

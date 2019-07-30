@@ -35,17 +35,6 @@ class SlackForm extends Component {
       else{
         alert("Your choices are  " + this.state.vote + " and " + "Region " + this.state.region)
             
-        /*  axios.post('/user', {
-        firstName: 'Fred',
-        lastName: 'Flintstone'
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-      */
 
       }
 

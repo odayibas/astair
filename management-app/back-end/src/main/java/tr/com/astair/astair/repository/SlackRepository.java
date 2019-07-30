@@ -18,4 +18,6 @@ public interface SlackRepository extends JpaRepository<Slack, Long> {
     @Query(nativeQuery = true, value = "select count(vote)from weatherpoll p join personalinfo i on p.user_id=i.id where p.vote_id = (select MAX(vote_id) from weatherpoll w) and p.vote= cast(:temp as vote_type) and i.ac_id=:acZone ")
     Integer getPollResultsByZone(@Param("temp") String temp, @Param("acZone") Integer acZone);
 
+
+
 }

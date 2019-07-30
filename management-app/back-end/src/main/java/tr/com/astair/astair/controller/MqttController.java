@@ -27,7 +27,6 @@ public class MqttController {
         }
 
         MqttMessage mqttMessage = new MqttMessage(messagePublishModel.getMessage().getBytes());
-        mqttMessage.setQos(messagePublishModel.getQos());
         mqttMessage.setRetained(messagePublishModel.getRetained());
 
         Mqtt.getInstance().publish(messagePublishModel.getTopic(), mqttMessage);

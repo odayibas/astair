@@ -87,26 +87,24 @@ public class UserServiceImp implements UserService {
 	@Override
 	public Long addUser(User user) {
 		List<User> list = userRepository.findAllByUsername(user.getUsername());
+
 		if (list.size() > 0) {
-			Long a = -1l;
-			return a;
+			return -1l;
 		}
-		else {
-			user = userRepository.save(user);
-		}
-		return user.getId();
+
+		return userRepository.save(user).getId();
 	}
 
 	@Override  
 	public Long login(String username,String password) {
         
         List<User> userEntityList = userRepository.findAllByUsername(username);
-        if(userEntityList.size() <=0) {
+        if(userEntityList.size() <= 0) {
         	return -2l; 
         }
         
-        User userE =userEntityList.get(0);
-        if (!userE.getPassword().equals(password)){
+        User userE = userEntityList.get(0);
+        if (!userE.getPassword().equals(password)) {
         	return -1l; 
         }
         return userE.getId();

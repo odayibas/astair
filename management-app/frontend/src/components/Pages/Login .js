@@ -1,7 +1,13 @@
-import React, {Component} from 'react'
-import  {login} from "./UserFunctions"
+import React, {Component} from 'react';
 
+import axios from 'axios'
+import {get as getCookie, set as setCookie} from 'es-cookie';
+import {Link} from 'react-router-dom'
 
+import Icon from '@mdi/react'
+import {} from '@mdi/js'
+
+const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
 
 class Login extends Component {
@@ -21,37 +27,50 @@ class Login extends Component {
 
 
     onSubmit(e){
-        e.preventDefault()
 
+        const { history } = this.props;
+        e.preventDefault()
+        
         const user = {
             username : this.state.username,
+            role : 1,
             password : this.state.password
         }
-        login(user)
-        .then(res =>{
-          console.log (res)
-          if(res === -2 || res === -1) {
-              
-            alert('Invalid Credentials')   
-            return  this.props.history.push('/login')
-          }
-          else{
 
-            alert('Login Successful')
-            return this.props.history.push('/dashboard');
-
-          }
-        
+        return axios.post( urlServer + "/user/login/" + user.username +'/' + user.password, {
+            username : user.username,
+            role : user.role,
+            password:  user.password,
         })
-        .catch(err =>{
-            console.log(err)
-           
+        .then(res =>{
+            if(res){
+            if(res.data !== -2 && res.data !== -1) {
+
+                var promise1 = Promise.resolve(res.data)
+                promise1.then(function(value) {
+                        axios.post(urlServer +"/user/"+ value)
+                        .then(res => {
+                            setCookie('usertoken',  res.data.role)
+                            console.log(getCookie('usertoken'))
+                            return history.push("/dashboard")
+                        })
+                    })
+            }
+            else{
+                alert('Invalid Credentials')   
+                return history.push('/login')
+
+            }
+            return res.data
+    
+        }}
+        ).catch(err =>{
+            alert(err.response.data)
+    
         })
     }
 
     render(){
-
-        
         return(
             <div style={{width : '100%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
                 <div style={{width : '50%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
@@ -84,6 +103,12 @@ class Login extends Component {
                                 </button>
                             </form>
                         </div>
+                    </div>
+                    <div className="row">
+                    <div className= "col-md-6 mt-5 mx-auto">
+                        <h5>Don't have an account?</h5>
+                        <h5><Link to="/register"> Click here to register</Link></h5>
+                    </div>
                     </div>
                 </div>
             </div>            

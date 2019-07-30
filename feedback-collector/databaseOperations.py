@@ -56,10 +56,11 @@ def isUserExist(connection,username,dbTableName):
     else:
         return person
 
+
 def getACzones(connection):
     ids=[]
     cursor=connection.cursor()
-    postgres_select_query=""" select distinct ac_id from ac order by ac_id """
+    postgres_select_query=""" select distinct ac_zone from zone order by ac_zone """
     cursor.execute(postgres_select_query)
     zones=cursor.fetchall()
     cursor.close()
