@@ -47,18 +47,32 @@ According to these states above, the model increases or decreases the temperatur
 - (3 - (+1 Increase))
 - (4 - (+2 Increase))
 ---
-- On the other hand, to specify rewards and punishment we use user votes. We consider each vote seperately. That is people are not just numbers, we care the change in their feelings. The process basically consists of comparing each person's previous and current votes. 
 
-If there is no change -> we got 0 reward.
+On the other hand, to specify rewards and punishment we use user votes. We consider each vote seperately. That is people are not just numbers, we care the change in their feelings. The process basically consists of comparing each person's previous and current votes. 
 
-If previous is hot/cold and current is good -> we got 1 reward.
+* If there is no change -> we got 0 reward.
 
-If previous is good and current is hot/cold -> we got -1 reward. (Punishment)
+* If previous is hot/cold and current is good -> we got 1 reward.
 
-If previous is hot and current is cold (or vice versa) -> we got -1 reward. (Punishment)
+* If previous is good and current is hot/cold -> we got -1 reward. (Punishment)
 
-If a person has no previous or current vote -> we got 0 reward. (It does not affect the current action)
+* If previous is hot and current is cold (or vice versa) -> we got -1 reward. (Punishment)
 
+* If a person has no previous or current vote -> we got 0 reward. (It does not affect the current action)
+
+After considering each person, we sum these rewards and divide by the total number of people in that zone. That result is our reward for the action that the model took according to the previous state. The vote always affects previous state. Thereby it understands whether it is doing well.
+
+**General Process**
+
+- First of all, necessary data is fetched. It is grouped according to A/C id. (If there is more than one A/C) 
+- Then by using humudity and temperature, apparent temperature is calculated.
+- Apparant temperature is forwarded to SVM model and classified out of 5. 
+- Once the state is determined, the model looks the Q-table and choose the best action acording to the past experiences to maximize the future reward.
+- Then currently intended temperature is calculated by using the action. 
+- The new temperature value is sent to the A/C. 
+- After all this process, the users produce a feedback by voting. By using this feedback, the total reward is calculated. 
+- Then the relation (state, action) (mentioned above) is rewarded. Thereby, the Q-Model is trained.
+- Repeat all the steps.
 
 
 **Rule Based Models**
