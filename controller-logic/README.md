@@ -1,3 +1,28 @@
+**Machine Learning Model**
+---
+In order to maximize the overall happiness, we created a model that analyzes user votes and data coming from temperature and humudity sensors. We consider the number of "good" votes as an indicator of happiness. That is the model is trying to reduce the number of "hot" and "cold" votes. In order the to achieve this, we used Reinforcement Learning techniques. 
+
+To explain the process better, first we need to describe the components that the model contains. 
+
+**Data**
+1) Temperature and Humudity (from sensors in the room)
+2) Outdoor temperature (from weather forecast api)
+3) A/C settings (from A/C via RaspberryPI)
+4) User votes as "Hot", "Good", "Cold" (from Slack and ASTAIR website)
+
+**Models**
+1) SVM model which classifies the weather conditions out of 5.
+2) Q-Learning Model (The heart of our reinforcement learning process)
+
+**Aim:**
+The model has a connection to A/C. The aim is adjusting temperature setting of A/C properly by analyzing the data we have.
+
+**Files**
+- **ac_control.py** has A/C connection and adjust temperature, fan speed, mode and power.
+- **database_helper.py** has database connections. It fetches all the necessary data and creating proper data structure.
+- **state_generator.py** has the SVM model mentioned above. Basically it classifies weather conditions according to temperature value. 
+- **q_learning.py** is the most critical module. It has Q-Learning model
+
 **Rule Based Models**
 ---
 In this chapter, we will create rule based models for ASTAiR project. These models will dynamically change the A/C degree, according to the parameters that it receives from the work place and user feedbacks. In this way, we aim that thermal comfort will be provided in the work places in a democratic way. We will create two models. These models are "Vote Based Model" and "Predicted Mean Vote (PMV)".
