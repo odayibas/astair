@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from sklearn import svm
 import pickle
 
+#  This is the SVM model that is responsible for classifying temperature out of 5.
+#  It is already trained. No need further training steps.
+
 class TempModel:
     def __init__(self):
         self.temperature = None

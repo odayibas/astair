@@ -4,6 +4,10 @@ import time
 def on_data(topic,message):
     print(topic, message)
 
+
+# This is a helper class responsible for controlling A/C.
+# We can adjust all settings or single setting at one time.
+
 class AC:
     def __init__(self, topic, IP):
         print("Connecting to PI...")
@@ -14,6 +18,8 @@ class AC:
         self.client.connect(self.broker) #connect to broker
         print("Connected to PI successfully.")
 
+
+    #  This is the message format to be sent to A/C
     def create_config_string(self, id = "-", mode = "-", fan = "-", temp = "-", power = "-" ):
         return str(id) + "," + str(mode) + "," + str(fan) + "," + str(temp) + "," + str(power)
 
@@ -63,5 +69,5 @@ class AC:
             #print(self.create_config_string(id = id, mode = mode, fan = speed, temp = temp, power = power))
             self.client.publish("Astair/MODEL/AC",self.create_config_string(id = id, mode = mode, fan = speed, temp = temp, power = power))
 
-    def test(self):
-        self.client.publish("Astair/MODEL/AC", "1,COOL,HIGH,19,OFF")
+    # def test(self):
+    #     self.client.publish("Astair/MODEL/AC", "1,COOL,HIGH,19,OFF")

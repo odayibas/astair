@@ -5,43 +5,45 @@ import pickle
 import random
 from state_generator import TempModel
 
+
+#  This module is heart of our Reinforcement Learning algorithm.
+#
+
 class QModel:
 
     def __init__(self):
 
-        self.reward_table = [[-1, 1, -2],
-                             [-1, 1, -1],
-                             [-2, 1, -1]]
+        self.actions = [-2, -1, 0, 1, 2]    # A/C Actions
 
-        self.actions = [-2, -1, 0, 1, 2]
+        self.temp_model = TempModel()       # SVM Model to determine the current state
 
-        self.temp_model = TempModel()
+        self.temp_map = None                # Previous vote results
 
-        self.temp_map = None
-
-        self.total_people = 8
+        self.total_people = 8               # Total people in a zone. It must be given by argument. Not hardcoded. Fix it.
 
         # ------------------------------------ Q-Learning Variables
 
-        self.epsilon = 1
-        self.min_epsilon = 0.01
-        self.max_epsilon = 1
-        self.epsilon_decay = 0.99
+        self.epsilon = 1                    # Current epsilon value. Whether the action should be random or greedy.
+        self.min_epsilon = 0.01             # Min epsilon values
+        self.max_epsilon = 1                # Starting epsilon value.
+        self.epsilon_decay = 0.99           # How much is epsilon going to be reduced at each step
 
-        self.learning_rate = 0.1
-        self.discount = 0.8
+        self.learning_rate = 0.1            # Learning rate
+        self.discount = 0.8                 # Future reward discount in Bellman Equation.
 
-        self.action_size = 5
-        self.state_size = 5
+        self.action_size = 5                # We have 5 actions
+        self.state_size = 5                 # We have 5 states
 
-        self.total_episode = 5
-
-        self.state = None # MUST BE CHANGED
-        self.new_state = None
-        self.action = None
+        self.state = None                   # Previous state
+        self.new_state = None               # Current state
+        self.action = None                  # Previous action
 
         # ------------------------------- Loading Model and Epsilon
-        self.Q = None
+
+        self.Q = None                       # Q table which is our model itself.
+
+        # If the model is trained before, load the epsilon, model, and previous vote results.
+
         try:
             with open("ac.pkl", 'rb') as f:
                 self.Q = pickle.load(f)
@@ -70,6 +72,7 @@ class QModel:
 
         # ---------------------------------------------------------
 
+    # This method directly returns greedy action. If there is no experience, return random.
     def get_greedy_action(self, temp):
         state = self.get_state_from_temp(temp)
         if np.any(self.Q[state]):
@@ -77,30 +80,12 @@ class QModel:
         else:
             return self.actions[random.randint(0, self.action_size - 1)]
 
+    # Determine the state by using SVM model.
     def get_state_from_temp(self, temp):
         return self.temp_model.get_state(temp)
 
-    def get_state(self, cold, good, hot):
-        print("Cold", cold, "Good", good, "Hot", hot)
-        result = None
-        total = cold + good + hot
-        if good / total > 0.5:
-            result = 1  # Good
-        else:
-            up = abs(hot - cold)
-            down = hot + cold
-            if (up / down) < 0.5:
-                result = 1  # Good ? (At least optimum)
-            else:
-                if hot > cold:
-                    result = 2  # hot
-                else:
-                    result = 0  # cold
-        return result
-
-    def get_reward(self, s1, s2):
-        return self.reward_table[s1][s2]
-
+    # Pick a random number. If that value is bigger than epsilon, go with greedy approach.
+    # If not, pick random action.
     def get_action(self, state):
         if random.uniform(0, 1) > self.epsilon and np.any(self.Q[state]):
             # Random
@@ -111,62 +96,55 @@ class QModel:
             print("Randomly", end=" ")
             return random.randint(0, self.action_size - 1)
 
-    def get_input(self):
-        line = input("Enter votes (C,G,H): ")
-        line = line.split(",")
-        return line
-
-    def get_choice(self):
-        c = self.get_input()
-        return self.get_state(int(c[0]), int(c[1]), int(c[2]))
-
+    # Bellman Equation
     def train(self, state, new_state, reward, action):
         self.Q[state, action] = (1 - self.learning_rate) * self.Q[state, action] + self.learning_rate*(reward + self.discount*np.max(self.Q[new_state]))
 
-    def run(self):
+    # def run(self):
+    #
+    #     for episode in range(self.total_episode):
+    #         print("Episode =>", episode, " Epsilon ({})".format(self.epsilon))
+    #
+    #         print("State is ", self.state, end=" ")
+    #         action = self.get_action(self.state)
+    #         print("Action is ", self.actions[action])
+    #
+    #         new_state = self.get_choice()
+    #         reward = self.get_reward(self.state, new_state)
+    #
+    #         self.train(self.state, new_state, reward, action)
+    #         self.state = new_state
+    #
+    #         # epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-epsilon_decay * episode)
+    #         self.epsilon *= self.epsilon_decay
+    #
+    #         with open("ac.pkl", 'wb') as f:
+    #             pickle.dump(self.Q, f)
+    #         with open("epsilon.pkl", "wb") as f:
+    #             pickle.dump(self.epsilon, f)
+    #
+    #     print(self.Q)
 
-        for episode in range(self.total_episode):
-            print("Episode =>", episode, " Epsilon ({})".format(self.epsilon))
-
-            print("State is ", self.state, end=" ")
-            action = self.get_action(self.state)
-            print("Action is ", self.actions[action])
-
-            new_state = self.get_choice()
-            reward = self.get_reward(self.state, new_state)
-
-            self.train(self.state, new_state, reward, action)
-            self.state = new_state
-
-            # epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-epsilon_decay * episode)
-            self.epsilon *= self.epsilon_decay
-
-            with open("ac.pkl", 'wb') as f:
-                pickle.dump(self.Q, f)
-            with open("epsilon.pkl", "wb") as f:
-                pickle.dump(self.epsilon, f)
-
-        print(self.Q)
 
     def update(self, reward):
         print("REWARD => ", reward)
-        self.train(self.state, self.new_state, reward, self.action)
+        self.train(self.state, self.new_state, reward, self.action)     # Calculate bellman equation and update Q table
 
-        self.epsilon -= self.epsilon_decay
+        self.epsilon *= self.epsilon_decay                              # Reduce epsilon
 
-        with open("ac.pkl", 'wb') as f:
+        with open("ac.pkl", 'wb') as f:                                 # Save model and epsilon
             pickle.dump(self.Q, f)
         with open("epsilon.pkl", "wb") as f:
             pickle.dump(self.epsilon, f)
 
         print(self.Q)
 
-    def update_results(self, survey_data):
+    def update_results(self, survey_data):                              # Save current vote results to use in the future
         for vote_id in range(3):
             for person in survey_data[vote_id]:
                 self.temp_map[person] = vote_id
 
-    def rule(self, s1, s2):
+    def rule(self, s1, s2):                                             # This is our reward logic.
         if s1 == s2:
             return 0
         elif s1 == 0 and s2 == 1:
@@ -180,8 +158,8 @@ class QModel:
         elif s1 == 2 and s2 == 1:
             return 1
 
-    def compare_people(self, survey_data):
-        print("Survey data: ", survey_data)
+    def compare_people(self, survey_data):                              # Compare each person's previous and current
+        print("Survey data: ", survey_data)                             # vote. Then find the total reward.
         print("Old Survey data: ", self.temp_map)
         print("compared")
         if self.temp_map is None:
@@ -191,7 +169,6 @@ class QModel:
                     new_map[person] = vote_id
             with open("temp_map.pkl", "wb") as f:
                 pickle.dump(new_map, f)
-            print("yazildi")
             return 0
 
         new_map = {}
@@ -213,22 +190,21 @@ class QModel:
 
         return result / self.total_people
 
-    def forward(self, temp, survey_data):
-
-        self.new_state = self.get_state_from_temp(temp)
+    def forward(self, temp, survey_data):                           # Main method of this class. The outer class calls
+        self.new_state = self.get_state_from_temp(temp)             # this method.
 
         print("State is {}.".format(self.new_state), end=" ")
-        new_action = self.get_action(self.new_state)
+        new_action = self.get_action(self.new_state)                # Get action according to the current state.
         print("Action is {}".format(self.actions[new_action]))
-
         print("Self_state => ", self.state)
         print("sSelf_action => ", )
 
         if self.state is not None and self.action is not None:
             print("INSIDE")
-            self.update(self.compare_people(survey_data))
+            self.update(self.compare_people(survey_data))           # Calculate reward and update Q-table by using
+                                                                    # previous state and action.
 
-        self.state = self.new_state
-        self.action = new_action
+        self.state = self.new_state                                 # Save current state and action to update Q-table
+        self.action = new_action                                    # in the next time step.
         print("Epsilon value =>", self.epsilon)
         return self.actions[new_action]

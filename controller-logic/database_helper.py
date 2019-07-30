@@ -2,6 +2,9 @@ import psycopg2
 from datetime import datetime
 import requests
 
+#  This class is a helper class that handles database connections and queries.
+
+
 class DatabaseConnector:
 
     def __init__ (self):
@@ -36,7 +39,8 @@ class DatabaseConnector:
                 for i in range(width):
                     print(r[i], end = " ")
                 print("")
-    
+
+    #  Returns column names
     def get_column_names(self, tablename):
         query = "select * from " + tablename + " limit 0;"
         self.cursor.execute(query)
@@ -49,6 +53,7 @@ class DatabaseConnector:
             result += c + " | "
         print(result[:-3])
 
+    #  Get column names of a table and returns a dictionary.
     def get_column_map(self, tablename):
         map = {}
         columns = self.get_column_names(tablename)
@@ -72,6 +77,8 @@ class DatabaseConnector:
             result[r[map["id"]]] = r[map["ac_id"]]
         return result
 
+    #   Fethces last survey results and groups them by their location.
+    #   It returns a list that contains user id s.
     def get_last_survey_results(self):
         result = {}
         survey_table = "survey"
@@ -96,10 +103,12 @@ class DatabaseConnector:
             if ac_id in result:
                 result[ac_id][vote].append(user_id)
             else:
+                # [cold, good, hot]
                 result[ac_id] = [[], [], []]
                 result[ac_id][vote].append(user_id)
         return result
 
+    #  Fetches current temperature and humidity. Groups them by location.
     def get_last_sensor_data(self):
         result = {}
         sensor_table = "sensor"
@@ -117,6 +126,7 @@ class DatabaseConnector:
             i += 1
         return result
 
+    #  Returns current ac settings.
     def get_ac_situation(self):
         result = {}
         ac_table = "ac"
