@@ -67,7 +67,7 @@ public class WebVoteController implements WebVoteControllerApi {
     }
 
     public  ResponseEntity<WebVote> addResult(@RequestBody WebVote webVote) {
-        WebVote test = new WebVote(webVote.getUser_id(),webVote.getVote(), webVote.getVote_id(),webVote.getRegion());
+        WebVote test = new WebVote(webVote.getUser_id(),webVote.getVote(), webVote.getVote_id(),webVote.getRegion(), webVote.getDate_time());
         webVoteService.addResult(test);
         return new ResponseEntity<>(test, HttpStatus.OK);
     }

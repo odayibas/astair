@@ -34,7 +34,7 @@ public class WebVote {
 
 
     @Column(name = "date_time")
-    private Long date_time;
+    private String date_time;
 
     public WebVote() {
     }
@@ -43,11 +43,12 @@ public class WebVote {
         this.user_id = user_id;
     }
 
-    public WebVote(Long user_id, String vote, Long vote_id, Integer region) {
+    public WebVote(Long user_id, String vote, Long vote_id, Integer region, String  date_time) {
         this.user_id = user_id;
         this.vote = vote;
         this.vote_id = vote_id;
         this.region = region;
+        this.date_time = date_time;
 
     }
 
@@ -84,11 +85,11 @@ public class WebVote {
         this.vote = vote;
     }
 
-    public Long getDate_time() {
+    public String getDate_time() {
         return date_time;
     }
 
-    public void setDate_time(Long date_time) {
+    public void setDate_time(String date_time) {
         this.date_time = date_time;
     }
 
