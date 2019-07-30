@@ -16,12 +16,13 @@ Five screens are developed to manage the A/C and monitor the environment. These 
 
 **Form Page** It is the screen that  users and administrator will give feedback about the current environment as hot, cold or nice. Also, view his/her old feedbacks as a timeline and observe other feedbacks about the environment in a chart. 
 
-To install the frontend project you’ll need to have Node >= 8.10 on your machine
+To install the frontend application (ASTAiR) you’ll need to have Node >= 8.10 on your machine
 First, You can install the application with npm install
 Then, you can start the react-app by npm start 
 
-Spring Boot provides all necessary methods. Simply it will provide connection between database and frontend. These methods are visualised by Swagger UI. To run backend application (AstairApplication) first you need to run
+Spring Boot provides all necessary methods. Simply it will provide connection between database and frontend. These methods are visualised by Swagger UI. 
 
+To run backend application (AstairApplication) first you need to run
 - _mvn clean install_
 - _mvn spring-boot:run_
 
