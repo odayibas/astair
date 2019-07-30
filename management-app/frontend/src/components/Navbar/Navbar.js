@@ -14,10 +14,10 @@ class Navbar extends Component{
     
     
     getNavbar(){
-         if(getCookie('usertoken') == 1){
+         if(getCookie('usertoken') === "1"){
             return   (
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png"/></div>  
+                <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png" alt={"logo"}/></div>  
             <ul className ="navbar-nav">
                 <li className = "nav -item">
                     <Link to= "/" className="nav-link">
@@ -35,16 +35,21 @@ class Navbar extends Component{
                     </Link>
                 </li>
                 <li className = "nav -item">
-                    <a href="" onClick={this.logout.bind(this)} className="nav-link">
+                <Link to= "/form" className="nav-link">
+                <h5>Form</h5>  
+                </Link>
+            </li>
+                <li className = "nav -item">
+                    <li onClick={this.logout.bind(this)} className="nav-link">
                     <h5>Logout</h5> 
-                    </a>
+                    </li>
                 </li> 
             </ul>
             </div>)
         }
-        else if(getCookie('usertoken') == 2){
+        else if(getCookie('usertoken') === "2"){
             return (<div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png"/></div>  
+            <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png" alt={"logo"}/></div>  
         <ul className ="navbar-nav">
             <li className = "nav -item">
                 <Link to= "/" className="nav-link">
@@ -62,9 +67,9 @@ class Navbar extends Component{
                 </Link>
             </li>
             <li className = "nav -item">
-                <a href="" onClick={this.logout.bind(this)} className="nav-link">
+                <li onClick={this.logout.bind(this)} className="nav-link">
                 <h5>Logout</h5> 
-                </a>
+                </li>
             </li> 
         </ul>
         </div>)
@@ -74,7 +79,7 @@ class Navbar extends Component{
         else
           { 
         return  ( <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png"/></div>  
+            <div className="navbar-brand"><img height={50} src="/assets/Logo-Astair-w-1.png" alt = {'logo'}/></div>  
                 <ul className ="navbar-nav">
                     <li className = "nav -item">
                         <Link to= "/" className="nav-link">
@@ -100,7 +105,6 @@ class Navbar extends Component{
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                
                 {this.getNavbar()}
              </nav>
 

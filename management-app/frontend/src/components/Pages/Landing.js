@@ -20,7 +20,7 @@ class Landing extends  Component {
         return(
             <div>               
                  <div style={{hegiht: '100%', width : '100%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
-                    <img height={500} src="/assets/image.png"/>
+                    <img height={500} src="/assets/image.png" alt={"logo"}/>
                     <div className="white-text text-center text-md-left col-md-5 mt-xl-5 mb-5"> 
                        <h1 className="h1-responsive font-weight-bold">
                             Welcome to ASTAiR!{" "}

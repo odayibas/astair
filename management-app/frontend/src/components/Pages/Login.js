@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 
 import axios from 'axios'
-import {get as getCookie, set as setCookie} from 'es-cookie';
+import { set as setCookie} from 'es-cookie';
 import {Link} from 'react-router-dom'
 
-import Icon from '@mdi/react'
-import {} from '@mdi/js'
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
@@ -36,22 +34,25 @@ class Login extends Component {
             role : 1,
             password : this.state.password
         }
+        console.log(user)
 
-        return axios.post( urlServer + "/user/login/" + user.username +'/' + user.password, {
+        axios.post( urlServer + "/user/login/" + user.username +'/' + user.password, {
             username : user.username,
             role : user.role,
             password:  user.password,
         })
         .then(res =>{
+            console.log(res)
             if(res){
-            if(res.data !== -2 && res.data !== -1) {
-
-                var promise1 = Promise.resolve(res.data)
-                promise1.then(function(value) {
+                if(res.data !== -2 && res.data !== -1) {
+                    var promise1 = Promise.resolve(res.data)
+                    console.log(promise1)
+                    promise1.then(function(value) {
                         axios.post(urlServer +"/user/"+ value)
                         .then(res => {
                             setCookie('usertoken',  res.data.role)
-                            console.log(getCookie('usertoken'))
+                            setCookie('token',  res.data.id)
+
                             return history.push("/dashboard")
                         })
                     })
@@ -63,8 +64,8 @@ class Login extends Component {
             }
             return res.data
     
-        }}
-        ).catch(err =>{
+        }})
+        .catch(err =>{
             alert(err.response.data)
     
         })
@@ -74,7 +75,7 @@ class Login extends Component {
         return(
             <div style={{width : '100%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
                 <div style={{width : '50%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
-                    <img height={500} src="/assets/image.png"/>
+                    <img height={500} src="/assets/image.png" alt = {'logo'}/>
                 </div>
                 <div style ={{width : '50%'}}>
                     <div className="row">

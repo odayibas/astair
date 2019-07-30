@@ -3,10 +3,10 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 
 import Navbar from './components/Navbar/Navbar'
 import Dashboard from './components/Dashboard/Dashboard'
-import Login from './components/Pages/Login '
+import Login from './components/Pages/Login'
 import Landing  from './components/Pages/Landing'
 import Monitor from './components/Monitor/Monitor'
-import SlackForm from './components/SlackForm/SlackForm'
+import Form from './components/Form/Form'
 import ACControl from './components/ACControl/ACControl';
 import Register from './components/Pages/Register'
 
@@ -20,7 +20,7 @@ function App() {
         <Route  exact path="/login" component={Login}/>
         <Route  exact path="/dashboard" component={Dashboard}/>
         <Route  exact path="/monitor" component={Monitor}/>
-        <Route  exact path="/form" component={SlackForm}/>
+        <Route  exact path="/form" component={Form}/>
         <Route  exact path="/ac" component={ACControl}/>
         <Route  exact path="/register" component={Register}/>
 

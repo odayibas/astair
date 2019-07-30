@@ -1,24 +1,16 @@
 import React, {Component} from 'react'
-
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardBody,
-  Col,
-  Progress,
-  Row,
-  Button
-} from 'reactstrap';
+import {Card,CardBody,Col,Row} from 'reactstrap';
+import Button from 'react-bootstrap/Button'
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
+import ToggleButton from 'react-bootstrap/ToggleButton'
 import {get as getCookie } from 'es-cookie';
-import ReactEcharts from 'echarts-for-react';  // or var ReactEcharts = require('echarts-for-react');
-
-import Mode from './Mode'
-import Temperature from './Temperature'
-
 import { Form, FormGroup, FormLabel, FormControl } from 'react-bootstrap';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios'
+
+import Temperature from './Temperature'
+import Mode from './Mode'
+
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
@@ -39,11 +31,30 @@ class ACControl extends Component{
           };
           
           this.onChange = this.onChange.bind(this);
-         // this.handleSubmit = this.handleSubmit.bind(this);
           this.handleChange = this.handleChange.bind(this);
         }
 
+        
+    getData =  async() => {
+      
+      return axios.get( urlServer + "/AC/get-last-records")
+      .then(res =>{ 
+        this.state.mode[0]= res.data.ac_mode
+        this.setState((prevState, props) => (
+          { 
+            acNum : res.data.length,
+            id : res.data.ac_id,
+            fan_speed : res.data.ac_fan_speed,
+            active : res.data.active
+          }));
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+      
+  }
         componentWillMount () {
+          this.getData();
           this.setState( { isChecked: false } );
           }
     
@@ -74,7 +85,8 @@ class ACControl extends Component{
 
         this.setState({
          message: message1
-        },()=>console.log(this.state.message))
+        }, () => console.log(this.state.message) )
+
 
 
         return axios.post(urlServer + '/api/mqtt/publish', {
@@ -94,9 +106,7 @@ class ACControl extends Component{
       }
 
       render(){
-
-        console.log(this.state)
-        if(getCookie('usertoken')== 1){     
+        if(getCookie('usertoken') === "1"){     
         return (
             <div style ={{paddingTop : 20}}>
             <div className = "center" >   
@@ -104,10 +114,11 @@ class ACControl extends Component{
             <CardBody >
               <div style = {{alignItems : "right"}}>
               <Row>
-                <Button onClick={this.onClick} value = "1">1</Button>
-                <Button onClick={this.onClick} value = "2">2</Button>
-                <Button onClick={this.onClick} value = "3">3</Button>
-                <Button onClick={this.onClick} value = "4">4</Button>
+                  <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
+                    <ToggleButton onClick={this.onClick} value={1}>1</ToggleButton>
+                    <ToggleButton onClick={this.onClick} value={2}>2</ToggleButton>
+                    <ToggleButton onClick={this.onClick} value={3}>3</ToggleButton>
+                  </ToggleButtonGroup>
                 </Row>     
               </div>
               <center><h4> MODE </h4></center>
@@ -151,7 +162,7 @@ class ACControl extends Component{
           <Col></Col>
           <Col> 
             <div style = {{paddingLeft : '35%'}}>
-              <Button onClick={this.handleSubmit.bind(this)}>
+              <Button variant="primary" onClick={this.handleSubmit.bind(this)}>
               Change
               </Button>
             </div>

@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "ASTAiR",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -41,6 +41,7 @@
     "react-router-dom": "^5.0.1",
     "react-splitter-layout": "^4.0.0",
     "react-test-renderer": "^16.8.6",
+    "react-vertical-timeline-component": "^2.4.0",
     "react-youtube": "^7.9.0",
     "reactstrap": "^8.0.0",
     "recharts": "^1.6.2",

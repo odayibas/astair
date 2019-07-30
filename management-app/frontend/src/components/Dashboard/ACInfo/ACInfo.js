@@ -1,15 +1,6 @@
 import React, {Component} from 'react'
-
-import {
-  Card,
-  CardTitle,
-  CardBody,
-  Col,
-  Progress,
-  Row,
-} from 'reactstrap';
-
-import { getStyle, hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities'
+import { Card, CardBody,Col,Row} from 'reactstrap';
+import { hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities'
 
 import  AC from "@material-ui/icons/AcUnit";
 

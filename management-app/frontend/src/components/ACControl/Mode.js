@@ -1,17 +1,6 @@
 
 import React, {Component} from 'react'
-
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardBody,
-  Col,
-  Progress,
-  Row,
-  Button
-} from 'reactstrap';
-
+import {CardHeader,Col,Row} from 'reactstrap'
 
 import Icon from '@mdi/react'
 import { mdiWaterOutline ,mdiAutorenew , mdiSnowflakeVariant, mdiWeatherSunny,mdiFan } from '@mdi/js'
@@ -24,6 +13,7 @@ class Mode extends Component{
         super(props);
         this.state = {
           selected : 1,
+          
       };
     
         this.radioSelect = this.radioSelect.bind(this);
@@ -61,39 +51,47 @@ class Mode extends Component{
         }
     }
 
-      
+      changeColor(value){
+        console.log(value)
+        if(this.props.mode[0] === value)
+        return 'rgba(238, 238, 238, 1)'
+      }
       render(){
-          console.log(this.props.mode)
         return (
             <CardHeader>
               <div style = {{padding : 20}}>
                 <Row>
-                <Col style = {{paddingLeft : '10%'}} onClick={() => this.radioSelect(1)} active={this.state.radioSelected === 1} 
-                value = "COOL"><h3>COOL</h3>
+                <Col value = "COOL" style = {{backgroundColor : this.changeColor("COOL"), paddingLeft : '10%'}} 
+                onClick={() => this.radioSelect(1)} active={this.state.radioSelected === 1} 
+                ><h3>COOL</h3>
                 <Icon path={mdiSnowflakeVariant}
                   size={2}
                   horizontal/>
                 </Col>
-                <Col  onClick={() => this.radioSelect(2)} active={this.state.radioSelected === 2} 
-                value = "HEAT"><h3>HEAT</h3>
+                <Col value = "HEAT" style = {{backgroundColor : this.changeColor("HEAT")}}
+                onClick={() => this.radioSelect(2)} active={this.state.radioSelected === 2}
+                ><h3>HEAT</h3>
                 <Icon path={mdiWeatherSunny}
                   size={2}
                   horizontal/>
                 </Col>
-                <Col onClick={() => this.radioSelect(3)} active={this.state.radioSelected === 3} 
-                value = "FAN"><h3>FAN</h3>
+                <Col value = "FAN" style = {{backgroundColor : this.changeColor("FAN")}}
+                onClick={() => this.radioSelect(3)} active={this.state.radioSelected === 3} 
+                ><h3>FAN</h3>
                 <Icon path={mdiFan}
                   size={2}
                   horizontal/>
                 </Col>
-                <Col  onClick={() => this.radioSelect(4)} active={this.state.radioSelected === 4} 
-                value = "AUTO"><h3>AUTO</h3>
+                <Col value = "AUTO" style = {{backgroundColor : this.changeColor("AUTO")}}
+                onClick={() => this.radioSelect(4)} active={this.state.radioSelected === 4} 
+                ><h3>AUTO</h3>
                 <Icon path={mdiAutorenew}
                   size={2}
                   horizontal/>
                 </Col>
-                <Col onClick={() => this.radioSelect(5)} active={this.state.radioSelected === 5} 
-                value = "DRY"><h3>DRY</h3>
+                <Col value = "DRY" style = {{backgroundColor : this.changeColor("DRY")}}
+                onClick={() => this.radioSelect(5)} active={this.state.radioSelected === 5} 
+                ><h3>DRY</h3>
                 <Icon path={mdiWaterOutline}
                   size={2}
                   horizontal/>

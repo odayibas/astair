@@ -10,10 +10,11 @@ import {
 } from 'reactstrap';
 
 
-import  People from "@material-ui/icons/Wc";
 import Cloud from "@material-ui/icons/Cloud";
 import Office from "@material-ui/icons/BusinessCenter";
-import { parse } from '@babel/parser';
+
+import Icon from '@mdi/react'
+import {mdiHumanMaleFemale } from '@mdi/js'
 
 class InfoCards extends Component{
     
@@ -72,8 +73,10 @@ render(){
             </Col>
              <Col >
              <Card style={{padding : '65px'}} >
-            <CardBody className="pb-0" icon>
-             <People/>
+            <CardBody className="pb-0">
+            <Icon path={mdiHumanMaleFemale}
+                  size={1}
+                  horizontal/>
                 <div className="text-value">
                     <h4>PEOPLE</h4></div>
                     <h2>{this.props.people}	</h2>

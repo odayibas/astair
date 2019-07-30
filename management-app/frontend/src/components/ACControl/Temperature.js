@@ -1,21 +1,8 @@
 import React, {Component} from 'react'
-
-import {
-    Card,
-    CardHeader,
-    CardTitle,
-    CardBody,
-    Col,
-    Progress,
-    Row,
-    Button
-  } from 'reactstrap';
+import { Col, Row,Button} from 'reactstrap';  
+import Icon from '@mdi/react'
+import { mdiThermometerPlus , mdiThermometerMinus} from '@mdi/js'
   
-  
-  import Icon from '@mdi/react'
-  import { mdiThermometerPlus , mdiThermometerMinus} from '@mdi/js'
-  
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
 
 class Temperature extends Component{

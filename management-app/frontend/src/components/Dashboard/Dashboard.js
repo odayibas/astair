@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
-// import jwt_decode from 'jwt-decode'
 import axios from 'axios'
 import {Col} from 'reactstrap';
-
-import {remove as removeCookie ,get as getCookie} from 'es-cookie'
+import {get as getCookie} from 'es-cookie'
 import {Redirect} from 'react-router-dom'
 
 import InfoCards from './InfoCards/InfoCards'
 import Charts from './Charts/Charts'
 import SensorCards from './SensorCards/SensorCards';
 import ACInfo from './ACInfo/ACInfo';
-import { tsImportEqualsDeclaration } from '@babel/types';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
@@ -27,31 +24,25 @@ class Dashboard extends Component{
           humidity: null,
           visibility: null,
           timezone : null,
-          /* sensor : [{
-            temp :"",
-            hum : ""
-
-          },
-        ], */
-        sensorTemp: {},
-        sensorHum : {},
-        ac : [
-          {
-            ac_id : "",
-            ac_degree : "",
-            ac_mode : "",
-            ac_fan_speed : "",
-            active : "",
-          }
-        ],
-          avgsensor : null,
-          avgac : null,
-          hot: null,
-          nice : null,
-          cold : null,
-          people : null,
-          interval : null
-      }  
+          sensorTemp: {},
+          sensorHum : {},
+          ac : [
+            {
+              ac_id : "",
+              ac_degree : "",
+              ac_mode : "",
+              ac_fan_speed : "",
+              active : "",
+            }
+          ],
+            avgsensor : null,
+            avgac : null,
+            hot: null,
+            nice : null,
+            cold : null,
+            people : null,
+            interval : null
+        }  
       this.callbackSlack = this.callbackSlack.bind(this);
       this.callbackAC = this.callbackAC.bind(this);
       this.callbackPeople = this.callbackPeople.bind(this);
@@ -63,7 +54,7 @@ class Dashboard extends Component{
     getACAverage = () => {
       return axios.get(urlServer + "/AC/get-avg-degree")
       .then((res) => {
-        this.state.avgac = res.data
+        this.setState({avgac : res.data})
       })
     }
 
@@ -89,7 +80,6 @@ class Dashboard extends Component{
 
     componentDidMount(){  
 
-      let newTime = Date.now() - this.props.date;
       var interval = setInterval(() => { 
         this.getOutdoorData().then(data => {})
         this.getACAverage().then(data => {})
@@ -127,7 +117,7 @@ class Dashboard extends Component{
  
  
     render(){
-      if(getCookie('usertoken') == 1 || getCookie('usertoken') == 2){     
+      if(getCookie('usertoken') === "1" || getCookie('usertoken') === "2"){     
         return(
           <div style={{width: '100% !important',margin: 'auto',height: '100%',marginTop: '40px'}}>
               <div style={{left:'10px', right:'10px', display : 'flex' , padding : '30px', width : '100%', height: '90%'}}>               
@@ -154,7 +144,7 @@ class Dashboard extends Component{
                 </Col>
               </div>
               <div style={{height : '10%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
-            <img height={150} src="/assets/Logo-Astair-w.png"/>
+            <img height={150} src="/assets/Logo-Astair-w.png" alt ={'logo'}/>
            </div>
         </div>
         )

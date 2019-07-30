@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import mySvg from './blueprint.png'
 import axios from 'axios'
-import { Badge, CardFooter,Button, Card, CardBody, CardHeader, Col, Collapse, Fade,  Row} from 'reactstrap'
+import { Button, Card, CardBody, CardHeader, Col, Collapse,  Row} from 'reactstrap'
 
 
 class Monitor extends Component {
@@ -89,15 +89,18 @@ class Monitor extends Component {
 
 mouseEnter= (i) => {
   console.log('mouse enter');
-  /* let newArr = []
+  let newArr = []
   newArr = this.state.border
   newArr[i] = '4px dashed #20a8d8'
-  this.setState({ border : newArr }) */
+  this.setState({ border : newArr }) 
 }
 
 mouseLeave = (i) => {
   console.log('mouse leave')
-  this.state.border[i] = '4px dashed transparent'
+  let newArr = []
+  newArr = this.state.border
+  newArr[i] = '4px dashed transparent'
+  this.setState ({border: newArr })
 
 }
 

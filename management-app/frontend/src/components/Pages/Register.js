@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import {get as getCookie, set as setCookie} from 'es-cookie';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 class Register extends Component {
@@ -53,26 +52,13 @@ class Register extends Component {
        alert(err.response.data)
             
     })
-
-/*         register(user).then(res =>{
-          if(res) 
-           { 
-               if(res === -2 || res === -1 )  {
-                alert('Invalid Credentials')   
-                return  this.props.history.push('/register')
-                }
-                else{
-                alert('Register Successful')
-                return this.props.history.push('/login');
-                }
-            }
-        }) */
-    }
+}
 
 
 render(){
-    console.log(this.state)
+
     return(
+        <div>
         <div className="container">
             <div className="row">
                 <div className= "col-md-6 mt-5 mx-auto">
@@ -102,6 +88,10 @@ render(){
                 </div>
             </div>
         </div>
+          <div style={{height : '10%', display : 'flex',justifyContent : 'center', alignItems : 'center'}}>
+          <img height={150} src="/assets/Logo-Astair-w.png" alt = {'logo'}/>
+         </div>
+         </div>
 
 
     )

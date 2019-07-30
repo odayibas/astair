@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
-import Modal from 'react-awesome-modal';
 import {Line} from 'react-chartjs-2';
 import {
   Card,
-  CardHeader,
   CardBody,
   Row,
 } from 'reactstrap';
@@ -130,7 +128,6 @@ class SensorCards extends Component{
   }
     componentDidMount(){
 
-      let newTime = Date.now() - this.props.date;
       const interval =  setInterval(() => { 
         this.getacData().then(data => {})
       }, 5000);
@@ -149,15 +146,15 @@ class SensorCards extends Component{
 
       var ac =[]
 
-      const responses = await Promise.all(
+      await Promise.all(
         urlArr.map(url => 
-           axios(urlServer + '/AC/get-zone/'+ url).
-            then((res) => { 
+           axios(urlServer + '/AC/get-zone/'+ url)
+            .then((res) => { 
             ac[parseInt(url)-1] = {
                 "ac_id": res.data[res.data.length - 1].ac_id,
                 "ac_degree" : res.data[res.data.length - 1].ac_degree,
                 "ac_mode" : res.data[res.data.length - 1].ac_mode,
-                "ac_fan_speed": res.data[res.data.length - 1]. ac_fan_speed,
+                "ac_fan_speed": res.data[res.data.length - 1].ac_fan_speed,
                 "active" : res.data[res.data.length - 1].active 
               }  
         })
@@ -182,7 +179,7 @@ class SensorCards extends Component{
           <Card  style={{background: sensor.color}}>
             <CardBody className="pb-0">
             <div> <h3>INDOOR {i+1} </h3></div>
-            <div><h4>{sensor.temp}°C</h4></div>
+            <div><h1>{sensor.temp}°C</h1></div>
            <div><h4 style = {{textAlign : 'right'}}> <AC/> : {sensor.ac} °C </h4> </div>
            <div><h4 style = {{textAlign : 'right'}}> <Humidity/> : {sensor.humidity} % </h4> </div>
             </CardBody> 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Doughnut,Bar,Line } from 'react-chartjs-2';
+import {Doughnut,Bar } from 'react-chartjs-2';
 import {
   Button,
   ButtonGroup,
@@ -14,22 +14,14 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities'
 
 import axios from 'axios'
-import { mdiConsoleNetwork } from '@mdi/js';
-
-
 const urlArr = ['1', '2', '3','4']
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND 
 
 
 const brandPrimary = getStyle('--primary')
-const brandInfo = getStyle('--info')
 const brandDanger = getStyle('--danger')
 const brandSuccess = getStyle('--success')
-const brandWarning = getStyle('--warning')
 
-
-
-  var tempValue = "0";
   var loadValue = 0;
   var loadValue2 = 0;
 
@@ -58,7 +50,7 @@ const brandWarning = getStyle('--warning')
         yAxisID: 'y-axis-1',
         data: [],
       },
-     /*  {
+      /*  {
         label: 'OUTDOOR',
         type: 'line',
         // backgroundColor: hexToRgba(brandPrimary, 10),
@@ -66,8 +58,9 @@ const brandWarning = getStyle('--warning')
         borderColor: brandPrimary,
         pointHoverBackgroundColor: '#fff',
         borderWidth: 4,
+        yAxisID: 'y-axis-0',
         data: [],
-      }, */
+      },  */
     ],
    };
    
@@ -114,8 +107,8 @@ const brandWarning = getStyle('--warning')
           ticks: {
             min: 0,
             max: 90,
+            id: "y-axis-1"
           },
-          id: "y-axis-1",
         }],
     },
     elements: {
@@ -221,7 +214,7 @@ const brandWarning = getStyle('--warning')
     getSensorAverage = () => {
     return axios.get(urlServer + "/sensor/get-ave-degree")
       .then((res) => {
-        this.state.avgsensor = res.data
+        this.setState({avgsensor :res.data});
         this.drawTempChart(res)
         //  this.drawOutdoorChart()
                   
@@ -229,10 +222,10 @@ const brandWarning = getStyle('--warning')
     }
     
     getSensorData = async() =>{
-        const responses = await Promise.all(
+        await Promise.all(
           urlArr.map(url => 
-             axios(urlServer + '/sensor/get-zone/'+ url).
-              then((res) => {    
+             axios(urlServer + '/sensor/get-zone/'+ url)
+              .then((res) => {    
                 this.props.sensorTemp[parseInt(url)]= res.data[res.data.length - 1].sensor_degree
                 this.props.sensorHum[parseInt(url)]= res.data[res.data.length - 1].sensor_humidity
           })
@@ -257,7 +250,7 @@ const brandWarning = getStyle('--warning')
          if(loadValue === 0)
         { 
             for (var i = mainChart.datasets[0].data.length ; i < 20 ; i++) {
-              this.state.avgsensor = res.data
+              this.setState({avgsensor :res.data});
               mainChart.datasets[0].data.push( this.state.avgsensor);
               mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
               mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 20);
@@ -272,7 +265,7 @@ const brandWarning = getStyle('--warning')
           {
               mainChart.datasets[0].data.shift();
           }
-            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
+            mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) -10);
             mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 20);
         
 
@@ -341,13 +334,11 @@ const brandWarning = getStyle('--warning')
 
    
     trigger() {
-        let newTime = Date.now() - this.props.date;
         const interval1 = setInterval(() => { 
           this.getSensorData().then(data =>{})
           this.getSensorAverage().then(data => {})
           this.getSlack().then(data => {}) 
         }, 5000);
-        let newTime2 = Date.now() - this.props.date;
         const interval2 = setInterval(() => { 
           this.getcompVisionControllerData().then(data => {})
         }, 2000);
