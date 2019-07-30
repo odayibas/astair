@@ -2,6 +2,9 @@ import psycopg2
 from datetime import datetime
 import requests
 
+#  This class is a helper class that handles database connections and queries.
+
+
 class DatabaseConnector:
 
     def __init__ (self):
@@ -13,7 +16,7 @@ class DatabaseConnector:
         print("Connecting to the database...")
         try :
             self.connection = psycopg2.connect(
-                "database_url")
+                "DATABASE_URL_HERE")
             self.cursor = self.connection.cursor()
         except:
             print("Error: Could not connect to the database.")
@@ -36,7 +39,8 @@ class DatabaseConnector:
                 for i in range(width):
                     print(r[i], end = " ")
                 print("")
-    
+
+    #  Returns column names
     def get_column_names(self, tablename):
         query = "select * from " + tablename + " limit 0;"
         self.cursor.execute(query)
@@ -49,6 +53,7 @@ class DatabaseConnector:
             result += c + " | "
         print(result[:-3])
 
+    #  Get column names of a table and returns a dictionary.
     def get_column_map(self, tablename):
         map = {}
         columns = self.get_column_names(tablename)
@@ -72,6 +77,8 @@ class DatabaseConnector:
             result[r[map["id"]]] = r[map["ac_id"]]
         return result
 
+    #   Fethces last survey results and groups them by their location.
+    #   It returns a list that contains user id s.
     def get_last_survey_results(self):
         result = {}
         survey_table = "survey"
@@ -80,25 +87,28 @@ class DatabaseConnector:
         q = "select * from " + survey_table + " order by id desc limit 1;" 
         self.cursor.execute(q)
         vote_id = self.cursor.fetchone()[0]
+        print("VOTE_ID ", vote_id)
         q = "select * from " + vote_table + " where vote_id = " + str(vote_id) + ";"
         self.cursor.execute(q)
         r = self.cursor.fetchall()
         map = self.get_column_map(vote_table)
-        vote_map = {"Soguk" : 0, "Guzel" : 1, "Sicak" : 2, "Ofiste Degilim" : 4}
+        vote_map = {"Soguk" : 0, "Guzel" : 1, "Sicak" : 2, "Ofiste Degilim" : 3}
 
         for record in r:
-            ac_id = user_locations[record[map["user_id"]]]
+            user_id = record[map["user_id"]]
+            ac_id = user_locations[user_id]
             vote = vote_map[record[map["vote"]]]
-            if vote == 4:
+            if vote == 3:
                 continue # Ofiste değilim.
             if ac_id in result:
-                result[ac_id][vote] += 1            
+                result[ac_id][vote].append(user_id)
             else:
-                result[ac_id] = [0, 0, 0]
-                result[ac_id][vote] = 1
-
+                # [cold, good, hot]
+                result[ac_id] = [[], [], []]
+                result[ac_id][vote].append(user_id)
         return result
 
+    #  Fetches current temperature and humidity. Groups them by location.
     def get_last_sensor_data(self):
         result = {}
         sensor_table = "sensor"
@@ -116,6 +126,7 @@ class DatabaseConnector:
             i += 1
         return result
 
+    #  Returns current ac settings.
     def get_ac_situation(self):
         result = {}
         ac_table = "ac"
