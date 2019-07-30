@@ -13,7 +13,7 @@ class DatabaseConnector:
         print("Connecting to the database...")
         try :
             self.connection = psycopg2.connect(
-                "database_url")
+                "postgres://astair%40astair:astarPostgres2019.@astair.postgres.database.azure.com:5432/astair")
             self.cursor = self.connection.cursor()
         except:
             print("Error: Could not connect to the database.")
@@ -80,23 +80,24 @@ class DatabaseConnector:
         q = "select * from " + survey_table + " order by id desc limit 1;" 
         self.cursor.execute(q)
         vote_id = self.cursor.fetchone()[0]
+        print("VOTE_ID ", vote_id)
         q = "select * from " + vote_table + " where vote_id = " + str(vote_id) + ";"
         self.cursor.execute(q)
         r = self.cursor.fetchall()
         map = self.get_column_map(vote_table)
-        vote_map = {"Soguk" : 0, "Guzel" : 1, "Sicak" : 2, "Ofiste Degilim" : 4}
+        vote_map = {"Soguk" : 0, "Guzel" : 1, "Sicak" : 2, "Ofiste Degilim" : 3}
 
         for record in r:
-            ac_id = user_locations[record[map["user_id"]]]
+            user_id = record[map["user_id"]]
+            ac_id = user_locations[user_id]
             vote = vote_map[record[map["vote"]]]
-            if vote == 4:
+            if vote == 3:
                 continue # Ofiste değilim.
             if ac_id in result:
-                result[ac_id][vote] += 1            
+                result[ac_id][vote].append(user_id)
             else:
-                result[ac_id] = [0, 0, 0]
-                result[ac_id][vote] = 1
-
+                result[ac_id] = [[], [], []]
+                result[ac_id][vote].append(user_id)
         return result
 
     def get_last_sensor_data(self):

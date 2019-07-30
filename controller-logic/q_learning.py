@@ -3,7 +3,7 @@ import os
 import time
 import pickle
 import random
-
+from state_generator import TempModel
 
 class QModel:
 
@@ -13,23 +13,26 @@ class QModel:
                              [-1, 1, -1],
                              [-2, 1, -1]]
 
-        self.actions = [-1, 0, 1]
+        self.actions = [-2, -1, 0, 1, 2]
 
-        self.action_size = 3
-        self.state_size = 3
+        self.temp_model = TempModel()
+
+        self.temp_map = None
+
+        self.total_people = 8
 
         # ------------------------------------ Q-Learning Variables
 
         self.epsilon = 1
         self.min_epsilon = 0.01
         self.max_epsilon = 1
-        self.epsilon_decay = 0.05
+        self.epsilon_decay = 0.99
 
         self.learning_rate = 0.1
         self.discount = 0.8
 
-        self.action_size = 3
-        self.state_size = 3
+        self.action_size = 5
+        self.state_size = 5
 
         self.total_episode = 5
 
@@ -55,7 +58,27 @@ class QModel:
         except FileNotFoundError:
             print("No previous epsilon value")
 
+        try:
+            with open("temp_map.pkl", "rb") as f:
+                self.temp_map = pickle.load(f)
+                print(self.temp_map)
+            print("Temp_map loaded")
+        except FileNotFoundError:
+            print("No previous temp map")
+
+        print("Model is ready.")
+
         # ---------------------------------------------------------
+
+    def get_greedy_action(self, temp):
+        state = self.get_state_from_temp(temp)
+        if np.any(self.Q[state]):
+            return self.actions[np.argmax(self.Q[state])]
+        else:
+            return self.actions[random.randint(0, self.action_size - 1)]
+
+    def get_state_from_temp(self, temp):
+        return self.temp_model.get_state(temp)
 
     def get_state(self, cold, good, hot):
         print("Cold", cold, "Good", good, "Hot", hot)
@@ -79,7 +102,7 @@ class QModel:
         return self.reward_table[s1][s2]
 
     def get_action(self, state):
-        if True or (random.uniform(0, 1) > self.epsilon and np.any(self.Q[state])):
+        if random.uniform(0, 1) > self.epsilon and np.any(self.Q[state]):
             # Random
             print("Greedy", end=" ")
             return np.argmax(self.Q[state])
@@ -116,7 +139,7 @@ class QModel:
             self.state = new_state
 
             # epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-epsilon_decay * episode)
-            self.epsilon -= self.epsilon_decay
+            self.epsilon *= self.epsilon_decay
 
             with open("ac.pkl", 'wb') as f:
                 pickle.dump(self.Q, f)
@@ -125,8 +148,8 @@ class QModel:
 
         print(self.Q)
 
-    def update(self):
-        reward = self.get_reward(self.state, self.new_state)
+    def update(self, reward):
+        print("REWARD => ", reward)
         self.train(self.state, self.new_state, reward, self.action)
 
         self.epsilon -= self.epsilon_decay
@@ -138,18 +161,74 @@ class QModel:
 
         print(self.Q)
 
-    def forward(self, cold, good, hot):
+    def update_results(self, survey_data):
+        for vote_id in range(3):
+            for person in survey_data[vote_id]:
+                self.temp_map[person] = vote_id
 
-        self.new_state = self.get_state(cold, good, hot)
+    def rule(self, s1, s2):
+        if s1 == s2:
+            return 0
+        elif s1 == 0 and s2 == 1:
+            return 1
+        elif s1 == 0 and s2 == 2:
+            return -1
+        elif s1 == 1 and (s2 == 0 or s2 == 2):
+            return -1
+        elif s1 == 2 and s2 == 0:
+            return -1
+        elif s1 == 2 and s2 == 1:
+            return 1
+
+    def compare_people(self, survey_data):
+        print("Survey data: ", survey_data)
+        print("Old Survey data: ", self.temp_map)
+        print("compared")
+        if self.temp_map is None:
+            new_map = {}
+            for vote_id in range(3):
+                for person in survey_data[vote_id]:
+                    new_map[person] = vote_id
+            with open("temp_map.pkl", "wb") as f:
+                pickle.dump(new_map, f)
+            print("yazildi")
+            return 0
+
+        new_map = {}
+        for vote_id in range(3):
+            for person in survey_data[vote_id]:
+                new_map[person] = vote_id
+
+        result = 0
+
+        for key in self.temp_map:
+            if key in new_map:
+                # Compare
+                result += self.rule(self.temp_map[key], new_map[key])
+
+        self.temp_map = new_map
+
+        with open("temp_map.pkl", "wb") as f:
+            pickle.dump(self.temp_map, f)
+
+        return result / self.total_people
+
+    def forward(self, temp, survey_data):
+
+        self.new_state = self.get_state_from_temp(temp)
 
         print("State is {}.".format(self.new_state), end=" ")
         new_action = self.get_action(self.new_state)
         print("Action is {}".format(self.actions[new_action]))
 
+        print("Self_state => ", self.state)
+        print("sSelf_action => ", )
+
         if self.state is not None and self.action is not None:
-            self.update()
+            print("INSIDE")
+            self.update(self.compare_people(survey_data))
 
         self.state = self.new_state
         self.action = new_action
-
+        print("Epsilon value =>", self.epsilon)
         return self.actions[new_action]

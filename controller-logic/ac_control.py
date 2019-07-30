@@ -6,11 +6,13 @@ def on_data(topic,message):
 
 class AC:
     def __init__(self, topic, IP):
+        print("Connecting to PI...")
         self.topic = topic
         self.broker = IP
         self.client = mqtt.Client("P1") #create new instance
         # self.client.on_message=self.on_message #attach function to callback
         self.client.connect(self.broker) #connect to broker
+        print("Connected to PI successfully.")
 
     def create_config_string(self, id = "-", mode = "-", fan = "-", temp = "-", power = "-" ):
         return str(id) + "," + str(mode) + "," + str(fan) + "," + str(temp) + "," + str(power)
@@ -36,7 +38,8 @@ class AC:
     def set_temp(self, id, temp):
         if 16 <= temp and temp <= 30:
             print(self.create_config_string(id=id, temp=temp))
-            # self.client.publish("Astair/MODEL/AC", self.create_config_string(id = id, temp = temp))
+            self.client.publish("Astair/MODEL/AC", self.create_config_string(id = id, temp = temp))
+            print("AC is set to ", temp)
         else:
             print("Invalid temperature value. (16-30)")
 
@@ -61,10 +64,4 @@ class AC:
             self.client.publish("Astair/MODEL/AC",self.create_config_string(id = id, mode = mode, fan = speed, temp = temp, power = power))
 
     def test(self):
-        self.client.publish("Astair/MODEL/AC", "1,-,-,-,OFF")
-    #
-    # def on_message(self, client, userdata, message):
-    #     print("message received " ,str(message.payload.decode("utf-8")))
-    #     print("message topic=",message.topic)
-    #     print("message qos=",message.qos)
-    #     print("message retain flag=",message.retain)
+        self.client.publish("Astair/MODEL/AC", "1,COOL,HIGH,19,OFF")
