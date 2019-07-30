@@ -13,7 +13,7 @@ class DatabaseConnector:
         print("Connecting to the database...")
         try :
             self.connection = psycopg2.connect(
-                "postgres://astair%40astair:astarPostgres2019.@astair.postgres.database.azure.com:5432/astair")
+                "DATABASE_URL_HERE")
             self.cursor = self.connection.cursor()
         except:
             print("Error: Could not connect to the database.")

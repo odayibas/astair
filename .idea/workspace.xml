@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b35e841-19d4-4884-b4b1-43ae2e25cebd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/controller-logic/state_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller-logic/ac.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller-logic/ac_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller-logic/ac_control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller-logic/database_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller-logic/database_helper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller-logic/epsilon.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller-logic/frozenLake_qTable.pkl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller-logic/modelDecision.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller-logic/modelDecision.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller-logic/play_ground.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller-logic/q_learning.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller-logic/q_learning.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller-logic/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller-logic/test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
