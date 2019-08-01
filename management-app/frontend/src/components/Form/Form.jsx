@@ -56,7 +56,6 @@ class SlackForm extends Component {
       .then(res => {
         console.log(res);
         if (res.data.length !== 0 && res.data) {
-          var minutes = res.data[0].vote_id * process.env.REACT_APP_DURATION;
           var now = new Date();
           var nowMin = diff_minutes(now, baseYear);
           time = (takeVoteId() + 1) * process.env.REACT_APP_DURATION - nowMin;
@@ -78,8 +77,8 @@ class SlackForm extends Component {
             else this.refresh(false);
           }
         } else {
-          var now = new Date();
-          var nowMin = diff_minutes(now, baseYear);
+          now = new Date();
+          nowMin = diff_minutes(now, baseYear);
           time = (takeVoteId() + 1) * process.env.REACT_APP_DURATION - nowMin;
 
           this.setState({
