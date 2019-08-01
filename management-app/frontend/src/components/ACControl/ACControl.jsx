@@ -1,36 +1,38 @@
-import React, { Component } from 'react';
-import { Card, CardBody, Col, Row } from 'reactstrap';
-import Button from 'react-bootstrap/Button';
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
-import ToggleButton from 'react-bootstrap/ToggleButton';
-import { get as getCookie } from 'es-cookie';
-import { Redirect } from 'react-router-dom';
-import axios from 'axios';
+import React, { Component } from "react";
+import { Card, CardBody, Col, Row } from "reactstrap";
+import Button from "react-bootstrap/Button";
+import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import ToggleButton from "react-bootstrap/ToggleButton";
+import { get as getCookie } from "es-cookie";
+import { Redirect } from "react-router-dom";
+import axios from "axios";
 
-import FanSpeed from './FanSpeed';
-import Temperature from './Temperature';
-import Mode from './Mode';
+import FanSpeed from "./FanSpeed";
+import Temperature from "./Temperature";
+import Mode from "./Mode";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
-const urlArr = Array.from(Array(parseInt(process.env.REACT_APP_LENGTH)).keys()).map(x => (x + 1).toString());
+const urlArr = Array.from(
+  Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
+).map(x => (x + 1).toString());
 
 class ACControl extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: '',
-      mode: '',
-      fan_speed: '',
-      temperature: '',
-      active: '',
-      message: '',
+      id: "",
+      mode: "",
+      fan_speed: "",
+      temperature: "",
+      active: "",
+      message: "",
       isChecked: null
     };
   }
 
   getData = async () => {
     return axios
-      .get(urlServer + '/AC/get-last-records')
+      .get(urlServer + "/AC/get-last-records")
       .then(res => {
         this.setState((prevState, props) => ({
           id: res.data.ac_id,
@@ -70,28 +72,43 @@ class ACControl extends Component {
       isChecked: !prevState.isChecked
     }));
 
-    if (this.state.isChecked === false) this.setState({ active: 'ON' });
-    else this.setState({ active: 'OFF' });
+    if (this.state.isChecked === false) this.setState({ active: "ON" });
+    else this.setState({ active: "OFF" });
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    if (this.state.id && this.state.fan_speed && this.state.temperature && this.state.active && this.state.mode) {
+    if (
+      this.state.id &&
+      this.state.fan_speed &&
+      this.state.temperature &&
+      this.state.active &&
+      this.state.mode
+    ) {
       var message1 = this.state.id.concat(
-        ',' + this.state.mode + ',' + this.state.fan_speed + ',' + (this.state.temperature + 1) + ',' + this.state.active
+        "," +
+          this.state.mode +
+          "," +
+          this.state.fan_speed +
+          "," +
+          (this.state.temperature + 1) +
+          "," +
+          this.state.active
       );
       this.setState({
         message: message1
       });
       axios
-        .post(urlServer + '/api/mqtt/publish', {
+        .post(urlServer + "/api/mqtt/publish", {
           message: message1,
           retained: false,
-          topic: 'Astair/MODEL/AC'
+          topic: "Astair/MODEL/AC"
         })
-        .then(function(res) {})
+        .then(function(res) {
+          alert("Data Send");
+        })
         .catch(function(error) {});
-    } else alert('Please fill all fields to proceed');
+    } else alert("Please fill all fields to proceed");
   };
   getButton = () => {
     return urlArr.map((button, i) => (
@@ -102,15 +119,19 @@ class ACControl extends Component {
   };
 
   render() {
-    if (getCookie('usertoken') === '1') {
+    if (getCookie("usertoken") === "1") {
       return (
         <div style={{ paddingTop: 20 }}>
           <div className="center">
             <Card>
               <CardBody>
-                <div style={{ alignItems: 'right' }}>
+                <div style={{ alignItems: "right" }}>
                   <Row>
-                    <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
+                    <ToggleButtonGroup
+                      type="radio"
+                      name="options"
+                      defaultValue={1}
+                    >
                       {this.getButton()}
                     </ToggleButtonGroup>
                   </Row>
@@ -119,7 +140,7 @@ class ACControl extends Component {
                   <h4> MODE </h4>
                 </center>
                 <Mode mode={this.state.mode} setMode={x => this.setMode(x)} />
-                <Row style={{ paddingLeft: '20%' }}>
+                <Row style={{ paddingLeft: "20%" }}>
                   <Col>
                     <h4> TEMPERATURE </h4>
                     <Temperature setTemp={x => this.setTemp(x)} />
@@ -143,15 +164,21 @@ class ACControl extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <div style={{ paddingLeft: '45%' }}>
-                    <FanSpeed fan_speed={this.state.fan_speed} onChange={x => this.onChange(x)} />
+                  <div style={{ paddingLeft: "45%" }}>
+                    <FanSpeed
+                      fan_speed={this.state.fan_speed}
+                      onChange={x => this.onChange(x)}
+                    />
                   </div>
                 </Row>
                 <Row>
                   <Col />
                   <Col>
-                    <div style={{ paddingLeft: '35%' }}>
-                      <Button variant="primary" onClick={this.handleSubmit.bind(this)}>
+                    <div style={{ paddingLeft: "35%" }}>
+                      <Button
+                        variant="primary"
+                        onClick={this.handleSubmit.bind(this)}
+                      >
                         Change
                       </Button>
                     </div>
@@ -163,13 +190,13 @@ class ACControl extends Component {
           </div>
           <div
             style={{
-              height: '10%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
+              height: "10%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
             }}
           >
-            <img height={150} src="/assets/Logo-Astair-w.png" alt={'logo'} />
+            <img height={150} src="/assets/Logo-Astair-w.png" alt={"logo"} />
           </div>
         </div>
       );

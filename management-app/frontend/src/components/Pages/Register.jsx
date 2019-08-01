@@ -9,15 +9,13 @@ class Register extends Component {
       username: "",
       password: ""
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onChange(e) {
+  onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
-  onSubmit(e) {
+  onSubmit = e => {
     e.preventDefault();
 
     const user = {
@@ -46,9 +44,9 @@ class Register extends Component {
         }
       })
       .catch(err => {
-        alert(err.response.data);
+        console.log(err.response.data);
       });
-  }
+  };
 
   render() {
     return (

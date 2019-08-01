@@ -13,15 +13,13 @@ class Login extends Component {
       username: "",
       password: ""
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  onSubmit(e) {
+  onSubmit = e => {
     const { history } = this.props;
     e.preventDefault();
 
@@ -41,7 +39,6 @@ class Login extends Component {
         if (res) {
           if (res.data !== -2 && res.data !== -1) {
             var promise1 = Promise.resolve(res.data);
-            console.log(promise1);
             promise1.then(function(value) {
               axios.post(urlServer + "/user/" + value).then(res => {
                 setCookie("usertoken", res.data.role);
@@ -58,9 +55,9 @@ class Login extends Component {
         }
       })
       .catch(err => {
-        alert(err.response.data);
+        console.log(err.response.data);
       });
-  }
+  };
 
   render() {
     return (

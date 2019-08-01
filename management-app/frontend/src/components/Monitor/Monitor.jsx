@@ -1,16 +1,8 @@
 import React, { Component } from "react";
-import mySvg from "./blueprint.png";
 import axios from "axios";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Collapse,
-  Row
-} from "reactstrap";
-
+import { Button, Card, CardBody, CardHeader, Collapse } from "reactstrap";
+import { get as getCookie } from "es-cookie";
+import { Redirect } from "react-router-dom";
 class Monitor extends Component {
   constructor(props) {
     super(props);
@@ -36,16 +28,12 @@ class Monitor extends Component {
   }
   openModal(index) {
     let newArray = JSON.parse(JSON.stringify(this.state.visible));
-
     newArray[index] = true;
-    console.log(newArray);
-
     this.setState({ visible: newArray });
   }
   closeModal(index) {
     let newArray = JSON.parse(JSON.stringify(this.state.visible));
     newArray[index] = false;
-    console.log(newArray);
     this.setState({ visible: newArray });
   }
 
@@ -123,64 +111,59 @@ class Monitor extends Component {
 } */
 
   render() {
-    var sectionStyle = {
-      width: "100%",
-      height: "100%",
-      backgroundPosition: "center bottom",
-      backgroundRepeat: "no-repeat",
-      backgroundImage: "url(" + mySvg + ")"
-    };
-
-    return (
-      <div>
+    if (getCookie("usertoken") === "1" || getCookie("usertoken") === "2") {
+      return (
         <div>
-          <div id="accordion">
-            <Card className="mb-0">
-              <CardHeader id="headingOne">
-                <Button
-                  block
-                  color="link"
-                  className="m-0 p-0"
-                  onClick={() => this.toggleAccordion(0)}
-                  aria-expanded={this.state.accordion[0]}
-                  aria-controls="collapseOne"
+          <div>
+            <div id="accordion">
+              <Card className="mb-0">
+                <CardHeader id="headingOne">
+                  <Button
+                    block
+                    color="link"
+                    className="m-0 p-0"
+                    onClick={() => this.toggleAccordion(0)}
+                    aria-expanded={this.state.accordion[0]}
+                    aria-controls="collapseOne"
+                  >
+                    <center>
+                      <h5 className="m-0 p-0">
+                        Click here for outdoor weather conditions
+                      </h5>
+                    </center>
+                  </Button>
+                </CardHeader>
+                <Collapse
+                  isOpen={this.state.accordion[0]}
+                  data-parent="#accordion"
+                  id="collapseOne"
+                  aria-labelledby="headingOne"
                 >
-                  <center>
-                    <h5 className="m-0 p-0">
-                      Click here for outdoor weather conditions
-                    </h5>
-                  </center>
-                </Button>
-              </CardHeader>
-              <Collapse
-                isOpen={this.state.accordion[0]}
-                data-parent="#accordion"
-                id="collapseOne"
-                aria-labelledby="headingOne"
-              >
-                <CardBody>
-                  <div class="card-body text-center card">
-                    <CardHeader className="bg-white">
-                      TODAY WEATHER IS HERE FOR YOU
-                    </CardHeader>
-                    <CardBody>
-                      <div>
-                        Temperature: {this.state.temp} °C
-                        <div>Current Weather: {this.state.currentWeather}</div>
-                        <div>Daily Summary: {this.state.dailySummary}</div>
-                        <div>Dew Point: {this.state.dew}</div>
-                        <div>Humidity: {this.state.humidity}</div>
-                        <div>Visibility: {this.state.visibility}</div>
-                        <div>TimeZone: {this.state.timezone}</div>
-                      </div>
-                    </CardBody>
-                  </div>
-                </CardBody>
-              </Collapse>
-            </Card>
+                  <CardBody>
+                    <div class="card-body text-center card">
+                      <CardHeader className="bg-white">
+                        TODAY WEATHER IS HERE FOR YOU
+                      </CardHeader>
+                      <CardBody>
+                        <div>
+                          Temperature: {this.state.temp} °C
+                          <div>
+                            Current Weather: {this.state.currentWeather}
+                          </div>
+                          <div>Daily Summary: {this.state.dailySummary}</div>
+                          <div>Dew Point: {this.state.dew}</div>
+                          <div>Humidity: {this.state.humidity}</div>
+                          <div>Visibility: {this.state.visibility}</div>
+                          <div>TimeZone: {this.state.timezone}</div>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </CardBody>
+                </Collapse>
+              </Card>
+            </div>
           </div>
-        </div>
-        <div style={{ padding: 40 }}>
+          {/*       <div style={{ padding: 40 }}>
           <center>
             <h4 className="m-0 p-0">
               {" "}
@@ -188,45 +171,56 @@ class Monitor extends Component {
               to view A/C controller !{" "}
             </h4>
           </center>
+        </div> */}
+          <center>
+            <div
+              style={{
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <img height={1000} src="/assets/klima_konum.png" alt={"logo"} />
+            </div>
+            {/* <Row>
+            <Col
+              className="text-dark bg-transparent"
+              style={{ paddingBottom: "300px", border: this.state.border[0] }}
+              onMouseEnter={this.mouseEnter(0)}
+              onMouseLeave={this.mouseLeave(0)}
+              onClick={() => this.openModal(0)}
+            />
+            <Col
+              className="text-dark bg-transparent"
+              style={{ paddingBottom: "300px", border: this.state.border[1] }}
+              onMouseEnter={this.mouseEnter(1)}
+              onMouseLeave={this.mouseLeave(1)}
+              onClick={() => this.openModal(1)}
+            />
+          </Row>
+          <Row>
+            <Col
+              className="text-dark  bg-transparent"
+              style={{ paddingTop: "300px", border: this.state.border[2] }}
+              onMouseEnter={this.mouseEnter(2)}
+              onMouseLeave={this.mouseLeave(2)}
+              onClick={() => this.openModal(2)}
+            />
+            <Col
+              className="text-dark bg-transparent"
+              style={{ paddingTop: "300px", border: this.state.border[3] }}
+              onMouseEnter={this.mouseEnter(3)}
+              onMouseLeave={this.mouseLeave(3)}
+              onClick={() => this.openModal(3)}
+            />
+          </Row> */}
+          </center>
         </div>
-        <center>
-          <section style={sectionStyle}>
-            <Row>
-              <Col
-                className="text-dark bg-transparent"
-                style={{ paddingBottom: "300px", border: this.state.border[0] }}
-                onMouseEnter={this.mouseEnter(0)}
-                onMouseLeave={this.mouseLeave(0)}
-                onClick={() => this.openModal(0)}
-              />
-              <Col
-                className="text-dark bg-transparent"
-                style={{ paddingBottom: "300px", border: this.state.border[1] }}
-                onMouseEnter={this.mouseEnter(1)}
-                onMouseLeave={this.mouseLeave(1)}
-                onClick={() => this.openModal(1)}
-              />
-            </Row>
-            <Row>
-              <Col
-                className="text-dark  bg-transparent"
-                style={{ paddingTop: "300px", border: this.state.border[2] }}
-                onMouseEnter={this.mouseEnter(2)}
-                onMouseLeave={this.mouseLeave(2)}
-                onClick={() => this.openModal(2)}
-              />
-              <Col
-                className="text-dark bg-transparent"
-                style={{ paddingTop: "300px", border: this.state.border[3] }}
-                onMouseEnter={this.mouseEnter(3)}
-                onMouseLeave={this.mouseLeave(3)}
-                onClick={() => this.openModal(3)}
-              />
-            </Row>
-          </section>{" "}
-        </center>
-      </div>
-    );
+      );
+    } else {
+      return <Redirect to="/login" />;
+    }
   }
 }
 

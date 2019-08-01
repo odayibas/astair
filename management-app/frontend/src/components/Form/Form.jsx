@@ -54,7 +54,6 @@ class SlackForm extends Component {
     return axios
       .get(urlServer + "/vote/get-by-user_id/" + getCookie("token"))
       .then(res => {
-        console.log(res);
         if (res.data.length !== 0 && res.data) {
           var now = new Date();
           var nowMin = diff_minutes(now, baseYear);
@@ -64,9 +63,6 @@ class SlackForm extends Component {
             vote_id: res.data[0].vote_id,
             results: res.data
           }));
-
-          console.log("önceki :", this.state.vote_id);
-          console.log("sonraki :", vote_id);
 
           if (vote_id !== this.state.vote_id) {
             this.setState({
@@ -98,8 +94,6 @@ class SlackForm extends Component {
     if (b) t = process.env.REACT_APP_DURATION;
 
     this.setState({ show: false });
-    console.log("Time " + time);
-    console.log("duration ", process.env.REACT_APP_DURATION);
     setTimeout(() => {
       this.setState({ show: true });
     }, t * 60 * 1000);
@@ -192,7 +186,10 @@ class SlackForm extends Component {
                         <div className="text-value">
                           <h4> You are in region </h4>
                           <h2> {this.state.results[0].region} </h2>
-                          <Link to=""> Click here to find your region </Link>
+                          <Link to="/monitor">
+                            {" "}
+                            Click here to find your region{" "}
+                          </Link>
                         </div>
                       </center>
                     </CardBody>

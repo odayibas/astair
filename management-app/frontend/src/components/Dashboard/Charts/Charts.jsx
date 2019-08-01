@@ -1,43 +1,75 @@
-import React, { Component } from 'react';
-import { Doughnut, Bar } from 'react-chartjs-2';
-import { Button, ButtonGroup, ButtonToolbar, Card, CardBody, CardTitle, Col, Row } from 'reactstrap';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
+import React, { Component } from "react";
+import { Doughnut, Bar } from "react-chartjs-2";
+import {
+  Button,
+  ButtonGroup,
+  ButtonToolbar,
+  Card,
+  CardBody,
+  CardTitle,
+  Col,
+  Row
+} from "reactstrap";
+import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
+import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
 
-import axios from 'axios';
+import axios from "axios";
 
-const urlArr = Array.from(Array(parseInt(process.env.REACT_APP_LENGTH)).keys()).map(x => (x + 1).toString());
+const urlArr = Array.from(
+  Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
+).map(x => (x + 1).toString());
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
-const brandPrimary = getStyle('--primary');
-const brandDanger = getStyle('--danger');
-const brandSuccess = getStyle('--success');
+const brandPrimary = getStyle("--primary");
+const brandDanger = getStyle("--danger");
+const brandSuccess = getStyle("--success");
 
 var loadValue = 0;
 var loadValue2 = 0;
 
 let mainChart = {
-  labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+  labels: [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
   responsive: true,
   datasets: [
     {
-      label: 'INDOOR',
-      type: 'line',
-      backgroundColor: hexToRgba('#f9690e', 10),
-      borderColor: '#f9690e',
-      pointHoverBackgroundColor: '#fff',
+      label: "INDOOR",
+      type: "line",
+      backgroundColor: hexToRgba("#f9690e", 10),
+      borderColor: "#f9690e",
+      pointHoverBackgroundColor: "#fff",
       borderWidth: 4,
-      yAxisID: 'y-axis-0',
+      yAxisID: "y-axis-0",
       data: []
     },
     {
-      label: 'PEOPLE',
-      type: 'bar',
-      backgroundColor: hexToRgba('#663399', 10),
-      borderColor: '#663399',
-      pointHoverBackgroundColor: '#fff',
+      label: "PEOPLE",
+      type: "bar",
+      backgroundColor: hexToRgba("#663399", 10),
+      borderColor: "#663399",
+      pointHoverBackgroundColor: "#fff",
       borderWidth: 2,
-      yAxisID: 'y-axis-1',
+      yAxisID: "y-axis-1",
       data: []
     }
     /*  {
@@ -60,12 +92,13 @@ const mainChartOpts = {
     enabled: false,
     custom: CustomTooltips,
     intersect: true,
-    mode: 'index',
-    position: 'nearest',
+    mode: "index",
+    position: "nearest",
     callbacks: {
       labelColor: function(tooltipItem, chart) {
         return {
-          backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor
+          backgroundColor:
+            chart.data.datasets[tooltipItem.datasetIndex].borderColor
         };
       }
     }
@@ -87,21 +120,21 @@ const mainChartOpts = {
     ],
     yAxes: [
       {
-        type: 'linear',
-        position: 'left',
+        type: "linear",
+        position: "left",
         ticks: {
           min: 0,
           max: 90
         },
-        id: 'y-axis-0'
+        id: "y-axis-0"
       },
       {
-        type: 'linear',
-        position: 'right',
+        type: "linear",
+        position: "right",
         ticks: {
           min: 0,
           max: 90,
-          id: 'y-axis-1'
+          id: "y-axis-1"
         }
       }
     ]
@@ -117,16 +150,16 @@ const mainChartOpts = {
 };
 
 let barChart = {
-  labels: ['Cold', 'Nice', 'Hot'],
+  labels: ["Cold", "Nice", "Hot"],
   responsive: true,
   datasets: [
     {
-      label: 'Slack',
-      borderColor: 'rgba(255,99,132,1)',
+      label: "Slack",
+      borderColor: "rgba(255,99,132,1)",
       borderWidth: 1,
       backgroundColor: [brandPrimary, brandSuccess, brandDanger],
       hoverBackgroundColor: [brandPrimary, brandSuccess, brandDanger],
-      hoverBorderColor: 'rgba(255,99,132,1)',
+      hoverBorderColor: "rgba(255,99,132,1)",
       data: []
     }
   ]
@@ -167,7 +200,7 @@ class Charts extends Component {
 
   getcompVisionControllerData = async () => {
     return axios
-      .get(urlServer + '/get-all')
+      .get(urlServer + "/get-all")
       .then(res => {
         var people = res.data[res.data.length - 1].occupancy;
 
@@ -180,18 +213,20 @@ class Charts extends Component {
   };
 
   getSlack = async () => {
-    return axios.get(urlServer + '/slack/get-poll-result-hot-cold-nice').then(res => {
-      var cold = res.data.cold;
-      var nice = res.data.nice;
-      var hot = res.data.hot;
+    return axios
+      .get(urlServer + "/slack/get-poll-result-hot-cold-nice")
+      .then(res => {
+        var cold = res.data.cold;
+        var nice = res.data.nice;
+        var hot = res.data.hot;
 
-      this.setSlack(cold, nice, hot);
-      this.drawSlackChart(res);
-    });
+        this.setSlack(cold, nice, hot);
+        this.drawSlackChart(res);
+      });
   };
 
   getSensorAverage = () => {
-    return axios.get(urlServer + '/sensor/get-ave-degree').then(res => {
+    return axios.get(urlServer + "/sensor/get-ave-degree").then(res => {
       this.props.setAvgTemp(res.data);
       this.drawTempChart(res);
       //  this.drawOutdoorChart()
@@ -201,9 +236,11 @@ class Charts extends Component {
   getSensorData = async () => {
     await Promise.all(
       urlArr.map(url =>
-        axios(urlServer + '/sensor/get-zone/' + url).then(res => {
-          this.props.sensorTemp[url] = res.data[res.data.length - 1].sensor_degree;
-          this.props.sensorHum[url] = res.data[res.data.length - 1].sensor_humidity;
+        axios(urlServer + "/sensor/get-zone/" + url).then(res => {
+          this.props.sensorTemp[url] =
+            res.data[res.data.length - 1].sensor_degree;
+          this.props.sensorHum[url] =
+            res.data[res.data.length - 1].sensor_humidity;
         })
       )
     );
@@ -222,8 +259,12 @@ class Charts extends Component {
       for (var i = mainChart.datasets[0].data.length; i < 20; i++) {
         this.setState({ avgsensor: res.data });
         mainChart.datasets[0].data.push(this.state.avgsensor);
-        mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-        mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 20);
+        mainChartOpts.scales.yAxes[0].ticks.min = parseInt(
+          Math.min.apply(Math, mainChart.datasets[0].data) - 10
+        );
+        mainChartOpts.scales.yAxes[0].ticks.max = parseInt(
+          Math.max.apply(Math, mainChart.datasets[0].data) + 20
+        );
       }
       loadValue = 1;
     }
@@ -233,8 +274,12 @@ class Charts extends Component {
     while (mainChart.datasets[0].data.length > 20) {
       mainChart.datasets[0].data.shift();
     }
-    mainChartOpts.scales.yAxes[0].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[0].data) - 10);
-    mainChartOpts.scales.yAxes[0].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[0].data) + 20);
+    mainChartOpts.scales.yAxes[0].ticks.min = parseInt(
+      Math.min.apply(Math, mainChart.datasets[0].data) - 10
+    );
+    mainChartOpts.scales.yAxes[0].ticks.max = parseInt(
+      Math.max.apply(Math, mainChart.datasets[0].data) + 20
+    );
   };
 
   drawPeopleChart = res => {
@@ -245,8 +290,12 @@ class Charts extends Component {
         // this.props.people=res.data[i].occupancy
         mainChart.datasets[1].data.push(this.props.people);
 
-        mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 20);
-        mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
+        mainChartOpts.scales.yAxes[1].ticks.min = parseInt(
+          Math.min.apply(Math, mainChart.datasets[1].data) - 20
+        );
+        mainChartOpts.scales.yAxes[1].ticks.max = parseInt(
+          Math.max.apply(Math, mainChart.datasets[1].data) + 10
+        );
       }
       loadValue2 = 1;
     }
@@ -256,8 +305,12 @@ class Charts extends Component {
       mainChart.datasets[1].data.shift();
     }
 
-    mainChartOpts.scales.yAxes[1].ticks.min = parseInt(Math.min.apply(Math, mainChart.datasets[1].data) - 20);
-    mainChartOpts.scales.yAxes[1].ticks.max = parseInt(Math.max.apply(Math, mainChart.datasets[1].data) + 10);
+    mainChartOpts.scales.yAxes[1].ticks.min = parseInt(
+      Math.min.apply(Math, mainChart.datasets[1].data) - 20
+    );
+    mainChartOpts.scales.yAxes[1].ticks.max = parseInt(
+      Math.max.apply(Math, mainChart.datasets[1].data) + 10
+    );
   };
 
   drawOutdoorChart = () => {
@@ -275,14 +328,19 @@ class Charts extends Component {
   getChart = () => {
     if (this.state.radioSelected === 1) {
       return (
-        <div className="chart-wrapper" style={{ height: '400px' }}>
+        <div className="chart-wrapper" style={{ height: "400px" }}>
           <Bar data={mainChart} options={mainChartOpts} height={400} redraw />
         </div>
       );
     } else if (this.state.radioSelected === 2) {
       return (
-        <div className="chart-wrapper" style={{ height: '400px' }}>
-          <Doughnut data={barChart} options={barChartOpts} height={400} redraw />
+        <div className="chart-wrapper" style={{ height: "400px" }}>
+          <Doughnut
+            data={barChart}
+            options={barChartOpts}
+            height={400}
+            redraw
+          />
         </div>
       );
     }
@@ -326,19 +384,32 @@ class Charts extends Component {
     return (
       <Row>
         <Col>
-          <Card style={{ background: 'transparent' }}>
-            <CardBody style={{ background: 'transparent' }}>
+          <Card style={{ background: "transparent" }}>
+            <CardBody style={{ background: "transparent" }}>
               <Row>
                 <Col sm="5">
-                  <CardTitle className="mb-0">AVG. TEMPERATURES-PEOPLE COUNT</CardTitle>
+                  <CardTitle className="mb-0">
+                    AVG. TEMPERATURES-PEOPLE COUNT
+                  </CardTitle>
                 </Col>
                 <Col>
-                  <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
+                  <ButtonToolbar
+                    className="float-right"
+                    aria-label="Toolbar with button groups"
+                  >
                     <ButtonGroup className="mr-3" aria-label="First group">
-                      <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>
+                      <Button
+                        color="outline-secondary"
+                        onClick={() => this.onRadioBtnClick(1)}
+                        active={this.state.radioSelected === 1}
+                      >
                         INDOOR
                       </Button>
-                      <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>
+                      <Button
+                        color="outline-secondary"
+                        onClick={() => this.onRadioBtnClick(2)}
+                        active={this.state.radioSelected === 2}
+                      >
                         SLACK
                       </Button>
                     </ButtonGroup>
