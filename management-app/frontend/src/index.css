@@ -1,195 +1,215 @@
-html, body{
+html,
+body {
   height: 100%;
-  width: 100%
+  width: 100%;
 }
 
 body {
-
-
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.pageMain {
+  width: '100% !important';
+  margin: 'auto';
+  height: '100%';
+  margin-top: '40px';
+}
+
+.pageBody {
+  left: '10px';
+  right: '10px';
+  display: 'flex';
+  padding: '30px';
+  width: '100%';
+  height: '90%';
+}
+
+.text {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 22px;
+  letter-spacing: 0px;
+  word-spacing: 0px;
+  color: #000000;
+  font-weight: 700;
+  text-decoration: none solid rgb(68, 68, 68);
+  font-style: normal;
+  font-variant: small-caps;
+  text-transform: uppercase;
+}
+
+.card {
+  background: #ffffff;
+  border: 0;
+  position: relative;
+  width: 100%;
+  margin-bottom: 30px;
+  box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.card label {
+  color: #ffffff;
+}
+
+.card .card-title {
+  margin-bottom: 0.75rem;
+}
+
+.card .card-body {
+  padding: 15px;
+}
+
+.card .card-body.table-full-width {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.card .card-body .card-title {
+  color: #27293d;
+  text-transform: inherit;
+  font-weight: 300;
+  margin-bottom: 0.75rem;
+}
+
+.card .card-body .card-description,
+.card .card-body .card-category {
+  color: #ffffff;
+}
+
+.card .card-header {
+  padding: 15px 15px 0;
+  border: 0;
+  color: #27293d;
+}
+
+.card .card-header:not([data-background-color]) {
+  background-color: transparent;
+}
+
+.card .card-header .card-title {
+  color: #27293d;
+  font-weight: 100;
+}
+
+.card .card-header .card-category {
+  color: #393c63;
+  margin-bottom: 5px;
+  font-weight: 300;
+}
+
+.card .map {
+  border-radius: 0.2857rem;
+}
+
+.card .map.map-big {
+  height: 420px;
 }
 
 
-    .text{
-      font-family: "Comic Sans MS", cursive, sans-serif;
-    font-size: 22px;
-    letter-spacing: 0px;
-    word-spacing: 0px;
-    color: #000000;
-    font-weight: 700;
-    text-decoration: none solid rgb(68, 68, 68);
-    font-style: normal;
-    font-variant: small-caps;
-    text-transform: uppercase;
-    }
-  .card {
-    background: #ffffff;
-    border: 0;
-    position: relative;
-    width: 100%;
-    margin-bottom: 30px;
-    box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1); }
-  .card label {
-    color: #ffffff; }
-  .card .card-title {
-    margin-bottom: .75rem; }
-  .card .card-body {
-    padding: 15px; }
-  .card .card-body.table-full-width {
-    padding-left: 0;
-    padding-right: 0; }
-  .card .card-body .card-title {
-    color: #27293d;
-    text-transform: inherit;
-    font-weight: 300;
-    margin-bottom: .75rem; }
-  .card .card-body .card-description, .card .card-body .card-category {
-    color: #ffffff; }
-  .card .card-header {
-    padding: 15px 15px 0;
-    border: 0;
-    color: #27293d; }
-  .card .card-header:not([data-background-color]) {
-    background-color: transparent; }
-  .card .card-header .card-title {
-    color: #27293d;
-    font-weight: 100; }
-  .card .card-header .card-category {
-    color: #393c63;
-    margin-bottom: 5px;
-    font-weight: 300; }
-  .card .map {
-    border-radius: 0.2857rem; }
-  .card .map.map-big {
-    height: 420px; }
 
-  .pageMain {
-    width: '100% !important';
-    margin: 'auto';
-    height: '100%';
-    margin-top: '40px';
+.center {
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}
 
-  }
+.iconadjust {
+  padding-left: '100px';
+}
 
-  .pageBody{
-    left:'10px',;
-    right:'10px';
-    display : 'flex' ;
-    padding : '30px';
-    width : '100%'; 
-    height: '90%';
-  }
-
-  .center {
-    margin: auto;
-    width: 60%;
-    padding: 10px;
-  }
-
-  .iconadjust{
-    padding-left : '100px'
-
-  }
-
-
-  
 .switch-container {
-	position: absolute;
-	top: 50%; left: 50%;
-	-webkit-transform: translate3d( -50%, -50%, 0 );
-	transform: translate3d( -50%, -50%, 0 );
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate3d(-50%, -50%, 0);
+  transform: translate3d(-50%, -50%, 0);
 }
 
-input[type="checkbox"].switch  {
-	/* position: absolute; */
-	opacity: 0;
+input[type='checkbox'].switch {
+  /* position: absolute; */
+  opacity: 0;
 }
 
-input[type="checkbox"].switch + div {
-	vertical-align: middle;
-	width: 40px;
-	height: 20px;
-	border-radius: 999px;
-	background-color: #808080;
-	-webkit-transition-duration: .4s;
-	transition-duration: .4s;
-	-webkit-transition-property: background-color, box-shadow;
-	transition-property: background-color, box-shadow;
-	cursor: pointer;
+input[type='checkbox'].switch+div {
+  vertical-align: middle;
+  width: 40px;
+  height: 20px;
+  border-radius: 999px;
+  background-color: #808080;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  -webkit-transition-property: background-color, box-shadow;
+  transition-property: background-color, box-shadow;
+  cursor: pointer;
 }
 
-input[type="checkbox"].switch + div span {
-	position: absolute;
-    font-size: 1.6rem;
-    color: white;
-    margin-top: 12px;
+input[type='checkbox'].switch+div span {
+  position: absolute;
+  font-size: 1.6rem;
+  color: white;
+  margin-top: 12px;
 }
 
-input[type="checkbox"].switch + div span:nth-child( 1 ) {
-    margin-left: 15px;
+input[type='checkbox'].switch+div span:nth-child(1) {
+  margin-left: 15px;
 }
 
-input[type="checkbox"].switch + div span:nth-child( 2 ) {
-    margin-left: 55px;
+input[type='checkbox'].switch+div span:nth-child(2) {
+  margin-left: 55px;
 }
 
-input[type="checkbox"].switch:checked + div {
-	width: 94px;
-	background-position: 0 0;
-	background-color: #808080;
+input[type='checkbox'].switch:checked+div {
+  width: 94px;
+  background-position: 0 0;
+  background-color: #808080;
 }
 
-input[type="checkbox"].switch + div {
-	width: 94px;
-	height: 48px;
+input[type='checkbox'].switch+div {
+  width: 94px;
+  height: 48px;
 }
 
-
-input[type="checkbox"].switch:checked + div {
-	background-color: #3b89ec;
+input[type='checkbox'].switch:checked+div {
+  background-color: #3b89ec;
 }
 
-input[type="checkbox"].switch + div > div {
-	float: left;
-	width: 46px; height: 46px;
-	border-radius: inherit;
-	background: #ffffff;
-	-webkit-transition-timing-function: cubic-bezier(1,0,0,1);
-	transition-timing-function: cubic-bezier(1,0,0,1);
-	-webkit-transition-duration: 0.4s;
-	transition-duration: 0.4s;
-	-webkit-transition-property: transform, background-color;
-	transition-property: transform, background-color;
-	pointer-events: none;
-	margin-top: 1px;
-	margin-left: 1px;
+input[type='checkbox'].switch+div>div {
+  float: left;
+  width: 46px;
+  height: 46px;
+  border-radius: inherit;
+  background: #ffffff;
+  -webkit-transition-timing-function: cubic-bezier(1, 0, 0, 1);
+  transition-timing-function: cubic-bezier(1, 0, 0, 1);
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  -webkit-transition-property: transform, background-color;
+  transition-property: transform, background-color;
+  pointer-events: none;
+  margin-top: 1px;
+  margin-left: 1px;
 }
 
-input[type="checkbox"].switch:checked + div > div {
-	-webkit-transform: translate3d(20px, 0, 0);
-	transform: translate3d(20px, 0, 0);
-	background-color: #ffffff;
+input[type='checkbox'].switch:checked+div>div {
+  -webkit-transform: translate3d(20px, 0, 0);
+  transform: translate3d(20px, 0, 0);
+  background-color: #ffffff;
 }
 
-input[type="checkbox"].bigswitch.switch + div > div {
-	width: 44px;
-	height: 44px;
-	margin-top: 1px;
+input[type='checkbox'].bigswitch.switch+div>div {
+  width: 44px;
+  height: 44px;
+  margin-top: 1px;
 }
 
-
-input[type="checkbox"].switch:checked + div > div {
-	-webkit-transform: translate3d(46px, 0, 0);
-	transform: translate3d(46px, 0, 0);
+input[type='checkbox'].switch:checked+div>div {
+  -webkit-transform: translate3d(46px, 0, 0);
+  transform: translate3d(46px, 0, 0);
 }
-
