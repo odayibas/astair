@@ -97,12 +97,24 @@ class VoteChart extends Component {
     clearInterval(this.state.interval);
   }
 
+  showMessage = () => {
+    if (this.props.show === true)
+      return (
+        <center>
+          <h4>All user's feedback for current survey</h4>
+        </center>
+      );
+    else
+      return (
+        <center>
+          <h4>All user's feedback for previous survey</h4>
+        </center>
+      );
+  };
   render() {
     return (
       <div className="chart-wrapper" style={{ height: "300px" }}>
-        <center>
-          <h4>All user's feedback</h4>
-        </center>
+        {this.showMessage()}
         <Doughnut
           data={voteChart}
           options={voteChartOpts}

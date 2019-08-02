@@ -173,14 +173,7 @@ class Monitor extends Component {
           </center>
         </div> */}
           <center>
-            <div
-              style={{
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
-              }}
-            >
+            <div className="monitor">
               <img height={1000} src="/assets/klima_konum.png" alt={"logo"} />
             </div>
             {/* <Row>
