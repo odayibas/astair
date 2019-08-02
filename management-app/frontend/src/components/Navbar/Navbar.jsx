@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { get as getCookie, remove as removeCookie } from "es-cookie";
 
-class Navbar extends Component {
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import NavDropdown from "react-bootstrap/NavDropdown";
+
+class AppNavbar extends Component {
   logout(e) {
     e.preventDefault();
     removeCookie("usertoken");
@@ -12,113 +16,79 @@ class Navbar extends Component {
   getNavbar() {
     if (getCookie("usertoken") === "1") {
       return (
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-          <div className="navbar-brand">
-            <img height={50} src="/assets/Logo-Astair-w-1.png" alt={"logo"} />
-          </div>
-          <ul className="navbar-nav">
-            <li className="nav -item">
-              <Link to="/" className="nav-link">
-                <h5>Home</h5>
-              </Link>
+        <Nav className="mr-auto">
+          <Nav.Link href="/" className="nav-link">
+            <h5>Home</h5>
+          </Nav.Link>
+          <Nav.Link href="/dashboard" className="nav-link">
+            <h5>Dashboard</h5>
+          </Nav.Link>
+          <Nav.Link href="/ac" className="nav-link">
+            <h5>AC Control</h5>
+          </Nav.Link>
+          <Nav.Link href="/form" className="nav-link">
+            <h5>Form</h5>
+          </Nav.Link>
+          <li className="nav -item">
+            <li onClick={this.logout.bind(this)} className="nav-link">
+              <h5>Logout</h5>
             </li>
-            <li className="nav -item">
-              <Link to="/dashboard" className="nav-link">
-                <h5>Dashboard</h5>
-              </Link>
-            </li>
-            <li className="nav -item">
-              <Link to="/ac" className="nav-link">
-                <h5>AC Control</h5>
-              </Link>
-            </li>
-            <li className="nav -item">
-              <Link to="/form" className="nav-link">
-                <h5>Form</h5>
-              </Link>
-            </li>
-            <li className="nav -item">
-              <li onClick={this.logout.bind(this)} className="nav-link">
-                <h5>Logout</h5>
-              </li>
-            </li>
-          </ul>
-        </div>
+          </li>
+        </Nav>
       );
     } else if (getCookie("usertoken") === "2") {
       return (
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-          <div className="navbar-brand">
-            <img height={50} src="/assets/Logo-Astair-w-1.png" alt={"logo"} />
-          </div>
-          <ul className="navbar-nav">
-            <li className="nav -item">
-              <Link to="/" className="nav-link">
-                <h5>Home</h5>
-              </Link>
+        <Nav className="mr-auto">
+          <Nav.Link href="/" className="nav-link">
+            <h5>Home</h5>
+          </Nav.Link>
+          <Nav.Link href="/dashboard" className="nav-link">
+            <h5>Dashboard</h5>
+          </Nav.Link>
+
+          <Nav.Link href="/form" className="nav-link">
+            <h5>Form</h5>
+          </Nav.Link>
+          <li className="nav -item">
+            <li onClick={this.logout.bind(this)} className="nav-link">
+              <h5>Logout</h5>
             </li>
-            <li className="nav -item">
-              <Link to="/dashboard" className="nav-link">
-                <h5>Dashboard</h5>
-              </Link>
-            </li>
-            <li className="nav -item">
-              <Link to="/form" className="nav-link">
-                <h5>Form</h5>
-              </Link>
-            </li>
-            <li className="nav -item">
-              <li onClick={this.logout.bind(this)} className="nav-link">
-                <h5>Logout</h5>
-              </li>
-            </li>
-          </ul>
-        </div>
+          </li>
+        </Nav>
       );
     } else {
       return (
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
-          <div className="navbar-brand">
-            <img height={50} src="/assets/Logo-Astair-w-1.png" alt={"logo"} />
-          </div>
-          <ul className="navbar-nav">
-            <li className="nav -item">
-              <Link to="/" className="nav-link">
-                <h5>Home</h5>
-              </Link>
-            </li>
-            <li className="nav -item">
-              <Link to="/login" className="nav-link">
-                <h5>Login</h5>
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <Nav className="mr-auto">
+          <Nav.Link href="/" className="nav-link">
+            <h5>Home</h5>
+          </Nav.Link>
+          <Nav.Link href="/login" className="nav-link">
+            <h5>Login</h5>
+          </Nav.Link>
+        </Nav>
       );
     }
   }
 
   render() {
     return (
-      <nav
-        className="navbar fixed-top navbar-expand-lg navbar-dark "
-        style={{ backgroundColor: "#212529", paddingTop: "20px" }}
+      <Navbar
+        collapseOnSelect
+        expand="lg"
+        style={{ backgroundColor: "#212529" }}
+        variant="dark"
       >
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarTogglerDemo03"
-          aria-controls="navbarTogglerDemo03"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        {this.getNavbar()}
-      </nav>
+        <Navbar.Brand href="/home">
+          {" "}
+          <img height={50} src="/assets/Logo-Astair-w-1.png" alt={"logo"} />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          {this.getNavbar()}
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
 
-export default withRouter(Navbar);
+export default withRouter(AppNavbar);

@@ -32,6 +32,32 @@ code {
   height: 90%;
 }
 
+.login {
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.login-body {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+}
+
 .monitor {
   height: 100%;
   display: flex;

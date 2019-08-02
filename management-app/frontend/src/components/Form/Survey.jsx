@@ -45,9 +45,9 @@ class Survey extends Component {
     };
   }
 
-  callback(vote, region) {
-    this.props.callback(vote);
-    this.props.callback(region);
+  setVoteRegion(vote, region) {
+    this.props.setVoteRegion(vote);
+    this.props.setVoteRegion(region);
   }
 
   onChange = e => {
@@ -77,7 +77,7 @@ class Survey extends Component {
     } else {
       var vote = takeVoteId();
       this.setState({ vote_id: vote });
-      this.callback(this.state.vote, this.state.region);
+      this.setVoteRegion(this.state.vote, this.state.region);
       this.setState({ state: this.state });
       this.props.raiseRefresh(false);
       this.postData();
@@ -85,7 +85,7 @@ class Survey extends Component {
     event.preventDefault();
   };
 
-  getForm() {
+  createForm() {
     return (
       <Card>
         <CardBody>
@@ -129,7 +129,7 @@ class Survey extends Component {
   }
 
   render() {
-    return <div>{this.getForm()}</div>;
+    return <div>{this.createForm()}</div>;
   }
 }
 

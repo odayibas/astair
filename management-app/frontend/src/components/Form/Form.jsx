@@ -99,18 +99,18 @@ class SlackForm extends Component {
     }, t * 60 * 1000);
   };
 
-  //shows the survey after duration  passed
-  showSurvey = () => {
+  //gets the survey after duration  passed
+  createSurvey = () => {
     const show = this.state.show;
     if (show === true) {
       return (
         <Survey
           results={this.state.results}
-          callbackResults={x => {
-            this.callbackResults(x);
+          setResults={x => {
+            this.setResults(x);
           }}
-          callback={x => {
-            this.callback(x);
+          setVoteRegion={x => {
+            this.setVoteRegion(x);
           }}
           raiseRefresh={this.refresh}
           getVoteResult={x => {
@@ -136,14 +136,14 @@ class SlackForm extends Component {
     });
   };
 
-  callback = (vote, region) => {
+  setVoteRegion = (vote, region) => {
     this.setState({
       vote: vote,
       region: region
     });
   };
 
-  callbackResults(results) {
+  setResults(results) {
     this.setState({
       results: results
     });
@@ -181,7 +181,7 @@ class SlackForm extends Component {
                   </Card>
                 </div>
               </Row>
-              <Row style={{ padding: "10%" }}>{this.showSurvey()} </Row>
+              <Row style={{ padding: "10%" }}>{this.createSurvey()} </Row>
             </Col>
             <Col xs="5" sm="3">
               <Row style={{ paddingLeft: "10%" }}>

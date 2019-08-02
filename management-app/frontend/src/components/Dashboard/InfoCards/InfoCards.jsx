@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { Card, CardTitle, CardBody, Col, Progress, Row } from 'reactstrap';
+import { Card, CardTitle, CardBody, Col, Progress, Row } from "reactstrap";
 
-import Cloud from '@material-ui/icons/Cloud';
-import Office from '@material-ui/icons/BusinessCenter';
+import Cloud from "@material-ui/icons/Cloud";
+import Office from "@material-ui/icons/BusinessCenter";
 
-import Icon from '@mdi/react';
-import { mdiHumanMaleFemale } from '@mdi/js';
+import Icon from "@mdi/react";
+import { mdiHumanMaleFemale } from "@mdi/js";
 
 class InfoCards extends Component {
+  //to show the percentage of slack data
   slack100(a) {
     var x = this.props.hot + this.props.cold + this.props.nice;
     a = a * 100;
@@ -21,11 +22,11 @@ class InfoCards extends Component {
     return (
       <Row className="text-center">
         <Col>
-          <Card style={{ padding: '65px' }}>
+          <Card style={{ padding: "65px" }}>
             <CardBody className="pb-0" icon>
               <Cloud />
               <div className="text-value">
-                {' '}
+                {" "}
                 <h4> OUTDOOR </h4>
                 <h2> {this.props.temp} °C </h2>
               </div>
@@ -33,7 +34,7 @@ class InfoCards extends Component {
           </Card>
         </Col>
         <Col>
-          <Card style={{ padding: '65px' }}>
+          <Card style={{ padding: "65px" }}>
             <CardBody className="pb-0" icon>
               <Office />
               <div className="bg-transparent">
@@ -44,21 +45,33 @@ class InfoCards extends Component {
           </Card>
         </Col>
         <Col sm={12} md className="mb-sm-2 mb-0">
-          <Card style={{ padding: '30px' }}>
+          <Card style={{ padding: "30px" }}>
             <CardTitle>
               <h4>Slack</h4>
             </CardTitle>
             <strong>Cold %{this.slack100(this.props.cold)}</strong>
-            <Progress className="progress-xs mt-2" color="primary" value={this.slack100(this.props.cold)} />
+            <Progress
+              className="progress-xs mt-2"
+              color="primary"
+              value={this.slack100(this.props.cold)}
+            />
             <strong>Nice %{this.slack100(this.props.nice)}</strong>
-            <Progress className="progress-xs mt-2" color="success" value={this.slack100(this.props.nice)} />
+            <Progress
+              className="progress-xs mt-2"
+              color="success"
+              value={this.slack100(this.props.nice)}
+            />
 
             <strong>Hot %{this.slack100(this.props.hot)}</strong>
-            <Progress className="progress-xs mt-2" color="danger" value={this.slack100(this.props.hot)} />
+            <Progress
+              className="progress-xs mt-2"
+              color="danger"
+              value={this.slack100(this.props.hot)}
+            />
           </Card>
         </Col>
         <Col>
-          <Card style={{ padding: '65px' }}>
+          <Card style={{ padding: "65px" }}>
             <CardBody className="pb-0">
               <Icon path={mdiHumanMaleFemale} size={1} horizontal />
               <div className="text-value">

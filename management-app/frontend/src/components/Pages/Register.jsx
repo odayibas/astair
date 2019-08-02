@@ -90,14 +90,7 @@ class Register extends Component {
             </div>
           </div>
         </div>
-        <div
-          style={{
-            height: "10%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
+        <div className="image">
           <img height={150} src="/assets/Logo-Astair-w.png" alt={"logo"} />
         </div>
       </div>

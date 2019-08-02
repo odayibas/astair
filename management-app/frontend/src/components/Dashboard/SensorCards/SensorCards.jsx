@@ -1,28 +1,30 @@
-import React, { Component } from 'react';
-import { Line } from 'react-chartjs-2';
-import { Card, CardBody, Row } from 'reactstrap';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle } from '@coreui/coreui/dist/js/coreui-utilities';
+import React, { Component } from "react";
+import { Line } from "react-chartjs-2";
+import { Card, CardBody, Row } from "reactstrap";
+import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
+import { getStyle } from "@coreui/coreui/dist/js/coreui-utilities";
 
-import axios from 'axios';
+import axios from "axios";
 
-import AC from '@material-ui/icons/AcUnit';
-import Humidity from '@material-ui/icons/Opacity';
+import AC from "@material-ui/icons/AcUnit";
+import Humidity from "@material-ui/icons/Opacity";
 
-const brandPrimary = getStyle('--primary');
-const urlArr = Array.from(Array(parseInt(process.env.REACT_APP_LENGTH)).keys()).map(x => (x + 1).toString());
+const brandPrimary = getStyle("--primary");
+const urlArr = Array.from(
+  Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
+).map(x => (x + 1).toString());
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
-let orange = 'rgba(214, 69, 65, 1)';
-let red = 'rgba(252, 214, 112, 1)';
+let orange = "rgba(214, 69, 65, 1)";
+let red = "rgba(252, 214, 112, 1)";
 
 const sensorData = {
-  labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+  labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
   datasets: [
     {
-      label: 'Region 2',
+      label: "Region 2",
       backgroundColor: brandPrimary,
-      borderColor: 'rgba(255,255,255,.55)',
+      borderColor: "rgba(255,255,255,.55)",
       data: [23, 24, 22, 23, 23]
     }
   ]
@@ -41,12 +43,12 @@ const sensorOpts = {
     xAxes: [
       {
         gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent'
+          color: "transparent",
+          zeroLineColor: "transparent"
         },
         ticks: {
           fontSize: 2,
-          fontColor: 'transparent'
+          fontColor: "transparent"
         }
       }
     ],
@@ -78,13 +80,13 @@ function interpolateColor(color1, color2, factor) {
     factor = 0.5;
   }
   let result = color1.slice();
-  let color = 'rgb(';
+  let color = "rgb(";
   for (let i = 0; i < 3; i++) {
     result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
     color += result[i];
-    color += i != 2 ? ',' : '';
+    color += i != 2 ? "," : "";
   }
-  color += ')';
+  color += ")";
   return color;
 }
 
@@ -134,8 +136,8 @@ class SensorCards extends Component {
 
     await Promise.all(
       urlArr.map(url =>
-        axios(urlServer + '/AC/get-zone/' + url).then(res => {
-          ac[parseInt(url)] = {
+        axios(urlServer + "/AC/get-zone/" + url).then(res => {
+          ac[parseInt(url) - 1] = {
             ac_id: res.data[res.data.length - 1].ac_id,
             ac_degree: res.data[res.data.length - 1].ac_degree,
             ac_mode: res.data[res.data.length - 1].ac_mode,
@@ -149,6 +151,7 @@ class SensorCards extends Component {
     this.props.setAC(ac);
   };
 
+  //creates the sensor cards
   getSensors = sensorArr => {
     return sensorArr
       .sort((sensor, sensor2) => sensor.region - sensor2.region)
@@ -158,34 +161,34 @@ class SensorCards extends Component {
             <Card style={{ background: sensor.color }}>
               <CardBody className="pb-0">
                 <div>
-                  {' '}
+                  {" "}
                   <h3>INDOOR {i + 1} </h3>
                 </div>
                 <div>
                   <h1>{sensor.temp}°C</h1>
                 </div>
                 <div>
-                  <h4 style={{ textAlign: 'right' }}>
-                    {' '}
-                    <AC /> : {sensor.ac} °C{' '}
-                  </h4>{' '}
+                  <h4 style={{ textAlign: "right" }}>
+                    {" "}
+                    <AC /> : {sensor.ac} °C{" "}
+                  </h4>{" "}
                 </div>
                 <div>
-                  <h4 style={{ textAlign: 'right' }}>
-                    {' '}
-                    <Humidity /> : {sensor.humidity} %{' '}
-                  </h4>{' '}
+                  <h4 style={{ textAlign: "right" }}>
+                    {" "}
+                    <Humidity /> : {sensor.humidity} %{" "}
+                  </h4>{" "}
                 </div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '40px' }}>
+              <div className="chart-wrapper mx-3" style={{ height: "40px" }}>
                 <Line
                   data={{
-                    labels: ['', '', '', '', ''],
+                    labels: ["", "", "", "", ""],
                     datasets: [
                       {
                         label: `Region ${i}`,
                         backgroundColor: sensor.color,
-                        borderColor: 'rgba(255,255,255,.55)',
+                        borderColor: "rgba(255,255,255,.55)",
                         data: [23, 24, 22, 23, 23]
                       }
                     ]
@@ -217,7 +220,11 @@ class SensorCards extends Component {
     // [this.props.sensorTemp[5],this.props.sensorHum[5],5,this.props.ac[5] && this.props.ac[5].ac_degree], 
   ] */
     const arr = this.createArr();
-    const sensorArr = interpolateColors(red, orange, arr.sort((sensor, sensor2) => sensor[0] - sensor2[0]));
+    const sensorArr = interpolateColors(
+      red,
+      orange,
+      arr.sort((sensor, sensor2) => sensor[0] - sensor2[0])
+    );
 
     return <div>{this.getSensors(sensorArr)}</div>;
   }

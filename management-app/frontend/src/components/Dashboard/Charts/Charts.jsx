@@ -212,7 +212,7 @@ class Charts extends Component {
       });
   };
 
-  getSlack = async () => {
+  getSlackData = async () => {
     return axios
       .get(urlServer + "/slack/get-poll-result-hot-cold-nice")
       .then(res => {
@@ -225,7 +225,7 @@ class Charts extends Component {
       });
   };
 
-  getSensorAverage = () => {
+  getSensorAverageData = () => {
     return axios.get(urlServer + "/sensor/get-ave-degree").then(res => {
       this.props.setAvgTemp(res.data);
       this.drawTempChart(res);
@@ -349,8 +349,8 @@ class Charts extends Component {
   trigger() {
     const interval1 = setInterval(() => {
       this.getSensorData().then(data => {});
-      this.getSensorAverage().then(data => {});
-      this.getSlack().then(data => {});
+      this.getSensorAverageData().then(data => {});
+      this.getSlackData().then(data => {});
     }, 5000);
     const interval2 = setInterval(() => {
       this.getcompVisionControllerData().then(data => {});

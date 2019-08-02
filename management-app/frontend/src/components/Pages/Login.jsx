@@ -55,28 +55,14 @@ class Login extends Component {
         }
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err);
       });
   };
 
   render() {
     return (
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}
-      >
-        <div
-          style={{
-            width: "50%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center"
-          }}
-        >
+      <div className="login">
+        <div className="login-body">
           <img height={500} src="/assets/image.png" alt={"logo"} />
         </div>
         <div style={{ width: "50%" }}>

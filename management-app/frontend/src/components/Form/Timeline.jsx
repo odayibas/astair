@@ -40,6 +40,7 @@ function colorChange(resultArr, i) {
 }
 
 class Timeline extends Component {
+  //creates the timeline
   createTimeLine(resultArr) {
     return resultArr.map((result, i) => (
       <VerticalTimelineElement

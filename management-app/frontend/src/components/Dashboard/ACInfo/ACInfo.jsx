@@ -19,6 +19,8 @@ class ACInfo extends Component {
         </div>
       );
   }
+
+  // creates the ac info cards
   getACInfo = acArr => {
     return acArr.map((ac, i) => (
       <Col style={{ margin: 20, marginTop: "-20px" }}>
