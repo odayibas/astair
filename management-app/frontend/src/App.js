@@ -21,12 +21,6 @@ function App() {
     <
     Navbar / >
     <
-    div style = {
-      {
-        paddingTop: '100px'
-      }
-    } >
-    <
     Route exact path = "/"
     component = {
       Landing
@@ -61,9 +55,8 @@ function App() {
     component = {
       Register
     }
-    /> <
-    /div> <
-    /div>
+    /> < /
+    div >
 
     <
     /Router>
