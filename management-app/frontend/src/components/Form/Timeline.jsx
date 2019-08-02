@@ -15,6 +15,7 @@ import {
   mdiWeatherSunny
 } from "@mdi/js";
 
+//sets the icon of each timeline event
 function setIcon(resultArr, i) {
   if (resultArr[i].vote === "Hot") {
     return <Icon path={mdiWeatherSunny} size={1} />;
@@ -27,6 +28,7 @@ function setIcon(resultArr, i) {
   }
 }
 
+//sets the color of each timeline event
 function colorChange(resultArr, i) {
   if (resultArr[i].vote === "Hot") {
     return "rgb(233, 30, 99)";

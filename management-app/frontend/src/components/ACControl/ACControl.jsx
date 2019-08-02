@@ -30,6 +30,7 @@ class ACControl extends Component {
     };
   }
 
+  //makes request to get last records for all airconditioners
   getData = async () => {
     return axios
       .get(urlServer + "/AC/get-last-records")
@@ -46,20 +47,25 @@ class ACControl extends Component {
         console.log(err);
       });
   };
+
   componentWillMount() {
     this.getData(data => {});
     this.setState({ isChecked: false });
   }
 
+  //set the changes of fanspeed page
   onChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
   };
 
+  //set the changes of mode page
   setMode = mode => {
     this.setState({ mode: mode });
   };
+
+  //set the changes of temperature page
   setTemp = temp => {
     this.setState({ temperature: temp });
   };
@@ -110,6 +116,8 @@ class ACControl extends Component {
         .catch(function(error) {});
     } else alert("Please fill all fields to proceed");
   };
+
+  //creates the buttons
   getButton = () => {
     return urlArr.map((button, i) => (
       <ToggleButton onClick={this.onClick} value={i + 1}>

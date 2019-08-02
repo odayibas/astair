@@ -16,12 +16,14 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 var vote_id, time;
 const baseYear = new Date(Date.UTC(2019, 0, 0, 0, 0, 0));
 
+//finds all the minutes from 01-01-2019 00:00
 function diff_minutes(dt2, dt1) {
   var diff = (dt2.getTime() - dt1.getTime()) / 1000;
   diff /= 60;
   return Math.abs(Math.round(diff));
 }
 
+//creates a vote_id for the cureent survey by given minutes
 function takeVoteId() {
   let now = new Date();
   vote_id = Math.floor(
@@ -87,19 +89,18 @@ class SlackForm extends Component {
       });
   };
 
-  calculateTime = () => {};
-
+  // this function is torefresh the page after process.env.REACT_APP_DURATION miutes passed
   refresh = b => {
     var t = time;
     if (b) t = process.env.REACT_APP_DURATION;
-
     this.setState({ show: false });
     setTimeout(() => {
       this.setState({ show: true });
     }, t * 60 * 1000);
   };
 
-  foo = () => {
+  //shows the survey after duration  passed
+  showSurvey = () => {
     const show = this.state.show;
     if (show === true) {
       return (
@@ -141,6 +142,7 @@ class SlackForm extends Component {
       region: region
     });
   };
+
   callbackResults(results) {
     this.setState({
       results: results
@@ -148,7 +150,6 @@ class SlackForm extends Component {
   }
 
   render() {
-    // if( getCookie('usertoken') !== getCookie('token')){
     if (getCookie("usertoken") === "1" || getCookie("usertoken") === "2") {
       return (
         <div className="page-main">
@@ -180,7 +181,7 @@ class SlackForm extends Component {
                   </Card>
                 </div>
               </Row>
-              <Row style={{ padding: "10%" }}>{this.foo()} </Row>
+              <Row style={{ padding: "10%" }}>{this.showSurvey()} </Row>
             </Col>
             <Col xs="5" sm="3">
               <Row style={{ paddingLeft: "10%" }}>
