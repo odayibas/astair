@@ -117,8 +117,8 @@ class VoteChart extends Component {
         {this.showMessage()}
         <Doughnut
           data={voteChart}
-          options={voteChartOpts}
           height={300}
+          options={voteChartOpts}
           redraw
         />
       </div>
