@@ -15,6 +15,7 @@ class AppNavbar extends Component {
 
   getNavbar() {
     if (getCookie("usertoken") === "1") {
+      // ADMIN
       return (
         <Nav className="mr-auto">
           <Nav.Link href="/" className="nav-link">
@@ -29,6 +30,9 @@ class AppNavbar extends Component {
           <Nav.Link href="/form" className="nav-link">
             <h5>Form</h5>
           </Nav.Link>
+          <Nav.Link href="/meetingscheduler" className="nav-link">
+            <h5>Meeting Scheduler</h5>
+          </Nav.Link>
           <li className="nav -item">
             <li onClick={this.logout.bind(this)} className="nav-link">
               <h5>Logout</h5>
@@ -37,6 +41,7 @@ class AppNavbar extends Component {
         </Nav>
       );
     } else if (getCookie("usertoken") === "2") {
+      // USER
       return (
         <Nav className="mr-auto">
           <Nav.Link href="/" className="nav-link">
@@ -48,6 +53,9 @@ class AppNavbar extends Component {
 
           <Nav.Link href="/form" className="nav-link">
             <h5>Form</h5>
+          </Nav.Link>
+          <Nav.Link href="/meetingscheduler" className="nav-link">
+            <h5>Meeting Scheduler</h5>
           </Nav.Link>
           <li className="nav -item">
             <li onClick={this.logout.bind(this)} className="nav-link">

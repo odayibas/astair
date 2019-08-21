@@ -9,6 +9,7 @@ import Monitor from "./components/Monitor/Monitor";
 import WebForm from "./components/Form/Form";
 import ACControl from "./components/ACControl/ACControl";
 import Register from "./components/Pages/Register";
+import SchedulerTop from "./components/MeetingScheduler/schedulertop";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route exact path="/form" component={WebForm} />{" "}
         <Route exact path="/ac" component={ACControl} />{" "}
         <Route exact path="/register" component={Register} />{" "}
+        <Route exact path="/meetingscheduler" component={SchedulerTop} />{" "}
       </div>
     </Router>
   );
