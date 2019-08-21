@@ -7,7 +7,6 @@ import tr.com.astair.astair.model.WebMeeting;
 
 import java.util.List;
 
-@Repository
 public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
 
     @Query(nativeQuery = true, value = "select * from meeting_web m where m.date = :date")

@@ -19,14 +19,13 @@ public class WebMeetingController implements WebMeetingControllerApi {
     private WebMeetingService webMeetingService;
 
     @Autowired
-    public WebMeetingContoller(WebMeetingService webMeetingService) {
+    public WebMeetingController(WebMeetingService webMeetingService) {
         this.webMeetingService = webMeetingService;
     }
 
 
     public ResponseEntity<List<WebMeeting>> getTodaysMeeting(@PathVariable String date) {
         List<WebMeeting> test = webMeetingService.getTodaysMeeting(date);
-        System.out.println('\n\n\n\n*******************************************************\n\n\n\n');
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }
@@ -35,7 +34,6 @@ public class WebMeetingController implements WebMeetingControllerApi {
 
     public ResponseEntity<List<WebMeeting>> getLastMeeting() {
         List<WebMeeting> test = webMeetingService.getLastMeeting();
-        System.out.println('\n\n\n\n*******************************************************\n\n\n\n');
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }
