@@ -28,7 +28,6 @@ public class WebVote {
     private Long vote_id;
 
 
-
     @Column(name = "region")
     private Integer region;
 

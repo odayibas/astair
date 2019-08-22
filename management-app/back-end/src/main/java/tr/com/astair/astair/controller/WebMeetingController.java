@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.astair.astair.controller.api.WebMeetingControllerApi;
 import tr.com.astair.astair.model.WebMeeting;
+import tr.com.astair.astair.model.WebVote;
 import tr.com.astair.astair.repository.WebMeetingRepository;
 import tr.com.astair.astair.service.WebMeetingService;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.xml.ws.Service;
 import java.util.List;
 @RestController
 public class WebMeetingController implements WebMeetingControllerApi {
@@ -26,9 +29,9 @@ public class WebMeetingController implements WebMeetingControllerApi {
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
-
-    public ResponseEntity<List<WebMeeting>> setMeeting(@PathVariable String username, String date, String time, String room) {
-        List<WebMeeting> test = webMeetingService.setMeeting(username, date, time, room);
+    public ResponseEntity<WebMeeting> setMeeting(@RequestBody WebMeeting w) {
+        WebMeeting test = new WebMeeting(w.getUsername(), w.getDate(), w.getRoom(), w.getTime());
+        webMeetingService.setMeeting(test);
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }
