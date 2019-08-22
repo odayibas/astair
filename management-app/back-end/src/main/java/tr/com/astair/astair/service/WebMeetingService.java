@@ -3,8 +3,7 @@ import tr.com.astair.astair.model.WebMeeting;
 import java.util.List;
 public interface WebMeetingService {
     List<WebMeeting> getTodaysMeeting(String date);
-
-    List<WebMeeting> setMeeting(String username, String date, String time, String room);
+    WebMeeting setMeeting(WebMeeting w);
     List<WebMeeting> getMeetingARange(String beginDate, String finishDate);
     List<WebMeeting> getMeetingARange(String beginDate, String finishDate, String room);
     List<WebMeeting> getLastMeeting();

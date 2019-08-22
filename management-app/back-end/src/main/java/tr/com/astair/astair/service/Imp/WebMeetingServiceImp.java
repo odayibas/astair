@@ -22,9 +22,9 @@ public class WebMeetingServiceImp implements WebMeetingService {
         }
     }
 
-    public List<WebMeeting> setMeeting(String username, String date, String time, String room){
+    public WebMeeting setMeeting(WebMeeting w){
         try {
-            return webMeetingRepository.setMeeting(username, date, time, room);
+            return webMeetingRepository.save(w);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }
