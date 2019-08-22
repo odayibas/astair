@@ -3,8 +3,12 @@ import Schedule from "./schedule";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import update from "immutability-helper";
 import ButtonPanel from "./sidePanel";
+import axios from "axios";
+
+const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
 class MeetingScheduler extends Component {
+  numberOfRows = 0;
   scheduleChild;
   multiRoomSelected = false;
   currentRooms;
@@ -74,9 +78,145 @@ class MeetingScheduler extends Component {
     today: undefined
   };
 
+  convertTimeToString = t => {
+    var hours = "";
+    var minutes = "";
+    if (t.hours < 10) {
+      hours += "0";
+    }
+    hours += t.hours;
+    if (t.minutes < 10) {
+      minutes += "0";
+    }
+    minutes += t.minutes;
+    return hours + ":" + minutes;
+  };
+
+  convertDateToString = (d, priority = "day") => {
+    let years = "";
+    let days = "";
+    let months = "";
+    if (d.month < 10) {
+      months += "0";
+    }
+    months += d.month;
+    if (d.day < 10) {
+      days += "0";
+    }
+    days += d.day;
+    years += d.year;
+    if (priority === "day") {
+      return days + "." + months + "." + years;
+    } else if (priority === "year") {
+      return years + "." + months + "." + days;
+    }
+  };
+
   componentWillMount = () => {
     const today = new Date();
     this.setState({ today: today });
+  };
+
+  getWeek = (day = undefined) => {
+    let week = new Array(5);
+    const permToday = new Date(this.state.today);
+    this.setState({ today: this.props.today });
+    for (let i = 0; i <= 4; i++) {
+      const todayDate = permToday;
+      const todayDay = todayDate.getDay() - 1;
+      const newDay = new Date(
+        todayDate.setDate(todayDate.getDate() - (todayDay - i))
+      );
+      week[i] = {
+        year: newDay.getFullYear(),
+        month: newDay.getMonth() + 1,
+        day: newDay.getDate()
+      };
+    }
+    return week;
+  };
+
+  getTimeSlots = () => {
+    var result = [];
+    var current = JSON.parse(JSON.stringify(this.props.timeSlot.start)); // Deep copy. Might not be useful for another case.
+    let interval = this.props.timeSlot.interval;
+
+    result.push({ hours: current.hours, minutes: current.minutes });
+
+    while (
+      // While current time is less than end time.
+      current.hours < this.props.timeSlot.end.hours ||
+      (current.hours === this.props.timeSlot.end.hours &&
+        current.minutes < this.props.timeSlot.end.minutes)
+    ) {
+      this.numberOfRows++;
+      current.hours += interval.hours;
+      current.minutes += interval.minutes;
+      current.hours += Math.floor(current.minutes / 60);
+      current.minutes %= 60;
+      result.push({
+        hours: current.hours,
+        minutes: current.minutes
+      });
+    }
+    console.log(this.numberOfRows);
+    return result;
+  };
+
+  getTimeSlots = () => {
+    var result = [];
+    var current = JSON.parse(JSON.stringify(this.state.timeSlot.start)); // Deep copy. Might not be useful for another case.
+    let interval = this.state.timeSlot.interval;
+
+    result.push({ hours: current.hours, minutes: current.minutes });
+
+    while (
+      // While current time is less than end time.
+      current.hours < this.state.timeSlot.end.hours ||
+      (current.hours === this.state.timeSlot.end.hours &&
+        current.minutes < this.state.timeSlot.end.minutes)
+    ) {
+      current.hours += interval.hours;
+      current.minutes += interval.minutes;
+      current.hours += Math.floor(current.minutes / 60);
+      current.minutes %= 60;
+      result.push({
+        hours: current.hours,
+        minutes: current.minutes
+      });
+    }
+    return result;
+  };
+
+  getScheduleArray = () => {
+    let thisWeek = this.getWeek();
+    console.log("ThisWeek", thisWeek);
+    let weekData = this.fetchMeetings(
+      this.convertDateToString(thisWeek[0], "year"),
+      this.convertDateToString(thisWeek[4], "year")
+    );
+    if (weekData) {
+      let tempSchedule = this.constructScheduleFromMeetings(weekData);
+    }
+  };
+
+  constructScheduleFromMeetings = meetings => {
+    console.log("Construct method", meetings);
+  };
+
+  fetchMeetings = (startDate, endDate) => {
+    console.log("Data fetching from database...");
+    axios
+      .get(
+        urlServer + "/meeting/get-meeting-a-range/" + startDate + "/" + endDate
+      )
+      .then(res => {
+        console.log(res.data);
+        return res.data;
+      })
+      .catch(err => {
+        console.log("****", err);
+      });
   };
 
   slotSelected = (day, start, end) => {
@@ -156,13 +296,10 @@ class MeetingScheduler extends Component {
     this.setState({ today: newDay });
   };
 
-  handleCreateMeeting = () => {
-    this.setState({ creating: true });
-  };
-
   handleSummary = action => {
     if (action === "show") {
       this.setState({ showSummary: true });
+      this.getScheduleArray();
     } else if (action === "hide") {
       this.setState({ showSummary: false });
     } else {

@@ -48,7 +48,6 @@ class Schedule extends Component {
     }
     // IF TODAY CHANGES (NOTE THAT SCHEDULE ALSO CHANGES. FIX IT)
     if (this.state.today !== this.props.today) {
-      console.log("Today changes");
       this.getWeek();
     }
   }
@@ -100,7 +99,6 @@ class Schedule extends Component {
       };
     }
     this.week = week;
-    console.log("DEBUG", this.week);
     this.weekString = weekString;
   };
 
