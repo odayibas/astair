@@ -93,7 +93,7 @@ def oauth():
 
 
 @app.route("/feedback-collector/slack/onsnooze", methods=["POST"])
-def onsnooze(creater,username): #Kullanıcılar kendilerine anket gönderilmesini engellemek istediğinde bu fonksiyon kullanılır.
+def onsnooze(creater,username):
 
     with app.app_context():
 
@@ -116,7 +116,7 @@ def onsnooze(creater,username): #Kullanıcılar kendilerine anket gönderilmesin
 
 
 @app.route("/feedback-collector/slack/offsnooze", methods=["POST"])
-def offSnooze(creater,username): #Kullanıcılar kendilerine tekrar anket gelmesini istediklerinde bu fonksiyon çalışır.
+def offSnooze(creater,username):
 
     with app.app_context():
 
@@ -128,9 +128,6 @@ def offSnooze(creater,username): #Kullanıcılar kendilerine tekrar anket gelmes
 
         for key, val in userinfo.items():
             if key == username:
-
-                #print("Key : " + key + "Username : " + username)
-                #print("userinfo[key] : " + userinfo[key])
 
                 sc.api_call("chat.postMessage", channel=userinfo[key], blocks=slackMessages.offSnooze())
             else:

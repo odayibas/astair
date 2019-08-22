@@ -284,7 +284,6 @@ def getLocationSurvey(ids):
         "type": "section",
         "text": {
             "type": "mrkdwn",
-                      #"text": message_location + "\nPick an item from the dropdown list"
             "text": "Pick an item from the dropdown list"
         },
 
