@@ -37,19 +37,19 @@ App takes Slack token for reaching API. With this token app can call APIs that h
 
 This survey asks users how they feel the current weather condition. There are three options to answer. When user clicks any of options, chosed button, user informations and timestamp will be recorded to database. Rule based model will drive this survey and send it to users when it needed. Also users can send this survey manually or scheduled by hours.
 
-<img src="Images/airconservey.png">
+<img src="Images/airconservey.PNG">
 
 
 **Location Survey**
 
 In office air conditioner effects different areas. More air conditioner means more area will be effected. We need to record which user is effected by which air conditioner. This survey contains image link, a button and a dropdown menu to let users choose which location they are belong to. The image link shows the location of the air conditioners. The button indicates the current position. Like so when air conditon survey sent users answers will be rocorded according to their location.
 
-<img src="Images/location.png">
+<img src="Images/location.PNG">
 
 
 **Slash Commands**
 
-<img src="Images/slashcommands.png">
+<img src="Images/slashcommands.PNG">
 
 There are several slash commands to allow users control the slack app. Slack app functionalities are accessable via these slash commands
 
