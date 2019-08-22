@@ -21,8 +21,6 @@ public class WebMeetingServiceImp implements WebMeetingService {
             throw new QueryException(e.getMessage());
         }
     }
-<<<<<<< HEAD
-=======
 
     public List<WebMeeting> setMeeting(String username, String date, String time, String room){
         try {
@@ -32,7 +30,6 @@ public class WebMeetingServiceImp implements WebMeetingService {
         }
     }
 
->>>>>>> 5d3e9c928706d41a44f6f07ecb6dfbcaf518d263
     public List<WebMeeting> getMeetingARange(String beginDate, String finishDate) {
         try {
             return webMeetingRepository.getMeetingARange(beginDate, finishDate);
@@ -40,10 +37,7 @@ public class WebMeetingServiceImp implements WebMeetingService {
             throw new QueryException(e.getMessage());
         }
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 5d3e9c928706d41a44f6f07ecb6dfbcaf518d263
     public List<WebMeeting> getMeetingARange(String beginDate, String finishDate, String room) {
         try {
             return webMeetingRepository.getMeetingARange(beginDate, finishDate, room);
@@ -51,10 +45,7 @@ public class WebMeetingServiceImp implements WebMeetingService {
             throw new QueryException(e.getMessage());
         }
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 5d3e9c928706d41a44f6f07ecb6dfbcaf518d263
     public List<WebMeeting> getLastMeeting() {
         try {
             return webMeetingRepository.getLastMeeting();
