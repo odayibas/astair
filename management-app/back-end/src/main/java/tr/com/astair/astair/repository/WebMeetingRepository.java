@@ -12,6 +12,15 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
     @Query(nativeQuery = true, value = "select * from meeting_web m where m.date = :date")
     List<WebMeeting> getTodaysMeeting(@Param("date") String date);
 
+    @Query(nativeQuery = true, value = "insert into meeting_web (username, date, time, room) values (:username, :date, :time, :room)")
+    List<WebMeeting> setMeeting(@Param("username") String username, @Param("date") String date, @Param("time") String time, @Param("room") String room);
+
+    @Query(nativeQuery = true, value = "select * from meeting_web m where m.date >= :beginDate and m.date <= :finishDate")
+    List<WebMeeting> getMeetingARange(@Param("beginDate") String beginDate, @Param("finishDate") String finishDate);
+
+    @Query(nativeQuery = true, value = "select * from meeting_web m where m.room = :room and m.date >= :beginDate and m.date <= :finishDate")
+    List<WebMeeting> getMeetingARange(@Param("beginDate") String beginDate, @Param("finishDate") String finishDate, @Param("room") String room);
+
     @Query(nativeQuery = true, value = "select * from meeting_web")
     List<WebMeeting> getLastMeeting();
 

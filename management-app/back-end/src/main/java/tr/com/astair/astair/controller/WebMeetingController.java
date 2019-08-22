@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.astair.astair.controller.api.WebMeetingControllerApi;
 import tr.com.astair.astair.model.WebMeeting;
+import tr.com.astair.astair.repository.WebMeetingRepository;
 import tr.com.astair.astair.service.WebMeetingService;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -26,6 +27,30 @@ public class WebMeetingController implements WebMeetingControllerApi {
 
     public ResponseEntity<List<WebMeeting>> getTodaysMeeting(@PathVariable String date) {
         List<WebMeeting> test = webMeetingService.getTodaysMeeting(date);
+        if (test == null) {
+            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<WebMeeting>> setMeeting(@PathVariable String username, String date, String time, String room) {
+        List<WebMeeting> test = webMeetingService.setMeeting(username, date, time, room);
+        if (test == null) {
+            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<WebMeeting>> getMeetingARange(@PathVariable String beginDate, String finishDate) {
+        List<WebMeeting> test = webMeetingService.getMeetingARange(beginDate, finishDate);
+        if (test == null) {
+            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<WebMeeting>> getMeetingARange(@PathVariable String beginDate, String finishDate, String room) {
+        List<WebMeeting> test = webMeetingService.getMeetingARange(beginDate, finishDate, room);
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }

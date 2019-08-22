@@ -28,6 +28,30 @@ public class WebMeetingServiceImp implements WebMeetingService {
         }
     }
 
+    public List<WebMeeting> setMeeting(String username, String date, String time, String room){
+        try {
+            return webMeetingRepository.setMeeting(username, date, time, room);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
+    public List<WebMeeting> getMeetingARange(String beginDate, String finishDate) {
+        try {
+            return webMeetingRepository.getMeetingARange(beginDate, finishDate);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
+    public List<WebMeeting> getMeetingARange(String beginDate, String finishDate, String room) {
+        try {
+            return webMeetingRepository.getMeetingARange(beginDate, finishDate, room);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
     public List<WebMeeting> getLastMeeting() {
         try {
             return webMeetingRepository.getLastMeeting();
