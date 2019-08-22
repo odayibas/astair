@@ -54,6 +54,7 @@ In office air conditioner effects different areas. More air conditioner means mo
 There are several slash commands to allow users control the slack app. Slack app functionalities are accessable via these slash commands
 
 - /hot /cold
+
 This commands for let users notify the Model when there is something unordinary situation about air condition. Users type /hot when they feel hot and /cold for feel cold. When three user in same location uses same command model will be notifed. These three command must be sent in a hour. Every hour database resets old slash commands.
 
 - /sendsurvey
@@ -63,24 +64,31 @@ This command send air condition survey to all users.
 This command stars schedule for sending air condition survey to all users. Schedule will be set survey by minute. Time interval must be written beside the command. /onsurveyschedule 15 will be set schedule with 15 minute interval.
 
 - /offsurveyschedule
+
 This command stops schedule of air condition survey.
 
 - /location
+
 When user types this command location survey will be sent to only that user. This command is for when there is change in any user location.
 
 - /locationall
+
 This command sends location survey to all user.
 
 - /onlocationschedule
+
 This command stars schedule for sending location survey to all users. Schedule will be set survey by minute. Time interval must be written beside the command. /onsurveyschedule 15 will be set schedule with 15 minute interval.
 
 - /offlocationschedule
+
 This command stops schedule of location survey.
 
 - /snoozeon
+
 This command was created for users who do not want to receive a location and air conditioning survey. Users can block surveys at any time using this command.
 
 - /snoozeoff
+
 Users can use this command to get air condition and location surveys at any time.
 
 - /meeting
