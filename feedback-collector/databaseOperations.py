@@ -26,12 +26,10 @@ def emptyorfull(connection):
     data = cursor.fetchall()
     cursor.close()
 
-    #print(data)
-
     return data
 
 
-def adddateRecord(connection,username,date,room,clock): #Meeting tablosunu günceller.
+def adddateRecord(connection,username,date,room,clock):
 
     cursor = connection.cursor()
 
@@ -98,13 +96,10 @@ def deletemeeting(connection,username,date,room,clock):
 
     print(username,date,room,clock)
     cursor = connection.cursor()
-    #print("silindi1")
     postgres_delete_query = """ Delete from meeting where username=%s and selected_date=%s and selected_room=%s and selected_clock=%s"""
-    #print("silindi2")
     data = (username,date,room,clock)
     cursor.execute(postgres_delete_query,data)
     connection.commit()
-    #print("silindi3")
     cursor.close()
 
 def addSnoozeTable(connection,username):
@@ -175,8 +170,6 @@ def id(connection,username):
     cursor.execute(postgres_select_query)
     id2 = cursor.fetchall()
     cursor.close()
-
-    #print("id2 : "+str(id2[0][0]))
 
     return id2[0][0]
 

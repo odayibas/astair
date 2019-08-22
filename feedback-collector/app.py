@@ -140,7 +140,7 @@ def offSnooze(creater,username): #Kullanıcılar kendilerine tekrar anket gelmes
 
 
 @app.route("/feedback-collector/slack/airSurvey", methods=["POST"])
-def sendAirSurvey(creater): #Bu fonksiyon hava durumu için anket gönderir
+def sendAirSurvey(creater):
 
     with app.app_context():
 
@@ -148,13 +148,7 @@ def sendAirSurvey(creater): #Bu fonksiyon hava durumu için anket gönderir
         userinfo = getUserList()
 
         name=databaseOperations.getSnoozeTableName(db_conn)
-        username = databaseOperations.getPersonalinfo(db_conn) ##personalinfo tablosundaki,stajdakilerin,isimleri
-
-        #for i in name:
-            #print(i[0])
-
-        #for i in username:
-            #print(i[0])
+        username = databaseOperations.getPersonalinfo(db_conn)
 
         new = list()
         tut = 0
@@ -199,7 +193,7 @@ def sendAirSurvey(creater): #Bu fonksiyon hava durumu için anket gönderir
 
 
 @app.route("/feedback-collector/slack/locationSurvey", methods=["POST"])
-def sendLocationSurvey(creater): #Bu fonksiyon lokasyon anketini gönderir.
+def sendLocationSurvey(creater):
 
     with app.app_context():
 
@@ -212,22 +206,16 @@ def sendLocationSurvey(creater): #Bu fonksiyon lokasyon anketini gönderir.
         name = databaseOperations.getSnoozeTableName(db_conn)
         username = databaseOperations.getPersonalinfo(db_conn)
 
-        # for i in name:
-        # print(i[0])
-
-        # for i in username:
-        # print(i[0])
-
         new = list()
         tut = 0
 
-        for key, val in userinfo.items():  # tüm personel
-            for j in username:  # stajdakiler
+        for key, val in userinfo.items():
+            for j in username:
 
-                if j[0] == key:  # sadece z
+                if j[0] == key:
                     print("j[0]:" + j[0] + " key: " + key)
                     tut = 0
-                    for i in name:  # snooze tablosundakiler ve stajdakiler
+                    for i in name:
                         print("i[0] : " + i[0])
                         if j[0] == i[0]:
                             tut = 1
@@ -261,7 +249,7 @@ def sendLocationSurvey(creater): #Bu fonksiyon lokasyon anketini gönderir.
 
 
 @app.route("/feedback-collector/slack/checkAcZone", methods=["POST"])
-def checkAcZone(creater): #Kullanıcıların önceki yerlerini gösteren fonksiyondur.
+def checkAcZone(creater):
 
     with app.app_context():
 
@@ -269,24 +257,18 @@ def checkAcZone(creater): #Kullanıcıların önceki yerlerini gösteren fonksiy
         userinfo = getUserList()
 
         name = databaseOperations.getSnoozeTableName(db_conn)
-        username = databaseOperations.getPersonalinfo(db_conn)  ##personalinfo tablosundaki,stajdakilerin,isimleri
-
-        # for i in name:
-        # print(i[0])
-
-        # for i in username:
-        # print(i[0])
+        username = databaseOperations.getPersonalinfo(db_conn)
 
         new = list()
         tut = 0
 
-        for key, val in userinfo.items():  # tüm personel
-            for j in username:  # stajdakiler
+        for key, val in userinfo.items():
+            for j in username:
 
-                if j[0] == key:  # sadece z
+                if j[0] == key:
                     print("j[0]:" + j[0] + " key: " + key)
                     tut = 0
-                    for i in name:  # snooze tablosundakiler ve stajdakiler
+                    for i in name:
 
                         if j[0] == i[0]:
                             tut = 1
@@ -315,7 +297,7 @@ def checkAcZone(creater): #Kullanıcıların önceki yerlerini gösteren fonksiy
         return make_response("Success", 200)
 
 @app.route("/feedback-collector/slack/locationimage", methods=["POST"])
-def locationimage(creater): #Blueprint i gösterir.
+def locationimage(creater):
 
     with app.app_context():
 
@@ -323,25 +305,20 @@ def locationimage(creater): #Blueprint i gösterir.
         userinfo = getUserList()
 
         name = databaseOperations.getSnoozeTableName(db_conn)
-        username = databaseOperations.getPersonalinfo(db_conn)  ##personalinfo tablosundaki,stajdakilerin,isimleri
+        username = databaseOperations.getPersonalinfo(db_conn)
 
-        # for i in name:
-        # print(i[0])
-
-        # for i in username:
-        # print(i[0])
 
         new = list()
         tut = 0
 
-        for key, val in userinfo.items():  # tüm personel
-            for j in username:  # stajdakiler
+        for key, val in userinfo.items():
+            for j in username:
 
-                if j[0] == key:  # sadece z
-                    #print("j[0]:" + j[0] + " key: " + key)
+                if j[0] == key:
+
                     tut = 0
-                    for i in name:  # snooze tablosundakiler ve stajdakiler
-                        #print("i[0] : " + i[0])
+                    for i in name:
+
                         if j[0] == i[0]:
                             tut = 1
                             break
@@ -360,9 +337,9 @@ def locationimage(creater): #Blueprint i gösterir.
         print(new)
 
         for i in userinfo.values():
-            #print(i + "\n")
+
             for k in new:
-                #print("+++++" + k)
+
                 if k == i:
                     sc.api_call("chat.postMessage", channel=i, blocks=slackMessages.locationimage())
                 else:
@@ -439,7 +416,6 @@ def message_actions():
 
             for i in data:
                 if(i[0]==selecteddate):
-                    print("Dolu odalar : " ,str(i[1]),"Dolu saatler:",str(i[2]))
                     full.append((str(i[1]),str(i[2])))
 
             text = "Datepicker selected to " + selecteddate+"\n"
@@ -469,18 +445,16 @@ def message_actions():
             selectedValue=selectedoption["value"]
 
             if(selectedValue == "1" or selectedValue == "2" or selectedValue == "3" or selectedValue == "4" or selectedValue == "5" ):
+
                 text = "Your location changed to " + selectedValue
                 response_Interactive_Message(responseurl,text)
-
-                print("Usename3:"+username)
-                print("Selectedvalue2:"+selectedValue)
 
 
                 returnText= username+" "+selectedValue
 
                 if(selectedValue not in "degismedi"):
                     databaseOperations.addLocationRecord(db_conn,username,selectedValue)
-                    print("değişmedi")
+
 
 
             if(selectedValue=="Meeting room 1" or selectedValue=="Meeting room 2" or selectedValue=="Meeting room 3"):
@@ -506,19 +480,14 @@ def message_actions():
 
                 k=0
 
-                #Seçilen saatin dolu olup olmadığı kontrol ediliyor.
+
                 for index in range(len(data)-1):
                     jIndex = index + 1
                     i = data[index];
                     for _ in range(len(data)- 1 - index):
                         j = data[jIndex];
 
-                        #print("i[2] : " + i[2], " i[3] :" + i[3])
-                        #print("j[2] : " + j[2], " j[3] :" + j[3])
-
                         if(i[2]==j[2] and i[3]==j[3]):
-
-                            #print("SelectedValue : " + selectedValue,"i[4] : "+i[4]," j[4] :"+j[4])
 
                             if(k==1):
                                 break
@@ -527,25 +496,19 @@ def message_actions():
 
                                 if(selectedValue == i[4]):
 
-                                    #print("i : "+i[1],i[2],i[3],i[4])
-                                    #print("j :" + j[1],j[2], j[3], j[4])
-
-                                    #print("Bu tarihlerde oda doludur ltfen tekrar deneyiniz")
                                     databaseOperations.deletemeeting(db_conn,j[1],j[2],j[3],j[4])
-                                    #print("Silindi.")
 
                                     k=1
                                     break
 
                                 else:
                                     k=0
-                                    #print("Başarılı.")
+
 
                         else:
                             pass
                         jIndex += 1
 
-                #print("k : " +str(k))
 
                 if(k==1):
                     text2 = "Clock selected to " + selectedValue + " but \n This room is full on dates. Please call '/meeting' again and select a new one."
@@ -570,9 +533,6 @@ def sendMeetingservey(creater,username):
 
         for key, val in userinfo.items():
             if key == username:
-
-                #print("Key : "+ key+"Username : "+username)
-                #print("userinfo[key] : "+userinfo[key])
 
                 sc.api_call("chat.postMessage", channel=userinfo[key], blocks=slackMessages.calendar())
                 sc.api_call("chat.postMessage", channel=userinfo[key], blocks=slackMessages.meeting_room())
