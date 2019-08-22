@@ -3,7 +3,7 @@ import { Form, FormGroup, FormLabel, FormControl } from "react-bootstrap";
 
 class FanSpeed extends Component {
   onChange = e => {
-    this.props.onChange(e);
+    this.props.onChange(e.target.value);
   };
 
   render() {

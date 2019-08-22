@@ -19,8 +19,8 @@ class MeetingScheduler extends Component {
     headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     timeSlot: {
       start: {
-        hours: 7,
-        minutes: 30
+        hours: 9,
+        minutes: 0
       },
       end: {
         hours: 17,
@@ -120,7 +120,7 @@ class MeetingScheduler extends Component {
   getWeek = (day = undefined) => {
     let week = new Array(5);
     const permToday = new Date(this.state.today);
-    this.setState({ today: this.props.today });
+    console.log("The day being processed is ", permToday);
     for (let i = 0; i <= 4; i++) {
       const todayDate = permToday;
       const todayDay = todayDate.getDay() - 1;
@@ -190,14 +190,11 @@ class MeetingScheduler extends Component {
 
   getScheduleArray = () => {
     let thisWeek = this.getWeek();
-    console.log("ThisWeek", thisWeek);
-    let weekData = this.fetchMeetings(
+    // console.log("The week is", thisWeek);
+    this.fetchMeetings(
       this.convertDateToString(thisWeek[0], "year"),
       this.convertDateToString(thisWeek[4], "year")
     );
-    if (weekData) {
-      let tempSchedule = this.constructScheduleFromMeetings(weekData);
-    }
   };
 
   constructScheduleFromMeetings = meetings => {
@@ -205,26 +202,65 @@ class MeetingScheduler extends Component {
   };
 
   fetchMeetings = (startDate, endDate) => {
-    console.log("Data fetching from database...");
-    axios
+    // console.log("Data fetching from database...");
+    return axios
       .get(
         urlServer + "/meeting/get-meeting-a-range/" + startDate + "/" + endDate
       )
       .then(res => {
-        console.log(res.data);
-        return res.data;
+        // console.log("Data fetched successfuly ", res.data);
+        let meetingArray = this.decodeMeetingData(res.data);
+        console.log("Meeting Data is ready for processing ", meetingArray);
+        // CONSTRUCT SCHEDULE ARRAY
       })
       .catch(err => {
         console.log("****", err);
       });
   };
 
-  slotSelected = (day, start, end) => {
-    console.log("Meeting Day:", day);
+  decodeMeetingData = dataArr => {
+    let meetingArray = [];
+    dataArr.forEach(element => {
+      const date = this.convertStringToDate(element.date, "year");
+      const temp = element.time.split("-");
+      const start = this.convertStringToTime(temp[0]);
+      const end = this.convertStringToTime(temp[1]);
+      const room = element.room;
+      meetingArray.push({ date, start, end, room });
+    });
+    return meetingArray;
+  };
+
+  convertStringToDate = (str, priority = "day") => {
+    const temp = str.split(".");
+    if (priority === "year") {
+      const year = parseInt(temp[0], 10);
+      const month = parseInt(temp[1], 10);
+      const day = parseInt(temp[2], 10);
+      return { year, month, day };
+    } else if (priority === "day") {
+      const year = parseInt(temp[2], 10);
+      const month = parseInt(temp[1], 10);
+      const day = parseInt(temp[0], 10);
+      return { year, month, day };
+    }
+  };
+
+  convertStringToTime = str => {
+    const temp = str.split(":");
+    const hours = parseInt(temp[0], 10);
+    const minutes = parseInt(temp[1], 10);
+    return { hours, minutes };
+  };
+
+  slotSelected = (date, start, end) => {
+    console.log("Meeting date:", date);
     console.log("Meeting Start:", start);
     console.log("Meeting End:", end);
-    const summary = { day, start, end };
-    this.setState({ summary: summary });
+    const summary = { date, start, end, room: "Front Room" };
+    this.setState({ summary: summary }, () => {
+      //this.postMeeting(this.state.summary);
+    });
   };
 
   // This is for dropdown menu. Currently it is not being used.
@@ -283,6 +319,26 @@ class MeetingScheduler extends Component {
     }
   };
 
+  postMeeting = meeting => {
+    console.log("The meeting is going to be post", meeting);
+    const room = meeting.room;
+    const username = "From frontend";
+    const date = this.convertDateToString(meeting.date, "year");
+    const time =
+      this.convertTimeToString(meeting.start) +
+      "-" +
+      this.convertTimeToString(meeting.end);
+
+    axios
+      .post(urlServer + "/meeting/set-meeting", { room, username, date, time })
+      .then(res => {
+        console.log("Inserted successfuly");
+      })
+      .catch(err => {
+        console.log("Error while inserting", err);
+      });
+  };
+
   handleNextSchedule = act => {
     const today = this.state.today;
     let newDay;
@@ -319,8 +375,8 @@ class MeetingScheduler extends Component {
           schedule={this.getProperSchedule()}
           scheduleID={this.state.scheduleID}
           timeSlot={this.state.timeSlot}
-          scheduleCallback={(day, start, end) => {
-            this.slotSelected(day, start, end);
+          scheduleCallback={(date, start, end) => {
+            this.slotSelected(date, start, end);
           }}
           onSummary={action => {
             this.handleSummary(action);

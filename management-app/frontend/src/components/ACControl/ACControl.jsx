@@ -10,6 +10,7 @@ import axios from "axios";
 import FanSpeed from "./FanSpeed";
 import Temperature from "./Temperature";
 import Mode from "./Mode";
+import Fan from "./Fan";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 const urlArr = Array.from(
@@ -17,31 +18,40 @@ const urlArr = Array.from(
 ).map(x => (x + 1).toString());
 
 class ACControl extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: "",
-      mode: "",
-      fan_speed: "",
-      temperature: "",
-      active: "",
-      message: "",
-      isChecked: null
-    };
-  }
+  currentAC = 1;
+
+  state = {
+    id: "1",
+    mode: "",
+    fan_speed: "",
+    temperature: "",
+    active: "",
+    isChecked: false
+  };
 
   //makes request to get last records for all airconditioners
   getData = async () => {
     return axios
       .get(urlServer + "/AC/get-last-records")
       .then(res => {
-        this.setState((prevState, props) => ({
-          id: res.data.ac_id,
-          mode: res.data.ac_mode,
-          fan_speed: res.data.ac_fan_speed,
-          temperature: res.data.temperature,
-          active: res.data.active
-        }));
+        console.log("INITIAL AC VALUES", res.data);
+        let b = false;
+        let active = "OFF";
+        if (res.data[this.currentAC - 1].active === "1") {
+          b = true;
+          active = "ON";
+        }
+        const acData = {
+          id: this.currentAC,
+          mode: res.data[this.currentAC - 1].ac_mode,
+          fan_speed: res.data[this.currentAC - 1].ac_fan_speed,
+          temperature: res.data[this.currentAC - 1].ac_degree,
+          active: active,
+          isChecked: b
+        };
+        this.setState(acData, () => {
+          console.log("AFTER SETTING", this.state);
+        });
       })
       .catch(err => {
         console.log(err);
@@ -50,36 +60,54 @@ class ACControl extends Component {
 
   componentWillMount() {
     this.getData(data => {});
-    this.setState({ isChecked: false });
   }
 
   //set the changes of fanspeed page
-  onChange = e => {
-    this.setState({
-      [e.target.name]: e.target.value
+  setFan = fan => {
+    this.setState({ fan_speed: fan }, () => {
+      console.log("Fan:", fan);
     });
   };
 
   //set the changes of mode page
   setMode = mode => {
-    this.setState({ mode: mode });
+    this.setState({ mode: mode }, () => {
+      console.log("Mode:", mode);
+    });
   };
 
   //set the changes of temperature page
   setTemp = temp => {
-    this.setState({ temperature: temp });
+    this.setState({ temperature: temp }, () => {
+      console.log("Temp: ", temp);
+    });
   };
-  onClick = e => {
-    this.setState({ id: e.target.value });
+
+  adjustTemp = val => {
+    this.setTemp(this.state.temperature + val);
+  };
+
+  setAC = ac => {
+    this.setState({ id: ac + "" }, () => {
+      console.log("AC:", ac);
+      this.currentAC = ac;
+      this.getData();
+    });
   };
 
   handleChange = () => {
-    this.setState(prevState => ({
-      isChecked: !prevState.isChecked
-    }));
+    const newVal = !this.state.isChecked;
 
-    if (this.state.isChecked === false) this.setState({ active: "ON" });
-    else this.setState({ active: "OFF" });
+    if (newVal === true) {
+      this.setState({ active: "ON" }, () => {
+        console.log("Power:", this.state.active);
+      });
+    } else {
+      this.setState({ active: "OFF" }, () => {
+        console.log("Power:", this.state.active);
+      });
+    }
+    this.setState({ isChecked: newVal });
   };
 
   handleSubmit = event => {
@@ -91,16 +119,17 @@ class ACControl extends Component {
       this.state.active &&
       this.state.mode
     ) {
-      var message1 = this.state.id.concat(
+      var message1 = (this.state.id + "").concat(
         "," +
           this.state.mode +
           "," +
           this.state.fan_speed +
           "," +
-          (this.state.temperature + 1) +
+          this.state.temperature +
           "," +
           this.state.active
       );
+      console.log("The message is ", message1);
       this.setState({
         message: message1
       });
@@ -120,7 +149,12 @@ class ACControl extends Component {
   //creates the buttons
   getButton = () => {
     return urlArr.map((button, i) => (
-      <ToggleButton onClick={this.onClick} value={i + 1}>
+      <ToggleButton
+        onMouseDown={() => {
+          this.setAC(i + 1);
+        }}
+        value={i + 1}
+      >
         {i + 1}
       </ToggleButton>
     ));
@@ -151,7 +185,10 @@ class ACControl extends Component {
                 <Row style={{ paddingLeft: "20%" }}>
                   <Col>
                     <h4> TEMPERATURE </h4>
-                    <Temperature setTemp={x => this.setTemp(x)} />
+                    <Temperature
+                      adjustTemp={x => this.adjustTemp(x)}
+                      temperature={this.state.temperature}
+                    />
                   </Col>
                   <Col>
                     <h4> ON/OFF </h4>
@@ -173,9 +210,13 @@ class ACControl extends Component {
                 </Row>
                 <Row>
                   <div style={{ paddingLeft: "45%" }}>
-                    <FanSpeed
+                    {/* <FanSpeed
                       fan_speed={this.state.fan_speed}
-                      onChange={x => this.onChange(x)}
+                      onChange={x => this.setFan(x)}
+                    /> */}
+                    <Fan
+                      mode={this.state.fan_speed}
+                      setFan={x => this.setFan(x)}
                     />
                   </div>
                 </Row>

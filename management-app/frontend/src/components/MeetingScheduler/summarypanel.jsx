@@ -29,8 +29,8 @@ class SummaryPanel extends Component {
     );
   };
   getDate = () => {
-    const day = this.props.data.day;
-    let str = day.day + "." + day.month + "." + day.year;
+    const date = this.props.data.date;
+    let str = date.day + "." + date.month + "." + date.year;
     return str;
   };
 

@@ -7,22 +7,10 @@ class Temperature extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clicks: 16,
       show: true
     };
   }
-  //increments the temperature
-  IncrementItem = () => {
-    if (this.state.clicks < 30)
-      this.setState({ clicks: this.state.clicks + 1 });
-    this.props.setTemp(this.state.clicks);
-  };
-  //Decrease the temperature
-  DecreaseItem = () => {
-    if (this.state.clicks > 16)
-      this.setState({ clicks: this.state.clicks - 1 });
-    this.props.setTemp(this.state.clicks);
-  };
+
   ToggleClick = () => {
     this.setState({ show: !this.state.show });
   };
@@ -35,17 +23,21 @@ class Temperature extends Component {
           <Row>
             <Button
               style={{ backgroundColor: "transparent" }}
-              onClick={this.DecreaseItem}
+              onClick={() => {
+                this.props.adjustTemp(-1);
+              }}
             >
               <Icon path={mdiThermometerMinus} size={1.5} horizontal />
             </Button>
             <div style={{ paddingLeft: 15, paddingRight: 15 }}>
-              {this.state.show ? <h1>{this.state.clicks}</h1> : ""}
+              {this.state.show ? <h1>{this.props.temperature}</h1> : ""}
             </div>
 
             <Button
               style={{ backgroundColor: "transparent" }}
-              onClick={this.IncrementItem}
+              onClick={() => {
+                this.props.adjustTemp(1);
+              }}
             >
               <Icon path={mdiThermometerPlus} size={1.5} horizontal />
             </Button>

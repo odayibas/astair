@@ -11,7 +11,6 @@ public interface WebMeetingControllerApi {
     @GetMapping("/meeting/get-todays-meeting/{date}")
     ResponseEntity<List<WebMeeting>> getTodaysMeeting(@PathVariable String date);
 
-
     @PostMapping("/meeting/set-meeting/{username}/{date}/{time}/{room}")
     ResponseEntity<List<WebMeeting>> setMeeting(@PathVariable String username, @PathVariable String date, @PathVariable String time, @PathVariable String room);
 
