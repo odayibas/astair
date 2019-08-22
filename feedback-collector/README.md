@@ -58,9 +58,11 @@ There are several slash commands to allow users control the slack app. Slack app
 This commands for let users notify the Model when there is something unordinary situation about air condition. Users type /hot when they feel hot and /cold for feel cold. When three user in same location uses same command model will be notifed. These three command must be sent in a hour. Every hour database resets old slash commands.
 
 - /sendsurvey
+
 This command send air condition survey to all users.
 
 - /onsurveyschedule
+
 This command stars schedule for sending air condition survey to all users. Schedule will be set survey by minute. Time interval must be written beside the command. /onsurveyschedule 15 will be set schedule with 15 minute interval.
 
 - /offsurveyschedule
