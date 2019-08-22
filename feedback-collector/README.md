@@ -85,7 +85,7 @@ Users can use this command to get air condition and location surveys at any time
 
 -/meeting
 
-<img src="Images/meeting.png">
+<img src="Images/meeting.PNG">
 
 On the days and times you want to use the meeting room, we have created a structure to check if the meeting room is already full or to reserve that room in advance. This command consists of a datepicker and two dropdown menus. First, you select the day of the meeting from the datepicker. Showing which meeting room is full on the day you selected. The meeting room is then selected from the menu. Finally, we select the desired time interval for the meeting. If we choose a previously booked meeting room, it says that the room is full and we should call the '/ meeting' command to make a selection again.
 
