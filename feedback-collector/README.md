@@ -77,13 +77,13 @@ This command stars schedule for sending location survey to all users. Schedule w
 - /offlocationschedule
 This command stops schedule of location survey.
 
--/snoozeon
+- /snoozeon
 This command was created for users who do not want to receive a location and air conditioning survey. Users can block surveys at any time using this command.
 
--/snoozeoff
+- /snoozeoff
 Users can use this command to get air condition and location surveys at any time.
 
--/meeting
+- /meeting
 
 <img src="Images/meeting.PNG">
 
