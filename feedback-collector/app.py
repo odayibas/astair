@@ -638,7 +638,7 @@ def setSchedule(minuteSlash):
 
     minute_servey = request.form.get("minute_servey")
     print("schedule setted "+str(minute_servey)+ " minute_servey")
-    scheduler.add_job(id="surveyschedule", func=sendAirSurvey, args=("Auto",) ,trigger="interval", seconds=int(minuteSlash)*60*15) #15 dakika
+    scheduler.add_job(id="surveyschedule", func=sendAirSurvey, args=("Auto",) ,trigger="interval", seconds=int(minuteSlash)*60) 
     print("schedule added")
 
     return make_response("Success",200)
@@ -658,7 +658,7 @@ def setScheduleLocation(minuteSlash):
     minute_location = request.form.get("minute_location")
     print("schedule setted "+str(minute_location)+ "minute")
 
-    scheduler.add_job(id="checkackzone", func=checkAcZone, args=("Auto",), trigger="interval", seconds=int(minuteSlash) * 60 * 60 * 12) #12 saat
+    scheduler.add_job(id="checkackzone", func=checkAcZone, args=("Auto",), trigger="interval", seconds=int(minuteSlash) * 60 ) 
     scheduler.add_job(id="locationimageschedule", func=locationimage, args=("Auto",), trigger="interval",
                       seconds=int(minuteSlash) * 60)
 
