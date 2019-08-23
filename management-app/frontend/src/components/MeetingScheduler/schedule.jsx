@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import { Table } from "react-bootstrap";
 import update from "immutability-helper";
+import { fontSize } from "@material-ui/system";
 
 class Schedule extends Component {
   prevLoc = { x: -1, y: -1 };
   pressedLoc = { x: -1, y: -1 };
   slotArrayString = [];
+  slotArrayRangeString = [];
   timeSlots;
   pressed = false;
   index = 0;
-  state = { schedule: [], scheduleID: 0, today: {} };
+  state = { scheduleID: 0, today: {}, readyForDisplay: false };
   numberOfCol = 0;
   numberOfRow = 0;
   firstSchedule = [];
@@ -21,18 +23,32 @@ class Schedule extends Component {
 
   constructor(props) {
     super(props);
-    this.firstSchedule = JSON.parse(JSON.stringify(this.props.schedule));
+
     this.timeSlots = this.getTimeSlots();
     this.prepareSlotArrayString(this.timeSlots);
     this.numberOfCol = props.headerRow.length + 1;
-    this.numberOfRow = this.slotArrayString.length + 1;
+    this.numberOfRow = this.slotArrayString.length;
+    this.firstSchedule = this.getEmptyArray(this.numberOfRow, this.numberOfCol);
     this.selectedSlots = new Set();
     this.getWeek();
+    this.state.schedule = this.convertMeetingsToLocations(
+      this.props.meetings,
+      this.props.roomset
+    );
   }
+
+  getEmptyArray = (rows, cols) => {
+    let result = [];
+    for (let i = 0; i < rows; i++) {
+      let row = new Array(cols);
+      result.push(row);
+    }
+    return result;
+  };
 
   componentDidMount() {
     this.props.onRef(this);
-    this.setState({ schedule: this.firstSchedule });
+    // this.setState({ schedule: this.firstSchedule });
   }
 
   componentWillUnmount() {
@@ -42,13 +58,33 @@ class Schedule extends Component {
   componentDidUpdate() {
     // IF ROOM CHANGES
     if (this.state.scheduleID !== this.props.scheduleID) {
+      if (this.props.meetings && this.props.roomset) {
+        this.setState({
+          schedule: this.convertMeetingsToLocations(
+            this.props.meetings,
+            this.props.roomset
+          )
+        });
+      }
       this.setState({ scheduleID: this.props.scheduleID });
-      this.firstSchedule = JSON.parse(JSON.stringify(this.props.schedule));
-      this.setState({ schedule: this.firstSchedule });
+      // this.firstSchedule = JSON.parse(JSON.stringify(this.props.schedule));
+      // this.setState({ schedule: this.firstSchedule });
     }
-    // IF TODAY CHANGES (NOTE THAT SCHEDULE ALSO CHANGES. FIX IT)
+    // IF TODAY CHANGES (NOTE THAT SCHEDULE SHOULD ALSO CHANGE. FIX IT)
     if (this.state.today !== this.props.today) {
       this.getWeek();
+    }
+    // FIRST DISPLAY AFTER DATA FETCH
+    if (this.state.readyForDisplay !== this.props.readyForDisplay) {
+      console.log("First display");
+      this.setState({
+        schedule: this.convertMeetingsToLocations(
+          this.props.meetings,
+          this.props.roomset
+        )
+      });
+      const b = this.props.readyForDisplay;
+      this.setState({ readyForDisplay: b });
     }
   }
 
@@ -72,6 +108,46 @@ class Schedule extends Component {
     };
   };
 
+  convertMeetingsToLocations = (meetings, selectedRooms) => {
+    let result = [];
+    for (let i = 0; i < this.numberOfRow - 1; i++) {
+      let currentRow = [];
+      for (let j = 0; j < this.numberOfCol - 1; j++) {
+        let value = 0;
+        currentRow.push(value);
+      }
+      result.push(currentRow);
+    }
+    meetings.forEach(meeting => {
+      // console.log("The meeting is", meeting);
+      const curTime = meeting.start;
+      const x = this.slotArrayString.indexOf(this.convertTimeToString(curTime));
+      // console.log("Found x: ", x);
+      if (x !== -1) {
+        let y = 0;
+        for (let i = 0; i < this.week.length; i++) {
+          const day = this.week[i];
+          if (day.day === meeting.date.day) {
+            break;
+          }
+          y++;
+        }
+        const index = this.props.rooms.indexOf(meeting.room);
+        if (index !== -1) {
+          if (selectedRooms.has(index)) {
+            // construct a map key: roomname | value: roomID
+            // console.log("The block should be added");
+            if (result[x][y] === 0) result[x][y] = index + 2;
+            else if (result[x][y] !== index + 2) result[x][y] = -1;
+          }
+        } else {
+          console.log("Invalid", meeting);
+        }
+      }
+    });
+    return result;
+  };
+
   getWeek = () => {
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
     let week = new Array(5);
@@ -86,7 +162,7 @@ class Schedule extends Component {
       );
       weekString[i] =
         days[i] +
-        " " +
+        " \n " +
         newDay.getDate() +
         "." +
         (newDay.getMonth() + 1) +
@@ -109,11 +185,23 @@ class Schedule extends Component {
     // const cleanRow = Array.from(Array(this.numberOfCol - 1), () => 0);
     // const schedule = Array.from(Array(this.numberOfRow - 1), () => cleanRow);
 
+    this.setState(
+      {
+        schedule: this.convertMeetingsToLocations(
+          this.props.meetings,
+          this.props.roomset
+        )
+      },
+      () => {
+        if (callback !== undefined) callback();
+      }
+    );
+
     this.selectedSlots.clear();
     this.props.onSummary("hide");
-    this.setState({ schedule: this.firstSchedule }, () => {
-      if (callback !== undefined) callback();
-    });
+    // this.setState({ schedule: this.firstSchedule }, () => {
+    //   if (callback !== undefined) callback();
+    // });
   };
 
   decodeID = loc => {
@@ -213,8 +301,9 @@ class Schedule extends Component {
     };
     this.onSelected();
   };
-
-  getRow = elements => {
+  getRow = (elements, part = "body") => {
+    let whiteSpace = "pre-wrap";
+    if (part === "body") whiteSpace = "nowrap";
     return (
       <tr>
         {elements.map(item => {
@@ -229,13 +318,16 @@ class Schedule extends Component {
             else if (item.value === 2) className += " bg-success";
             else if (item.value === 3) className += " bg-info";
             else if (item.value === 4) className += " bg-warning";
+            else if (item.value === 5) className += " bg-primary";
           }
           return (
             <th
               style={{
                 MozUserSelect: "none",
                 WebkitUserSelect: "none",
-                msUserSelect: "none"
+                msUserSelect: "none",
+                whiteSpace: whiteSpace,
+                fontSize: "1em"
               }}
               onClick={this.handleClick}
               onMouseDown={() => {
@@ -262,13 +354,15 @@ class Schedule extends Component {
   };
 
   getHead = () => {
-    return this.getRow(this.indexRow(["", ...this.weekString]));
+    return this.getRow(this.indexRow(["", ...this.weekString]), "head");
   };
 
   getBody = () => {
     let i = 0;
     return this.state.schedule.map(row => {
-      return this.getRow(this.indexRow([this.slotArrayString[i++], ...row]));
+      return this.getRow(
+        this.indexRow([this.slotArrayRangeString[i++], ...row])
+      );
     });
   };
 
@@ -287,8 +381,14 @@ class Schedule extends Component {
   };
 
   prepareSlotArrayString = timeSlots => {
+    let prevStr = undefined;
     for (const slot of timeSlots) {
-      this.slotArrayString.push(this.convertTimeToString(slot));
+      const str = this.convertTimeToString(slot);
+      this.slotArrayString.push(str);
+      if (prevStr) {
+        this.slotArrayRangeString.push(prevStr + " - " + str);
+      }
+      prevStr = str;
     }
   };
 
@@ -321,11 +421,10 @@ class Schedule extends Component {
     let tempArr = Array.from(this.selectedSlots.values());
     let minLoc = this.decodeLocation(Math.min(...tempArr));
     let maxLoc = this.decodeLocation(Math.max(...tempArr));
-
     this.props.scheduleCallback(
       this.week[minLoc.y - 1],
       this.timeSlots[minLoc.x - 1],
-      this.timeSlots[maxLoc.x - 1]
+      this.timeSlots[maxLoc.x]
     );
     this.props.onSummary("show");
   };

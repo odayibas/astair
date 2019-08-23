@@ -3,6 +3,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import update from "immutability-helper";
+import { Container, Row, Col } from "react-bootstrap";
 
 class CheckBoxGroup extends Component {
   state = {
@@ -59,30 +60,75 @@ class CheckBoxGroup extends Component {
     });
   };
 
+  handleClickAsRadioButtons = id => {
+    const cur = this.state.items[id].checked;
+
+    if (cur)
+      if (this.checkedCount === 1) return;
+      else {
+        this.checkedCount--;
+        this.checkedButtons.delete(id);
+      }
+    else {
+      this.checkedCount = 1;
+      let it = this.checkedButtons.values();
+      it = it.next();
+      // console.log("Close ", it.value);
+      let up = update(this.state.items, {
+        [it.value]: {
+          checked: {
+            $set: false
+          }
+        }
+      });
+      this.setState({ items: up }, () => {
+        // console.log("Final items", this.state.items);
+        let newStatus = update(this.state.items, {
+          [id]: {
+            checked: {
+              $set: !cur
+            }
+          }
+        });
+        this.setState({ items: newStatus }, () => {
+          this.props.onSelectedItems(this.checkedButtons);
+        });
+        this.props.onSelectedItems(this.checkedButtons);
+      });
+      this.checkedButtons.clear();
+
+      this.checkedButtons.add(id);
+    }
+  };
+
   getCheckBoxes = () => {
     if (this.state.items.length === 0) return <div />;
 
     return this.state.items.map(item => {
       return (
-        <FormControlLabel
-          control={
-            <Checkbox
-              color={"default"}
-              key={item.id}
-              onChange={() => {
-                this.handleClick(item.id);
-              }}
-              checked={item.checked}
+        <Row>
+          <Col xs={12} className="text-left">
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color={"default"}
+                  key={item.id}
+                  onChange={() => {
+                    this.handleClickAsRadioButtons(item.id);
+                  }}
+                  checked={item.checked}
+                />
+              }
+              label={item.label}
             />
-          }
-          label={item.label}
-        />
+          </Col>
+        </Row>
       );
     });
   };
 
   render() {
-    return this.getCheckBoxes();
+    return <Container>{this.getCheckBoxes()}</Container>;
   }
 }
 

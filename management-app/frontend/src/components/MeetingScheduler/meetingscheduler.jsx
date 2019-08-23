@@ -13,9 +13,11 @@ class MeetingScheduler extends Component {
   multiRoomSelected = false;
   currentRooms;
   state = {
+    readyForDisplay: false,
     summary: {},
     showSummary: false,
     creating: false,
+    roomset: new Set([0]), // Degistir
     headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     timeSlot: {
       start: {
@@ -31,52 +33,19 @@ class MeetingScheduler extends Component {
         minutes: 0
       }
     },
-    schedules: [
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [4, 0, 0, 0, 0],
-        [4, 0, 0, 0, 0],
-        [4, 0, 0, 0, 0],
-        [4, 0, 4, 0, 0],
-        [4, 0, 4, 0, 0],
-        [4, 0, 4, 0, 0],
-        [0, 0, 4, 0, 0],
-        [0, 0, 4, 0, 0],
-        [0, 0, 4, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 3],
-        [0, 0, 3, 0, 3],
-        [0, 3, 0, 0, 0],
-        [0, 3, 0, 0, 0],
-        [0, 3, 3, 0, 0],
-        [0, 3, 3, 0, 0],
-        [0, 3, 3, 0, 0],
-        [0, 3, 3, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ],
-      [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 2],
-        [0, 0, 2, 0, 2],
-        [0, 0, 2, 2, 2],
-        [0, 0, 2, 0, 0],
-        [0, 2, 0, 2, 0],
-        [0, 2, 0, 0, 0],
-        [0, 2, 2, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 2, 0, 0, 0],
-        [0, 0, 0, 0, 0]
-      ]
-    ],
-    rooms: ["Room A", "Room B", "Room C"],
+    meetings: [],
+    rooms: ["A", "B", "C", "Front Room"],
     scheduleID: 0,
     multiSchedule: undefined,
     today: undefined
   };
+
+  componentDidMount() {
+    const s = new Set();
+    s.add(0);
+    this.setState({ roomset: s });
+    this.getMeetingsFromDatabase();
+  }
 
   convertTimeToString = t => {
     var hours = "";
@@ -138,33 +107,6 @@ class MeetingScheduler extends Component {
 
   getTimeSlots = () => {
     var result = [];
-    var current = JSON.parse(JSON.stringify(this.props.timeSlot.start)); // Deep copy. Might not be useful for another case.
-    let interval = this.props.timeSlot.interval;
-
-    result.push({ hours: current.hours, minutes: current.minutes });
-
-    while (
-      // While current time is less than end time.
-      current.hours < this.props.timeSlot.end.hours ||
-      (current.hours === this.props.timeSlot.end.hours &&
-        current.minutes < this.props.timeSlot.end.minutes)
-    ) {
-      this.numberOfRows++;
-      current.hours += interval.hours;
-      current.minutes += interval.minutes;
-      current.hours += Math.floor(current.minutes / 60);
-      current.minutes %= 60;
-      result.push({
-        hours: current.hours,
-        minutes: current.minutes
-      });
-    }
-    console.log(this.numberOfRows);
-    return result;
-  };
-
-  getTimeSlots = () => {
-    var result = [];
     var current = JSON.parse(JSON.stringify(this.state.timeSlot.start)); // Deep copy. Might not be useful for another case.
     let interval = this.state.timeSlot.interval;
 
@@ -188,7 +130,7 @@ class MeetingScheduler extends Component {
     return result;
   };
 
-  getScheduleArray = () => {
+  getMeetingsFromDatabase = () => {
     let thisWeek = this.getWeek();
     // console.log("The week is", thisWeek);
     this.fetchMeetings(
@@ -197,8 +139,45 @@ class MeetingScheduler extends Component {
     );
   };
 
-  constructScheduleFromMeetings = meetings => {
-    console.log("Construct method", meetings);
+  constructScheduleFromMeetings = (meetings, selected) => {
+    // This function is not that fast. It can be improved.
+
+    let allBlocks = [];
+    meetings.forEach(meeting => {
+      allBlocks = [...allBlocks, ...this.divideMeeting(meeting)];
+    });
+    // console.log("All the blocks", allBlocks);
+    return allBlocks;
+  };
+
+  divideMeeting = meeting => {
+    // console.log("The main meeting is ", meeting);
+    let interval = this.state.timeSlot.interval;
+    let result = [];
+    const start = meeting.start;
+
+    let current = JSON.parse(JSON.stringify(start));
+    while (
+      // While current time is less than end time.
+      current.hours < meeting.end.hours ||
+      (current.hours === meeting.end.hours &&
+        current.minutes < meeting.end.minutes)
+    ) {
+      const temp = JSON.parse(JSON.stringify(current));
+      current.hours += interval.hours;
+      current.minutes += interval.minutes;
+      current.hours += Math.floor(current.minutes / 60);
+      current.minutes %= 60;
+      const endTemp = JSON.parse(JSON.stringify(current));
+      result.push({
+        room: meeting.room,
+        date: meeting.date,
+        start: temp,
+        end: endTemp
+      });
+    }
+    // console.log(result);
+    return result;
   };
 
   fetchMeetings = (startDate, endDate) => {
@@ -212,6 +191,17 @@ class MeetingScheduler extends Component {
         let meetingArray = this.decodeMeetingData(res.data);
         console.log("Meeting Data is ready for processing ", meetingArray);
         // CONSTRUCT SCHEDULE ARRAY
+        this.setState(
+          {
+            meetings: this.constructScheduleFromMeetings(meetingArray)
+          },
+          () => {
+            // console.log("Meetings are ready to forward.");
+            const b = !this.state.readyForDisplay;
+            this.setState({ readyForDisplay: b });
+            this.handleSummary("hide");
+          }
+        );
       })
       .catch(err => {
         console.log("****", err);
@@ -257,10 +247,9 @@ class MeetingScheduler extends Component {
     console.log("Meeting date:", date);
     console.log("Meeting Start:", start);
     console.log("Meeting End:", end);
-    const summary = { date, start, end, room: "Front Room" };
-    this.setState({ summary: summary }, () => {
-      //this.postMeeting(this.state.summary);
-    });
+    const room = this.state.rooms[this.state.roomset.values().next().value];
+    const summary = { date, start, end, room };
+    this.setState({ summary: summary }, () => {});
   };
 
   // This is for dropdown menu. Currently it is not being used.
@@ -302,25 +291,32 @@ class MeetingScheduler extends Component {
   handleMultiRoomSelected = roomset => {
     if (roomset.size > 1) {
       this.multiRoomSelected = true;
-      const tempMultiSchedule = this.mergeSchedules(roomset);
-      this.setState({ multiSchedule: tempMultiSchedule }, () => {});
+      // const tempMultiSchedule = this.mergeSchedules(roomset);
+      const copy = new Set(roomset);
+      // console.log("Copy", copy);
+      this.setState({ roomset: copy });
+      // this.setState({ multiSchedule: tempMultiSchedule }, () => {});
       this.setState({ scheduleID: {} });
     } else {
+      const copy = new Set(roomset);
+      // console.log("Copy", copy);
+      this.setState({ roomset: copy });
       this.setState({ scheduleID: roomset.values().next().value });
       this.multiRoomSelected = false;
     }
+    this.handleSummary("hide");
   };
 
-  getProperSchedule = () => {
-    if (this.multiRoomSelected) {
-      return this.state.multiSchedule;
-    } else {
-      return this.state.schedules[this.state.scheduleID];
-    }
-  };
+  // getProperSchedule = () => {
+  //   if (this.multiRoomSelected) {
+  //     return this.state.multiSchedule;
+  //   } else {
+  //     return this.state.schedules[this.state.scheduleID];
+  //   }
+  // };
 
   postMeeting = meeting => {
-    console.log("The meeting is going to be post", meeting);
+    console.log("The meeting is going to be inserted", meeting);
     const room = meeting.room;
     const username = "From frontend";
     const date = this.convertDateToString(meeting.date, "year");
@@ -333,6 +329,8 @@ class MeetingScheduler extends Component {
       .post(urlServer + "/meeting/set-meeting", { room, username, date, time })
       .then(res => {
         console.log("Inserted successfuly");
+        // UPDATE SCHEDULE
+        this.getMeetingsFromDatabase();
       })
       .catch(err => {
         console.log("Error while inserting", err);
@@ -349,13 +347,14 @@ class MeetingScheduler extends Component {
       today.setDate(today.getDate() - 7);
     }
     newDay = new Date(today);
-    this.setState({ today: newDay });
+    this.setState({ today: newDay }, () => {
+      this.getMeetingsFromDatabase();
+    });
   };
 
   handleSummary = action => {
     if (action === "show") {
       this.setState({ showSummary: true });
-      this.getScheduleArray();
     } else if (action === "hide") {
       this.setState({ showSummary: false });
     } else {
@@ -369,12 +368,15 @@ class MeetingScheduler extends Component {
     } else {
       return (
         <Schedule
+          readyForDisplay={this.state.readyForDisplay}
           onRef={ref => (this.scheduleChild = ref)}
           today={this.state.today}
           headerRow={this.state.headerRow}
-          schedule={this.getProperSchedule()}
+          meetings={this.state.meetings}
+          roomset={this.state.roomset}
           scheduleID={this.state.scheduleID}
           timeSlot={this.state.timeSlot}
+          rooms={this.state.rooms}
           scheduleCallback={(date, start, end) => {
             this.slotSelected(date, start, end);
           }}
@@ -386,10 +388,14 @@ class MeetingScheduler extends Component {
     }
   };
 
+  handleCreateMeeting = () => {
+    this.postMeeting(this.state.summary);
+  };
+
   render() {
     return (
       <Container>
-        <Row>
+        <Row className="flex-row">
           {/* <Col md={2}>
             <div />
           </Col> */}

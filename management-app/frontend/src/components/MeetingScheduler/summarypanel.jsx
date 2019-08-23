@@ -38,25 +38,46 @@ class SummaryPanel extends Component {
     return (
       <div>
         <Container style={{ width: maxWidth }}>
-          <Row>
-            <h5
-              style={{
-                color: "#ffffff",
-                padding: 10
-              }}
-            >
-              Meeting Summary
-            </h5>
+          <Row className="text-center">
+            <Col xs={12}>
+              <h5
+                style={{
+                  color: "#ffffff",
+                  padding: 10
+                }}
+              >
+                Meeting Summary
+              </h5>
+            </Col>
           </Row>
           <Row>
-            <span style={{ color: "#ffffff", padding: 10 }}>
+            <span style={{ color: "#ffffff", padding: 10, marginLeft: 20 }}>
               Time : {this.getTime()}
             </span>
           </Row>
           <Row>
-            <span style={{ color: "#ffffff", padding: 10 }}>
+            <span style={{ color: "#ffffff", padding: 10, marginLeft: 20 }}>
               Date : {this.getDate()}
             </span>
+          </Row>
+          <Row>
+            <span style={{ color: "#ffffff", padding: 10, marginLeft: 20 }}>
+              Room : {this.props.data.room}
+            </span>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <button
+                type="button"
+                className="btn btn-info"
+                style={{ margin: "10px" }}
+                onClick={() => {
+                  this.props.onCreateMeeting();
+                }}
+              >
+                Create
+              </button>
+            </Col>
           </Row>
         </Container>
       </div>

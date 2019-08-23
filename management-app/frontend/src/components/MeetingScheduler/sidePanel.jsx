@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row, Button } from "react-bootstrap";
 import DropdownMenu from "./dropdownMenu";
 import CheckBoxGroup from "./checkboxgroup";
-import { Button } from "@material-ui/core";
 import color from "@material-ui/core/colors/brown";
 import { maxWidth, maxHeight } from "@material-ui/system";
 import SummaryPanel from "./summarypanel";
@@ -21,11 +20,13 @@ class ButtonPanel extends Component {
           style={{
             marginTop: 30,
             backgroundColor: "#43494D",
-            width: maxWidth,
-            height: 300
+            width: maxWidth
           }}
         >
-          <SummaryPanel data={this.props.summaryData} />
+          <SummaryPanel
+            data={this.props.summaryData}
+            onCreateMeeting={this.props.onCreateMeeting}
+          />
         </div>
       );
     } else {
@@ -37,67 +38,52 @@ class ButtonPanel extends Component {
     return (
       <div>
         <Container>
-          <button
+          {/* <button
             type="button"
             className="btn btn-outline-danger"
             style={{ margin: "10px" }}
             onClick={this.props.onClear}
           >
             Clear
-          </button>
-          <button
-            type="button"
-            className="btn btn-outline-dark"
-            style={{ margin: "10px" }}
-            onClick={() => {
-              // this.props.onCreateMeeting
-              return axios
-                .get(urlServer + "/meeting/get-last-meeting")
-                .then(res => {
-                  console.log(
-                    "The url was " + urlServer + "/meeting/get-last-meeting"
-                  );
-                  console.log(res.data[0]);
-                })
-                .catch(err => {
-                  console.log(
-                    "The url was " + urlServer + "/meeting/get-last-meeting"
-                  );
-                  console.log("****", err);
-                });
-            }}
-          >
-            Create
-          </button>
+          </button> */}
+
           {/* <DropdownMenu
             items={this.props.rooms}
             onSelected={id => {
               this.props.onSelected(id);
             }}
           /> */}
+
           <CheckBoxGroup
             onSelectedItems={roomset => {
               this.props.onMultiRoomSelected(roomset);
             }}
-            items={["Room A", "Room B", "Room C"]}
+            items={this.props.rooms}
           />
-          <Row>
-            <Col md={6}>
+
+          <Row className="flex-row">
+            <Col xs={6}>
               <Button
+                xs={12}
+                block
+                variant="warning"
                 onClick={() => {
                   this.props.onNextSchedule(-1);
                 }}
               >
-                Prev
+                {"<"}
               </Button>
             </Col>
-            <Col md={6}>
+            <Col xs={6}>
               <Button
+                xs={12}
+                block
+                variant="warning"
                 onClick={() => {
                   this.props.onNextSchedule(1);
                 }}
               >
-                Next
+                {">"}
               </Button>
             </Col>
           </Row>
