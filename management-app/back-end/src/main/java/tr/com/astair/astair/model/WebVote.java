@@ -1,9 +1,7 @@
 package tr.com.astair.astair.model;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.models.auth.In;
-
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;

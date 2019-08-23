@@ -1,9 +1,11 @@
 package tr.com.astair.astair.repository;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tr.com.astair.astair.model.WebMeeting;
 import java.util.List;
+
 public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
     @Query(nativeQuery = true, value = "select * from meeting_web m where m.date = :date")
     List<WebMeeting> getTodaysMeeting(@Param("date") String date);

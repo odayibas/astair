@@ -2,13 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b35e841-19d4-4884-b4b1-43ae2e25cebd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/java.util.List" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/org.springframework.data.jpa.repository.JpaRepository" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/org.springframework.data.jpa.repository.Query" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/RoomsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/RoomsControllerApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/model/Rooms.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/RoomsRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/RoomsServiceImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/RoomsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/management-app/back-end/tr.com.astair.astair.model.Rooms" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/WebMeetingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/WebMeetingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/WebMeetingControllerApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/WebMeetingControllerApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/model/WebVote.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/model/WebVote.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/WebMeetingServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/WebMeetingServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/WebMeetingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/WebMeetingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/model/WebMeeting.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/model/WebMeeting.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

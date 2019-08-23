@@ -1,4 +1,5 @@
 package tr.com.astair.astair.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,13 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.astair.astair.controller.api.WebMeetingControllerApi;
 import tr.com.astair.astair.model.WebMeeting;
-import tr.com.astair.astair.model.WebVote;
 import tr.com.astair.astair.repository.WebMeetingRepository;
 import tr.com.astair.astair.service.WebMeetingService;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.xml.ws.Service;
 import java.util.List;
+
 @RestController
 public class WebMeetingController implements WebMeetingControllerApi {
     private WebMeetingService webMeetingService;
