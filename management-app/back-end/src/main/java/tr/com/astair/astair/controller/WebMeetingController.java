@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.astair.astair.controller.api.WebMeetingControllerApi;
 import tr.com.astair.astair.model.WebMeeting;
-import tr.com.astair.astair.repository.WebMeetingRepository;
 import tr.com.astair.astair.service.WebMeetingService;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;

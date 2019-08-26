@@ -10,7 +10,6 @@ public class WebMeeting {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-
     @Column(name = "username")
     private String username;
 
@@ -90,7 +89,7 @@ public class WebMeeting {
         return description;
     }
 
-    public void setDescription(String room) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

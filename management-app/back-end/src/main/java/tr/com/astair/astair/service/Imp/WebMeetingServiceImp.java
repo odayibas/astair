@@ -3,11 +3,9 @@ package tr.com.astair.astair.service.Imp;
 import org.hibernate.QueryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import tr.com.astair.astair.model.WebMeeting;
 import tr.com.astair.astair.repository.WebMeetingRepository;
 import tr.com.astair.astair.service.WebMeetingService;
-import java.util.Collections;
 import java.util.List;
 
 @Service
