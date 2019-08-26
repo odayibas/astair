@@ -78,7 +78,7 @@ class SummaryPanel extends Component {
                 className="btn btn-info"
                 style={{ margin: "10px" }}
                 onClick={() => {
-                  this.props.onCreateMeeting();
+                  this.props.onShowDialog(true);
                 }}
               >
                 Create

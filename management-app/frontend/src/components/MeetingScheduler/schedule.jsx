@@ -448,18 +448,21 @@ class Schedule extends Component {
   render() {
     this.index = 0;
     return (
-      <Table
-        onMouseLeave={() => {
-          this.pressed = false;
-        }}
-        striped
-        bordered
-        hover
-        variant="dark"
-      >
-        <thead>{this.getHead()}</thead>
-        <tbody>{this.getBody()}</tbody>
-      </Table>
+      <div style={{ height: 600, overflowY: "auto" }}>
+        <Table
+          responsive="xs"
+          onMouseLeave={() => {
+            this.pressed = false;
+          }}
+          striped
+          bordered
+          hover
+          variant="dark"
+        >
+          <thead>{this.getHead()}</thead>
+          <tbody>{this.getBody()}</tbody>
+        </Table>
+      </div>
     );
   }
 }

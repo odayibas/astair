@@ -10,7 +10,7 @@ class SchedulerTop extends Component {
       <div>
         <Container>
           <Row md={1}>
-            <div style={{ height: 100 }} />
+            <div style={{ height: 20 }} />
           </Row>
           <Row md={11}>
             <MeetingScheduler />
