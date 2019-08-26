@@ -244,7 +244,7 @@ class MeetingScheduler extends Component {
         participants
       });
     }
-    console.log("Data fetched from database", meetingArray);
+    // console.log("Data fetched from database", meetingArray);
     return meetingArray;
   };
 
@@ -459,7 +459,6 @@ class MeetingScheduler extends Component {
       username: "From frontend",
       description: this.description
     };
-    console.log("The data posted to axios", dataPosted);
     this.postMeeting(dataPosted);
   };
 
