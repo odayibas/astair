@@ -33,8 +33,9 @@ class SummaryPanel extends Component {
     let str = date.day + "." + date.month + "." + date.year;
     return str;
   };
-
-  render() {
+  getPanel = () => {
+    if (!(this.props.data.start && this.props.data.end && this.props.data.date))
+      return <div />;
     return (
       <div>
         <Container style={{ width: maxWidth }}>
@@ -46,9 +47,14 @@ class SummaryPanel extends Component {
                   padding: 10
                 }}
               >
-                Meeting Summary
+                Meeting Preview
               </h5>
             </Col>
+          </Row>
+          <Row>
+            <span style={{ color: "#ffffff", padding: 10, marginLeft: 20 }}>
+              Description : {this.props.data.description}
+            </span>
           </Row>
           <Row>
             <span style={{ color: "#ffffff", padding: 10, marginLeft: 20 }}>
@@ -72,7 +78,7 @@ class SummaryPanel extends Component {
                 className="btn btn-info"
                 style={{ margin: "10px" }}
                 onClick={() => {
-                  this.props.onCreateMeeting();
+                  this.props.onShowDialog(true);
                 }}
               >
                 Create
@@ -82,6 +88,10 @@ class SummaryPanel extends Component {
         </Container>
       </div>
     );
+  };
+
+  render() {
+    return this.getPanel();
   }
 }
 

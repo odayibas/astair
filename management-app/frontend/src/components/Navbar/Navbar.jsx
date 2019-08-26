@@ -33,6 +33,7 @@ class AppNavbar extends Component {
           <Nav.Link href="/meetingscheduler" className="nav-link">
             <h5>Meeting Scheduler</h5>
           </Nav.Link>
+
           <li className="nav -item">
             <li onClick={this.logout.bind(this)} className="nav-link">
               <h5>Logout</h5>

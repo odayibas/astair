@@ -20,6 +20,8 @@ class Schedule extends Component {
   week;
   weekString;
   today;
+  scheduleMap;
+  pressedForeign;
 
   constructor(props) {
     super(props);
@@ -76,7 +78,6 @@ class Schedule extends Component {
     }
     // FIRST DISPLAY AFTER DATA FETCH
     if (this.state.readyForDisplay !== this.props.readyForDisplay) {
-      console.log("First display");
       this.setState({
         schedule: this.convertMeetingsToLocations(
           this.props.meetings,
@@ -109,6 +110,10 @@ class Schedule extends Component {
   };
 
   convertMeetingsToLocations = (meetings, selectedRooms) => {
+    this.scheduleMap = [];
+    for (let i = 0; i < this.numberOfRow; i++) {
+      this.scheduleMap.push(new Array(this.numberOfCol));
+    }
     let result = [];
     for (let i = 0; i < this.numberOfRow - 1; i++) {
       let currentRow = [];
@@ -137,11 +142,15 @@ class Schedule extends Component {
           if (selectedRooms.has(index)) {
             // construct a map key: roomname | value: roomID
             // console.log("The block should be added");
+
+            if (!this.scheduleMap[x][y]) {
+              this.scheduleMap[x][y] = [];
+            }
+            this.scheduleMap[x][y].push(meeting);
             if (result[x][y] === 0) result[x][y] = index + 2;
             else if (result[x][y] !== index + 2) result[x][y] = -1;
           }
         } else {
-          console.log("Invalid", meeting);
         }
       }
     });
@@ -179,12 +188,6 @@ class Schedule extends Component {
   };
 
   clearSchedule = (callback = undefined) => {
-    // Ilk basta bir tane degiskende tablonun ilk hali tutulabilir. Çünkü ileride
-    // Tablo önceden dolmuş olabilir. Tamamen 0 yapmak mantıklı değil.
-
-    // const cleanRow = Array.from(Array(this.numberOfCol - 1), () => 0);
-    // const schedule = Array.from(Array(this.numberOfRow - 1), () => cleanRow);
-
     this.setState(
       {
         schedule: this.convertMeetingsToLocations(
@@ -229,6 +232,7 @@ class Schedule extends Component {
 
   handleEnter = id => {
     let loc = this.decodeLocation(id);
+
     if (loc.x > 0 && loc.y > 0 && this.pressed) {
       if (this.pressedLoc.x !== -1) {
         if (this.pressedLoc.x > loc.x) {
@@ -245,11 +249,11 @@ class Schedule extends Component {
         maxVal = loc.x;
       }
       // This method did not work for avoiding skipping slots :(
-      /* for (let i = minVal; i <= maxVal; i++) {
-        console.log(i, this.pressedLoc.y);
-      this.updateSchedule({ x: i, y: this.pressedLoc.y }, 1);
-        
-      } */
+      // for (let i = minVal; i <= maxVal; i++) {
+      //   console.log(i, this.pressedLoc.y);
+      //   this.updateSchedule({ x: i, y: this.pressedLoc.y }, 1);
+      // }
+
       const val = this.state.schedule[loc.x - 1][this.pressedLoc.y - 1];
       const prevVal = this.state.schedule[this.prevLoc.x - 1][
         this.pressedLoc.y - 1
@@ -280,7 +284,16 @@ class Schedule extends Component {
     if (loc.x <= 0 || loc.y <= 0) return;
     const val = this.state.schedule[loc.x - 1][loc.y - 1];
 
-    if (val !== 0) return;
+    if (val !== 0 && val !== 1) {
+      this.pressedForeign = true;
+      this.clearSchedule();
+      this.props.displayMeetingInfo(
+        this.scheduleMap[loc.x - 1][loc.y - 1][0].id
+      ); // Room a gore index sec
+      return;
+    }
+    this.pressedForeign = false;
+
     this.clearSchedule(() => {
       if (loc.x > 0 && loc.y > 0) {
         this.pressed = true;
@@ -294,12 +307,15 @@ class Schedule extends Component {
   };
 
   handleUp = id => {
+    let loc = this.decodeLocation(id);
+    if (loc.x > 0 && loc.y > 0 && !this.pressedForeign) {
+      this.onSelected();
+    }
     this.pressed = false;
     this.pressedLoc = {
       x: -1,
       y: -1
     };
-    this.onSelected();
   };
   getRow = (elements, part = "body") => {
     let whiteSpace = "pre-wrap";
@@ -432,18 +448,21 @@ class Schedule extends Component {
   render() {
     this.index = 0;
     return (
-      <Table
-        onMouseLeave={() => {
-          this.pressed = false;
-        }}
-        striped
-        bordered
-        hover
-        variant="dark"
-      >
-        <thead>{this.getHead()}</thead>
-        <tbody>{this.getBody()}</tbody>
-      </Table>
+      <div style={{ height: 600, overflowY: "auto" }}>
+        <Table
+          responsive="xs"
+          onMouseLeave={() => {
+            this.pressed = false;
+          }}
+          striped
+          bordered
+          hover
+          variant="dark"
+        >
+          <thead>{this.getHead()}</thead>
+          <tbody>{this.getBody()}</tbody>
+        </Table>
+      </div>
     );
   }
 }

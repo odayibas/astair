@@ -21,6 +21,7 @@ You can install slack app by clicking below button. After that choose the channe
 
   - Slack Air Condition Survey
   - Slack Location of Employee Survey
+  - Slack Meeting Survey
   - Slack Username
   - Slack UserID
   - Channel ID
@@ -45,6 +46,12 @@ This survey asks users how they feel the current weather condition. There are th
 In office air conditioner effects different areas. More air conditioner means more area will be effected. We need to record which user is effected by which air conditioner. This survey contains image link, a button and a dropdown menu to let users choose which location they are belong to. The image link shows the location of the air conditioners. The button indicates the current position. Like so when air conditon survey sent users answers will be rocorded according to their location.
 
 <img src="Images/location.PNG">
+
+**Meeting Survey**
+
+On the days and times you want to use the meeting room, we have created a structure to check if the meeting room is already full or to reserve that room in advance. This command consists of a datepicker and two dropdown menus. First, you select the day of the meeting from the datepicker. Showing which meeting room is full on the day you selected. The meeting room is then selected from the menu. Finally, we select the desired time interval for the meeting. If we choose a previously booked meeting room, it says that the room is full and we should call the '/ meeting' command to make a selection again.
+
+<img src="Images/meeting.PNG">
 
 
 **Slash Commands**
@@ -95,9 +102,7 @@ Users can use this command to get air condition and location surveys at any time
 
 - /meeting
 
-<img src="Images/meeting.PNG">
-
-On the days and times you want to use the meeting room, we have created a structure to check if the meeting room is already full or to reserve that room in advance. This command consists of a datepicker and two dropdown menus. First, you select the day of the meeting from the datepicker. Showing which meeting room is full on the day you selected. The meeting room is then selected from the menu. Finally, we select the desired time interval for the meeting. If we choose a previously booked meeting room, it says that the room is full and we should call the '/ meeting' command to make a selection again.
+This command sends meeting survey to all user.
 
 
 **Deployment**

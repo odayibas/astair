@@ -26,6 +26,7 @@ class ButtonPanel extends Component {
           <SummaryPanel
             data={this.props.summaryData}
             onCreateMeeting={this.props.onCreateMeeting}
+            onShowDialog={this.props.onShowDialog}
           />
         </div>
       );

@@ -3,6 +3,7 @@ import Schedule from "./schedule";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import update from "immutability-helper";
 import ButtonPanel from "./sidePanel";
+import Dialog from "./dialog";
 import axios from "axios";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
@@ -12,7 +13,11 @@ class MeetingScheduler extends Component {
   scheduleChild;
   multiRoomSelected = false;
   currentRooms;
+  description = "";
+  allParticipants = ["ahmet", "serdar", "gurbuz", "eyyo"];
+  selectedParticipants = new Set([]);
   state = {
+    showDialog: false,
     readyForDisplay: false,
     summary: {},
     showSummary: false,
@@ -34,6 +39,7 @@ class MeetingScheduler extends Component {
       }
     },
     meetings: [],
+    rawMeetings: [],
     rooms: ["A", "B", "C", "Front Room"],
     scheduleID: 0,
     multiSchedule: undefined,
@@ -89,7 +95,7 @@ class MeetingScheduler extends Component {
   getWeek = (day = undefined) => {
     let week = new Array(5);
     const permToday = new Date(this.state.today);
-    console.log("The day being processed is ", permToday);
+    // console.log("The day being processed is ", permToday);
     for (let i = 0; i <= 4; i++) {
       const todayDate = permToday;
       const todayDay = todayDate.getDay() - 1;
@@ -173,7 +179,11 @@ class MeetingScheduler extends Component {
         room: meeting.room,
         date: meeting.date,
         start: temp,
-        end: endTemp
+        end: endTemp,
+        id: meeting.id,
+        username: meeting.username,
+        participants: meeting.participants,
+        description: meeting.description
       });
     }
     // console.log(result);
@@ -189,7 +199,8 @@ class MeetingScheduler extends Component {
       .then(res => {
         // console.log("Data fetched successfuly ", res.data);
         let meetingArray = this.decodeMeetingData(res.data);
-        console.log("Meeting Data is ready for processing ", meetingArray);
+        this.setState({ rawMeetings: meetingArray });
+        // console.log("Meeting Data is ready for processing ", meetingArray);
         // CONSTRUCT SCHEDULE ARRAY
         this.setState(
           {
@@ -210,14 +221,30 @@ class MeetingScheduler extends Component {
 
   decodeMeetingData = dataArr => {
     let meetingArray = [];
-    dataArr.forEach(element => {
+    for (let i = 0; i < dataArr.length; i++) {
+      let element = dataArr[i];
+      // const participants = element.participants.split(",");
+      // const description = element.description;
+      const participants = element.participants;
+      const username = element.username;
+      const description = element.description;
       const date = this.convertStringToDate(element.date, "year");
       const temp = element.time.split("-");
       const start = this.convertStringToTime(temp[0]);
       const end = this.convertStringToTime(temp[1]);
       const room = element.room;
-      meetingArray.push({ date, start, end, room });
-    });
+      meetingArray.push({
+        id: i,
+        date,
+        start,
+        end,
+        room,
+        username,
+        description,
+        participants
+      });
+    }
+    console.log("Data fetched from database", meetingArray);
     return meetingArray;
   };
 
@@ -244,9 +271,9 @@ class MeetingScheduler extends Component {
   };
 
   slotSelected = (date, start, end) => {
-    console.log("Meeting date:", date);
-    console.log("Meeting Start:", start);
-    console.log("Meeting End:", end);
+    // console.log("Meeting date:", date);
+    // console.log("Meeting Start:", start);
+    // console.log("Meeting End:", end);
     const room = this.state.rooms[this.state.roomset.values().next().value];
     const summary = { date, start, end, room };
     this.setState({ summary: summary }, () => {});
@@ -315,8 +342,14 @@ class MeetingScheduler extends Component {
   //   }
   // };
 
+  setDescription = desc => {
+    this.description = desc;
+  };
+
   postMeeting = meeting => {
-    console.log("The meeting is going to be inserted", meeting);
+    // console.log("The meeting is going to be inserted", meeting);
+    const description = meeting.description;
+    const participants = meeting.participants;
     const room = meeting.room;
     const username = "From frontend";
     const date = this.convertDateToString(meeting.date, "year");
@@ -326,7 +359,14 @@ class MeetingScheduler extends Component {
       this.convertTimeToString(meeting.end);
 
     axios
-      .post(urlServer + "/meeting/set-meeting", { room, username, date, time })
+      .post(urlServer + "/meeting/set-meeting", {
+        room,
+        username,
+        date,
+        time,
+        description,
+        participants
+      })
       .then(res => {
         console.log("Inserted successfuly");
         // UPDATE SCHEDULE
@@ -335,6 +375,18 @@ class MeetingScheduler extends Component {
       .catch(err => {
         console.log("Error while inserting", err);
       });
+  };
+
+  displayMeetingInfo = meetingID => {
+    const meeting = this.state.rawMeetings[meetingID];
+    const summary = {
+      date: meeting.date,
+      start: meeting.start,
+      end: meeting.end,
+      room: meeting.room
+    };
+    this.setState({ summary: summary }, () => {});
+    this.handleSummary("show");
   };
 
   handleNextSchedule = act => {
@@ -376,6 +428,9 @@ class MeetingScheduler extends Component {
           roomset={this.state.roomset}
           scheduleID={this.state.scheduleID}
           timeSlot={this.state.timeSlot}
+          displayMeetingInfo={meeting => {
+            this.displayMeetingInfo(meeting);
+          }}
           rooms={this.state.rooms}
           scheduleCallback={(date, start, end) => {
             this.slotSelected(date, start, end);
@@ -389,7 +444,31 @@ class MeetingScheduler extends Component {
   };
 
   handleCreateMeeting = () => {
-    this.postMeeting(this.state.summary);
+    // this.postMeeting(this.state.summary);
+    //this.setShowDialog(true);
+    let participants = "";
+    this.selectedParticipants.forEach(i => {
+      participants += this.allParticipants[i] + ",";
+    });
+    const dataPosted = {
+      participants,
+      room: this.state.summary.room,
+      date: this.state.summary.date,
+      start: this.state.summary.start,
+      end: this.state.summary.end,
+      username: "From frontend",
+      description: this.description
+    };
+    console.log("The data posted to axios", dataPosted);
+    this.postMeeting(dataPosted);
+  };
+
+  setShowDialog = b => {
+    this.setState({ showDialog: b });
+  };
+
+  updateParticipants = participants => {
+    this.selectedParticipants = new Set(participants);
   };
 
   render() {
@@ -417,10 +496,28 @@ class MeetingScheduler extends Component {
                 onCreateMeeting={this.handleCreateMeeting}
                 showSummary={this.state.showSummary}
                 summaryData={this.state.summary}
+                onShowDialog={b => {
+                  this.setShowDialog(b);
+                }}
               />
             </div>
           </Col>
         </Row>
+        <Dialog
+          updateParticipants={participants => {
+            this.updateParticipants(participants);
+          }}
+          setDescription={desc => {
+            this.setDescription(desc);
+          }}
+          onCreateMeeting={this.handleCreateMeeting}
+          data={this.state.summary}
+          show={this.state.showDialog}
+          allParticipants={this.allParticipants}
+          onHide={() => {
+            this.setShowDialog(false);
+          }}
+        />
       </Container>
     );
   }
