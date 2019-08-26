@@ -29,11 +29,12 @@ class MeetingScheduler extends Component {
         minutes: 0
       },
       interval: {
-        hours: 1,
-        minutes: 0
+        hours: 0,
+        minutes: 30
       }
     },
     meetings: [],
+    rawMeetings: [],
     rooms: ["A", "B", "C", "Front Room"],
     scheduleID: 0,
     multiSchedule: undefined,
@@ -89,7 +90,7 @@ class MeetingScheduler extends Component {
   getWeek = (day = undefined) => {
     let week = new Array(5);
     const permToday = new Date(this.state.today);
-    console.log("The day being processed is ", permToday);
+    // console.log("The day being processed is ", permToday);
     for (let i = 0; i <= 4; i++) {
       const todayDate = permToday;
       const todayDay = todayDate.getDay() - 1;
@@ -173,7 +174,11 @@ class MeetingScheduler extends Component {
         room: meeting.room,
         date: meeting.date,
         start: temp,
-        end: endTemp
+        end: endTemp,
+        id: meeting.id,
+        username: meeting.username,
+        participants: meeting.participants,
+        description: meeting.description
       });
     }
     // console.log(result);
@@ -189,7 +194,8 @@ class MeetingScheduler extends Component {
       .then(res => {
         // console.log("Data fetched successfuly ", res.data);
         let meetingArray = this.decodeMeetingData(res.data);
-        console.log("Meeting Data is ready for processing ", meetingArray);
+        this.setState({ rawMeetings: meetingArray });
+        // console.log("Meeting Data is ready for processing ", meetingArray);
         // CONSTRUCT SCHEDULE ARRAY
         this.setState(
           {
@@ -210,14 +216,29 @@ class MeetingScheduler extends Component {
 
   decodeMeetingData = dataArr => {
     let meetingArray = [];
-    dataArr.forEach(element => {
+    for (let i = 0; i < dataArr.length; i++) {
+      let element = dataArr[i];
+      // const participants = element.participants.split(",");
+      // const description = element.description;
+      const participants = ["ahmet", "serdar", "gurbuz"];
+      const username = element.username;
+      const description = "SCRUM";
       const date = this.convertStringToDate(element.date, "year");
       const temp = element.time.split("-");
       const start = this.convertStringToTime(temp[0]);
       const end = this.convertStringToTime(temp[1]);
       const room = element.room;
-      meetingArray.push({ date, start, end, room });
-    });
+      meetingArray.push({
+        id: i,
+        date,
+        start,
+        end,
+        room,
+        username,
+        description,
+        participants
+      });
+    }
     return meetingArray;
   };
 
@@ -337,6 +358,18 @@ class MeetingScheduler extends Component {
       });
   };
 
+  displayMeetingInfo = meetingID => {
+    const meeting = this.state.rawMeetings[meetingID];
+    const summary = {
+      date: meeting.date,
+      start: meeting.start,
+      end: meeting.end,
+      room: meeting.room
+    };
+    this.setState({ summary: summary }, () => {});
+    this.handleSummary("show");
+  };
+
   handleNextSchedule = act => {
     const today = this.state.today;
     let newDay;
@@ -376,6 +409,9 @@ class MeetingScheduler extends Component {
           roomset={this.state.roomset}
           scheduleID={this.state.scheduleID}
           timeSlot={this.state.timeSlot}
+          displayMeetingInfo={meeting => {
+            this.displayMeetingInfo(meeting);
+          }}
           rooms={this.state.rooms}
           scheduleCallback={(date, start, end) => {
             this.slotSelected(date, start, end);
