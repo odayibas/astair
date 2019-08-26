@@ -26,15 +26,24 @@ public class WebMeeting {
     @Column(name = "time")
     private String time;
 
+    @Column(name = "description")
+    private String description;
+
+
+    @Column(name = "participants")
+    private String participants;
+
 
     public WebMeeting() {
     }
 
-    public WebMeeting(String username, String date, String room, String time) {
+    public WebMeeting(String username, String date, String room, String time, String description, String participants) {
         this.setUsername(username);
         this.setDate(date);
         this.setRoom(room);
         this.setTime(time);
+        this.setDescription(description);
+        this.setParticipants(participants);
     }
 
     public Integer getId() {
@@ -75,5 +84,21 @@ public class WebMeeting {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String room) {
+        this.description = description;
+    }
+
+    public String getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(String participants) {
+        this.participants = participants;
     }
 }

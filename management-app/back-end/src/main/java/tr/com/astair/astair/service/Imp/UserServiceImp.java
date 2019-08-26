@@ -44,7 +44,6 @@ import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.User;
 import tr.com.astair.astair.repository.UserRepository;
 import tr.com.astair.astair.service.UserService;
-
 import java.util.*;
 
 @Service
@@ -100,7 +99,7 @@ public class UserServiceImp implements UserService {
         
         List<User> userEntityList = userRepository.findAllByUsername(username);
         if(userEntityList.size() <= 0) {
-        	return -2l; 
+        	return -2l;
         }
         
         User userE = userEntityList.get(0);
@@ -150,7 +149,7 @@ public class UserServiceImp implements UserService {
 		 List<User> userEntities = new ArrayList<>();
 		 userRepository.findAll().forEach(e -> {
 			 userEntities.add(e);
-			 });
+		 });
 		 return userEntities;
 	}
 

@@ -1,6 +1,7 @@
 package tr.com.astair.astair.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tr.com.astair.astair.model.WebMeeting;
@@ -18,6 +19,7 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
 
     @Query(nativeQuery = true, value = "select * from meeting_web")
     List<WebMeeting> getLastMeeting();
+
 //    @Query(nativeQuery = true, value = "select count(vote) from web_vote p where p.vote_id=(select MAX(w.vote_id) from web_vote w) and p.vote= :temp ")
 //    Integer getWebResults(@Param("temp") String temp);
 //

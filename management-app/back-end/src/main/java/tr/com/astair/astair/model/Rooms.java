@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class Rooms {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Integer id;
 
     @Column(name = "room", nullable = false)

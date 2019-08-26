@@ -29,7 +29,7 @@ public class WebMeetingController implements WebMeetingControllerApi {
     }
 
     public ResponseEntity<WebMeeting> setMeeting(@RequestBody WebMeeting w) {
-        WebMeeting test = new WebMeeting(w.getUsername(), w.getDate(), w.getRoom(), w.getTime());
+        WebMeeting test = new WebMeeting(w.getUsername(), w.getDate(), w.getRoom(), w.getTime(), w.getDescription(), w.getParticipants());
         webMeetingService.setMeeting(test);
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
@@ -60,4 +60,5 @@ public class WebMeetingController implements WebMeetingControllerApi {
         }
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
+
 }

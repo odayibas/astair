@@ -48,4 +48,3 @@ public class UserController implements UserControllerApi {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
 	}
 }
-
