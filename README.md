@@ -35,13 +35,8 @@ Watch the video:
 
 * [YOLO](https://pjreddie.com/darknet/yolo/) - Object Detection
 * [OPENCV](https://opencv.org/)- Open Source Computer Vision Library
-* [Maven](https://maven.apache.org/) - Dependency Management
+* [Keras](https://keras.io/) - Learning algorithms
 * [TODO](http://www.todo.com/) - The web framework used, etc...
-
-
-## Contributing
-
-[TODO: How to contribute. Code of conduct, and the process for submitting pull requests to us]
 
 
 ## Versioning
