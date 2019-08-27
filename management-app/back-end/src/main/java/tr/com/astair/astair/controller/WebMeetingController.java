@@ -28,7 +28,7 @@ public class WebMeetingController implements WebMeetingControllerApi {
     }
 
     public ResponseEntity<WebMeeting> setMeeting(@RequestBody WebMeeting w) {
-        WebMeeting test = new WebMeeting(w.getUsername(), w.getDate(), w.getRoom(), w.getTime(), w.getDescription(), w.getParticipants());
+        WebMeeting test = new WebMeeting(w.getUsername(), w.getDate(), w.getRoom(), w.getStartTime(), w.getEndTime(), w.getDescription(), w.getParticipants());
         webMeetingService.setMeeting(test);
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
@@ -46,6 +46,14 @@ public class WebMeetingController implements WebMeetingControllerApi {
 
     public ResponseEntity<List<WebMeeting>> getMeetingARange(@PathVariable String beginDate, String finishDate, String room) {
         List<WebMeeting> test = webMeetingService.getMeetingARange(beginDate, finishDate, room);
+        if (test == null) {
+            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<WebMeeting>> findSpareRoom(@PathVariable String beginDate, String finishDate, String startTime, String endTime) {
+        List<WebMeeting> test = webMeetingService.findSpareRoom(beginDate, finishDate, startTime, endTime);
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }

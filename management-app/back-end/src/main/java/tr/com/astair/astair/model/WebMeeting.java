@@ -13,34 +13,33 @@ public class WebMeeting {
     @Column(name = "username")
     private String username;
 
-
     @Column(name = "date")
     private String date;
-
 
     @Column(name = "room")
     private String room;
 
+    @Column(name = "startTime")
+    private String startTime;
 
-    @Column(name = "time")
-    private String time;
+    @Column(name = "endTime")
+    private String endTime;
 
     @Column(name = "description")
     private String description;
 
-
     @Column(name = "participants")
     private String participants;
-
 
     public WebMeeting() {
     }
 
-    public WebMeeting(String username, String date, String room, String time, String description, String participants) {
+    public WebMeeting(String username, String date, String room, String startTime, String endTime, String description, String participants) {
         this.setUsername(username);
         this.setDate(date);
         this.setRoom(room);
-        this.setTime(time);
+        this.setStartTime(startTime);
+        this.setEndTime(endTime);
         this.setDescription(description);
         this.setParticipants(participants);
     }
@@ -77,12 +76,20 @@ public class WebMeeting {
         this.room = room;
     }
 
-    public String getTime() {
-        return time;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getDescription() {

@@ -48,6 +48,14 @@ public class WebMeetingServiceImp implements WebMeetingService {
         }
     }
 
+    public List<WebMeeting> findSpareRoom(String beginDate, String finishDate, String startTime, String endTime) {
+        try {
+            return webMeetingRepository.findSpareRoom(beginDate, finishDate, startTime, endTime);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
     public List<WebMeeting> getLastMeeting() {
         try {
             return webMeetingRepository.getLastMeeting();
