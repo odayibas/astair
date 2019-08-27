@@ -15,29 +15,14 @@ Watch the video:
 * [Management Application](/management-app/README.md)
 * [Video Analytics](/video-analytics/README.md)
 
-
-## Installing
-
-[TODO: write preprequisites for development like CUDA, OpenCV, etc. for each component (here or in the sub-readme)]
-[TODO: steps to install development environment. Give example, end with demo]
-
-
-## Running the tests
-
-[TODO: Explain how to run the automated tests for this system]
-
-
-## Deployment
-
-[TODO: Add additional notes about how to deploy this on a live system]
-
 ## Built With
 
-* [YOLO](https://pjreddie.com/darknet/yolo/) - Object Detection
-* [OPENCV](https://opencv.org/)- Open Source Computer Vision Library
-* [Keras](https://keras.io/) - Learning algorithms
-* [TODO](http://www.todo.com/) - The web framework used, etc...
-
+* [YOLO](https://pjreddie.com/darknet/yolo/) - Object detection
+* [Open AI](https://openai.com/)- RL implementations
+* [Spring Boot](https://spring.io/projects/spring-boot) - Backend
+* [ReactJS](https://reactjs.org/) - Frontend
+* [SparkFun ESP32 Thing](https://www.sparkfun.com/products/13907) - Sensor&controller boards
+* [Zaxe 3D printer](http://zaxe.com/en/) - Printing sensor&controller cases
 
 ## Versioning
 
