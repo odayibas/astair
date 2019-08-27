@@ -19,10 +19,10 @@ public class WebMeeting {
     @Column(name = "room")
     private String room;
 
-    @Column(name = "startTime")
+    @Column(name = "starttime")
     private String startTime;
 
-    @Column(name = "endTime")
+    @Column(name = "endtime")
     private String endTime;
 
     @Column(name = "description")

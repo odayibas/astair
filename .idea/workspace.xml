@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2b35e841-19d4-4884-b4b1-43ae2e25cebd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/astair.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/astair.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/WebMeetingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/WebMeetingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/WebMeetingControllerApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/WebMeetingControllerApi.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/model/WebMeeting.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/model/WebMeeting.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/WebMeetingServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/WebMeetingServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/WebMeetingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/WebMeetingService.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,7 +28,11 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="findjar.last.used.dir" value="$PROJECT_DIR$/management-app/back-end" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/management-app/back-end" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -50,7 +47,18 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.All in astair">
+    <configuration name="All in astair" type="JUnit" factoryName="JUnit">
+      <module name="astair" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="PARAMETERS" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="modelDecision" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="astair" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -72,6 +80,9 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="JUnit.All in astair" />
+    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -91,7 +102,14 @@
       <option name="project" value="LOCAL" />
       <updated>1562908913228</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="new two columns: startTime and endTime.&#10;Added getMeetingARange (startDate, endDate, startTime, endTime) function.">
+      <created>1566904085326</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1566904085326</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -121,6 +139,7 @@
       <path value="$PROJECT_DIR$/controller-logic/keras-rl" />
     </ignored-roots>
     <MESSAGE value="Test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test" />
+    <MESSAGE value="new two columns: startTime and endTime.&#10;Added getMeetingARange (startDate, endDate, startTime, endTime) function." />
+    <option name="LAST_COMMIT_MESSAGE" value="new two columns: startTime and endTime.&#10;Added getMeetingARange (startDate, endDate, startTime, endTime) function." />
   </component>
 </project>
