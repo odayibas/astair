@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Table } from "react-bootstrap";
+import { Table, Button, Col, Row } from "react-bootstrap";
 import update from "immutability-helper";
 import { fontSize } from "@material-ui/system";
+import { Container } from "@material-ui/core";
 
 class Schedule extends Component {
   prevLoc = { x: -1, y: -1 };
@@ -22,6 +23,7 @@ class Schedule extends Component {
   today;
   scheduleMap;
   pressedForeign;
+  actualDayOfToday;
 
   constructor(props) {
     super(props);
@@ -33,6 +35,7 @@ class Schedule extends Component {
     this.firstSchedule = this.getEmptyArray(this.numberOfRow, this.numberOfCol);
     this.selectedSlots = new Set();
     this.getWeek();
+    this.actualDayOfToday = new Date();
     this.state.schedule = this.convertMeetingsToLocations(
       this.props.meetings,
       this.props.roomset
@@ -137,20 +140,21 @@ class Schedule extends Component {
           }
           y++;
         }
-        const index = this.props.rooms.indexOf(meeting.room);
-        if (index !== -1) {
-          if (selectedRooms.has(index)) {
-            // construct a map key: roomname | value: roomID
-            // console.log("The block should be added");
+        if (this.props.rooms) {
+          const index = this.props.rooms.indexOf(meeting.room);
+          if (index !== -1) {
+            if (selectedRooms.has(index)) {
+              // construct a map key: roomname | value: roomID
+              // console.log("The block should be added");
 
-            if (!this.scheduleMap[x][y]) {
-              this.scheduleMap[x][y] = [];
+              if (!this.scheduleMap[x][y]) {
+                this.scheduleMap[x][y] = [];
+              }
+              this.scheduleMap[x][y].push(meeting);
+              if (result[x][y] === 0) result[x][y] = index + 2;
+              else if (result[x][y] !== index + 2) result[x][y] = -1;
             }
-            this.scheduleMap[x][y].push(meeting);
-            if (result[x][y] === 0) result[x][y] = index + 2;
-            else if (result[x][y] !== index + 2) result[x][y] = -1;
           }
-        } else {
         }
       }
     });
@@ -325,8 +329,66 @@ class Schedule extends Component {
         {elements.map(item => {
           let className = "text-center ";
           let text = "";
+          if (item.id === 0) {
+            // top left corner
+            return (
+              <th
+                style={{
+                  verticalAlign: "inherit",
+                  textAlign: "-webkit-center"
+                }}
+              >
+                <tr className="text-center">
+                  <Container style={{ padding: 0 }}>
+                    <Row>
+                      <Col xs={6} style={{ padding: 5 }}>
+                        <Button
+                          className="btn-dark"
+                          onClick={() => {
+                            this.props.onNextSchedule(-1);
+                          }}
+                        >
+                          {"<"}
+                        </Button>
+                      </Col>
+                      <Col xs={6} style={{ padding: 5 }}>
+                        <Button
+                          className="btn-dark"
+                          onClick={() => {
+                            this.props.onNextSchedule(1);
+                          }}
+                        >
+                          {">"}
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Container>
+                </tr>
+              </th>
+            );
+          }
           if (typeof item.value === "string") {
             text = item.value;
+            if (
+              item.id % this.numberOfCol === this.actualDayOfToday.getDay() &&
+              item.id < this.numberOfCol &&
+              this.actualDayOfToday.getDate() === this.props.today.getDate() &&
+              this.actualDayOfToday.getMonth() ===
+                this.props.today.getMonth() &&
+              this.actualDayOfToday.getFullYear() ===
+                this.props.today.getFullYear()
+            ) {
+              className += " bg-danger";
+            }
+
+            if (
+              item.id > this.numberOfCol &&
+              item.id % this.numberOfCol === 0 &&
+              this.timeSlots[Math.floor(item.id / this.numberOfCol) - 1]
+                .hours === this.actualDayOfToday.getHours()
+            ) {
+              className += " bg-danger";
+            }
           } else {
             if (item.value === -1) className += " bg-danger";
             else if (item.value === 0) className += "";

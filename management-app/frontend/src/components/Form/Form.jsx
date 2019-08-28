@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Card, CardBody } from "reactstrap";
 import axios from "axios";
-import { get as getCookie } from "es-cookie";
+import { get as getCookie, set as setCookie } from "es-cookie";
 import { Col, Row } from "reactstrap";
 import { Redirect } from "react-router-dom";
 import "react-vertical-timeline-component/style.min.css";
@@ -67,6 +67,7 @@ class SlackForm extends Component {
           }));
 
           if (vote_id !== this.state.vote_id) {
+            setCookie("form_notification", "1");
             this.setState({
               show: true
             });
@@ -96,6 +97,8 @@ class SlackForm extends Component {
     this.setState({ show: false });
     setTimeout(() => {
       this.setState({ show: true });
+      setCookie("form_notification", "1");
+      this.props.showNotification(true);
     }, t * 60 * 1000);
   };
 
@@ -105,6 +108,7 @@ class SlackForm extends Component {
     if (show === true) {
       return (
         <Survey
+          showNotification={this.props.showNotification}
           results={this.state.results}
           setResults={x => {
             this.setResults(x);
@@ -150,6 +154,7 @@ class SlackForm extends Component {
   }
 
   render() {
+    console.log("Time", time);
     if (getCookie("usertoken") === "1" || getCookie("usertoken") === "2") {
       return (
         <div className="page-main">

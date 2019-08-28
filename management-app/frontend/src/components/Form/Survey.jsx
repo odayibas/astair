@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Card, CardBody } from "reactstrap";
 import { Form, FormGroup, FormLabel, FormControl } from "react-bootstrap";
 import axios from "axios";
-import { get as getCookie } from "es-cookie";
+import { get as getCookie, set as setCookie } from "es-cookie";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 var vote_id, today, hour;
@@ -75,6 +75,8 @@ class Survey extends Component {
     if (this.state.vote === "" || this.state.region === "") {
       console.log("Invalid choice please choose a valid option ");
     } else {
+      setCookie("form_notification", "0");
+      this.props.showNotification(false);
       var vote = takeVoteId();
       this.setState({ vote_id: vote });
       this.setVoteRegion(this.state.vote, this.state.region);

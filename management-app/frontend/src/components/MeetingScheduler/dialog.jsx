@@ -8,7 +8,9 @@ import {
   Col,
   Container,
   Form,
-  Table
+  Table,
+  Dropdown,
+  Toast
 } from "react-bootstrap";
 
 import ParticipantTable from "./participants";
@@ -17,6 +19,12 @@ class Dialog extends Component {
   state = {};
   participants = [];
   input;
+
+  constructor(props) {
+    super(props);
+    this.state.currentRoom = "";
+  }
+
   convertTimeToString = t => {
     var hours = "";
     var minutes = "";
@@ -51,6 +59,42 @@ class Dialog extends Component {
     this.participants = new Set(participants);
   };
 
+  getRooms = () => {
+    return this.props.rooms.map(room => {
+      return (
+        <Dropdown.Item
+          onClick={() => {
+            this.setState({ currentRoom: room });
+          }}
+          id={room}
+        >
+          {room}
+        </Dropdown.Item>
+      );
+    });
+  };
+
+  getRoomHeader = () => {
+    if (this.state.currentRoom === "") {
+      return "Select Room";
+    } else {
+      return "Room " + this.state.currentRoom;
+    }
+  };
+
+  handleCreateClick = () => {
+    if (this.state.currentRoom === "") {
+      this.props.showToast("danger", "Please select a room.");
+      console.log("[ERROR], Select a room.");
+    } else {
+      this.props.onHide();
+      const description = this.input.value;
+      this.props.setDescription(description);
+      this.props.onCreateMeeting(this.state.currentRoom);
+      this.setState({ currentRoom: "" });
+    }
+  };
+
   render() {
     return (
       <Modal
@@ -68,14 +112,24 @@ class Dialog extends Component {
           <h5>Creator: Serdar Gurbuz</h5>
           <Container style={{ marginTop: 20, marginBottom: 20 }}>
             <Row className="flex-row">
-              <Col className="text-center" xs={4}>
+              <Col className="text-center align-self-center" xs={4}>
                 Date: {this.getDate()}
               </Col>
-              <Col className="text-center" xs={4}>
+              <Col className="text-center align-self-center" xs={4}>
                 Time: {this.getTime()}
               </Col>
               <Col className="text-center" xs={4}>
-                Room: {this.props.data.room}
+                <Dropdown>
+                  <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                    {this.getRoomHeader()}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu
+                    style={{ maxHeight: "120px", overflowY: "auto" }}
+                  >
+                    {this.getRooms()}
+                  </Dropdown.Menu>
+                </Dropdown>
               </Col>
             </Row>
           </Container>
@@ -108,15 +162,18 @@ class Dialog extends Component {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button onClick={this.props.onHide} variant="danger">
+          <Button
+            onClick={() => {
+              this.props.onHide();
+              this.setState({ currentRoom: "" });
+            }}
+            variant="danger"
+          >
             Cancel
           </Button>
           <Button
             onClick={() => {
-              this.props.onHide();
-              const description = this.input.value;
-              this.props.setDescription(description);
-              this.props.onCreateMeeting();
+              this.handleCreateClick();
             }}
           >
             Create

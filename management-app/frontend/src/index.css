@@ -241,3 +241,59 @@ input[type="checkbox"].switch:checked + div > div {
   -webkit-transform: translate3d(46px, 0, 0);
   transform: translate3d(46px, 0, 0);
 }
+
+.toast {
+  align-items: center;
+  border-radius: 25px;
+  bottom: 0px;
+  display: flex;
+  min-height: 50px;
+  max-height: 50px;
+  justify-content: space-between;
+  left: 50%;
+  padding: 0 20px;
+  position: fixed;
+  -webkit-transform: translateX(-50%) translateY(150%);
+  transform: translateX(-50%) translateY(150%);
+  transition: -webkit-transform 0.35s ease;
+  transition: transform 0.35s ease;
+  transition: transform 0.35s ease, -webkit-transform 0.35s ease;
+}
+.toast.visible {
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+.toast.success {
+  background-color: #16a085;
+}
+.toast.success p {
+  color: #fff;
+}
+.toast.danger {
+  background-color: #c0392b;
+}
+.toast.danger p {
+  color: #fff;
+}
+.toast.warning {
+  background-color: #f38211;
+}
+.toast.warning p {
+  color: #fff;
+}
+.toast figure {
+  height: 35px;
+  margin: 0 15px 0 0;
+  opacity: 0.9;
+  width: 35px;
+}
+.toast figure img {
+  height: 100%;
+  width: 100%;
+}
+.toast p {
+  color: #fff;
+  font-family: "Noto Sans";
+  font-size: 18px;
+  white-space: nowrap;
+}
