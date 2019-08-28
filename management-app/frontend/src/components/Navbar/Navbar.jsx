@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { get as getCookie, remove as removeCookie } from "es-cookie";
+import { Badge } from "react-bootstrap";
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -12,6 +13,20 @@ class AppNavbar extends Component {
     removeCookie("usertoken");
     this.props.history.push("/");
   }
+
+  getBadge = () => {
+    console.log("Get badge");
+    if (getCookie("form_notification") === "1" || this.props.showBadge) {
+      console.log("need badge");
+      return (
+        <Badge pill variant="warning">
+          !
+        </Badge>
+      );
+    } else {
+      return;
+    }
+  };
 
   getNavbar() {
     if (getCookie("usertoken") === "1") {
@@ -28,7 +43,7 @@ class AppNavbar extends Component {
             <h5>AC Control</h5>
           </Nav.Link>
           <Nav.Link href="/form" className="nav-link">
-            <h5>Form</h5>
+            <h5>Form {this.getBadge()}</h5>
           </Nav.Link>
           <Nav.Link href="/meetingscheduler" className="nav-link">
             <h5>Meeting Scheduler</h5>
@@ -53,7 +68,7 @@ class AppNavbar extends Component {
           </Nav.Link>
 
           <Nav.Link href="/form" className="nav-link">
-            <h5>Form</h5>
+            <h5>Form {this.getBadge()}</h5>
           </Nav.Link>
           <Nav.Link href="/meetingscheduler" className="nav-link">
             <h5>Meeting Scheduler</h5>
@@ -80,6 +95,7 @@ class AppNavbar extends Component {
   }
 
   render() {
+    console.log("Navbar render");
     return (
       <Navbar
         collapseOnSelect

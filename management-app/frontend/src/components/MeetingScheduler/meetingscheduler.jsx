@@ -22,11 +22,11 @@ class MeetingScheduler extends Component {
     summary: {},
     showSummary: false,
     creating: false,
-    roomset: new Set([0]), // Degistir
+    roomset: new Set([]), // Degistir
     headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     timeSlot: {
       start: {
-        hours: 9,
+        hours: 7,
         minutes: 0
       },
       end: {
@@ -38,18 +38,38 @@ class MeetingScheduler extends Component {
         minutes: 0
       }
     },
+    rooms: undefined,
     meetings: [],
     rawMeetings: [],
-    rooms: ["A", "B", "C", "Front Room"],
     scheduleID: 0,
     multiSchedule: undefined,
     today: undefined
   };
 
+  constructor(props) {
+    super(props);
+  }
+
+  fetchRooms = () => {
+    let rooms = [];
+    return axios
+      .get(urlServer + "/rooms/get-all-rooms")
+      .then(res => {
+        console.log("data", res.data);
+        res.data.forEach(item => {
+          rooms.push(item.room);
+        });
+        this.setState({ rooms: rooms });
+      })
+      .catch(err => {
+        console.log("[ERROR (GET ALL ROOMS API)] ", err);
+      });
+  };
+
   componentDidMount() {
     const s = new Set();
-    s.add(0);
     this.setState({ roomset: s });
+    this.fetchRooms();
     this.getMeetingsFromDatabase();
   }
 
@@ -109,6 +129,14 @@ class MeetingScheduler extends Component {
       };
     }
     return week;
+  };
+
+  getSelectedRoomsAsStrings = () => {
+    let result = [];
+    this.state.roomset.forEach(item => {
+      result.push(this.state.rooms[item]);
+    });
+    return result;
   };
 
   getTimeSlots = () => {
@@ -190,29 +218,60 @@ class MeetingScheduler extends Component {
     return result;
   };
 
+  processData = data => {
+    let meetingArray = this.decodeMeetingData(data);
+    this.setState({ rawMeetings: meetingArray });
+    // console.log("Meeting Data is ready for processing ", meetingArray);
+    // CONSTRUCT SCHEDULE ARRAY
+    this.setState(
+      {
+        meetings: this.constructScheduleFromMeetings(meetingArray)
+      },
+      () => {
+        // console.log("Meetings are ready to forward.");
+        const b = !this.state.readyForDisplay;
+        this.setState({ readyForDisplay: b });
+        this.handleSummary("hide");
+      }
+    );
+  };
+
+  getAvailableRooms = (date, startTime, endTime) => {
+    let thisWeek = this.getWeek();
+    const startDate = this.convertDateToString(thisWeek[0], "year");
+    const endDate = this.convertDateToString(thisWeek[4], "year");
+
+    return axios
+      .get(
+        urlServer +
+          "/meeting/find-spare-room/" +
+          startDate +
+          "/" +
+          endDate +
+          "/" +
+          this.convertTimeToString(startTime) +
+          "/" +
+          this.convertTimeToString(endTime)
+      )
+      .then(res => {
+        // console.log("Data fetched successfuly ", res.data);
+        console.log("Available rooms are", res.data);
+      })
+      .catch(err => {
+        console.log("[ERROR (AVAILABLE ROOM API)]", err);
+      });
+  };
+
   fetchMeetings = (startDate, endDate) => {
     // console.log("Data fetching from database...");
+
     return axios
       .get(
         urlServer + "/meeting/get-meeting-a-range/" + startDate + "/" + endDate
       )
       .then(res => {
         // console.log("Data fetched successfuly ", res.data);
-        let meetingArray = this.decodeMeetingData(res.data);
-        this.setState({ rawMeetings: meetingArray });
-        // console.log("Meeting Data is ready for processing ", meetingArray);
-        // CONSTRUCT SCHEDULE ARRAY
-        this.setState(
-          {
-            meetings: this.constructScheduleFromMeetings(meetingArray)
-          },
-          () => {
-            // console.log("Meetings are ready to forward.");
-            const b = !this.state.readyForDisplay;
-            this.setState({ readyForDisplay: b });
-            this.handleSummary("hide");
-          }
-        );
+        this.processData(res.data);
       })
       .catch(err => {
         console.log("****", err);
@@ -229,9 +288,8 @@ class MeetingScheduler extends Component {
       const username = element.username;
       const description = element.description;
       const date = this.convertStringToDate(element.date, "year");
-      const temp = element.time.split("-");
-      const start = this.convertStringToTime(temp[0]);
-      const end = this.convertStringToTime(temp[1]);
+      const start = this.convertStringToTime(element.startTime);
+      const end = this.convertStringToTime(element.endTime);
       const room = element.room;
       meetingArray.push({
         id: i,
@@ -274,9 +332,14 @@ class MeetingScheduler extends Component {
     // console.log("Meeting date:", date);
     // console.log("Meeting Start:", start);
     // console.log("Meeting End:", end);
-    const room = this.state.rooms[this.state.roomset.values().next().value];
-    const summary = { date, start, end, room };
-    this.setState({ summary: summary }, () => {});
+    if (this.state.roomset.size === 0) {
+      console.log("Show options");
+      this.getAvailableRooms(date, start, end);
+    } else {
+      const room = this.state.rooms[this.state.roomset.values().next().value];
+      const summary = { date, start, end, room };
+      this.setState({ summary: summary }, () => {});
+    }
   };
 
   // This is for dropdown menu. Currently it is not being used.
@@ -347,33 +410,40 @@ class MeetingScheduler extends Component {
   };
 
   postMeeting = meeting => {
-    // console.log("The meeting is going to be inserted", meeting);
+    console.log("The meeting is going to be inserted", meeting);
     const description = meeting.description;
     const participants = meeting.participants;
     const room = meeting.room;
     const username = "From frontend";
     const date = this.convertDateToString(meeting.date, "year");
-    const time =
-      this.convertTimeToString(meeting.start) +
-      "-" +
-      this.convertTimeToString(meeting.end);
+    const startTime = this.convertTimeToString(meeting.start);
+    const endTime = this.convertTimeToString(meeting.end);
 
     axios
       .post(urlServer + "/meeting/set-meeting", {
         room,
         username,
         date,
-        time,
+        startTime,
+        endTime,
         description,
         participants
       })
       .then(res => {
         console.log("Inserted successfuly");
+        this.props.showToast(
+          "success",
+          "The meeting has been set successfully."
+        );
         // UPDATE SCHEDULE
         this.getMeetingsFromDatabase();
       })
       .catch(err => {
         console.log("Error while inserting", err);
+        this.props.showToast(
+          "danger",
+          "En error occured while creating meeting. Try again later."
+        );
       });
   };
 
@@ -420,6 +490,9 @@ class MeetingScheduler extends Component {
     } else {
       return (
         <Schedule
+          onNextSchedule={this.handleNextSchedule}
+          showToast={this.props.showToast}
+          hideToast={this.props.hideToast}
           readyForDisplay={this.state.readyForDisplay}
           onRef={ref => (this.scheduleChild = ref)}
           today={this.state.today}
@@ -443,7 +516,7 @@ class MeetingScheduler extends Component {
     }
   };
 
-  handleCreateMeeting = () => {
+  handleCreateMeeting = room => {
     // this.postMeeting(this.state.summary);
     //this.setShowDialog(true);
     let participants = "";
@@ -452,7 +525,7 @@ class MeetingScheduler extends Component {
     });
     const dataPosted = {
       participants,
-      room: this.state.summary.room,
+      room: room,
       date: this.state.summary.date,
       start: this.state.summary.start,
       end: this.state.summary.end,
@@ -483,6 +556,8 @@ class MeetingScheduler extends Component {
           <Col md={3}>
             <div style={{ textAlign: "center" }}>
               <ButtonPanel
+                showToast={this.props.showToast}
+                hideToast={this.props.hideToast}
                 onMultiRoomSelected={roomset => {
                   this.handleMultiRoomSelected(roomset);
                 }}
@@ -503,6 +578,8 @@ class MeetingScheduler extends Component {
           </Col>
         </Row>
         <Dialog
+          showToast={this.props.showToast}
+          hideToast={this.props.hideToast}
           updateParticipants={participants => {
             this.updateParticipants(participants);
           }}
@@ -511,6 +588,7 @@ class MeetingScheduler extends Component {
           }}
           onCreateMeeting={this.handleCreateMeeting}
           data={this.state.summary}
+          rooms={this.getSelectedRoomsAsStrings()}
           show={this.state.showDialog}
           allParticipants={this.allParticipants}
           onHide={() => {

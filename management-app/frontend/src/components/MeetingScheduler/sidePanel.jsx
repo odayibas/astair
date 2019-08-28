@@ -7,6 +7,7 @@ import { maxWidth, maxHeight } from "@material-ui/system";
 import SummaryPanel from "./summarypanel";
 
 import axios from "axios";
+import Toast from "./toast";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
@@ -24,6 +25,8 @@ class ButtonPanel extends Component {
           }}
         >
           <SummaryPanel
+            showToast={this.props.showToast}
+            hideToast={this.props.hideToast}
             data={this.props.summaryData}
             onCreateMeeting={this.props.onCreateMeeting}
             onShowDialog={this.props.onShowDialog}
@@ -62,32 +65,6 @@ class ButtonPanel extends Component {
             items={this.props.rooms}
           />
 
-          <Row className="flex-row">
-            <Col xs={6}>
-              <Button
-                xs={12}
-                block
-                variant="warning"
-                onClick={() => {
-                  this.props.onNextSchedule(-1);
-                }}
-              >
-                {"<"}
-              </Button>
-            </Col>
-            <Col xs={6}>
-              <Button
-                xs={12}
-                block
-                variant="warning"
-                onClick={() => {
-                  this.props.onNextSchedule(1);
-                }}
-              >
-                {">"}
-              </Button>
-            </Col>
-          </Row>
           {this.getSummaryPanel()}
         </Container>
       </div>

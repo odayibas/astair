@@ -10,40 +10,42 @@ class CheckBoxGroup extends Component {
     items: []
   };
   checkedButtons;
-  checkedCount = 1;
+  checkedCount = 0;
 
   constructor(props) {
     super(props);
     this.checkedButtons = new Set();
   }
 
-  componentDidMount() {
-    const indexedItems = this.indexItems(this.props.items);
-    this.setState({ items: indexedItems });
+  componentWillReceiveProps(newProps) {
+    if (!this.props.items && newProps.items) {
+      const indexedItems = this.indexItems(newProps.items);
+      this.setState({ items: indexedItems }, () => {
+        console.log(this.state.items);
+      });
+    }
   }
 
+  componentDidMount() {}
+
   indexItems = arr => {
+    if (!arr) return [];
     let index = 0;
     let result = [];
     arr.forEach(element => {
       result.push({ id: index, checked: false, label: element });
       index++;
     });
-    result[0].checked = true;
-    this.checkedButtons.add(0);
     return result;
   };
 
   handleClick = id => {
     const cur = this.state.items[id].checked;
 
-    if (cur)
-      if (this.checkedCount === 1) return;
-      else {
-        this.checkedCount--;
-        this.checkedButtons.delete(id);
-      }
-    else {
+    if (cur) {
+      this.checkedCount--;
+      this.checkedButtons.delete(id);
+    } else {
       this.checkedCount++;
       this.checkedButtons.add(id);
     }
@@ -114,7 +116,7 @@ class CheckBoxGroup extends Component {
                   color={"default"}
                   key={item.id}
                   onChange={() => {
-                    this.handleClickAsRadioButtons(item.id);
+                    this.handleClick(item.id);
                   }}
                   checked={item.checked}
                 />
@@ -128,7 +130,16 @@ class CheckBoxGroup extends Component {
   };
 
   render() {
-    return <Container>{this.getCheckBoxes()}</Container>;
+    return (
+      <Container className="border rounded">
+        <Row>
+          <Col xs={12} style={{ marginBottom: 10, marginTop: 10 }}>
+            <span style={{ fontSize: "1.25em" }}>Rooms</span>
+          </Col>
+        </Row>
+        {this.getCheckBoxes()}
+      </Container>
+    );
   }
 }
 
