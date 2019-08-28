@@ -13,6 +13,13 @@ public class Rooms {
     @Column(name = "room", nullable = false)
     private String room;
 
+    public Rooms(){
+    }
+
+    public Rooms(String room){
+        this.room = room;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface RoomsService {
     List<Rooms> getAllRooms();
+    Rooms addRoom(Rooms room);
 }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 import tr.com.astair.astair.controller.api.RoomsControllerApi;
 import tr.com.astair.astair.model.Rooms;
 import tr.com.astair.astair.service.RoomsService;
@@ -25,4 +26,14 @@ public class RoomsController implements RoomsControllerApi{
         }
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
+
+    public ResponseEntity<Rooms> addRoom(@RequestBody Rooms room) {
+        Rooms test = new Rooms(room.getRoom());
+        roomsService.addRoom(test);
+        if (test == null) {
+            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
 }

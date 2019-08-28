@@ -23,4 +23,11 @@ public class RoomsServiceImp implements RoomsService {
             throw new QueryException(e.getMessage());
         }
     }
+    public Rooms addRoom(Rooms room){
+        try {
+            return roomsRepository.save(room);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
 }
