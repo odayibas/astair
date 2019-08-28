@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2b35e841-19d4-4884-b4b1-43ae2e25cebd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/model/WebMeeting.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/model/WebMeeting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/UserNamesRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/UserNamesRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,7 +31,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="findjar.last.used.dir" value="$PROJECT_DIR$/management-app/back-end" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/management-app/back-end" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -82,6 +83,7 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.All in astair" />
+      <item itemvalue="Python.modelDecision" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -111,15 +113,6 @@
     </task>
     <option name="localTasksCounter" value="3" />
     <servers />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
