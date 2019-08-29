@@ -36,8 +36,8 @@ public class RoomsController implements RoomsControllerApi{
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
-    public ResponseEntity<Rooms> deleteRoom(@PathVariable("id") Integer id) {
-        Rooms test = roomsService.deleteRoom(id);
+    public ResponseEntity<Rooms> deleteRoom(@RequestBody Rooms room) {
+        Rooms test = roomsService.deleteRoom(room.getRoom());
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }
