@@ -22,7 +22,10 @@ public interface WebMeetingControllerApi {
     ResponseEntity<List<String>> findSpareRoom(@PathVariable String date, @PathVariable String startTime, @PathVariable String endTime);
 
     @GetMapping("/meeting/find-how-much-spare/{date}/{time}/{room}")
-    ResponseEntity<List<WebMeeting>> findHowMuchSpare(@PathVariable String date, @PathVariable String time, @PathVariable String room);
+    ResponseEntity<Integer> findHowMuchSpare(@PathVariable String date, @PathVariable String time, @PathVariable String room);
+
+    @GetMapping("/meeting/appropriate-rooms/{date}")
+    ResponseEntity<List<String>> appropriateRooms(@PathVariable String date);
 
     @GetMapping("/meeting/get-last-meeting")
     ResponseEntity<List<WebMeeting>> getLastMeeting();

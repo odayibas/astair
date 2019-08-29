@@ -60,8 +60,16 @@ public class WebMeetingController implements WebMeetingControllerApi {
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<WebMeeting>> findHowMuchSpare(@PathVariable String date, String time, String room) {
-        List<WebMeeting> test = webMeetingService.findHowMuchSpare(date, time, room);
+    public ResponseEntity<Integer> findHowMuchSpare(@PathVariable String date, String time, String room) {
+        Integer test = webMeetingService.findHowMuchSpare(date, time, room);
+        if (test == null) {
+            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(test, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<String>> appropriateRooms(@PathVariable String date) {
+        List<String> test = webMeetingService.appropriateRooms(date);
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }

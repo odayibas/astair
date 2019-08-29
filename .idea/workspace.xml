@@ -135,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566996134314</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="findSpareRoom function gives room's names.">
+      <created>1567056733668</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1567056733668</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -160,6 +167,7 @@
     <MESSAGE value="Fixed error in findSpareRoom. Added usernames." />
     <MESSAGE value="Added setRoom()" />
     <MESSAGE value="Fixed error." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed error." />
+    <MESSAGE value="findSpareRoom function gives room's names." />
+    <option name="LAST_COMMIT_MESSAGE" value="findSpareRoom function gives room's names." />
   </component>
 </project>
