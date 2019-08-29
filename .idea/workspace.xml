@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="2b35e841-19d4-4884-b4b1-43ae2e25cebd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/WebMeetingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/WebMeetingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/WebMeetingControllerApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/WebMeetingControllerApi.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/WebMeetingServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/WebMeetingServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/WebMeetingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/WebMeetingService.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -124,7 +128,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566993670097</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Fixed error.">
+      <created>1566996134314</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1566996134314</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -148,6 +159,7 @@
     <MESSAGE value="new two columns: startTime and endTime.&#10;Added getMeetingARange (startDate, endDate, startTime, endTime) function." />
     <MESSAGE value="Fixed error in findSpareRoom. Added usernames." />
     <MESSAGE value="Added setRoom()" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added setRoom()" />
+    <MESSAGE value="Fixed error." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed error." />
   </component>
 </project>

@@ -19,7 +19,10 @@ public interface WebMeetingControllerApi {
     ResponseEntity<List<WebMeeting>> getMeetingARange(@PathVariable String beginDate, @PathVariable String finishDate, @PathVariable String room );
 
     @GetMapping("/meeting/find-spare-room/{date}/{startTime}/{endTime}")
-    ResponseEntity<List<WebMeeting>> findSpareRoom(@PathVariable String date, @PathVariable String startTime, @PathVariable String endTime);
+    ResponseEntity<List<String>> findSpareRoom(@PathVariable String date, @PathVariable String startTime, @PathVariable String endTime);
+
+    @GetMapping("/meeting/find-how-much-spare/{date}/{time}/{room}")
+    ResponseEntity<List<WebMeeting>> findHowMuchSpare(@PathVariable String date, @PathVariable String time, @PathVariable String room);
 
     @GetMapping("/meeting/get-last-meeting")
     ResponseEntity<List<WebMeeting>> getLastMeeting();

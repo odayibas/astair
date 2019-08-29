@@ -8,6 +8,7 @@ public interface WebMeetingService {
     WebMeeting setMeeting(WebMeeting w);
     List<WebMeeting> getMeetingARange(String beginDate, String finishDate);
     List<WebMeeting> getMeetingARange(String beginDate, String finishDate, String room);
-    List<WebMeeting> findSpareRoom(String date, String startTime, String endTime);
+    List<String> findSpareRoom(String date, String startTime, String endTime);
+    List<WebMeeting> findHowMuchSpare(String date, String time, String room);
     List<WebMeeting> getLastMeeting();
 }
