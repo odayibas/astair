@@ -27,25 +27,30 @@ class Schedule extends Component {
 
   constructor(props) {
     super(props);
+    this.loadSettings(props);
+  }
 
-    this.timeSlots = this.getTimeSlots();
+  loadSettings = (props = this.props) => {
+    this.timeSlots = this.getTimeSlots(props);
     this.prepareSlotArrayString(this.timeSlots);
     this.numberOfCol = props.headerRow.length + 1;
     this.numberOfRow = this.slotArrayString.length;
     this.firstSchedule = this.getEmptyArray(this.numberOfRow, this.numberOfCol);
     this.selectedSlots = new Set();
-    this.getWeek();
+    this.getWeek(props);
     this.actualDayOfToday = new Date();
     this.state.schedule = this.convertMeetingsToLocations(
-      this.props.meetings,
-      this.props.roomset
+      props.meetings,
+      props.roomset,
+      props
     );
-  }
+    console.log("Loaded.");
+  };
 
   componentWillReceiveProps(newProps) {
-    // if (newProps.headerRow.length + 1 !== this.numberOfCol) {
-    //   this.numberOfCol = newProps.headerRow.length;
-    //   this.getWeek();
+    // if (newProps.timeSlot !== this.props.timeSlot) {
+    //   console.log("Hell yeah", newProps.timeSlot);
+    //   this.loadSettings(newProps);                       GOT AN ERROR
     // }
   }
 
@@ -68,7 +73,9 @@ class Schedule extends Component {
   }
 
   componentDidUpdate() {
+    console.log("Did it update");
     // IF ROOM CHANGES
+
     if (this.state.scheduleID !== this.props.scheduleID) {
       if (this.props.meetings && this.props.roomset) {
         this.setState({
@@ -119,7 +126,11 @@ class Schedule extends Component {
     };
   };
 
-  convertMeetingsToLocations = (meetings, selectedRooms) => {
+  convertMeetingsToLocations = (
+    meetings,
+    selectedRooms,
+    newProps = this.props
+  ) => {
     this.scheduleMap = [];
     for (let i = 0; i < this.numberOfRow; i++) {
       this.scheduleMap.push(new Array(this.numberOfCol));
@@ -147,8 +158,8 @@ class Schedule extends Component {
           }
           y++;
         }
-        if (this.props.rooms) {
-          const index = this.props.rooms.indexOf(meeting.room);
+        if (newProps.rooms) {
+          const index = newProps.rooms.indexOf(meeting.room);
           if (index !== -1) {
             if (
               selectedRooms.has(index) &&
@@ -172,15 +183,15 @@ class Schedule extends Component {
     return result;
   };
 
-  getWeek = () => {
+  getWeek = (props = this.props) => {
     let days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
     // if (this.numberOfCol === 1) {
     //   days = ["Today"];
     // }
     let week = new Array(days.length);
     let weekString = new Array(days.length);
-    const permToday = new Date(this.props.today);
-    this.setState({ today: this.props.today });
+    const permToday = new Date(props.today);
+    this.setState({ today: props.today });
     for (let i = 0; i <= days.length - 1; i++) {
       const todayDate = permToday;
       const todayDay = todayDate.getDay() - 1;
@@ -394,7 +405,7 @@ class Schedule extends Component {
             ) {
               className += " bg-danger";
             }
-
+            console.log(item.id);
             if (
               item.id > this.numberOfCol &&
               item.id % this.numberOfCol === 0 &&
@@ -484,18 +495,18 @@ class Schedule extends Component {
     }
   };
 
-  getTimeSlots = () => {
+  getTimeSlots = (newProps = this.props) => {
     var result = [];
-    var current = JSON.parse(JSON.stringify(this.props.timeSlot.start)); // Deep copy. Might not be useful for another case.
-    let interval = this.props.timeSlot.interval;
+    var current = JSON.parse(JSON.stringify(newProps.timeSlot.start)); // Deep copy. Might not be useful for another case.
+    let interval = newProps.timeSlot.interval;
 
     result.push({ hours: current.hours, minutes: current.minutes });
 
     while (
       // While current time is less than end time.
-      current.hours < this.props.timeSlot.end.hours ||
-      (current.hours === this.props.timeSlot.end.hours &&
-        current.minutes < this.props.timeSlot.end.minutes)
+      current.hours < newProps.timeSlot.end.hours ||
+      (current.hours === newProps.timeSlot.end.hours &&
+        current.minutes < newProps.timeSlot.end.minutes)
     ) {
       current.hours += interval.hours;
       current.minutes += interval.minutes;

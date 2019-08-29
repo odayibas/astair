@@ -32,8 +32,8 @@ class AdminPanel extends Component {
     if ((t + "").indexOf(":") !== 2 || t.length !== 5) return false;
 
     const temp = t.split(":");
-    const hours = t[0];
-    const minutes = t[1];
+    const hours = temp[0];
+    const minutes = temp[1];
 
     if (hours < "00" || hours > "23") return false;
     if (minutes < "00" || minutes > "59") return false;

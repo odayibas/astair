@@ -641,6 +641,14 @@ class MeetingScheduler extends Component {
 
   handleAdminSetSchedule = (start, end, interval) => {
     console.log("The settings are", start, end, interval);
+    const timeSlot = {
+      start: this.convertStringToTime(start),
+      end: this.convertStringToTime(end),
+      interval: this.convertStringToTime(interval)
+    };
+    this.setState({ timeSlot: timeSlot }, () => {
+      console.log("Settings check ", this.state.timeSlot);
+    });
   };
 
   getAdminPanel = () => {
