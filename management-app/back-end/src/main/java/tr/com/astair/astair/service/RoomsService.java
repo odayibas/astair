@@ -6,4 +6,5 @@ import java.util.List;
 public interface RoomsService {
     List<Rooms> getAllRooms();
     Rooms addRoom(Rooms room);
+    Rooms deleteRoom(Integer id);
 }

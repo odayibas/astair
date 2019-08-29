@@ -16,13 +16,34 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
     @Query(nativeQuery = true, value = "select * from meeting_web m where m.room = :room and m.date >= :beginDate and m.date <= :finishDate")
     List<WebMeeting> getMeetingARange(@Param("beginDate") String beginDate, @Param("finishDate") String finishDate, @Param("room") String room);
 
-    @Query(nativeQuery = true, value = "select p.room from meeting_web p except select distinct(m.room) from meeting_web m where ((m.startTime <= :startTime and m.endTime > :startTime) or (m.startTime < :endTime and m.endTime >= :endTime) or (m.startTime >= :startTime and m.endTime <= :endTime)) and m.date = :date")
+    @Query(nativeQuery = true, value = "select p.room " +
+            "from meeting_web p " +
+            "except " +
+            "select distinct(m.room) " +
+            "from meeting_web m " +
+            "where (" +
+                "(m.startTime <= :startTime and m.endTime > :startTime) " +
+                "or (m.startTime < :endTime and m.endTime >= :endTime) " +
+                "or (m.startTime >= :startTime and m.endTime <= :endTime)" +
+            ") and m.date = :date")
     List<String> findSpareRoom(@Param("date") String date, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
-    @Query(nativeQuery = true, value = "select cast(substring(m.startTime, 1, 2) as int) - cast(substring(:time, 1, 2) as int) from meeting_web m where m.date = :date and m.room = :room and m.startTime > :time")
+    @Query(nativeQuery = true, value = "select cast(substring(m.startTime, 1, 2) as int) - cast(substring(:time, 1, 2) as int) " +
+            "from meeting_web m " +
+            "where m.date = :date " +
+                "and m.room = :room " +
+                "and m.startTime > :time")
     Integer findHowMuchSpare(@Param("date") String date, @Param("time") String time, @Param("room") String room);
 
-    @Query(nativeQuery = true, value = "select p.room from meeting_web p except select m.room from meeting_web m where m.date = :date")
+    @Query(nativeQuery = true, value = "select p.room " +
+            "from meeting_web p " +
+            "except " +
+            "select m.room " +
+            "from meeting_web m " +
+            "where m.date = :date and m.startTime = '07:00' and m.endTime = (" +
+                "select p.endTime " +
+                "from meeting_web p " +
+                "where p.endTime = '17.00' and m.room = p.room and m.date = :date)")
     List<String> appropriateRooms(@Param("date") String date);
 
     @Query(nativeQuery = true, value = "select * from meeting_web")

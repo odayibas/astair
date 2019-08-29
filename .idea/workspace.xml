@@ -3,11 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="2b35e841-19d4-4884-b4b1-43ae2e25cebd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/WebMeetingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/WebMeetingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/WebMeetingControllerApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/WebMeetingControllerApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/RoomsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/RoomsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/RoomsControllerApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/controller/api/RoomsControllerApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/RoomsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/RoomsRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/repository/WebMeetingRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/WebMeetingServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/WebMeetingServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/WebMeetingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/WebMeetingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/RoomsServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/Imp/RoomsServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/RoomsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/management-app/back-end/src/main/java/tr/com/astair/astair/service/RoomsService.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,6 +23,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -33,11 +35,17 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="findjar.last.used.dir" value="$PROJECT_DIR$/management-app/back-end" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/management-app/back-end" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="tr.com.astair.astair.model" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -142,7 +150,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567056733668</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="findSpareRoom function is updated.">
+      <created>1567060605333</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1567060605333</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -168,6 +183,7 @@
     <MESSAGE value="Added setRoom()" />
     <MESSAGE value="Fixed error." />
     <MESSAGE value="findSpareRoom function gives room's names." />
-    <option name="LAST_COMMIT_MESSAGE" value="findSpareRoom function gives room's names." />
+    <MESSAGE value="findSpareRoom function is updated." />
+    <option name="LAST_COMMIT_MESSAGE" value="findSpareRoom function is updated." />
   </component>
 </project>

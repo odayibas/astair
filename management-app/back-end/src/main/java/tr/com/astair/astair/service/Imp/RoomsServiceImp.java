@@ -23,6 +23,7 @@ public class RoomsServiceImp implements RoomsService {
             throw new QueryException(e.getMessage());
         }
     }
+
     public Rooms addRoom(Rooms room){
         try {
             return roomsRepository.save(room);
@@ -30,4 +31,13 @@ public class RoomsServiceImp implements RoomsService {
             throw new QueryException(e.getMessage());
         }
     }
+
+    public Rooms deleteRoom(Integer id){
+        try {
+            return roomsRepository.deleteRoom(id);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
 }

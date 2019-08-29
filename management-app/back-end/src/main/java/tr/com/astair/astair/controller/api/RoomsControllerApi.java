@@ -12,4 +12,7 @@ public interface RoomsControllerApi {
     @PostMapping("/rooms/add-room")
     ResponseEntity<Rooms> addRoom(@RequestBody Rooms room);
 
+    @DeleteMapping("/rooms/delete-room/{id}")
+    ResponseEntity<Rooms> deleteRoom(@PathVariable("id") Integer id);
+
 }
