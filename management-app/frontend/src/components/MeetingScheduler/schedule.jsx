@@ -42,6 +42,13 @@ class Schedule extends Component {
     );
   }
 
+  componentWillReceiveProps(newProps) {
+    // if (newProps.headerRow.length + 1 !== this.numberOfCol) {
+    //   this.numberOfCol = newProps.headerRow.length;
+    //   this.getWeek();
+    // }
+  }
+
   getEmptyArray = (rows, cols) => {
     let result = [];
     for (let i = 0; i < rows; i++) {
@@ -143,7 +150,11 @@ class Schedule extends Component {
         if (this.props.rooms) {
           const index = this.props.rooms.indexOf(meeting.room);
           if (index !== -1) {
-            if (selectedRooms.has(index)) {
+            if (
+              selectedRooms.has(index) &&
+              x + 1 < this.numberOfRow &&
+              y + 1 < this.numberOfCol
+            ) {
               // construct a map key: roomname | value: roomID
               // console.log("The block should be added");
 
@@ -162,12 +173,15 @@ class Schedule extends Component {
   };
 
   getWeek = () => {
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-    let week = new Array(5);
-    let weekString = new Array(5);
+    let days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+    // if (this.numberOfCol === 1) {
+    //   days = ["Today"];
+    // }
+    let week = new Array(days.length);
+    let weekString = new Array(days.length);
     const permToday = new Date(this.props.today);
     this.setState({ today: this.props.today });
-    for (let i = 0; i <= 4; i++) {
+    for (let i = 0; i <= days.length - 1; i++) {
       const todayDate = permToday;
       const todayDay = todayDate.getDay() - 1;
       const newDay = new Date(

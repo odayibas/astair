@@ -5,6 +5,7 @@ import CheckBoxGroup from "./checkboxgroup";
 import color from "@material-ui/core/colors/brown";
 import { maxWidth, maxHeight } from "@material-ui/system";
 import SummaryPanel from "./summarypanel";
+import Options from "./options";
 
 import axios from "axios";
 import Toast from "./toast";
@@ -38,33 +39,32 @@ class ButtonPanel extends Component {
     }
   };
 
+  getRoomsPanel = () => {
+    return (
+      <CheckBoxGroup
+        onSelectedItems={roomset => {
+          this.props.onMultiRoomSelected(roomset);
+        }}
+        items={this.props.rooms}
+      />
+    );
+  };
+
+  getOptionsPanel = () => {
+    return (
+      <Options
+        showWeekly={this.props.showWeekly}
+        onRangeClick={this.props.onRangeClick}
+      ></Options>
+    );
+  };
+
   render() {
     return (
       <div>
         <Container>
-          {/* <button
-            type="button"
-            className="btn btn-outline-danger"
-            style={{ margin: "10px" }}
-            onClick={this.props.onClear}
-          >
-            Clear
-          </button> */}
-
-          {/* <DropdownMenu
-            items={this.props.rooms}
-            onSelected={id => {
-              this.props.onSelected(id);
-            }}
-          /> */}
-
-          <CheckBoxGroup
-            onSelectedItems={roomset => {
-              this.props.onMultiRoomSelected(roomset);
-            }}
-            items={this.props.rooms}
-          />
-
+          {this.getOptionsPanel()}
+          {this.getRoomsPanel()}
           {this.getSummaryPanel()}
         </Container>
       </div>

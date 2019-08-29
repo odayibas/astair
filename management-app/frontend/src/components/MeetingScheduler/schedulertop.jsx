@@ -19,7 +19,7 @@ class SchedulerTop extends Component {
         this.setState({ showToast: true }, () => {
           setTimeout(() => {
             this.hideToast();
-          }, 5000);
+          }, 3000);
         });
       });
     });

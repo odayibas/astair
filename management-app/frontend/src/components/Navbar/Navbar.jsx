@@ -15,9 +15,7 @@ class AppNavbar extends Component {
   }
 
   getBadge = () => {
-    console.log("Get badge");
     if (getCookie("form_notification") === "1" || this.props.showBadge) {
-      console.log("need badge");
       return (
         <Badge pill variant="warning">
           !
@@ -95,7 +93,6 @@ class AppNavbar extends Component {
   }
 
   render() {
-    console.log("Navbar render");
     return (
       <Navbar
         collapseOnSelect

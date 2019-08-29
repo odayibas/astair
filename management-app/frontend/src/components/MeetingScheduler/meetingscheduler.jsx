@@ -5,6 +5,9 @@ import update from "immutability-helper";
 import ButtonPanel from "./sidePanel";
 import Dialog from "./dialog";
 import axios from "axios";
+import { get as getCookie, set as setCookie } from "es-cookie";
+import AdminPanel from "./adminpanel";
+import { resolve } from "dns";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
@@ -14,7 +17,7 @@ class MeetingScheduler extends Component {
   multiRoomSelected = false;
   currentRooms;
   description = "";
-  allParticipants = ["ahmet", "serdar", "gurbuz", "eyyo"];
+  allParticipants = [];
   selectedParticipants = new Set([]);
   state = {
     showDialog: false,
@@ -22,7 +25,9 @@ class MeetingScheduler extends Component {
     summary: {},
     showSummary: false,
     creating: false,
+    showWeekly: true,
     roomset: new Set([]), // Degistir
+    // headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     timeSlot: {
       start: {
@@ -50,12 +55,27 @@ class MeetingScheduler extends Component {
     super(props);
   }
 
+  fetchParticipants = () => {
+    return axios
+      .get(urlServer + "/user-names/get-names")
+      .then(res => {
+        let list = [];
+        res.data.forEach(element => {
+          list.push(element.username);
+        });
+        this.allParticipants = list;
+      })
+      .catch(err => {
+        this.props.showToast("danger", "Participants could not be loaded.");
+      });
+  };
+
   fetchRooms = () => {
     let rooms = [];
     return axios
       .get(urlServer + "/rooms/get-all-rooms")
       .then(res => {
-        console.log("data", res.data);
+        console.log("UPP");
         res.data.forEach(item => {
           rooms.push(item.room);
         });
@@ -63,6 +83,7 @@ class MeetingScheduler extends Component {
       })
       .catch(err => {
         console.log("[ERROR (GET ALL ROOMS API)] ", err);
+        this.props.showToast("danger", "Unable to access to server.");
       });
   };
 
@@ -71,6 +92,7 @@ class MeetingScheduler extends Component {
     this.setState({ roomset: s });
     this.fetchRooms();
     this.getMeetingsFromDatabase();
+    this.fetchParticipants();
   }
 
   convertTimeToString = t => {
@@ -164,12 +186,13 @@ class MeetingScheduler extends Component {
     return result;
   };
 
-  getMeetingsFromDatabase = () => {
+  getMeetingsFromDatabase = (callback = undefined) => {
     let thisWeek = this.getWeek();
     // console.log("The week is", thisWeek);
     this.fetchMeetings(
       this.convertDateToString(thisWeek[0], "year"),
-      this.convertDateToString(thisWeek[4], "year")
+      this.convertDateToString(thisWeek[4], "year"),
+      callback
     );
   };
 
@@ -218,7 +241,7 @@ class MeetingScheduler extends Component {
     return result;
   };
 
-  processData = data => {
+  processData = (data, callback = undefined) => {
     let meetingArray = this.decodeMeetingData(data);
     this.setState({ rawMeetings: meetingArray });
     // console.log("Meeting Data is ready for processing ", meetingArray);
@@ -232,37 +255,53 @@ class MeetingScheduler extends Component {
         const b = !this.state.readyForDisplay;
         this.setState({ readyForDisplay: b });
         this.handleSummary("hide");
+        if (callback) callback();
       }
     );
   };
 
   getAvailableRooms = (date, startTime, endTime) => {
-    let thisWeek = this.getWeek();
-    const startDate = this.convertDateToString(thisWeek[0], "year");
-    const endDate = this.convertDateToString(thisWeek[4], "year");
+    console.log(
+      "The query is ",
+      this.convertDateToString(date, "year"),
+      this.convertTimeToString(startTime),
+      this.convertTimeToString(endTime)
+    );
+    // let thisWeek = this.getWeek();
+    // const startDate = this.convertDateToString(thisWeek[0], "year");
+    // const endDate = this.convertDateToString(thisWeek[4], "year");
 
     return axios
       .get(
         urlServer +
           "/meeting/find-spare-room/" +
-          startDate +
-          "/" +
-          endDate +
+          this.convertDateToString(date, "year") +
           "/" +
           this.convertTimeToString(startTime) +
           "/" +
           this.convertTimeToString(endTime)
       )
       .then(res => {
-        // console.log("Data fetched successfuly ", res.data);
-        console.log("Available rooms are", res.data);
+        console.log("Data fetched successfuly ", res.data);
+        const newSet = new Set([]);
+        console.log("Current rooms", this.state.rooms);
+        res.data.forEach(item => {
+          const i = this.state.rooms.indexOf(item);
+          if (i !== -1) {
+            newSet.add(i);
+          }
+        });
+        this.setState({ roomset: newSet }, () => {
+          console.log("After selection", this.state.roomset);
+        });
       })
       .catch(err => {
         console.log("[ERROR (AVAILABLE ROOM API)]", err);
+        this.props.showToast("danger", "Unable to access to server.");
       });
   };
 
-  fetchMeetings = (startDate, endDate) => {
+  fetchMeetings = (startDate, endDate, callback = undefined) => {
     // console.log("Data fetching from database...");
 
     return axios
@@ -271,7 +310,7 @@ class MeetingScheduler extends Component {
       )
       .then(res => {
         // console.log("Data fetched successfuly ", res.data);
-        this.processData(res.data);
+        this.processData(res.data, callback);
       })
       .catch(err => {
         console.log("****", err);
@@ -379,22 +418,24 @@ class MeetingScheduler extends Component {
   };
 
   handleMultiRoomSelected = roomset => {
-    if (roomset.size > 1) {
-      this.multiRoomSelected = true;
-      // const tempMultiSchedule = this.mergeSchedules(roomset);
-      const copy = new Set(roomset);
-      // console.log("Copy", copy);
-      this.setState({ roomset: copy });
-      // this.setState({ multiSchedule: tempMultiSchedule }, () => {});
-      this.setState({ scheduleID: {} });
-    } else {
-      const copy = new Set(roomset);
-      // console.log("Copy", copy);
-      this.setState({ roomset: copy });
-      this.setState({ scheduleID: roomset.values().next().value });
-      this.multiRoomSelected = false;
-    }
-    this.handleSummary("hide");
+    this.getMeetingsFromDatabase(() => {
+      if (roomset.size > 1) {
+        this.multiRoomSelected = true;
+        // const tempMultiSchedule = this.mergeSchedules(roomset);
+        const copy = new Set(roomset);
+        // console.log("Copy", copy);
+        this.setState({ roomset: copy });
+        // this.setState({ multiSchedule: tempMultiSchedule }, () => {});
+        this.setState({ scheduleID: {} });
+      } else {
+        const copy = new Set(roomset);
+        // console.log("Copy", copy);
+        this.setState({ roomset: copy });
+        this.setState({ scheduleID: roomset.values().next().value });
+        this.multiRoomSelected = false;
+      }
+      this.handleSummary("hide");
+    });
   };
 
   // getProperSchedule = () => {
@@ -445,6 +486,23 @@ class MeetingScheduler extends Component {
           "En error occured while creating meeting. Try again later."
         );
       });
+  };
+
+  handleRangeClick = range => {
+    if (range === "Day") {
+      this.setState({ headerRow: ["Today"] }, () => {
+        this.setState({ showWeekly: false });
+      });
+    } else {
+      this.setState(
+        {
+          headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+        },
+        () => {
+          this.setState({ showWeekly: true });
+        }
+      );
+    }
   };
 
   displayMeetingInfo = meetingID => {
@@ -543,19 +601,75 @@ class MeetingScheduler extends Component {
     this.selectedParticipants = new Set(participants);
   };
 
+  handleAddRoom = room => {
+    console.log("Room", room, "added");
+    return axios
+      .post(urlServer + "/rooms/add-room", { room: room })
+      .then(res => {
+        this.fetchRooms();
+        this.props.showToast(
+          "success",
+          "Room " + room + " is added successfully."
+        );
+      })
+      .catch(err => {
+        this.props.showToast(
+          "danger",
+          "En error occured. Room could not be added."
+        );
+      });
+  };
+
+  handleDeleteRoom = room => {
+    console.log("Room", room, "deleted");
+    return axios
+      .post(urlServer + "/rooms/delete-room", { room: room })
+      .then(res => {
+        this.fetchRooms();
+        this.props.showToast(
+          "success",
+          "Room " + room + " is deleted successfully."
+        );
+      })
+      .catch(err => {
+        this.props.showToast(
+          "danger",
+          "En error occured. Room could not be deleted."
+        );
+      });
+  };
+
+  handleAdminSetSchedule = (start, end, interval) => {
+    console.log("The settings are", start, end, interval);
+  };
+
+  getAdminPanel = () => {
+    if (getCookie("usertoken") === "1") {
+      return (
+        <AdminPanel
+          showToast={this.props.showToast}
+          onAdminSetSchedule={this.handleAdminSetSchedule}
+          onAddRoom={this.handleAddRoom}
+          onDeleteRoom={this.handleDeleteRoom}
+        ></AdminPanel>
+      );
+    } else return;
+  };
+
   render() {
     return (
       <Container>
         <Row className="flex-row">
-          {/* <Col md={2}>
-            <div />
-          </Col> */}
-          <Col md={9}>
+          <Col md={2} style={{ padding: 0 }}>
+            {this.getAdminPanel()}
+          </Col>
+          <Col md={8} style={{ padding: 0 }}>
             <div>{this.getScheduleToBeRendered()}</div>
           </Col>
-          <Col md={3}>
+          <Col md={2} style={{ padding: 0 }}>
             <div style={{ textAlign: "center" }}>
               <ButtonPanel
+                showWeekly={this.state.showWeekly}
                 showToast={this.props.showToast}
                 hideToast={this.props.hideToast}
                 onMultiRoomSelected={roomset => {
@@ -573,6 +687,7 @@ class MeetingScheduler extends Component {
                 onShowDialog={b => {
                   this.setShowDialog(b);
                 }}
+                onRangeClick={this.handleRangeClick}
               />
             </div>
           </Col>

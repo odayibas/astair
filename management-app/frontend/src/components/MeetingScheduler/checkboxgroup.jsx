@@ -18,11 +18,13 @@ class CheckBoxGroup extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (!this.props.items && newProps.items) {
+    console.log("NEEEWWWW", newProps.items);
+    if (
+      (!this.props.items && newProps.items) ||
+      this.props.items !== newProps.items
+    ) {
       const indexedItems = this.indexItems(newProps.items);
-      this.setState({ items: indexedItems }, () => {
-        console.log(this.state.items);
-      });
+      this.setState({ items: indexedItems });
     }
   }
 
@@ -131,14 +133,18 @@ class CheckBoxGroup extends Component {
 
   render() {
     return (
-      <Container className="border rounded">
-        <Row>
-          <Col xs={12} style={{ marginBottom: 10, marginTop: 10 }}>
-            <span style={{ fontSize: "1.25em" }}>Rooms</span>
-          </Col>
-        </Row>
-        {this.getCheckBoxes()}
-      </Container>
+      <div className="border rounded">
+        <Container>
+          <Row>
+            <Col xs={12} style={{ marginBottom: 10, marginTop: 10 }}>
+              <span style={{ fontSize: "1.25em" }}>Rooms</span>
+            </Col>
+          </Row>
+          <div style={{ maxHeight: 150, overflowY: "auto" }}>
+            {this.getCheckBoxes()}
+          </div>
+        </Container>
+      </div>
     );
   }
 }
