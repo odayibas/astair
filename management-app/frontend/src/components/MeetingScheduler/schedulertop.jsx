@@ -32,7 +32,7 @@ class SchedulerTop extends Component {
   render() {
     if (getCookie("usertoken") === "1" || getCookie("usertoken") === "2") {
       return (
-        <div>
+        <div style={{ textAlign: "center" }}>
           <Container>
             <Row md={1}>
               <div style={{ height: 20 }} />
@@ -44,6 +44,10 @@ class SchedulerTop extends Component {
               />
             </Row>
           </Container>
+          <img
+            src="/assets/logo-Astair-w.png"
+            style={{ maxWidth: 400, marginTop: -20 }}
+          />
           <Toast
             message={this.state.toastMessage}
             level={this.state.toastLevel}

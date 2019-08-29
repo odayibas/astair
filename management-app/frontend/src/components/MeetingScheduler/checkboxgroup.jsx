@@ -111,7 +111,7 @@ class CheckBoxGroup extends Component {
     return this.state.items.map(item => {
       return (
         <Row>
-          <Col xs={12} className="text-left">
+          <Col xs={12} className="text-left" style={{ marginLeft: 10 }}>
             <FormControlLabel
               control={
                 <Checkbox
