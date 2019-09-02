@@ -18,7 +18,6 @@ class CheckBoxGroup extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    console.log("NEEEWWWW", newProps.items);
     if (
       (!this.props.items && newProps.items) ||
       this.props.items !== newProps.items
@@ -59,6 +58,7 @@ class CheckBoxGroup extends Component {
         }
       }
     });
+    this.props.getCheckedCount(this.checkedCount);
     this.setState({ items: newStatus }, () => {
       this.props.onSelectedItems(this.checkedButtons);
     });

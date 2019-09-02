@@ -19,6 +19,7 @@ class MeetingScheduler extends Component {
   description = "";
   allParticipants = [];
   selectedParticipants = new Set([]);
+  checkedCount = 0;
   state = {
     showDialog: false,
     readyForDisplay: false,
@@ -75,7 +76,6 @@ class MeetingScheduler extends Component {
     return axios
       .get(urlServer + "/rooms/get-all-rooms")
       .then(res => {
-        console.log("UPP");
         res.data.forEach(item => {
           rooms.push(item.room);
         });
@@ -158,6 +158,7 @@ class MeetingScheduler extends Component {
     this.state.roomset.forEach(item => {
       result.push(this.state.rooms[item]);
     });
+    // console.log("As strings ", result);
     return result;
   };
 
@@ -282,18 +283,25 @@ class MeetingScheduler extends Component {
           this.convertTimeToString(endTime)
       )
       .then(res => {
-        console.log("Data fetched successfuly ", res.data);
         const newSet = new Set([]);
-        console.log("Current rooms", this.state.rooms);
-        res.data.forEach(item => {
-          const i = this.state.rooms.indexOf(item);
-          if (i !== -1) {
-            newSet.add(i);
-          }
-        });
-        this.setState({ roomset: newSet }, () => {
-          console.log("After selection", this.state.roomset);
-        });
+        if (res.data.length === 0) {
+          this.props.showToast(
+            "danger",
+            "There is no available room for this slot!"
+          );
+        } else {
+          res.data.forEach(item => {
+            const i = this.state.rooms.indexOf(item);
+            if (i !== -1) {
+              newSet.add(i);
+            }
+          });
+          this.setState({ roomset: newSet }, () => {
+            // Show Dialog
+            // console.log("Current roomset", this.state.roomset);
+            this.setShowDialog(true);
+          });
+        }
       })
       .catch(err => {
         console.log("[ERROR (AVAILABLE ROOM API)]", err);
@@ -367,18 +375,27 @@ class MeetingScheduler extends Component {
     return { hours, minutes };
   };
 
+  getCheckedCount = count => {
+    this.checkedCount = count;
+    console.log("Count is ", count);
+  };
+
   slotSelected = (date, start, end) => {
     // console.log("Meeting date:", date);
     // console.log("Meeting Start:", start);
     // console.log("Meeting End:", end);
-    if (this.state.roomset.size === 0) {
-      console.log("Show options");
+    // if (this.state.roomset.size === 0) {
+    if (this.checkedCount === 0) {
       this.getAvailableRooms(date, start, end);
-    } else {
-      const room = this.state.rooms[this.state.roomset.values().next().value];
-      const summary = { date, start, end, room };
-      this.setState({ summary: summary }, () => {});
     }
+    const room = this.state.rooms[this.state.roomset.values().next().value];
+    const summary = { date, start, end, room };
+    this.setState({ summary: summary }, () => {
+      console.log(this.state.roomset);
+      if (this.checkedCount !== 0) {
+        this.setShowDialog(true);
+      }
+    });
   };
 
   // This is for dropdown menu. Currently it is not being used.
@@ -451,7 +468,6 @@ class MeetingScheduler extends Component {
   };
 
   postMeeting = meeting => {
-    console.log("The meeting is going to be inserted", meeting);
     const description = meeting.description;
     const participants = meeting.participants;
     const room = meeting.room;
@@ -505,6 +521,13 @@ class MeetingScheduler extends Component {
     }
   };
 
+  cancelCreating = () => {
+    if (this.checkedCount === 0) {
+      let newSet = new Set([]);
+      this.setState({ roomset: newSet });
+    }
+  };
+
   displayMeetingInfo = meetingID => {
     const meeting = this.state.rawMeetings[meetingID];
     const summary = {
@@ -534,7 +557,7 @@ class MeetingScheduler extends Component {
 
   handleSummary = action => {
     if (action === "show") {
-      this.setState({ showSummary: true });
+      //this.setState({ showSummary: true });
     } else if (action === "hide") {
       this.setState({ showSummary: false });
     } else {
@@ -548,6 +571,7 @@ class MeetingScheduler extends Component {
     } else {
       return (
         <Schedule
+          checkedCount={this.checkedCount}
           onNextSchedule={this.handleNextSchedule}
           showToast={this.props.showToast}
           hideToast={this.props.hideToast}
@@ -581,6 +605,7 @@ class MeetingScheduler extends Component {
     this.selectedParticipants.forEach(i => {
       participants += this.allParticipants[i] + ",";
     });
+    console.log("Summary, ", this.state.summary);
     const dataPosted = {
       participants,
       room: room,
@@ -621,7 +646,7 @@ class MeetingScheduler extends Component {
   };
 
   handleDeleteRoom = room => {
-    console.log("Room", room, "deleted");
+    // console.log("Room", room, "deleted");
     return axios
       .post(urlServer + "/rooms/delete-room", { room: room })
       .then(res => {
@@ -640,14 +665,14 @@ class MeetingScheduler extends Component {
   };
 
   handleAdminSetSchedule = (start, end, interval) => {
-    console.log("The settings are", start, end, interval);
+    // console.log("The settings are", start, end, interval);
     const timeSlot = {
       start: this.convertStringToTime(start),
       end: this.convertStringToTime(end),
       interval: this.convertStringToTime(interval)
     };
     this.setState({ timeSlot: timeSlot }, () => {
-      console.log("Settings check ", this.state.timeSlot);
+      // console.log("Settings check ", this.state.timeSlot);
     });
   };
 
@@ -677,6 +702,7 @@ class MeetingScheduler extends Component {
           <Col md={2} style={{ padding: 0 }}>
             <div style={{ textAlign: "center" }}>
               <ButtonPanel
+                getCheckedCount={this.getCheckedCount}
                 showWeekly={this.state.showWeekly}
                 showToast={this.props.showToast}
                 hideToast={this.props.hideToast}
@@ -701,6 +727,7 @@ class MeetingScheduler extends Component {
           </Col>
         </Row>
         <Dialog
+          cancelCreating={this.cancelCreating}
           showToast={this.props.showToast}
           hideToast={this.props.hideToast}
           updateParticipants={participants => {
