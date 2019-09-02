@@ -46,7 +46,7 @@ class SchedulerTop extends Component {
           </Container>
           <img
             src="/assets/logo-Astair-w.png"
-            style={{ maxWidth: 400, marginTop: -20 }}
+            style={{ maxWidth: 400, marginTop: 10 }}
           />
           <Toast
             message={this.state.toastMessage}

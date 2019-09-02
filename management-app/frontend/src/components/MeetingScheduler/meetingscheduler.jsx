@@ -30,20 +30,21 @@ class MeetingScheduler extends Component {
     roomset: new Set([]), // Degistir
     // headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    timeSlot: {
-      start: {
-        hours: 7,
-        minutes: 0
-      },
-      end: {
-        hours: 17,
-        minutes: 0
-      },
-      interval: {
-        hours: 1,
-        minutes: 0
-      }
-    },
+    // timeSlot: {
+    //   start: {
+    //     hours: 7,
+    //     minutes: 0
+    //   },
+    //   end: {
+    //     hours: 17,
+    //     minutes: 0
+    //   },
+    //   interval: {
+    //     hours: 1,
+    //     minutes: 0
+    //   }
+    // },
+    timeSlot: undefined,
     rooms: undefined,
     meetings: [],
     rawMeetings: [],
@@ -87,12 +88,37 @@ class MeetingScheduler extends Component {
       });
   };
 
+  getTimeSlotFromDatabase = () => {
+    return axios
+      .get(urlServer + "/meeting/get-slots/")
+      .then(res => {
+        console.log("Admin settings : ", res.data[res.data.length - 1]);
+        const data = res.data[res.data.length - 1];
+        const start = this.convertStringToTime(data.beginSlot);
+        const end = this.convertStringToTime(data.finishSlot);
+        const interval = this.convertStringToTime(data.durationSlot);
+        this.setState(
+          {
+            timeSlot: {
+              start,
+              end,
+              interval
+            }
+          },
+          () => {
+            const s = new Set();
+            this.setState({ roomset: s });
+            this.fetchRooms();
+            this.getMeetingsFromDatabase();
+            this.fetchParticipants();
+          }
+        );
+      })
+      .catch(err => {});
+  };
+
   componentDidMount() {
-    const s = new Set();
-    this.setState({ roomset: s });
-    this.fetchRooms();
-    this.getMeetingsFromDatabase();
-    this.fetchParticipants();
+    this.getTimeSlotFromDatabase();
   }
 
   convertTimeToString = t => {
@@ -317,7 +343,7 @@ class MeetingScheduler extends Component {
         urlServer + "/meeting/get-meeting-a-range/" + startDate + "/" + endDate
       )
       .then(res => {
-        // console.log("Data fetched successfuly ", res.data);
+        console.log("Data fetched successfuly ", res.data);
         this.processData(res.data, callback);
       })
       .catch(err => {
@@ -377,7 +403,6 @@ class MeetingScheduler extends Component {
 
   getCheckedCount = count => {
     this.checkedCount = count;
-    console.log("Count is ", count);
   };
 
   slotSelected = (date, start, end) => {
@@ -646,7 +671,7 @@ class MeetingScheduler extends Component {
   };
 
   handleDeleteRoom = room => {
-    // console.log("Room", room, "deleted");
+    console.log("Room", room, "deleted");
     return axios
       .post(urlServer + "/rooms/delete-room", { room: room })
       .then(res => {
