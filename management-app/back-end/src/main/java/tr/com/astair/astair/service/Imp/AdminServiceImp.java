@@ -25,6 +25,15 @@ public class AdminServiceImp implements AdminService {
         }
     }
 
+    public Admin setSlots(String beginSlot, String durationSlot, String finishSlot){
+        try {
+            Admin admin = new Admin("", beginSlot, durationSlot, finishSlot, "");
+            return adminRepository.save(admin);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
     public Admin setSlots(Admin a){
         try {
             return adminRepository.save(a);

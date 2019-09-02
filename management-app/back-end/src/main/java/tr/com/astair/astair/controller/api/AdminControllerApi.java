@@ -9,6 +9,9 @@ public interface AdminControllerApi {
     @GetMapping("/meeting/get-slots/")
     ResponseEntity<List<Admin>> getSlots();
 
+    @PostMapping("/admin/set-slots/{beginSlot}/{durationSlot}/{finishSlot}")
+    ResponseEntity<Admin> setSlots(@PathVariable String beginSlot, String durationSlot, String finishSlot);
+
     @PostMapping("/admin/set-slots")
     ResponseEntity<Admin> setSlots(@RequestBody Admin a);
 

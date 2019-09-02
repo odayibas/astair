@@ -32,9 +32,9 @@ public class RoomsServiceImp implements RoomsService {
         }
     }
 
-    public Rooms deleteRoom(String room){
+    public void deleteRoom(Rooms room){
         try {
-            return roomsRepository.deleteRoom(room);
+            roomsRepository.delete(room);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }

@@ -13,6 +13,6 @@ public interface RoomsControllerApi {
     ResponseEntity<Rooms> addRoom(@RequestBody Rooms room);
 
     @DeleteMapping("/rooms/delete-room/{room}")
-    ResponseEntity<Rooms> deleteRoom(@RequestBody Rooms room);
+    void deleteRoom(@RequestBody Rooms room);
 
 }
