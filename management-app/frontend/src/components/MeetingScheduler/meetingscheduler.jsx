@@ -92,7 +92,6 @@ class MeetingScheduler extends Component {
     return axios
       .get(urlServer + "/meeting/get-slots/")
       .then(res => {
-        console.log("Admin settings : ", res.data[res.data.length - 1]);
         const data = res.data[res.data.length - 1];
         const start = this.convertStringToTime(data.beginSlot);
         const end = this.convertStringToTime(data.finishSlot);
@@ -343,7 +342,7 @@ class MeetingScheduler extends Component {
         urlServer + "/meeting/get-meeting-a-range/" + startDate + "/" + endDate
       )
       .then(res => {
-        console.log("Data fetched successfuly ", res.data);
+        // console.log("Data fetched successfuly ", res.data);
         this.processData(res.data, callback);
       })
       .catch(err => {
@@ -652,7 +651,10 @@ class MeetingScheduler extends Component {
   };
 
   handleAddRoom = room => {
-    console.log("Room", room, "added");
+    if (this.state.rooms.indexOf(room) !== -1) {
+      this.props.showToast("warning", "The room already exists!");
+      return;
+    }
     return axios
       .post(urlServer + "/rooms/add-room", { room: room })
       .then(res => {
@@ -671,7 +673,10 @@ class MeetingScheduler extends Component {
   };
 
   handleDeleteRoom = room => {
-    console.log("Room", room, "deleted");
+    if (this.state.rooms.indexOf(room) === -1) {
+      this.props.showToast("warning", "There is no such room!");
+      return;
+    }
     return axios
       .post(urlServer + "/rooms/delete-room", { room: room })
       .then(res => {

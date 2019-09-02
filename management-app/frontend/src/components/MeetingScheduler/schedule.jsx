@@ -344,6 +344,16 @@ class Schedule extends Component {
     });
   };
 
+  isWithin = (first, second) => {
+    let diff =
+      second.hours * 60 + second.minutes - first.hours * 60 + first.minutes;
+    let interval =
+      this.props.timeSlot.interval.hours * 60 +
+      this.props.timeSlot.interval.minutes;
+    if (diff < 0 || diff > interval) return false;
+    return true;
+  };
+
   handleUp = id => {
     let loc = this.decodeLocation(id);
     if (loc.x > 0 && loc.y > 0 && !this.pressedForeign) {
@@ -417,8 +427,13 @@ class Schedule extends Component {
             if (
               item.id > this.numberOfCol &&
               item.id % this.numberOfCol === 0 &&
-              this.timeSlots[Math.floor(item.id / this.numberOfCol) - 1]
-                .hours === this.actualDayOfToday.getHours()
+              this.isWithin(
+                this.timeSlots[Math.floor(item.id / this.numberOfCol) - 1],
+                {
+                  hours: this.actualDayOfToday.getHours(),
+                  minutes: this.actualDayOfToday.getMinutes()
+                }
+              ) === true
             ) {
               className += " bg-danger";
             }
