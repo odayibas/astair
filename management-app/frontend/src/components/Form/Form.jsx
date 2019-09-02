@@ -104,8 +104,7 @@ class SlackForm extends Component {
 
   //gets the survey after duration  passed
   createSurvey = () => {
-    const show = this.state.show;
-    if (show === true) {
+    if (this.state.show === true) {
       return (
         <Survey
           showNotification={this.props.showNotification}
@@ -154,7 +153,6 @@ class SlackForm extends Component {
   }
 
   render() {
-    console.log("Time", time);
     if (getCookie("usertoken") === "1" || getCookie("usertoken") === "2") {
       return (
         <div className="page-main">

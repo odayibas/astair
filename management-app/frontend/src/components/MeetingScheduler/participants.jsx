@@ -12,6 +12,15 @@ class ParticipantTable extends Component {
     this.selectedItems = new Set([]);
   }
 
+  // componentWillReceiveProps(newProps) {
+  //   console.log(newProps, "newProps");
+  //   if (newProps.data !== this.state.items) {
+  //     this.setState({ items: this.indexItems(newProps.data) }, () => {
+  //       console.log("LAst people", this.state.items);
+  //     });
+  //   }
+  // }
+
   indexItems = items => {
     let index = 0;
     let result = [];

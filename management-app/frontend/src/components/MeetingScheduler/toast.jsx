@@ -22,7 +22,6 @@ class Toast extends React.Component {
   }
 
   getIcon() {
-    console.log("level", this.props.level);
     switch (this.props.level) {
       case "warning":
         return "http://svgshare.com/i/19x.svg";
