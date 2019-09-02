@@ -18,7 +18,7 @@ public class UserController implements UserControllerApi {
 	public UserController(UserService userService) {
 	    this.userService = userService;
 	}
-	
+
 	public ResponseEntity<String> registerUser(@RequestBody User user){
 		Long id = userService.addUser(user);
 		if(id == -1) {

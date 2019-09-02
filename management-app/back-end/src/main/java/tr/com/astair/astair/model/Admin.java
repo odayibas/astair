@@ -13,11 +13,27 @@ public class Admin {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "beginslot")
+    private String beginSlot;
+
+    @Column(name = "durationslot")
+    private String durationSlot;
+
+    @Column(name = "finishslot")
+    private String finishSlot;
+
+    @Column(name = "surveyInterval")
+    private String surveyInterval;
+
     public Admin() {
     }
 
-    public Admin(String username) {
+    public Admin(String username, String beginSlot, String durationSlot, String finishSlot, String surveyInterval) {
         this.setUsername(username);
+        this.setBeginSlot(beginSlot);
+        this.setDurationSlot(durationSlot);
+        this.setFinishSlot(finishSlot);
+        this.setSurveyInterval(surveyInterval);
     }
 
     public Integer getId() {
@@ -36,5 +52,36 @@ public class Admin {
         this.username = username;
     }
 
+    public String getBeginSlot() {
+        return beginSlot;
+    }
+
+    public void setBeginSlot(String beginSlot) {
+        this.beginSlot = beginSlot;
+    }
+
+    public String getDurationSlot() {
+        return durationSlot;
+    }
+
+    public void setDurationSlot(String durationSlot) {
+        this.durationSlot = durationSlot;
+    }
+
+    public String getFinishSlot() {
+        return finishSlot;
+    }
+
+    public void setFinishSlot(String finishSlot) {
+        this.finishSlot = finishSlot;
+    }
+
+    public String getSurveyInterval() {
+        return surveyInterval;
+    }
+
+    public void setSurveyInterval(String surveyInterval) {
+        this.surveyInterval = surveyInterval;
+    }
 
 }
