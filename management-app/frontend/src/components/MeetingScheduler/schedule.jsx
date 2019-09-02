@@ -11,6 +11,7 @@ class Schedule extends Component {
   slotArrayRangeString = [];
   timeSlots;
   pressed = false;
+  loaded = false;
   index = 0;
   state = { scheduleID: 0, today: {}, readyForDisplay: false };
   numberOfCol = 0;
@@ -27,7 +28,7 @@ class Schedule extends Component {
 
   constructor(props) {
     super(props);
-    this.loadSettings(props);
+    // this.loadSettings(props);
   }
 
   loadSettings = (props = this.props) => {
@@ -41,10 +42,8 @@ class Schedule extends Component {
     this.actualDayOfToday = new Date();
     this.state.schedule = this.convertMeetingsToLocations(
       props.meetings,
-      props.roomset,
-      props
+      props.roomset
     );
-    console.log("Loaded.");
   };
 
   componentWillReceiveProps(newProps) {
@@ -73,37 +72,42 @@ class Schedule extends Component {
   }
 
   componentDidUpdate() {
-    console.log("Did it update");
-    // IF ROOM CHANGES
-
-    if (this.state.scheduleID !== this.props.scheduleID) {
-      if (this.props.meetings && this.props.roomset) {
+    if (this.loaded === false) {
+      if (this.props.timeSlot) {
+        this.loadSettings(this.props);
+        this.loaded = true;
+      }
+    } else {
+      if (this.state.scheduleID !== this.props.scheduleID) {
+        if (this.props.meetings && this.props.roomset) {
+          this.setState({
+            schedule: this.convertMeetingsToLocations(
+              this.props.meetings,
+              this.props.roomset
+            )
+          });
+        }
+        this.setState({ scheduleID: this.props.scheduleID });
+        // this.firstSchedule = JSON.parse(JSON.stringify(this.props.schedule));
+        // this.setState({ schedule: this.firstSchedule });
+      }
+      // IF TODAY CHANGES (NOTE THAT SCHEDULE SHOULD ALSO CHANGE. FIX IT)
+      if (this.state.today !== this.props.today) {
+        this.getWeek();
+      }
+      // FIRST DISPLAY AFTER DATA FETCH
+      if (this.state.readyForDisplay !== this.props.readyForDisplay) {
         this.setState({
           schedule: this.convertMeetingsToLocations(
             this.props.meetings,
             this.props.roomset
           )
         });
+        const b = this.props.readyForDisplay;
+        this.setState({ readyForDisplay: b });
       }
-      this.setState({ scheduleID: this.props.scheduleID });
-      // this.firstSchedule = JSON.parse(JSON.stringify(this.props.schedule));
-      // this.setState({ schedule: this.firstSchedule });
     }
-    // IF TODAY CHANGES (NOTE THAT SCHEDULE SHOULD ALSO CHANGE. FIX IT)
-    if (this.state.today !== this.props.today) {
-      this.getWeek();
-    }
-    // FIRST DISPLAY AFTER DATA FETCH
-    if (this.state.readyForDisplay !== this.props.readyForDisplay) {
-      this.setState({
-        schedule: this.convertMeetingsToLocations(
-          this.props.meetings,
-          this.props.roomset
-        )
-      });
-      const b = this.props.readyForDisplay;
-      this.setState({ readyForDisplay: b });
-    }
+    // IF ROOM CHANGES
   }
 
   indexRow = arr => {
@@ -309,9 +313,12 @@ class Schedule extends Component {
   };
 
   handleDown = id => {
+    console.log("Check 1 ");
     let loc = this.decodeLocation(id);
     if (loc.x <= 0 || loc.y <= 0) return;
     const val = this.state.schedule[loc.x - 1][loc.y - 1];
+
+    console.log("Check 2 ");
 
     if (val !== 0 && val !== 1) {
       this.pressedForeign = true;
@@ -322,6 +329,7 @@ class Schedule extends Component {
       return;
     }
     this.pressedForeign = false;
+    console.log("Check 3 ");
 
     this.clearSchedule(() => {
       if (loc.x > 0 && loc.y > 0) {
@@ -331,6 +339,7 @@ class Schedule extends Component {
           y: loc.y
         };
         this.updateSchedule(loc, 1);
+        console.log("Check 4 ");
       }
     });
   };
@@ -405,7 +414,6 @@ class Schedule extends Component {
             ) {
               className += " bg-danger";
             }
-            console.log(item.id);
             if (
               item.id > this.numberOfCol &&
               item.id % this.numberOfCol === 0 &&
@@ -457,10 +465,12 @@ class Schedule extends Component {
   };
 
   getHead = () => {
+    if (this.loaded === false) return;
     return this.getRow(this.indexRow(["", ...this.weekString]), "head");
   };
 
   getBody = () => {
+    if (this.loaded === false) return;
     let i = 0;
     return this.state.schedule.map(row => {
       return this.getRow(

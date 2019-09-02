@@ -16,6 +16,8 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 var vote_id, time;
 const baseYear = new Date(Date.UTC(2019, 0, 0, 0, 0, 0));
 
+const adminInterval = process.env.REACT_APP_DURATION;
+
 //finds all the minutes from 01-01-2019 00:00
 function diff_minutes(dt2, dt1) {
   var diff = (dt2.getTime() - dt1.getTime()) / 1000;
@@ -26,9 +28,7 @@ function diff_minutes(dt2, dt1) {
 //creates a vote_id for the cureent survey by given minutes
 function takeVoteId() {
   let now = new Date();
-  vote_id = Math.floor(
-    diff_minutes(now, baseYear) / process.env.REACT_APP_DURATION
-  );
+  vote_id = Math.floor(diff_minutes(now, baseYear) / adminInterval);
   return vote_id;
 }
 
@@ -59,7 +59,7 @@ class SlackForm extends Component {
         if (res.data.length !== 0 && res.data) {
           var now = new Date();
           var nowMin = diff_minutes(now, baseYear);
-          time = (takeVoteId() + 1) * process.env.REACT_APP_DURATION - nowMin;
+          time = (takeVoteId() + 1) * adminInterval - nowMin;
 
           this.setState((prevState, props) => ({
             vote_id: res.data[0].vote_id,
@@ -78,7 +78,7 @@ class SlackForm extends Component {
         } else {
           now = new Date();
           nowMin = diff_minutes(now, baseYear);
-          time = (takeVoteId() + 1) * process.env.REACT_APP_DURATION - nowMin;
+          time = (takeVoteId() + 1) * adminInterval - nowMin;
 
           this.setState({
             show: true
@@ -90,10 +90,10 @@ class SlackForm extends Component {
       });
   };
 
-  // this function is torefresh the page after process.env.REACT_APP_DURATION miutes passed
+  // this function is torefresh the page after adminInterval miutes passed
   refresh = b => {
     var t = time;
-    if (b) t = process.env.REACT_APP_DURATION;
+    if (b) t = adminInterval;
     this.setState({ show: false });
     setTimeout(() => {
       this.setState({ show: true });

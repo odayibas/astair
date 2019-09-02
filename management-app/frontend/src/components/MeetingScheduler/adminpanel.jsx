@@ -42,7 +42,6 @@ class AdminPanel extends Component {
   };
 
   handleSetScheduleClick = () => {
-    console.log("-" + this.startInput.value + "-");
     if (this.startInput.value === "") {
       this.props.showToast("warning", "Please specify the start time");
     } else if (this.endInput.value === "") {

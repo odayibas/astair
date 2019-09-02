@@ -42,6 +42,7 @@ class ButtonPanel extends Component {
   getRoomsPanel = () => {
     return (
       <CheckBoxGroup
+        getCheckedCount={this.props.getCheckedCount}
         onSelectedItems={roomset => {
           this.props.onMultiRoomSelected(roomset);
         }}

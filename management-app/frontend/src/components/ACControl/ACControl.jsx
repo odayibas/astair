@@ -6,11 +6,13 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import { get as getCookie } from "es-cookie";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import SurveyInterval from "./surveyinterval";
 
 import FanSpeed from "./FanSpeed";
 import Temperature from "./Temperature";
 import Mode from "./Mode";
 import Fan from "./Fan";
+import { Container } from "@material-ui/core";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 const urlArr = Array.from(
@@ -146,6 +148,10 @@ class ACControl extends Component {
     } else alert("Please fill all fields to proceed");
   };
 
+  setAdminInterval = intervalTime => {
+    //return axios
+  };
+
   //creates the buttons
   getButton = () => {
     return urlArr.map((button, i) => (
@@ -168,15 +174,22 @@ class ACControl extends Component {
             <Card>
               <CardBody>
                 <div style={{ alignItems: "right" }}>
-                  <Row>
-                    <ToggleButtonGroup
-                      type="radio"
-                      name="options"
-                      defaultValue={1}
-                    >
-                      {this.getButton()}
-                    </ToggleButtonGroup>
-                  </Row>
+                  <Container>
+                    <Row>
+                      <Col>
+                        <ToggleButtonGroup
+                          type="radio"
+                          name="options"
+                          defaultValue={1}
+                        >
+                          {this.getButton()}
+                        </ToggleButtonGroup>
+                      </Col>
+                      <Col>
+                        <SurveyInterval />
+                      </Col>
+                    </Row>
+                  </Container>
                 </div>
                 <center>
                   <h4> MODE </h4>

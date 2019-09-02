@@ -19,10 +19,17 @@ class Dialog extends Component {
   state = {};
   participants = [];
   input;
+  roomSelected = false;
 
   constructor(props) {
     super(props);
     this.state.currentRoom = "";
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.rooms.length === 1) {
+      this.setState({ currentRoom: newProps.rooms[0] });
+    }
   }
 
   convertTimeToString = t => {
@@ -75,27 +82,36 @@ class Dialog extends Component {
   };
 
   getRoomHeader = () => {
-    if (this.state.currentRoom === "") {
-      return "Select Room";
+    if (this.props.rooms.length === 1) {
+      this.roomSelected = true;
+      return "Room " + this.props.rooms[0];
     } else {
-      return "Room " + this.state.currentRoom;
+      if (this.roomSelected === false) {
+        return "Select Room";
+      } else {
+        return "Room " + this.state.currentRoom;
+      }
     }
   };
 
   handleCreateClick = () => {
-    if (this.state.currentRoom === "") {
+    if (this.roomSelected === false) {
       this.props.showToast("danger", "Please select a room.");
       console.log("[ERROR], Select a room.");
     } else {
+      this.props.cancelCreating();
       this.props.onHide();
       const description = this.input.value;
       this.props.setDescription(description);
       this.props.onCreateMeeting(this.state.currentRoom);
+      this.roomSelected = false;
       this.setState({ currentRoom: "" });
     }
   };
 
   render() {
+    // console.log("Dialog render");
+    // console.log("Rooms of dialog", this.props.rooms);
     return (
       <Modal
         {...this.props}
@@ -165,6 +181,7 @@ class Dialog extends Component {
           <Button
             onClick={() => {
               this.props.onHide();
+              this.props.cancelCreating();
               this.setState({ currentRoom: "" });
             }}
             variant="danger"
