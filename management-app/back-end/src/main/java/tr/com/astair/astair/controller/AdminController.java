@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.astair.astair.controller.api.AdminControllerApi;
 import tr.com.astair.astair.model.Admin;
+import tr.com.astair.astair.model.Slots;
 import tr.com.astair.astair.service.AdminService;
 
 import java.util.List;
@@ -28,8 +29,8 @@ public class AdminController implements AdminControllerApi {
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
-    public ResponseEntity<Admin> setSlots(@PathVariable String beginSlot, String durationSlot, String finishSlot) {
-        Admin test = new Admin("", beginSlot, durationSlot, finishSlot, "");
+    public ResponseEntity<Admin> setSlots(@RequestBody Admin a) {
+        Admin test = new Admin(a.getUsername(), a.getBeginSlot(), a.getDurationSlot(), a.getFinishSlot(), a.getSurveyInterval());
         adminService.setSlots(test);
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
@@ -37,9 +38,9 @@ public class AdminController implements AdminControllerApi {
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
-    public ResponseEntity<Admin> setSlots(@RequestBody Admin a) {
-        Admin test = new Admin(a.getUsername(), a.getBeginSlot(), a.getDurationSlot(), a.getFinishSlot(), a.getSurveyInterval());
-        adminService.setSlots(test);
+    public ResponseEntity<Admin> setSlotsOnlySlots(@RequestBody Slots s) {
+        Admin test = new Admin("", s.getBeginSlot(), s.getDurationSlot(), s.getFinishSlot(), "");
+        adminService.setSlotsOnlySlots(test);
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }

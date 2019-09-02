@@ -34,7 +34,19 @@ public class RoomsServiceImp implements RoomsService {
 
     public void deleteRoom(Rooms room){
         try {
-            roomsRepository.delete(room);
+            Rooms r = new Rooms();
+            Integer i = roomsRepository.findId(room.getRoom());
+            r.setId(i);
+            r.setRoom(room.getRoom());
+            roomsRepository.delete(r);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
+    public Integer findId(String room){
+        try {
+            return roomsRepository.findId(room);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }

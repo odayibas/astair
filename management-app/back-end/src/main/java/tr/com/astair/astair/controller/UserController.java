@@ -24,10 +24,8 @@ public class UserController implements UserControllerApi {
 		if(id == -1) {
 		 	return new ResponseEntity<String>("User " + user.getUsername() + " already exists.", HttpStatus.CONFLICT);
 		}
-
 		return new ResponseEntity<String>("User " + user.getUsername() + " registered successfully.", HttpStatus.OK);
 	}
-	
 	
 	public ResponseEntity<User> getUserByIdToUsername(@PathVariable("id") Long id){
 		 User user = userService.getUserByIdOne(id);
