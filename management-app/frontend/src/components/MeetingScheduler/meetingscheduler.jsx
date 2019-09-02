@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Schedule from "./schedule";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import update from "immutability-helper";
@@ -704,6 +705,20 @@ class MeetingScheduler extends Component {
     this.setState({ timeSlot: timeSlot }, () => {
       // console.log("Settings check ", this.state.timeSlot);
     });
+    console.log("Query", start, end, interval);
+    return axios
+      .post(urlServer + "/admin/set-slots-only-slots/", {
+        beginSlot: start,
+        durationSlot: interval,
+        finishSlot: end
+      })
+      .then(res => {
+        console.log("Settings saved to database successfully.");
+        window.location.reload();
+      })
+      .catch(err => {
+        console.log("Error while inserting settings to database");
+      });
   };
 
   getAdminPanel = () => {
