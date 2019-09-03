@@ -345,7 +345,6 @@ class Schedule extends Component {
   };
 
   isWithin = (first, second) => {
-    console.log(first, second);
     let diff =
       second.hours * 60 + second.minutes - (first.hours * 60 + first.minutes);
     let interval =

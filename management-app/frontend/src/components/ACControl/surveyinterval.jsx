@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import {
   Container,
   Row,
@@ -12,6 +13,7 @@ class SurveyInterval extends Component {
   intervalInput = 0;
 
   validateTime = t => {
+    console.log(t);
     if ((t + "").indexOf(":") !== 2 || t.length !== 5) return false;
 
     const temp = t.split(":");
@@ -32,8 +34,10 @@ class SurveyInterval extends Component {
   };
 
   handleApply = () => {
-    if (this.validateTime(this.intervalInput)) {
-      this.props.setAdminInterval(this.intervalInput);
+    if (this.validateTime(this.intervalInput.value)) {
+      this.props.setAdminInterval(
+        this.convertStringToTime(this.intervalInput.value)
+      );
     } else {
       console.log("Invalid time format");
     }

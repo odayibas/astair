@@ -9,7 +9,6 @@ import WebForm from "./components/Form/Form";
 import ACControl from "./components/ACControl/ACControl";
 import Register from "./components/Pages/Register";
 import SchedulerTop from "./components/MeetingScheduler/schedulertop";
-
 class App extends Component {
   state = {
     showBadge: false

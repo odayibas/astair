@@ -16,7 +16,7 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 var vote_id, time;
 const baseYear = new Date(Date.UTC(2019, 0, 0, 0, 0, 0));
 
-const adminInterval = process.env.REACT_APP_DURATION;
+let adminInterval = process.env.REACT_APP_DURATION;
 
 //finds all the minutes from 01-01-2019 00:00
 function diff_minutes(dt2, dt1) {
@@ -60,6 +60,7 @@ class SlackForm extends Component {
           var now = new Date();
           var nowMin = diff_minutes(now, baseYear);
           time = (takeVoteId() + 1) * adminInterval - nowMin;
+          console.log("is isten gecti");
 
           this.setState((prevState, props) => ({
             vote_id: res.data[0].vote_id,
@@ -125,9 +126,21 @@ class SlackForm extends Component {
     return;
   };
 
+  setTimer = () => {
+    return axios
+      .get(urlServer + "/meeting/get-slots/")
+      .then(res => {
+        let currentSettings = res.data[res.data.length - 1];
+        // adminInterval = parseInt(currentSettings.surveyInterval, 10);
+        console.log(adminInterval);
+        this.getData(data => {});
+      })
+      .catch(err => {});
+  };
+
   componentDidMount() {
     takeVoteId();
-    this.getData(data => {});
+    this.setTimer();
   }
 
   getVoteResult = lastvote => {

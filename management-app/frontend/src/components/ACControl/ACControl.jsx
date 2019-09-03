@@ -150,6 +150,26 @@ class ACControl extends Component {
 
   setAdminInterval = intervalTime => {
     //return axios
+    console.log("Final", intervalTime);
+    return axios
+      .get(urlServer + "/meeting/get-slots/")
+      .then(res => {
+        // console.log("WTF", res.data[res.data.length - 1]);
+        let curSettings = res.data[res.data.length - 1];
+        curSettings.surveyInterval =
+          intervalTime.hours * 60 + intervalTime.minutes + "";
+        axios
+          .post(urlServer + "/admin/set-slots/", curSettings)
+          .then(res => {
+            console.log("Inserted successfully");
+          })
+          .catch(err => {
+            console.log("ERR WHILE INSERTING SETTINGS");
+          });
+      })
+      .catch(err => {
+        console.log("ERR WHILE FETCHING SETTINGS");
+      });
   };
 
   //creates the buttons
@@ -186,7 +206,9 @@ class ACControl extends Component {
                         </ToggleButtonGroup>
                       </Col>
                       <Col>
-                        <SurveyInterval />
+                        <SurveyInterval
+                          setAdminInterval={this.setAdminInterval}
+                        />
                       </Col>
                     </Row>
                   </Container>

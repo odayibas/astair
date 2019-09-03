@@ -343,7 +343,7 @@ class MeetingScheduler extends Component {
         urlServer + "/meeting/get-meeting-a-range/" + startDate + "/" + endDate
       )
       .then(res => {
-        // console.log("Data fetched successfuly ", res.data);
+        console.log("Data fetched successfuly ", res.data);
         this.processData(res.data, callback);
       })
       .catch(err => {
