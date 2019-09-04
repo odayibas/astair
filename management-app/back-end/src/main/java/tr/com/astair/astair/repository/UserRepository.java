@@ -1,5 +1,6 @@
 package tr.com.astair.astair.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import tr.com.astair.astair.model.User;
 import java.util.List;
 import java.util.Optional;

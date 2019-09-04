@@ -8,9 +8,6 @@ public interface UserControllerApi{
 	@PostMapping(value="/user/register")
 	ResponseEntity<String> registerUser(@RequestBody User user);
 
-	//@PostMapping(value="/user/{id}")
-	//ResponseEntity<User> getUserByIdToUsername(@PathVariable("id") Long id);
-
 	@PostMapping(value="/user/{id}")
 	ResponseEntity<User> getUserByIdToUsername(@PathVariable("id") Long id);
 

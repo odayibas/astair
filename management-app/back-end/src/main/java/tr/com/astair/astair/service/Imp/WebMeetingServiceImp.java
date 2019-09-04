@@ -7,8 +7,6 @@ import tr.com.astair.astair.model.WebMeeting;
 import tr.com.astair.astair.repository.WebMeetingRepository;
 import tr.com.astair.astair.service.WebMeetingService;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -67,9 +65,9 @@ public class WebMeetingServiceImp implements WebMeetingService {
         }
     }
 
-    public List<String> appropriateDays(Integer month) {
+    public List<String> fullDays(Integer month) {
         try {
-            return webMeetingRepository.appropriateDays(month);
+            return webMeetingRepository.fullDays(month);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }

@@ -11,8 +11,6 @@ import tr.com.astair.astair.model.WebMeeting;
 import tr.com.astair.astair.service.WebMeetingService;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -71,8 +69,8 @@ public class WebMeetingController implements WebMeetingControllerApi {
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<String>> appropriateDays(@PathVariable Integer month) {
-        List<String> test = webMeetingService.appropriateDays(month);
+    public ResponseEntity<List<String>> fullDays(@PathVariable Integer month) {
+        List<String> test = webMeetingService.fullDays(month);
         if (test == null) {
             return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }

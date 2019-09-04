@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tr.com.astair.astair.model.WebMeeting;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
@@ -42,15 +40,10 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
             "from meeting_web m " +
             "where cast (substring(m.date, 6, 2) as int) = :month " +
             "and TO_DATE(m.date, 'YYYY-MM-DD') >= current_date " +
-            "and to_char(TO_DATE(m.date, 'YYYY-MM-DD'), 'DAY') != 'SATURDAY ' " +
-            "and to_char(TO_DATE(m.date, 'YYYY-MM-DD'), 'DAY') != 'SUNDAY   '" +
-            "except " +
-            "select TO_DATE(p.date, 'YYYY-MM-DD') " +
-            "from meeting_web p " +
-            "where p.startTime = '07:30' " +
-            "group by p.date " +
-            "having count(*) - 1 = (select count(*) from rooms) ")
-    List<String> appropriateDays(@Param("month") Integer month);
+            "group by m.date " +
+            "having sum(cast(substring(m.endTime, 1, 2) as int) - cast(substring(m.startTime, 1, 2) as int)) = (select count(*) from rooms) * 10"
+    )
+    List<String> fullDays(@Param("month") Integer month);
 
     @Query(nativeQuery = true, value = "select r.room " +
             "from rooms r " +

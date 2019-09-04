@@ -10,5 +10,5 @@ public interface UserNamesControllerApi {
     ResponseEntity<List<UserNames>> getNames();
 
     @PostMapping("/user-names/add-user-name")
-    ResponseEntity<UserNames> addUserName(@RequestBody UserNames userNames);
+    void addUserName(@RequestBody UserNames userNames);
 }

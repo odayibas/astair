@@ -21,7 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
     private Long id;
-	
+
 	@NotNull
     @Size(min=1, message="Username should have at least 1 characters")
 	@Column(name="username", nullable = false)
@@ -35,9 +35,9 @@ public class User {
     @Size(min=1, message="Password should have at least 1 characters")
 	@Column(name="user_password")
 	private String password;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -53,7 +53,7 @@ public class User {
 	public void setRole(Integer role) {
 		this.role = role;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}

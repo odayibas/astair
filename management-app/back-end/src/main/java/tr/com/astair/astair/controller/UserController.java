@@ -2,6 +2,8 @@ package tr.com.astair.astair.controller;
 
 import tr.com.astair.astair.controller.api.UserControllerApi;
 import tr.com.astair.astair.model.User;
+import tr.com.astair.astair.model.UserNames;
+import tr.com.astair.astair.service.UserNamesService;
 import tr.com.astair.astair.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController(value="/user")
 public class UserController implements UserControllerApi {
 	private UserService userService;
+	private UserNamesService userNamesService;
 
 	@Autowired
 	public UserController(UserService userService) {

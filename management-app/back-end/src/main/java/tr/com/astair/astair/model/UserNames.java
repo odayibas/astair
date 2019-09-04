@@ -3,7 +3,7 @@ package tr.com.astair.astair.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "usernames")
+@Table(name = "user_names")
 public class UserNames {
 
     @Id

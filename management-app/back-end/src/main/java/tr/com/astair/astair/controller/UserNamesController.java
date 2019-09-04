@@ -26,13 +26,13 @@ public class UserNamesController implements UserNamesControllerApi {
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
-    public ResponseEntity<UserNames> addUserName(@RequestBody UserNames userNames) {
+    public void addUserName(@RequestBody UserNames userNames) {
         UserNames test = new UserNames(userNames.getUsername());
         userNamesService.addUserName(test);
         if (test == null) {
-            return new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
+            new ResponseEntity<>((MultiValueMap<String, String>) null, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(test, HttpStatus.OK);
+        new ResponseEntity<>(test, HttpStatus.OK);
     }
 
 }

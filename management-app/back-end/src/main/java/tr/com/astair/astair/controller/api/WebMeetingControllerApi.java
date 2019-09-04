@@ -4,8 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tr.com.astair.astair.model.WebMeeting;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public interface WebMeetingControllerApi {
@@ -30,8 +28,8 @@ public interface WebMeetingControllerApi {
     @GetMapping("/meeting/appropriate-rooms/{date}/{time}")
     ResponseEntity<List<String>> appropriateRooms(@PathVariable String date, @PathVariable String time);
 
-    @GetMapping("/meeting/appropriate-days/{month}")
-    ResponseEntity<List<String>> appropriateDays(@PathVariable Integer month);
+    @GetMapping("/meeting/full-days/{month}")
+    ResponseEntity<List<String>> fullDays(@PathVariable Integer month);
 
     @GetMapping("/meeting/get-last-meeting")
     ResponseEntity<List<WebMeeting>> getLastMeeting();
