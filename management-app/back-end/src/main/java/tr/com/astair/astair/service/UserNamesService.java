@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface UserNamesService {
     List<UserNames> getNames();
+    UserNames addUserName(UserNames userName);
 }

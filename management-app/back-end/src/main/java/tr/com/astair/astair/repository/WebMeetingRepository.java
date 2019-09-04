@@ -4,6 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tr.com.astair.astair.model.WebMeeting;
+
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
@@ -35,16 +38,28 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
                 "and m.startTime > :time")
     Integer findHowMuchSpare(@Param("date") String date, @Param("time") String time, @Param("room") String room);
 
-    @Query(nativeQuery = true, value = "select p.room " +
+    @Query(nativeQuery = true, value = "select TO_DATE(m.date, 'YYYY-MM-DD') " +
+            "from meeting_web m " +
+            "where cast (substring(m.date, 6, 2) as int) = :month " +
+            "and TO_DATE(m.date, 'YYYY-MM-DD') >= current_date " +
+            "and to_char(TO_DATE(m.date, 'YYYY-MM-DD'), 'DAY') != 'SATURDAY ' " +
+            "and to_char(TO_DATE(m.date, 'YYYY-MM-DD'), 'DAY') != 'SUNDAY   '" +
+            "except " +
+            "select TO_DATE(p.date, 'YYYY-MM-DD') " +
             "from meeting_web p " +
+            "where p.startTime = '07:30' " +
+            "group by p.date " +
+            "having count(*) - 1 = (select count(*) from rooms) ")
+    List<String> appropriateDays(@Param("month") Integer month);
+
+    @Query(nativeQuery = true, value = "select r.room " +
+            "from rooms r " +
             "except " +
             "select m.room " +
             "from meeting_web m " +
-            "where m.date = :date and m.startTime = '07:00' and m.endTime = (" +
-                "select p.endTime " +
-                "from meeting_web p " +
-                "where p.endTime = '17.00' and m.room = p.room and m.date = :date)")
-    List<String> appropriateRooms(@Param("date") String date);
+            "where m.date = :date and ((m.startTime <= :time and m.endTime > :time) " +
+            "or (m.startTime < :time and m.endTime > :time))")
+    List<String> appropriateRooms(@Param("date") String date, @Param("time") String time);
 
     @Query(nativeQuery = true, value = "select * from meeting_web")
     List<WebMeeting> getLastMeeting();

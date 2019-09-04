@@ -24,4 +24,12 @@ public class UserNamesServiceImp implements UserNamesService {
         }
     }
 
+    public UserNames addUserName(UserNames userName){
+        try {
+            return userNamesRepository.save(userName);
+        } catch (QueryException e) {
+            throw new QueryException(e.getMessage());
+        }
+    }
+
 }
