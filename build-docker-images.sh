@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage;
-# bash build-docker-images.sh --docker-registry=astar.azurecr.io --version="0.0.1"
+# bash build-docker-images.sh --docker-registry=astar.azurecr.io --image-version="0.0.1"
 
 set -e
 
