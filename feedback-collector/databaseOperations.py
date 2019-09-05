@@ -7,10 +7,20 @@ from datetime import datetime
 def connect_db():
     return psycopg2.connect(os.environ.get('POSTGRESQL_URL'))
 
+def persons(connection):
+
+    cursor=connection.cursor()
+    postgres_select_query="""select username from personelinfo"""
+    cursor.execute(postgres_select_query)
+    person=cursor.fetchall()
+    cursor.close()
+
+    return person
+
 def saat(connection):
 
     cursor = connection.cursor()
-    postgres_select_query = """ select saat from clocks"""
+    postgres_select_query = """ select saat from clocks order by id asc"""
     cursor.execute(postgres_select_query)
     saat = cursor.fetchall()
     cursor.close()
@@ -26,10 +36,168 @@ def emptyorfull(connection):
     data = cursor.fetchall()
     cursor.close()
 
+    print("empyorfuldatası",data)
+
     return data
 
 
-def adddateRecord(connection,username,date,room,clock):
+def emptyorfullbiking(connection): #bike tablosundaki veirleri getirir.
+
+    cursor = connection.cursor()
+    postgres_select_query=""" select selected_date,selected_bike,selected_clock from biking group by selected_Date,selected_bike,selected_clock """
+    cursor.execute(postgres_select_query)
+
+    data=cursor.fetchall()
+    cursor.close()
+
+    return data
+
+def lastdateforbiking(connection):
+    cursor= connection.cursor()
+    postgres_select_query="""select selected_date from biking where id = (select max(id) from biking)"""
+    cursor.execute(postgres_select_query)
+    data=cursor.fetchall()
+    cursor.close()
+
+    return  data
+def lastbikeforbiking(connection):
+    cursor= connection.cursor()
+    postgres_select_query="""select selected_bike from biking where id = (select max(id) from biking)"""
+    cursor.execute(postgres_select_query)
+    data=cursor.fetchall()
+    cursor.close()
+
+    return  data
+def lastmeetformeeting(connection):
+    cursor= connection.cursor()
+    postgres_select_query="""select selected_room from meeting where id = (select max(id) from meeting)"""
+    cursor.execute(postgres_select_query)
+    data=cursor.fetchall()
+    cursor.close()
+
+    return  data
+
+
+def lastdateformeeting(connection):
+    cursor = connection.cursor()
+    postgres_select_query = """select selected_date from meeting where id = (select max(id) from meeting)"""
+    cursor.execute(postgres_select_query)
+    data = cursor.fetchall()
+    cursor.close()
+
+    return data
+def taketimes(connection):
+
+    cursor=connection.cursor()
+    postgres_select_query="""select saat from temporaryinterface where id = (select max(id) from temporaryinterface)"""
+    cursor.execute(postgres_select_query)
+    data=cursor.fetchall()
+    cursor.close()
+
+    return  data
+
+def addtemporarytimes(connection,date):
+
+    cursor=connection.cursor()
+    postgres_insert_query = """ INSERT INTO temporaryinterface (saat) VALUES (%s)"""
+    data = (date)
+    print("data", data)
+    cursor.execute(postgres_insert_query,[data])
+    connection.commit()
+    cursor.close()
+
+
+
+
+def adddateRecordbiking(connection,username,date,bike,clock): #Biking tablosunu günceller
+
+    cursor=connection.cursor()
+
+    if(date!=""):
+
+        postgres_insert_query= """ INSERT INTO biking (username,selected_date) VALUES (%s,%s)"""
+        cursor.execute(postgres_insert_query,(str(username),str(date)))
+        connection.commit()
+        cursor.close()
+
+    if(bike!=""):
+
+        postgres_select_query = """ select username,max(vote_id) from biking where username=%s group by username"""
+        data = (str(username))
+        cursor.execute(postgres_select_query,[data])
+        columns=cursor.fetchall()
+
+        username_voteid = columns[0][0]
+        vote_id = columns[0][1]
+
+        postgres_update_query=""" update biking set selected_bike = %s where username= %s and username = %s and vote_id=%s"""
+        cursor.execute(postgres_update_query,(str(bike),str(username),str(username_voteid),str(vote_id)))
+        connection.commit()
+        cursor.close()
+
+    if (clock != ""):
+        postgres_select_query = """select username,max(vote_id) from biking where username=%s group by username"""
+        data = (str(username))
+        cursor.execute(postgres_select_query, [data])
+        columns = cursor.fetchall()
+
+        username_voteid = columns[0][0]
+        vote_id = columns[0][1]
+
+        postgres_update_query = """ update biking set selected_clock=%s where username = %s and username = %s and vote_id=%s"""
+        cursor.execute(postgres_update_query, (str(clock), str(username), str(username_voteid), str(vote_id)))
+        connection.commit()
+        cursor.close()
+
+    return True
+
+def controlbiking(connection): #bike tablosundaki verileri bir liste2 'ye atar.
+
+    liste = list()
+
+    cursor = connection.cursor()
+    postgres_select_query = """ select id,username,selected_date,selected_bike,selected_clock from biking group by id, username,selected_date,selected_bike,selected_clock order by id asc"""
+    cursor.execute(postgres_select_query)
+    data = cursor.fetchall()
+    liste.append(data)
+    cursor.close()
+
+    liste2 = list()
+
+    for i in liste:
+        for j in i:
+            liste2.append(j)
+
+    return liste2
+
+def deletebiking(connection,username,date,bike,clock): # bike tablosundaki veriyi siler
+
+    print(username,date,bike,clock)
+    cursor = connection.cursor()
+    postgres_delete_query = """ Delete from biking where username=%s and selected_date=%s and selected_bike=%s and selected_clock=%s"""
+    data = (username,date,bike,clock)
+    cursor.execute(postgres_delete_query,data)
+    connection.commit()
+
+    cursor.close()
+def deletebikinglastrow(connection):
+    cursor=connection.cursor()
+    postgres_delete_query="""Delete from biking where id = (select max(id) from biking)"""
+    cursor.execute(postgres_delete_query)
+    connection.commit()
+
+    cursor.close()
+
+
+def deletemeetinglastrow(connection):
+    cursor=connection.cursor()
+    postgres_delete_query="""Delete from meeting where id = (select max(id) from meeting)"""
+    cursor.execute(postgres_delete_query)
+    connection.commit()
+    cursor.close()
+#Bike tablosu bitiş
+
+def adddateRecord(connection,username,date,room,clock): #Meeting tablosunu günceller.
 
     cursor = connection.cursor()
 
@@ -96,10 +264,13 @@ def deletemeeting(connection,username,date,room,clock):
 
     print(username,date,room,clock)
     cursor = connection.cursor()
+    #print("silindi1")
     postgres_delete_query = """ Delete from meeting where username=%s and selected_date=%s and selected_room=%s and selected_clock=%s"""
+    #print("silindi2")
     data = (username,date,room,clock)
     cursor.execute(postgres_delete_query,data)
     connection.commit()
+    #print("silindi3")
     cursor.close()
 
 def addSnoozeTable(connection,username):
@@ -170,6 +341,8 @@ def id(connection,username):
     cursor.execute(postgres_select_query)
     id2 = cursor.fetchall()
     cursor.close()
+
+    #print("id2 : "+str(id2[0][0]))
 
     return id2[0][0]
 

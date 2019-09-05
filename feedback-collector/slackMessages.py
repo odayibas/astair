@@ -5,13 +5,50 @@ import datetime
 
 db_conn = databaseOperations.connect_db()
 
+def persons():
+
+    tüm_kisiler = databaseOperations.persons(db_conn)
+
+    persons1 = []
+
+    for i in range(0,32):
+
+        persons1.append({
+            "text": {
+                "type": "plain_text",
+                "text": tüm_kisiler[i][0],
+            },
+            "value":  tüm_kisiler[i][0]
+        })
+
+    persons = [{
+
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "Pick a clock from the dropdown list"
+        },
+
+        "accessory": {
+            "type": "static_select",
+            "action_id": "clock_id1",
+            "placeholder": {
+                "type": "plain_text",
+                "text": "Start time",
+            },
+            "options": persons1
+        }
+    }]
+
+    return persons
+
 def clocks():
 
     tüm_saatler = databaseOperations.saat(db_conn)
 
     clocks = []
 
-    for i in range(1,13):
+    for i in range(0,32):
 
         clocks.append({
             "text": {
@@ -31,15 +68,442 @@ def clocks():
 
         "accessory": {
             "type": "static_select",
+            "action_id": "clock_id1",
             "placeholder": {
                 "type": "plain_text",
-                "text": "Select a clock",
+                "text": "Start time",
             },
             "options": clocks
         }
     }]
 
     return clock
+
+
+def clocks1():
+
+    tüm_saatler = databaseOperations.saat(db_conn)
+
+    clocks = []
+
+    for i in range(0,32):
+
+        clocks.append({
+            "text": {
+                "type": "plain_text",
+                "text": tüm_saatler[i][0],
+            },
+            "value":  tüm_saatler[i][0]
+        })
+
+    clock1 = [{
+
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "Pick a clock from the dropdown list"
+        },
+
+        "accessory": {
+            "type": "static_select",
+            "action_id": "clock_id2",
+            "placeholder": {
+                "type": "plain_text",
+                "text": "End time",
+            },
+            "options": clocks
+        }
+    }]
+
+    return clock1
+def clocksforbike():
+
+    tüm_saatler = databaseOperations.saat(db_conn)
+
+    clocks = []
+
+    for i in range(0,32):
+
+        clocks.append({
+            "text": {
+                "type": "plain_text",
+                "text": tüm_saatler[i][0],
+            },
+            "value":  tüm_saatler[i][0]
+        })
+
+    clocksforbike = [{
+
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "Pick a clock from the dropdown list"
+        },
+
+        "accessory": {
+            "type": "static_select",
+            "action_id": "clock_id3",
+            "placeholder": {
+                "type": "plain_text",
+                "text": "Start Time",
+            },
+            "options": clocks
+        }
+    }]
+
+    return clocksforbike
+
+def clocksforbike1():
+
+    tüm_saatler = databaseOperations.saat(db_conn)
+
+    clocks = []
+
+    for i in range(0,32):
+
+        clocks.append({
+            "text": {
+                "type": "plain_text",
+                "text": tüm_saatler[i][0],
+            },
+            "value":  tüm_saatler[i][0]
+        })
+
+    clocksforbike1 = [{
+
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "Pick a clock from the dropdown list"
+        },
+
+        "accessory": {
+            "type": "static_select",
+            "action_id": "clock_id4",
+            "placeholder": {
+                "type": "plain_text",
+                "text": "End Time",
+            },
+            "options": clocks
+        }
+    }]
+
+    return clocksforbike1
+def howmanytimes():
+    howmanytimes= [
+
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "how many times "
+                },
+                "accessory": {
+                    "type": "static_select",
+                    "action_id": "howmanytimes",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Select an item",
+                    "emoji": True
+
+                    },
+
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "1",
+                    "emoji": True
+
+                            },
+                            "value": "1"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "2",
+                    "emoji": True
+                            },
+                            "value": "2"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "3",
+                    "emoji": True
+                            },
+                            "value": "3"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "4",
+                    "emoji": True
+                            },
+                            "value": "4"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "5",
+                    "emoji": True
+                            },
+                            "value": "5"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "6",
+                    "emoji": True
+                            },
+                            "value": "6"
+                        }
+                    ]
+                }
+
+            }
+
+        ]
+    return howmanytimes
+def howmanytimesMeeting():
+    howmanytimesMeeting= [
+
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "how many times "
+                },
+                "accessory": {
+                    "type": "static_select",
+                    "action_id": "howmanytimesMeeting",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Select an item",
+                    "emoji": True
+
+                    },
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "1",
+                    "emoji": True
+
+                            },
+                            "value": "1"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "2",
+                    "emoji": True
+                            },
+                            "value": "2"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "3",
+                    "emoji": True
+                            },
+                            "value": "3"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "4",
+                    "emoji": True
+                            },
+                            "value": "4"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "5",
+                    "emoji": True
+                            },
+                            "value": "5"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "6",
+                    "emoji": True
+                            },
+                            "value": "6"
+                        }
+                    ]
+                }
+
+            }
+
+        ]
+    return howmanytimesMeeting
+
+
+#Mesaj Bloğu
+def biking():
+    biking= [
+
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "Pick an biking  from the dropdown list."
+                },
+                "accessory": {
+                    "type": "static_select",
+                    "action_id": "staticselectbike",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": "Select an item",
+                    "emoji": True
+
+                    },
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Bike 1",
+                    "emoji": True
+
+                            },
+                            "value": "Bike 1"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Bike 2",
+                    "emoji": True
+                            },
+                            "value": "Bike 2"
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Bike 3",
+                    "emoji": True
+                            },
+                            "value": "Bike 3"
+                        }
+                    ]
+                }
+
+            }
+
+        ]
+    return biking
+
+def calendarforbike():
+
+    an = datetime.datetime.now()
+
+    calendar = [
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Pick a date for biking."
+            },
+            "accessory": {
+                "type": "datepicker",
+                "action_id": "datepickerbike",
+                "initial_date": datetime.datetime.strftime(an, '%Y-%m-%d'),
+                "placeholder": {
+                    "type": "plain_text",
+                    "text": "Select a bike",
+                    "emoji": True
+                }
+
+            }
+        }
+
+    ]
+
+    return  calendar
+
+def inputarea1():
+
+    inputarea1 = [
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Attendees"
+            },
+            "accessory": {
+                "type": "users_select",
+                "action_id":"users_select",
+                "placeholder": {
+                    "type": "plain_text",
+                    "text": "Select a user",
+                    "emoji": True
+                }
+
+
+
+
+            }
+        }
+    ]
+
+    return inputarea1
+def inputarea():
+
+    inputarea= [
+	{
+		"type": "context",
+		"elements": [
+			{
+				"type": "mrkdwn",
+				"text": "Attendees"
+			}
+		]
+	},
+	{
+		"type": "actions",
+		"elements": [
+			{
+				"type": "users_select",
+                "action_id": "inputarea_id",
+				"placeholder": {
+					"type": "plain_text",
+					"text": "Select a user"
+
+				}
+			}
+		]
+	}
+
+]
+    return inputarea
+def calendar():
+
+    an = datetime.datetime.now()
+
+    calendar = [
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Pick a date for meeting."
+            },
+            "accessory": {
+                "type": "datepicker",
+                "action_id": "datepickerroom",
+                "initial_date": datetime.datetime.strftime(an, '%Y-%m-%d'),
+                "placeholder": {
+                    "type": "plain_text",
+                    "text": "Select a date",
+                    "emoji": True
+                }
+            }
+        }
+
+    ]
+
+    return  calendar
 
 
 def meeting_room():
@@ -53,6 +517,7 @@ def meeting_room():
             },
             "accessory": {
                 "type": "static_select",
+                "action_id":"static_selectroom",
                 "placeholder": {
                     "type": "plain_text",
                     "text": "Select an item",
@@ -90,31 +555,7 @@ def meeting_room():
 
     return meeting_room
 
-def calendar():
 
-    an = datetime.datetime.now()
-
-    calendar = [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "Pick a date for meeting."
-            },
-            "accessory": {
-                "type": "datepicker",
-                "initial_date": datetime.datetime.strftime(an, '%Y-%m-%d'),
-                "placeholder": {
-                    "type": "plain_text",
-                    "text": "Select a date",
-                    "emoji": True
-                }
-            }
-        }
-
-    ]
-
-    return  calendar
 
 def onSnooze():
 
@@ -249,6 +690,7 @@ def checkAcZone():
 def locationimage():
 
     location =[
+
         {
             "type": "section",
             "text": {
@@ -284,11 +726,13 @@ def getLocationSurvey(ids):
         "type": "section",
         "text": {
             "type": "mrkdwn",
+                      #"text": message_location + "\nPick an item from the dropdown list"
             "text": "Pick an item from the dropdown list"
         },
 
         "accessory": {
             "type": "static_select",
+            "action_id": "location1",
             "placeholder": {
                 "type": "plain_text",
                 "text": "Select an item",
