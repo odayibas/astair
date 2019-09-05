@@ -3,6 +3,7 @@ import { Table, Button, Col, Row } from "react-bootstrap";
 import update from "immutability-helper";
 import { fontSize } from "@material-ui/system";
 import { Container } from "@material-ui/core";
+import { UncontrolledPopover, PopoverHeader, PopoverBody } from "reactstrap";
 
 class Schedule extends Component {
   prevLoc = { x: -1, y: -1 };
@@ -365,6 +366,7 @@ class Schedule extends Component {
       y: -1
     };
   };
+
   getRow = (elements, part = "body") => {
     let whiteSpace = "pre-wrap";
     if (part === "body") whiteSpace = "nowrap";
@@ -470,6 +472,7 @@ class Schedule extends Component {
               }}
               className={className}
               key={item.id}
+              id={item.id + ""}
             >
               {text}
             </th>

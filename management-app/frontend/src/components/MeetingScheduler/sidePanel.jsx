@@ -3,7 +3,7 @@ import { Container, Col, Row, Button } from "react-bootstrap";
 import DropdownMenu from "./dropdownMenu";
 import CheckBoxGroup from "./checkboxgroup";
 import color from "@material-ui/core/colors/brown";
-import { maxWidth, maxHeight } from "@material-ui/system";
+import { maxWidth, maxHeight, height } from "@material-ui/system";
 import SummaryPanel from "./summarypanel";
 import Options from "./options";
 
@@ -18,21 +18,13 @@ class ButtonPanel extends Component {
   getSummaryPanel = () => {
     if (this.props.showSummary) {
       return (
-        <div
-          style={{
-            marginTop: 30,
-            backgroundColor: "#43494D",
-            width: maxWidth
-          }}
-        >
-          <SummaryPanel
-            showToast={this.props.showToast}
-            hideToast={this.props.hideToast}
-            data={this.props.summaryData}
-            onCreateMeeting={this.props.onCreateMeeting}
-            onShowDialog={this.props.onShowDialog}
-          />
-        </div>
+        <SummaryPanel
+          showToast={this.props.showToast}
+          hideToast={this.props.hideToast}
+          data={this.props.summaryData}
+          onCreateMeeting={this.props.onCreateMeeting}
+          onShowDialog={this.props.onShowDialog}
+        />
       );
     } else {
       return;

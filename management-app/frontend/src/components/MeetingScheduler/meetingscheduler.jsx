@@ -416,7 +416,7 @@ class MeetingScheduler extends Component {
     const room = this.state.rooms[this.state.roomset.values().next().value];
     const summary = { date, start, end, room };
     this.setState({ summary: summary }, () => {
-      console.log(this.state.roomset);
+      console.log("Debug", this.state.roomset);
       if (this.checkedCount !== 0) {
         this.setShowDialog(true);
       }
@@ -559,9 +559,13 @@ class MeetingScheduler extends Component {
       date: meeting.date,
       start: meeting.start,
       end: meeting.end,
-      room: meeting.room
+      room: meeting.room,
+      description: meeting.description,
+      participants: meeting.participants,
+      username: meeting.username
     };
     this.setState({ summary: summary }, () => {});
+    console.log("Meeting displayed", summary);
     this.handleSummary("show");
   };
 
@@ -582,7 +586,7 @@ class MeetingScheduler extends Component {
 
   handleSummary = action => {
     if (action === "show") {
-      //this.setState({ showSummary: true });
+      this.setState({ showSummary: true });
     } else if (action === "hide") {
       this.setState({ showSummary: false });
     } else {
@@ -721,10 +725,30 @@ class MeetingScheduler extends Component {
       });
   };
 
+  handleDeleteAllMeetings = () => {
+    console.log("Delete All meetings");
+    return axios
+      .get(urlServer + "/meeting/remove-all-meeting")
+      .then(res => {
+        this.props.showToast(
+          "success",
+          "All the meetings have been deleted successfully."
+        );
+        window.location.reload();
+      })
+      .catch(err => {
+        this.props.showToast(
+          "danger",
+          "En error occured while deleting meetings."
+        );
+      });
+  };
+
   getAdminPanel = () => {
     if (getCookie("usertoken") === "1") {
       return (
         <AdminPanel
+          deleteAllMeetings={this.handleDeleteAllMeetings}
           showToast={this.props.showToast}
           onAdminSetSchedule={this.handleAdminSetSchedule}
           onAddRoom={this.handleAddRoom}

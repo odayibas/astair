@@ -71,7 +71,11 @@ class Dialog extends Component {
       return (
         <Dropdown.Item
           onClick={() => {
-            this.setState({ currentRoom: room });
+            console.log("Selected", room);
+            this.roomSelected = true;
+            this.setState({ currentRoom: room }, () => {
+              console.log("Room has been changed", this.state.currentRoom);
+            });
           }}
           id={room}
         >

@@ -37,41 +37,60 @@ class SummaryPanel extends Component {
     if (!(this.props.data.start && this.props.data.end && this.props.data.date))
       return <div />;
     return (
-      <div>
+      <div
+        className="border rounded"
+        style={{ marginTop: 10, textAlign: "left" }}
+      >
         <Container style={{ width: maxWidth }}>
           <Row className="text-center">
-            <Col xs={12}>
-              <h5
-                style={{
-                  color: "#ffffff",
-                  padding: 10
-                }}
-              >
-                Meeting Preview
-              </h5>
+            <Col xs={12} style={{ marginTop: 10 }}>
+              <span style={{ fontSize: "1.25em" }}>Details</span>
             </Col>
           </Row>
-          <Row>
-            <span style={{ color: "#ffffff", padding: 10, marginLeft: 20 }}>
-              Description : {this.props.data.description}
-            </span>
+          <Row style={{ marginTop: 10 }}>
+            <Col xs={12}>
+              <span style={{ color: "#202528", fontSize: "0.8em", padding: 5 }}>
+                <b>Creator:</b> {this.props.data.username}
+              </span>
+            </Col>
           </Row>
-          <Row>
-            <span style={{ color: "#ffffff", padding: 10, marginLeft: 20 }}>
-              Time : {this.getTime()}
-            </span>
+          <Row style={{ marginTop: 5 }}>
+            <Col xs={12}>
+              <span
+                style={{
+                  color: "#202528",
+                  padding: 5,
+                  fontSize: "0.8em",
+                  textAlign: "center"
+                }}
+              >
+                <b>Description:</b> {this.props.data.description}
+              </span>
+            </Col>
           </Row>
-          <Row>
-            <span style={{ color: "#ffffff", padding: 10, marginLeft: 20 }}>
-              Date : {this.getDate()}
-            </span>
+          <Row style={{ marginTop: 5 }}>
+            <Col xs={12}>
+              <span style={{ color: "#202528", padding: 5, fontSize: "0.8em" }}>
+                {this.getDate()}
+              </span>
+            </Col>
           </Row>
-          <Row>
-            <span style={{ color: "#ffffff", padding: 10, marginLeft: 20 }}>
-              Room : {this.props.data.room}
-            </span>
+          <Row style={{ marginTop: 5 }}>
+            <Col xs={12}>
+              <span style={{ color: "#202528", padding: 5, fontSize: "0.8em" }}>
+                {this.getTime()}
+              </span>
+            </Col>
           </Row>
-          <Row>
+
+          <Row style={{ marginTop: 5, marginBottom: 10, fontSize: "0.8em" }}>
+            <Col xs={12}>
+              <span style={{ color: "#202528", padding: 5 }}>
+                <b>Room</b> : {this.props.data.room}
+              </span>
+            </Col>
+          </Row>
+          {/* <Row>
             <Col xs={12}>
               <button
                 type="button"
@@ -84,7 +103,7 @@ class SummaryPanel extends Component {
                 Create
               </button>
             </Col>
-          </Row>
+          </Row> */}
         </Container>
       </div>
     );

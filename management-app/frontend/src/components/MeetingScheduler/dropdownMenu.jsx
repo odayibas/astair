@@ -26,6 +26,7 @@ class DropdownMenu extends Component {
   handleItemClick = id => {
     let val = this.props.items[id];
     this.setState({ currentName: val });
+    console.log("Selected", id);
     this.props.onSelected(id);
   };
 

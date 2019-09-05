@@ -201,6 +201,17 @@ class AdminPanel extends Component {
               </Button>
             </Col>
           </Row>
+          <Row style={{ marginTop: 20 }}>
+            <Col style={{ padding: 10 }}>
+              <Button
+                variant="outline-danger"
+                size="sm"
+                onClick={this.props.deleteAllMeetings}
+              >
+                Delete All Meetings
+              </Button>
+            </Col>
+          </Row>
         </Container>
       </div>
     );
