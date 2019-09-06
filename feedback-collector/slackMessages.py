@@ -5,42 +5,7 @@ import datetime
 
 db_conn = databaseOperations.connect_db()
 
-def persons():
 
-    tüm_kisiler = databaseOperations.persons(db_conn)
-
-    persons1 = []
-
-    for i in range(0,32):
-
-        persons1.append({
-            "text": {
-                "type": "plain_text",
-                "text": tüm_kisiler[i][0],
-            },
-            "value":  tüm_kisiler[i][0]
-        })
-
-    persons = [{
-
-        "type": "section",
-        "text": {
-            "type": "mrkdwn",
-            "text": "Pick a clock from the dropdown list"
-        },
-
-        "accessory": {
-            "type": "static_select",
-            "action_id": "clock_id1",
-            "placeholder": {
-                "type": "plain_text",
-                "text": "Start time",
-            },
-            "options": persons1
-        }
-    }]
-
-    return persons
 
 def clocks():
 
