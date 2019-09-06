@@ -7,25 +7,7 @@ from datetime import datetime
 def connect_db():
     return psycopg2.connect(os.environ.get('POSTGRESQL_URL'))
 
-def persons(connection):
 
-    cursor=connection.cursor()
-    postgres_select_query="""select username from personelinfo"""
-    cursor.execute(postgres_select_query)
-    person=cursor.fetchall()
-    cursor.close()
-
-    return person
-
-def saat(connection):
-
-    cursor = connection.cursor()
-    postgres_select_query = """ select saat from clocks order by id asc"""
-    cursor.execute(postgres_select_query)
-    saat = cursor.fetchall()
-    cursor.close()
-
-    return saat
 
 
 def emptyorfull(connection):
@@ -40,6 +22,15 @@ def emptyorfull(connection):
 
     return data
 
+def saat(connection):
+
+    cursor = connection.cursor()
+    postgres_select_query = """select saat from clocks order by id asc"""
+    cursor.execute(postgres_select_query)
+    saat1 = cursor.fetchall()
+    cursor.close()
+
+    return saat1
 
 def emptyorfullbiking(connection): #bike tablosundaki veirleri getirir.
 
