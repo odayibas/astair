@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { CardHeader, Col, Row } from "reactstrap";
+import { CardHeader } from "reactstrap";
+import { Container, Col, Row } from "react-bootstrap";
 
 import Icon from "@mdi/react";
 import {
@@ -9,6 +10,7 @@ import {
   mdiWeatherSunny,
   mdiFan
 } from "@mdi/js";
+import { maxWidth } from "@material-ui/system";
 
 class Fan extends Component {
   constructor(props) {
@@ -33,46 +35,53 @@ class Fan extends Component {
   };
 
   changeColor(value) {
+    console.log("Val", value, "props", this.props.mode);
     if (this.props.mode === value) return "rgba(238, 238, 238, 1)";
   }
   render() {
     return (
-      <CardHeader>
-        <div style={{ padding: 20 }}>
-          <Row>
-            <Col
-              value="COOL"
-              style={{
-                backgroundColor: this.changeColor("COOL"),
-                paddingLeft: "10%"
-              }}
-              onClick={() => this.radioSelect(1)}
-              active={this.state.radioSelected === 1}
-            >
-              <h3>LOW</h3>
-              <Icon path={mdiSnowflakeVariant} size={2} horizontal />
-            </Col>
-            <Col
-              value="HEAT"
-              style={{ backgroundColor: this.changeColor("HEAT") }}
-              onClick={() => this.radioSelect(2)}
-              active={this.state.radioSelected === 2}
-            >
-              <h3>MEDIUM</h3>
-              <Icon path={mdiWeatherSunny} size={2} horizontal />
-            </Col>
-            <Col
-              value="FAN"
-              style={{ backgroundColor: this.changeColor("FAN") }}
-              onClick={() => this.radioSelect(3)}
-              active={this.state.radioSelected === 3}
-            >
-              <h3>HIGH</h3>
-              <Icon path={mdiFan} size={2} horizontal />
-            </Col>
-          </Row>
-        </div>
-      </CardHeader>
+      <Row>
+        <Col
+          xs={4}
+          value="LOW"
+          style={{
+            backgroundColor: this.changeColor("LOW"),
+            textAlign: "center"
+            // paddingLeft: "10%"
+          }}
+          onClick={() => this.radioSelect(1)}
+          active={this.state.radioSelected === 1}
+        >
+          <h3>LOW</h3>
+          <Icon path={mdiSnowflakeVariant} size={2} horizontal />
+        </Col>
+        <Col
+          xs={4}
+          value="MEDIUM"
+          style={{
+            backgroundColor: this.changeColor("MEDIUM"),
+            textAlign: "center"
+          }}
+          onClick={() => this.radioSelect(2)}
+          active={this.state.radioSelected === 2}
+        >
+          <h3>MEDIUM</h3>
+          <Icon path={mdiWeatherSunny} size={2} horizontal />
+        </Col>
+        <Col
+          xs={4}
+          value="HIGH"
+          style={{
+            backgroundColor: this.changeColor("HIGH"),
+            textAlign: "center"
+          }}
+          onClick={() => this.radioSelect(3)}
+          active={this.state.radioSelected === 3}
+        >
+          <h3>HIGH</h3>
+          <Icon path={mdiFan} size={2} horizontal />
+        </Col>
+      </Row>
     );
   }
 }

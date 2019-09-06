@@ -243,18 +243,9 @@ class ACControl extends Component {
                     </div>
                   </Col>
                 </Row>
-                <Row>
-                  <div style={{ paddingLeft: "45%" }}>
-                    {/* <FanSpeed
-                      fan_speed={this.state.fan_speed}
-                      onChange={x => this.setFan(x)}
-                    /> */}
-                    <Fan
-                      mode={this.state.fan_speed}
-                      setFan={x => this.setFan(x)}
-                    />
-                  </div>
-                </Row>
+
+                <Fan mode={this.state.fan_speed} setFan={x => this.setFan(x)} />
+
                 <Row>
                   <Col />
                   <Col>
