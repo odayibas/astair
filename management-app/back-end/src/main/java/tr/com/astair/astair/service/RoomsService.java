@@ -1,6 +1,7 @@
 package tr.com.astair.astair.service;
 
 import tr.com.astair.astair.model.Rooms;
+
 import java.util.List;
 
 public interface RoomsService {

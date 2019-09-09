@@ -42,10 +42,9 @@ package tr.com.astair.astair.service.Imp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.User;
-import tr.com.astair.astair.model.UserNames;
-import tr.com.astair.astair.repository.UserNamesRepository;
 import tr.com.astair.astair.repository.UserRepository;
 import tr.com.astair.astair.service.UserService;
+
 import java.util.*;
 
 @Service

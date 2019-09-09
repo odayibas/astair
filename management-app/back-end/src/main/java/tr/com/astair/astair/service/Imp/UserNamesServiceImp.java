@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.UserNames;
 import tr.com.astair.astair.repository.UserNamesRepository;
 import tr.com.astair.astair.service.UserNamesService;
+
 import java.util.List;
 
 @Service

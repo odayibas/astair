@@ -36,4 +36,5 @@ public interface WebMeetingControllerApi {
 
     @GetMapping("/meeting/remove-all-meeting")
     void removeAllMeeting();
+
 }

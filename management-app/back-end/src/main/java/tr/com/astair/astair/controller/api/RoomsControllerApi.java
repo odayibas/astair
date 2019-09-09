@@ -3,6 +3,7 @@ package tr.com.astair.astair.controller.api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tr.com.astair.astair.model.Rooms;
+
 import java.util.List;
 
 public interface RoomsControllerApi {

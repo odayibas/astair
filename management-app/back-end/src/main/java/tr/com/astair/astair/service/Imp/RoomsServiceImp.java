@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.Rooms;
 import tr.com.astair.astair.repository.RoomsRepository;
 import tr.com.astair.astair.service.RoomsService;
+
 import java.util.List;
 
 @Service

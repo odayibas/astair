@@ -2,7 +2,6 @@ package tr.com.astair.astair.controller;
 
 import tr.com.astair.astair.controller.api.UserControllerApi;
 import tr.com.astair.astair.model.User;
-import tr.com.astair.astair.model.UserNames;
 import tr.com.astair.astair.service.UserNamesService;
 import tr.com.astair.astair.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -25,9 +25,9 @@ services=(
 )
 
 cd feedback-collector/
-docker build -t $docker_registry/astair-feedback-collector:$image_version .
-docker login $docker_registry
-docker push $docker_registry/astair-feedback-collector:$image_version
+sudo docker build -t $docker_registry/astair-feedback-collector:$image_version .
+sudo docker login $docker_registry
+sudo docker push $docker_registry/astair-feedback-collector:$image_version
 
 cd ../
 cd management-app/
@@ -39,9 +39,9 @@ do
     cd $directory
 
     echo "Building the $directory docker image..."
-    docker build -t $docker_registry/astair-management-app-$directory:$image_version .
+    sudo docker build -t $docker_registry/astair-management-app-$directory:$image_version .
 
     echo "Pushing the $directory docker image..."
-    docker push $docker_registry/astair-management-app-$directory:$image_version
+    sudo docker push $docker_registry/astair-management-app-$directory:$image_version
     cd ..
 done
