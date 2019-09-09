@@ -45,12 +45,4 @@ public class RoomsServiceImp implements RoomsService {
         }
     }
 
-    public Integer findId(String room){
-        try {
-            return roomsRepository.findId(room);
-        } catch (QueryException e) {
-            throw new QueryException(e.getMessage());
-        }
-    }
-
 }

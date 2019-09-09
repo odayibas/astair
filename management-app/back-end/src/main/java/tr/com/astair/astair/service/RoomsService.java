@@ -8,5 +8,4 @@ public interface RoomsService {
     List<Rooms> getAllRooms();
     Rooms addRoom(Rooms room);
     void deleteRoom(Rooms r);
-    Integer findId(String room);
 }
