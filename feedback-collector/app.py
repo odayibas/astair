@@ -809,7 +809,7 @@ def sendMeetingservey(creater,username): #Toplantı odası için oluşturulan an
                 sc.api_call("chat.postMessage", channel=userinfo[key], blocks=slackMessages.meeting_room())
                 sc.api_call("chat.postMessage", channel=userinfo[key], blocks=slackMessages.clocks())
                 sc.api_call("chat.postMessage", channel=userinfo[key], blocks=slackMessages.clocks1())
-                sc.api_call("chat.postMessage", channel=userinfo[key], blocks=slackMessages.persons())
+
 
 
 

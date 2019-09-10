@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2b35e841-19d4-4884-b4b1-43ae2e25cebd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/astair.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/astair.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="2b35e841-19d4-4884-b4b1-43ae2e25cebd" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +28,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="findjar.last.used.dir" value="$PROJECT_DIR$/management-app/back-end" />
     <property name="last_directory_selection" value="$PROJECT_DIR$" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/management-app/back-end" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../flask-heroku-example" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -55,7 +51,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.All in astair">
+  <component name="RunManager" selected="Python.modelDecision">
     <configuration name="All in astair" type="JUnit" factoryName="JUnit">
       <module name="astair" />
       <option name="PACKAGE_NAME" value="" />
@@ -89,7 +85,6 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="JUnit.All in astair" />
       <item itemvalue="Python.modelDecision" />
     </list>
   </component>

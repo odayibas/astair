@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tr.com.astair.astair.model.Rooms;
 import tr.com.astair.astair.repository.RoomsRepository;
 import tr.com.astair.astair.service.RoomsService;
+
 import java.util.List;
 
 @Service
@@ -39,14 +40,6 @@ public class RoomsServiceImp implements RoomsService {
             r.setId(i);
             r.setRoom(room.getRoom());
             roomsRepository.delete(r);
-        } catch (QueryException e) {
-            throw new QueryException(e.getMessage());
-        }
-    }
-
-    public Integer findId(String room){
-        try {
-            return roomsRepository.findId(room);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }

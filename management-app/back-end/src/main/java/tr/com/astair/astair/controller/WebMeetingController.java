@@ -16,10 +16,12 @@ import java.util.List;
 @RestController
 public class WebMeetingController implements WebMeetingControllerApi {
     private WebMeetingService webMeetingService;
+
     @Autowired
     public WebMeetingController(WebMeetingService webMeetingService) {
         this.webMeetingService = webMeetingService;
     }
+
     public ResponseEntity<List<WebMeeting>> getTodaysMeeting(@PathVariable String date) {
         List<WebMeeting> test = webMeetingService.getTodaysMeeting(date);
         if (test == null) {

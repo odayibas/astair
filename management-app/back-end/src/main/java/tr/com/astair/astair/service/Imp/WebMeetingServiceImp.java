@@ -17,6 +17,7 @@ public class WebMeetingServiceImp implements WebMeetingService {
     {
         this.webMeetingRepository = webMeetingRepository;
     }
+
     public List<WebMeeting> getTodaysMeeting(String date) {
         try {
             return webMeetingRepository.getTodaysMeeting(date);
@@ -59,7 +60,8 @@ public class WebMeetingServiceImp implements WebMeetingService {
 
     public Integer findHowMuchSpare(String date, String time, String room) {
         try {
-            return webMeetingRepository.findHowMuchSpare(date, time, room);
+            double interval = webMeetingRepository.findInterval();
+            return webMeetingRepository.findHowMuchSpare(date, time, room, interval);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }
@@ -67,7 +69,8 @@ public class WebMeetingServiceImp implements WebMeetingService {
 
     public List<String> fullDays(Integer month) {
         try {
-            return webMeetingRepository.fullDays(month);
+            double interval = webMeetingRepository.findInterval();
+            return webMeetingRepository.fullDays(month, interval);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }
