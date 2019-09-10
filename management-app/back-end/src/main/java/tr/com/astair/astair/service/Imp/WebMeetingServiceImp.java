@@ -70,10 +70,13 @@ public class WebMeetingServiceImp implements WebMeetingService {
     public List<String> fullDays(Integer month) {
         try {
             double interval = webMeetingRepository.findInterval();
-            return webMeetingRepository.fullDays(month, interval);
+            String first = webMeetingRepository.findFirstDay(month);
+            String last = webMeetingRepository.findLastDay(first);
+            return webMeetingRepository.fullDays(month, interval, first, last);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }
+
     }
 
     public List<String> appropriateRooms(String date, String time) {

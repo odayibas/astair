@@ -34,7 +34,7 @@ public class ACController implements ACControllerApi {
 
     public ResponseEntity<List<AC>> getLastACRecords() {
         List<AC> ac =  new ArrayList<>();
-        for(int i=0;i<acService.getACCount();++i){
+        for(int i=0;i<acService.getACCount();i++){
            ac.add(acService.getLast(i+1));
         }
         if (ac.isEmpty())
