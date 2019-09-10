@@ -23,10 +23,10 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
             "select distinct(m.room) " +
             "from meeting_web m " +
             "where (" +
-                "(m.startTime <= :startTime and m.endTime > :startTime) " +
-                "or (m.startTime < :endTime and m.endTime >= :endTime) " +
-                "or (m.startTime >= :startTime and m.endTime <= :endTime)" +
-            ") and m.date = :date"
+                    "(m.startTime <= :startTime and m.endTime > :startTime) " +
+                    "or (m.startTime < :endTime and m.endTime >= :endTime) " +
+                    "or (m.startTime >= :startTime and m.endTime <= :endTime)" +
+                ") and m.date = :date"
     )
     List<String> findSpareRoom(@Param("date") String date, @Param("startTime") String startTime, @Param("endTime") String endTime);
 
@@ -46,7 +46,7 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
             "and TO_DATE(m.date, 'YYYY-MM-DD') >= current_date " +
             "group by m.date " +
             "having sum(cast(substring(m.endTime, 1, 2) as int) - cast(substring(m.startTime, 1, 2) as int)) = " +
-            "(select count(*) from rooms) * :interval "
+                "(select count(*) from rooms) * :interval "
     )
     List<String> fullDays(@Param("month") Integer month,  @Param("interval") Double interval);
 
@@ -56,7 +56,7 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
             "select m.room " +
             "from meeting_web m " +
             "where m.date = :date and ((m.startTime <= :time and m.endTime > :time) " +
-            "or (m.startTime < :time and m.endTime > :time))"
+                "or (m.startTime < :time and m.endTime > :time))"
     )
     List<String> appropriateRooms(@Param("date") String date, @Param("time") String time);
 
@@ -64,10 +64,10 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
     List<WebMeeting> getLastMeeting();
 
     @Query(nativeQuery = true, value = "select cast(concat( " +
-            "substring(a.durationSlot, 1, 2), " +
-            "'.', " +
-            "cast((cast(substring(a.durationSlot, 4, 2) as int)*5/3) as varchar) " +
-            ") as double precision) " +
+                "substring(a.durationSlot, 1, 2), " +
+                "'.', " +
+                "cast((cast(substring(a.durationSlot, 4, 2) as int)*5/3) as varchar) " +
+                ") as double precision) " +
             "from admin a " +
             "order by a.id desc " +
             "limit 1 ")
