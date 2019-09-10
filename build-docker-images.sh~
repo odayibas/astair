@@ -24,12 +24,12 @@ services=(
     "frontend:$image_version"
 )
 
-#cd feedback-collector/
-#docker build -t $docker_registry/astair-feedback-collector:$image_version .
-#docker login $docker_registry
-#docker push $docker_registry/astair-feedback-collector:$image_version
+cd feedback-collector/
+docker build -t $docker_registry/astair-feedback-collector:$image_version .
+docker login $docker_registry
+docker push $docker_registry/astair-feedback-collector:$image_version
 
-#cd ../
+cd ../
 cd management-app/
 
 for attribute in "${services[@]}"
