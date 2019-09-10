@@ -55,14 +55,13 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
     )
     List<String> fullDays(@Param("month") Integer month, @Param("interval") Double interval, @Param("firstDay") String firstDay, @Param("lastDay") String lastDay);
 
-    @Query(nativeQuery = true, value = "select to_char(2, '09') from rooms"
-            /*"select r.room " +
+    @Query(nativeQuery = true, value = "select r.room " +
             "from rooms r " +
             "except " +
             "select m.room " +
             "from meeting_web m " +
             "where m.date = :date and ((m.startTime <= :time and m.endTime > :time) " +
-                "or (m.startTime < :time and m.endTime > :time))"*/
+                "or (m.startTime < :time and m.endTime > :time))"
     )
     List<String> appropriateRooms(@Param("date") String date, @Param("time") String time);
 
