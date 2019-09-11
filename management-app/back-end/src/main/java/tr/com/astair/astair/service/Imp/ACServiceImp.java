@@ -24,9 +24,10 @@ public class ACServiceImp implements ACService {
         return acRepository.save(ac);
     }
 
-    public AC getByZone(Integer ac_zone) {
+    public List<AC> getByZone(Integer ac_zone) {
         try {
-            return acRepository.getLast(ac_zone);
+            Example<AC> acExample = Example.of(new AC(ac_zone, null, null, null,null,null));
+            return acRepository.findAll(acExample);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }

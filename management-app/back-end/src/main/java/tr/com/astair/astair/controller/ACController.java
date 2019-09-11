@@ -51,10 +51,10 @@ public class ACController implements ACControllerApi {
     }
 
 	@Override
-	public ResponseEntity<AC> getByZone(Integer id) {
-		AC test = acService.getByZone(id);
+	public ResponseEntity<List<AC>> getByZone(Integer id) {
+		List<AC> test = acService.getByZone(id);
         if (test == null) {
-            return new ResponseEntity<>((AC) null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((List<AC>) null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(test, HttpStatus.OK);
 	}
