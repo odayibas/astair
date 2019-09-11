@@ -18,7 +18,7 @@ public interface ACControllerApi {
     
     // get all data of an AC by zone
     @GetMapping("/AC/get-zone/{id}")
-    ResponseEntity<List<AC>> getByZone(@PathVariable Integer id);
+    ResponseEntity<AC> getByZone(@PathVariable Integer id);
     
     //get last 30 records average degree of a sensor
     @GetMapping("/AC/get-avg-degree/{id}")

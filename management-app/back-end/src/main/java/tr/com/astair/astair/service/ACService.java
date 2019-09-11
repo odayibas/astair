@@ -11,7 +11,7 @@ public interface ACService {
     void delete(AC ac);
     
     //get AC data by ac_id
-    List<AC> getByZone(Integer ac_id);
+    AC getByZone(Integer ac_id);
 
     //get all AC data
     List<AC> get();

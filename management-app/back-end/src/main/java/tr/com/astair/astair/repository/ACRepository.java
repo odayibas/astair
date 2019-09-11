@@ -14,7 +14,7 @@ public interface ACRepository extends JpaRepository<AC, Long> {
     AC getIdforManage(@Param("id") Integer ac_id);
 
     @Query(nativeQuery = true, value = "select * from ac where ac.ac_id = :zone ORDER BY ac.id asc LIMIT 1")
-    List<AC> getLast(Integer zone);
+    AC getLast(Integer zone);
 
     @Query(nativeQuery = true, value = "select MAX(ac_id) from ac ")
     Integer getACCount();
