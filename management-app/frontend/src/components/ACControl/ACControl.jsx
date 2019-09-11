@@ -144,7 +144,7 @@ class ACControl extends Component {
           topic: "Astair/MODEL/AC"
         })
         .then(function(res) {
-          alert("Data Send");
+          // alert("Data Send");
         })
         .catch(function(error) {});
     } else alert("Please fill all fields to proceed");
