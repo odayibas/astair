@@ -28,7 +28,8 @@ class ACControl extends Component {
     fan_speed: "",
     temperature: 25,
     active: "",
-    isChecked: false
+    isChecked: false,
+    border: ""
   };
 
   //makes request to get last records for all airconditioners
@@ -143,10 +144,24 @@ class ACControl extends Component {
           retained: false,
           topic: "Astair/MODEL/AC"
         })
-        .then(function(res) {
+        .then(res => {
+          console.log("Successsss", this);
+          this.setState({ border: "border border-success" }, () => {
+            console.log("Time out ");
+            setTimeout(() => {
+              this.setState({ border: "" });
+            }, 3000);
+          });
           // alert("Data Send");
         })
-        .catch(function(error) {});
+        .catch(error => {
+          this.setState({ border: "border border-danger" }, () => {
+            console.log("Time out ");
+            setTimeout(() => {
+              this.setState({ border: "" });
+            }, 3000);
+          });
+        });
     } else alert("Please fill all fields to proceed");
   };
 
@@ -191,9 +206,13 @@ class ACControl extends Component {
 
   render() {
     if (getCookie("usertoken") === "1") {
+      console.log("RENDERRR");
       return (
-        <div style={{ padding: 20 }} className="center">
-          <Card>
+        <div
+          style={{ padding: this.state.border !== "" ? 19 : 20 }}
+          className="center"
+        >
+          <Card className={this.state.border}>
             <CardBody>
               <Container>
                 <Row style={{ textAlign: "left" }}>
