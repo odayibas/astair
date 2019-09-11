@@ -11,7 +11,7 @@ public interface WebMeetingService {
     List<WebMeeting> getMeetingARange(String beginDate, String finishDate, String room);
     List<String> findSpareRoom(String date, String startTime, String endTime);
     Integer findHowMuchSpare(String date, String time, String room);
-    List<String> fullDays(Integer Month);
+    List<String> appropriateDays(Integer Month);
     List<String> appropriateRooms(String date, String time);
     List<WebMeeting> getLastMeeting();
     void removeAllMeeting();

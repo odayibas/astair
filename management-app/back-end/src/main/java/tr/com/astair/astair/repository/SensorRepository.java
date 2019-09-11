@@ -15,6 +15,9 @@ public interface SensorRepository extends JpaRepository<Sensor, Long>, PagingAnd
     @Query(nativeQuery = true, value = "select * from sensor s where s.ac_id = :ac_id ORDER BY Id desc LIMIT 30")
     List<Sensor> getIdforManage(@Param("ac_id") Integer ac_id);
 
+    @Query(nativeQuery = true, value = "select * from sensor s where s.ac_id = :ac_zone ORDER BY s.id desc LIMIT 1")
+    List<Sensor> getLast(@Param("ac_zone") Integer ac_zone);
+
     // get average degree of a sensor
     @Query(nativeQuery = true, value = "select AVG(sensor_degree) as sensor_degree  from(select * from sensor s where s.ac_id = :ac_id ORDER BY Id desc LIMIT 30)as s1 group by s1.ac_id having s1.ac_id = :ac_id ")
     Float getSensorDegreeAve(@Param("ac_id") Integer ac_id);
