@@ -32,7 +32,7 @@ class Fan extends Component {
   };
 
   getButton = () => {
-    if (this.props.mode === "LOW") {
+    if (this.props.mode === "LOW" || !this.props.mode) {
       return (
         <Col
           xs={4}
