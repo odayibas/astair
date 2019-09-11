@@ -26,7 +26,7 @@ class ACControl extends Component {
     id: "1",
     mode: "",
     fan_speed: "",
-    temperature: "",
+    temperature: 25,
     active: "",
     isChecked: false
   };
@@ -86,6 +86,8 @@ class ACControl extends Component {
   };
 
   adjustTemp = val => {
+    if (this.state.temperature === 30 && val === 1) return;
+    if (this.state.temperature === 16 && val === -1) return;
     this.setTemp(this.state.temperature + val);
   };
 
@@ -176,6 +178,7 @@ class ACControl extends Component {
   getButton = () => {
     return urlArr.map((button, i) => (
       <ToggleButton
+        variant="dark"
         onMouseDown={() => {
           this.setAC(i + 1);
         }}
@@ -189,51 +192,40 @@ class ACControl extends Component {
   render() {
     if (getCookie("usertoken") === "1") {
       return (
-        <div style={{ paddingTop: 20 }}>
-          <div className="center">
-            <Card>
-              <CardBody>
-                <div style={{ alignItems: "right" }}>
-                  <Container>
-                    <Row>
-                      <Col>
-                        <ToggleButtonGroup
-                          type="radio"
-                          name="options"
-                          defaultValue={1}
-                        >
-                          {this.getButton()}
-                        </ToggleButtonGroup>
-                      </Col>
-                      <Col>
-                        <SurveyInterval
-                          setAdminInterval={this.setAdminInterval}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
-                </div>
-                <center>
-                  <h4> MODE </h4>
-                </center>
-                <Mode mode={this.state.mode} setMode={x => this.setMode(x)} />
-                <Row style={{ paddingLeft: "20%" }}>
-                  <Col>
-                    <h4> TEMPERATURE </h4>
-                    <Temperature
-                      adjustTemp={x => this.adjustTemp(x)}
-                      temperature={this.state.temperature}
-                    />
+        <div style={{ padding: 20 }} className="center">
+          <Card>
+            <CardBody>
+              <Container>
+                <Row style={{ textAlign: "left" }}>
+                  <ToggleButtonGroup
+                    type="radio"
+                    name="options"
+                    defaultValue={1}
+                  >
+                    {this.getButton()}
+                  </ToggleButtonGroup>
+                </Row>
+
+                {/* <Row style={{ marginTop: 10 }}>
+                  <Col
+                    xs={12}
+                    style={{
+                      textAlign: "center"
+                    }}
+                  >
+                    <span style={{ fontSize: "1.25em" }}> Power </span>
                   </Col>
-                  <Col>
-                    <h4> ON/OFF </h4>
+                </Row> */}
+                <Row style={{ marginTop: 0 }}>
+                  <Col xs={12} style={{ textAlign: "center", padding: 0 }}>
                     <div>
-                      <label>
+                      <label style={{ padding: 0, margin: 0 }}>
                         <input
                           ref="switch"
                           checked={this.state.isChecked}
                           onChange={this.handleChange}
                           className="switch"
+                          variant="success"
                           type="checkbox"
                         />
                         <div>
@@ -243,35 +235,66 @@ class ACControl extends Component {
                     </div>
                   </Col>
                 </Row>
-
-                <Fan mode={this.state.fan_speed} setFan={x => this.setFan(x)} />
-
-                <Row>
-                  <Col />
-                  <Col>
-                    <div style={{ paddingLeft: "35%" }}>
-                      <Button
-                        variant="primary"
-                        onClick={this.handleSubmit.bind(this)}
-                      >
-                        Change
-                      </Button>
-                    </div>
+                {/* <Row style={{ marginTop: 10 }}>
+                  <Col xs={12} style={{ textAlign: "center" }}>
+                    <span style={{ fontSize: "1.25em" }}>Temperature</span>
                   </Col>
-                  <Col />
+                </Row> */}
+                <Row style={{ marginTop: 30 }}>
+                  <Col xs={12} style={{ textAlign: "center" }}>
+                    <Temperature
+                      adjustTemp={x => this.adjustTemp(x)}
+                      temperature={this.state.temperature}
+                    />
+                  </Col>
                 </Row>
-              </CardBody>
-            </Card>
-          </div>
+                {/* <Row style={{ marginTop: 10 }}>
+                  <Col xs={12} style={{ textAlign: "center" }}>
+                    <span style={{ fontSize: "1.25em" }}>Fan Speed</span>
+                  </Col>
+                </Row> */}
+                <Row style={{ marginTop: 30 }}>
+                  <Col xs={12} style={{ textAlign: "center" }}>
+                    <Fan
+                      mode={this.state.fan_speed}
+                      setFan={x => this.setFan(x)}
+                    />
+                  </Col>
+                </Row>
+                {/* <Row style={{ marginTop: 10 }}>
+                  <Col xs={12} style={{ textAlign: "center" }}>
+                    <span style={{ fontSize: "1.25em" }}>Mode</span>
+                  </Col>
+                </Row> */}
+                <Row style={{ marginTop: 30 }}>
+                  <Col xs={12} style={{ textAlign: "center" }}>
+                    <Mode
+                      mode={this.state.mode}
+                      setMode={x => this.setMode(x)}
+                    />
+                  </Col>
+                </Row>
+                <Row style={{ marginTop: 30, textAlign: "center" }}>
+                  <Col xs={12}>
+                    <Button
+                      variant="dark"
+                      onClick={this.handleSubmit.bind(this)}
+                    >
+                      Apply
+                    </Button>
+                  </Col>
+                </Row>
+              </Container>
+            </CardBody>
+          </Card>
           <div
             style={{
-              height: "10%",
               display: "flex",
-              justifyContent: "center",
-              alignItems: "center"
+              alignItems: "center",
+              justifyContent: "center"
             }}
           >
-            <img height={150} src="/assets/Logo-Astair-w.png" alt={"logo"} />
+            <img height={50} src="/assets/Logo-Astair-w.png" alt={"logo"} />
           </div>
         </div>
       );
@@ -279,5 +302,99 @@ class ACControl extends Component {
       return <Redirect to="/login" />;
     }
   }
+
+  // render() {
+  //   if (getCookie("usertoken") === "1") {
+  //     return (
+  //       <div style={{ paddingTop: 20 }}>
+  //         <div className="center">
+  //           <Card>
+  //             <CardBody>
+  //               <div style={{ alignItems: "right" }}>
+  //                 <Container>
+  //                   <Row>
+  //                     <Col>
+  //                       <ToggleButtonGroup
+  //                         type="radio"
+  //                         name="options"
+  //                         defaultValue={1}
+  //                       >
+  //                         {this.getButton()}
+  //                       </ToggleButtonGroup>
+  //                     </Col>
+  //                     <Col>
+  //                       <SurveyInterval
+  //                         setAdminInterval={this.setAdminInterval}
+  //                       />
+  //                     </Col>
+  //                   </Row>
+  //                 </Container>
+  //               </div>
+  //               <center>
+  //                 <h4> MODE </h4>
+  //               </center>
+  //               <Mode mode={this.state.mode} setMode={x => this.setMode(x)} />
+  //               <Row style={{ paddingLeft: "20%" }}>
+  //                 <Col>
+  //                   <h4> TEMPERATURE </h4>
+  //                   <Temperature
+  //                     adjustTemp={x => this.adjustTemp(x)}
+  //                     temperature={this.state.temperature}
+  //                   />
+  //                 </Col>
+  //                 <Col>
+  //                   <h4> ON/OFF </h4>
+  //                   <div>
+  //                     <label>
+  //                       <input
+  //                         ref="switch"
+  //                         checked={this.state.isChecked}
+  //                         onChange={this.handleChange}
+  //                         className="switch success"
+  //                         type="checkbox"
+  //                       />
+  //                       <div>
+  //                         <div />
+  //                       </div>
+  //                     </label>
+  //                   </div>
+  //                 </Col>
+  //               </Row>
+
+  //               <Fan mode={this.state.fan_speed} setFan={x => this.setFan(x)} />
+
+  //               <Row>
+  //                 <Col />
+  //                 <Col>
+  //                   <div style={{ paddingLeft: "35%" }}>
+  //                     <Button
+  //                       variant="primary"
+  //                       onClick={this.handleSubmit.bind(this)}
+  //                     >
+  //                       Change
+  //                     </Button>
+  //                   </div>
+  //                 </Col>
+  //                 <Col />
+  //               </Row>
+  //             </CardBody>
+  //           </Card>
+  //         </div>
+  //         <div
+  //           style={{
+  //             height: "10%",
+  //             display: "flex",
+  //             justifyContent: "center",
+  //             alignItems: "center"
+  //           }}
+  //         >
+  //           <img height={150} src="/assets/Logo-Astair-w.png" alt={"logo"} />
+  //         </div>
+  //       </div>
+  //     );
+  //   } else {
+  //     return <Redirect to="/login" />;
+  //   }
+  // }
 }
 export default ACControl;

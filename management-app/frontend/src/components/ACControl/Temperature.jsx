@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import { Col, Row, Button } from "reactstrap";
 import Icon from "@mdi/react";
-import { mdiThermometerPlus, mdiThermometerMinus } from "@mdi/js";
+import {
+  mdiThermometerPlus,
+  mdiThermometerMinus,
+  mdiPlusCircleOutline,
+  mdiMinusCircleOutline
+} from "@mdi/js";
+import { Container } from "@material-ui/core";
 
 class Temperature extends Component {
   constructor(props) {
@@ -18,32 +24,39 @@ class Temperature extends Component {
   render() {
     return (
       <div>
-        <Col />
-        <Col>
+        <Container>
           <Row>
-            <Button
-              style={{ backgroundColor: "transparent" }}
-              onClick={() => {
-                this.props.adjustTemp(-1);
-              }}
-            >
-              <Icon path={mdiThermometerMinus} size={1.5} horizontal />
-            </Button>
-            <div style={{ paddingLeft: 15, paddingRight: 15 }}>
-              {this.state.show ? <h1>{this.props.temperature}</h1> : ""}
-            </div>
-
-            <Button
-              style={{ backgroundColor: "transparent" }}
-              onClick={() => {
-                this.props.adjustTemp(1);
-              }}
-            >
-              <Icon path={mdiThermometerPlus} size={1.5} horizontal />
-            </Button>
+            <Col xs={5} style={{ textAlign: "right", paddingRight: 0 }}>
+              <Button
+                style={{ backgroundColor: "transparent", border: "0" }}
+                onClick={() => {
+                  this.props.adjustTemp(-1);
+                }}
+              >
+                <Icon path={mdiMinusCircleOutline} size={1.5} horizontal />
+              </Button>
+            </Col>
+            <Col xs={2} style={{ padding: 0 }}>
+              <div>
+                {this.state.show ? (
+                  <h1> {" " + this.props.temperature + "°"}</h1>
+                ) : (
+                  ""
+                )}
+              </div>
+            </Col>
+            <Col xs={5} style={{ textAlign: "left", paddingLeft: 0 }}>
+              <Button
+                style={{ backgroundColor: "transparent", border: "0" }}
+                onClick={() => {
+                  this.props.adjustTemp(1);
+                }}
+              >
+                <Icon path={mdiPlusCircleOutline} size={1.5} horizontal />
+              </Button>
+            </Col>
           </Row>
-        </Col>
-        <Col />
+        </Container>
       </div>
     );
   }

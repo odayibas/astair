@@ -205,7 +205,7 @@ input[type="checkbox"].switch + div {
 }
 
 input[type="checkbox"].switch:checked + div {
-  background-color: #3b89ec;
+  background-color: #16a085;
 }
 
 input[type="checkbox"].switch + div > div {
