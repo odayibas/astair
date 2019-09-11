@@ -28,8 +28,8 @@ public interface WebMeetingControllerApi {
     @GetMapping("/meeting/appropriate-rooms/{date}/{time}")
     ResponseEntity<List<String>> appropriateRooms(@PathVariable String date, @PathVariable String time);
 
-    @GetMapping("/meeting/full-days/{month}")
-    ResponseEntity<List<String>> fullDays(@PathVariable Integer month);
+    @GetMapping("/meeting/appropriate-days/{month}")
+    ResponseEntity<List<String>> appropriateDays(@PathVariable Integer month);
 
     @GetMapping("/meeting/get-last-meeting")
     ResponseEntity<List<WebMeeting>> getLastMeeting();

@@ -53,7 +53,7 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
             "having sum(cast(substring(m.endTime, 1, 2) as int) - cast(substring(m.startTime, 1, 2) as int)) = " +
                 "(select count(*) from rooms) * :interval "
     )
-    List<String> fullDays(@Param("month") Integer month, @Param("interval") Double interval, @Param("firstDay") String firstDay, @Param("lastDay") String lastDay);
+    List<String> appropriateDays(@Param("month") Integer month, @Param("interval") Double interval, @Param("firstDay") String firstDay, @Param("lastDay") String lastDay);
 
     @Query(nativeQuery = true, value = "select r.room " +
             "from rooms r " +
@@ -78,7 +78,10 @@ public interface WebMeetingRepository extends JpaRepository<WebMeeting, Long> {
             "limit 1 ")
     Double findInterval();
 
-    @Query(nativeQuery = true, value = "select cast(concat('2019-', cast(to_char(:month, '09') as varchar), '-01') as varchar)")
+    @Query(nativeQuery = true, value = "select cast(concat(substring(cast(current_date as varchar), 1, 4), " +
+            "'-', " +
+            "cast(:month as varchar), " +
+            "'-01') as varchar)")
     String findFirstDay(@Param("month") Integer month);
 
     @Query(nativeQuery = true, value = "select cast(cast(date(:firstDay) + interval '1 month -1 day' as date) as varchar)")

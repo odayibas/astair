@@ -67,12 +67,12 @@ public class WebMeetingServiceImp implements WebMeetingService {
         }
     }
 
-    public List<String> fullDays(Integer month) {
+    public List<String> appropriateDays(Integer month) {
         try {
             double interval = webMeetingRepository.findInterval();
             String first = webMeetingRepository.findFirstDay(month);
             String last = webMeetingRepository.findLastDay(first);
-            return webMeetingRepository.fullDays(month, interval, first, last);
+            return webMeetingRepository.appropriateDays(month, interval, first, last);
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }
