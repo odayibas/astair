@@ -5,11 +5,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tr.com.astair.astair.model.AC;
 
+import java.util.List;
+
 
 public interface ACRepository extends JpaRepository<AC, Long> {
 
     @Query(nativeQuery = true, value = "select * from ac where ac.ac_id=:id ORDER BY ac.id desc LIMIT 1")
     AC getIdforManage(@Param("id") Integer ac_id);
+
+    @Query(nativeQuery = true, value = "select * from ac where ac.ac_id = :zone ORDER BY ac.id asc LIMIT 1")
+    List<AC> getLast(Integer zone);
 
     @Query(nativeQuery = true, value = "select MAX(ac_id) from ac ")
     Integer getACCount();
