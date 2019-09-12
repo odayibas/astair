@@ -54,7 +54,7 @@ public class CompVisionServiceImp implements ComputerVisionService {
 
     public List<ComputerVision> get() {
         try {
-            return computerVisionRepo.findAll();
+            return computerVisionRepo.getFive();
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }

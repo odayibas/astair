@@ -3,7 +3,6 @@ package tr.com.astair.astair.service;
 import tr.com.astair.astair.model.AC;
 import java.util.List;
 
-
 public interface ACService {
 
     AC save(AC ac);

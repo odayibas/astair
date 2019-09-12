@@ -88,6 +88,5 @@ public class SensorController implements SensorControllerApi {
         }
         return new ResponseEntity<Float>(test, HttpStatus.OK);
     }
-    
 
 }

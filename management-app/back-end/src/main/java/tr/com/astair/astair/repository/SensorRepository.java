@@ -1,6 +1,5 @@
 package tr.com.astair.astair.repository;
 
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -9,13 +8,21 @@ import tr.com.astair.astair.model.Sensor;
 
 import java.util.List;
 
-
 public interface SensorRepository extends JpaRepository<Sensor, Long>, PagingAndSortingRepository<Sensor, Long> {
 
     @Query(nativeQuery = true, value = "select * from sensor s where s.ac_id = :ac_id ORDER BY Id desc LIMIT 30")
     List<Sensor> getIdforManage(@Param("ac_id") Integer ac_id);
 
-    @Query(nativeQuery = true, value = "select * from sensor s where s.ac_id = :ac_zone ORDER BY s.id desc LIMIT 1")
+    @Query(nativeQuery = true, value = "select * " +
+            "from sensor s " +
+            "where s.id = any (select max(r.id) " +
+                "from sensor r " +
+                "where r.ac_id = :ac_zone " +
+                "group by to_char(r.date_time, 'HH24') " +
+            ") " +
+            "order by s.id desc " +
+            "limit 5 "
+    )
     List<Sensor> getLast(@Param("ac_zone") Integer ac_zone);
 
     // get average degree of a sensor
