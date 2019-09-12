@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tr.com.astair.astair.model.AC;
 
-
 public interface ACRepository extends JpaRepository<AC, Long> {
 
     @Query(nativeQuery = true, value = "select * from ac where ac.ac_id=:id ORDER BY ac.id desc LIMIT 1")

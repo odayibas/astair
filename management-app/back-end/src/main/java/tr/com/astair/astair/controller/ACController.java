@@ -77,4 +77,3 @@ public class ACController implements ACControllerApi {
         return new ResponseEntity<Float>(test, HttpStatus.OK);
 	}
 }
-

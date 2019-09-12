@@ -5,13 +5,12 @@ import tr.com.astair.astair.model.Sensor;
 
 import java.util.List;
 
-
 public interface SensorService {
 
     //get all sensor data
     List<Sensor> get();
 
-    //get all sensor data of a sensor
+    //get last 5 sensor data of a sensor
     List<Sensor> getByZone(Integer id);
 
     //get last 30 records of a sensor

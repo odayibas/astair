@@ -63,7 +63,6 @@ public class SensorServiceImp implements SensorService {
                 s.add(temp);
             }
             return s;
-
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }

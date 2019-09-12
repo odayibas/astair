@@ -9,7 +9,6 @@ import tr.com.astair.astair.model.Sensor;
 
 import java.util.List;
 
-
 public interface SensorControllerApi {
 
     //get last 30 records of a sensor
