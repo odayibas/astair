@@ -191,21 +191,36 @@ class ACControl extends Component {
 
   //creates the buttons
   getButton = () => {
-    return urlArr.map((button, i) => (
+    // return urlArr.map((button, i) => (
+    //   <ToggleButton
+    //     variant="dark"
+    //     onMouseDown={() => {
+    //       this.setAC(i + 1);
+    //     }}
+    //     value={i + 1}
+    //   >
+    //     {i + 1}
+    //   </ToggleButton>
+    // ));
+
+    // To test number 2 and 3 on the board,
+    console.log("Debug ", urlArr);
+    const arr = ["2", "3"];
+    return arr.map(i => (
       <ToggleButton
         variant="dark"
         onMouseDown={() => {
-          this.setAC(i + 1);
+          this.setAC(i);
         }}
-        value={i + 1}
+        value={i}
       >
-        {i + 1}
+        {i}
       </ToggleButton>
     ));
   };
 
   render() {
-    if (getCookie("usertoken") === "1") {
+    if (getCookie("usertoken") === "1" || getCookie("usertoken") === "3") {
       console.log("RENDERRR");
       return (
         <div
@@ -219,22 +234,13 @@ class ACControl extends Component {
                   <ToggleButtonGroup
                     type="radio"
                     name="options"
-                    defaultValue={1}
+                    //defaultValue={1}
+                    defaultValue={"2"} // Test 2 and 3
                   >
                     {this.getButton()}
                   </ToggleButtonGroup>
                 </Row>
 
-                {/* <Row style={{ marginTop: 10 }}>
-                  <Col
-                    xs={12}
-                    style={{
-                      textAlign: "center"
-                    }}
-                  >
-                    <span style={{ fontSize: "1.25em" }}> Power </span>
-                  </Col>
-                </Row> */}
                 <Row style={{ marginTop: 0 }}>
                   <Col xs={12} style={{ textAlign: "center", padding: 0 }}>
                     <div>
@@ -321,99 +327,5 @@ class ACControl extends Component {
       return <Redirect to="/login" />;
     }
   }
-
-  // render() {
-  //   if (getCookie("usertoken") === "1") {
-  //     return (
-  //       <div style={{ paddingTop: 20 }}>
-  //         <div className="center">
-  //           <Card>
-  //             <CardBody>
-  //               <div style={{ alignItems: "right" }}>
-  //                 <Container>
-  //                   <Row>
-  //                     <Col>
-  //                       <ToggleButtonGroup
-  //                         type="radio"
-  //                         name="options"
-  //                         defaultValue={1}
-  //                       >
-  //                         {this.getButton()}
-  //                       </ToggleButtonGroup>
-  //                     </Col>
-  //                     <Col>
-  //                       <SurveyInterval
-  //                         setAdminInterval={this.setAdminInterval}
-  //                       />
-  //                     </Col>
-  //                   </Row>
-  //                 </Container>
-  //               </div>
-  //               <center>
-  //                 <h4> MODE </h4>
-  //               </center>
-  //               <Mode mode={this.state.mode} setMode={x => this.setMode(x)} />
-  //               <Row style={{ paddingLeft: "20%" }}>
-  //                 <Col>
-  //                   <h4> TEMPERATURE </h4>
-  //                   <Temperature
-  //                     adjustTemp={x => this.adjustTemp(x)}
-  //                     temperature={this.state.temperature}
-  //                   />
-  //                 </Col>
-  //                 <Col>
-  //                   <h4> ON/OFF </h4>
-  //                   <div>
-  //                     <label>
-  //                       <input
-  //                         ref="switch"
-  //                         checked={this.state.isChecked}
-  //                         onChange={this.handleChange}
-  //                         className="switch success"
-  //                         type="checkbox"
-  //                       />
-  //                       <div>
-  //                         <div />
-  //                       </div>
-  //                     </label>
-  //                   </div>
-  //                 </Col>
-  //               </Row>
-
-  //               <Fan mode={this.state.fan_speed} setFan={x => this.setFan(x)} />
-
-  //               <Row>
-  //                 <Col />
-  //                 <Col>
-  //                   <div style={{ paddingLeft: "35%" }}>
-  //                     <Button
-  //                       variant="primary"
-  //                       onClick={this.handleSubmit.bind(this)}
-  //                     >
-  //                       Change
-  //                     </Button>
-  //                   </div>
-  //                 </Col>
-  //                 <Col />
-  //               </Row>
-  //             </CardBody>
-  //           </Card>
-  //         </div>
-  //         <div
-  //           style={{
-  //             height: "10%",
-  //             display: "flex",
-  //             justifyContent: "center",
-  //             alignItems: "center"
-  //           }}
-  //         >
-  //           <img height={150} src="/assets/Logo-Astair-w.png" alt={"logo"} />
-  //         </div>
-  //       </div>
-  //     );
-  //   } else {
-  //     return <Redirect to="/login" />;
-  //   }
-  // }
 }
 export default ACControl;

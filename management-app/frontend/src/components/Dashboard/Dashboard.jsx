@@ -106,7 +106,11 @@ class Dashboard extends Component {
   };
 
   render() {
-    if (getCookie("usertoken") === "1" || getCookie("usertoken") === "2") {
+    if (
+      getCookie("usertoken") === "1" ||
+      getCookie("usertoken") === "2" ||
+      getCookie("usertoken") === "3"
+    ) {
       return (
         <div className="page-main">
           <div className="page-body">

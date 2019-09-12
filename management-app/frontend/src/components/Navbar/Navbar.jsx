@@ -78,6 +78,25 @@ class AppNavbar extends Component {
           </li>
         </Nav>
       );
+    } else if (getCookie("usertoken") === "3") {
+      return (
+        <Nav className="mr-auto">
+          <Nav.Link href="/" className="nav-link">
+            <h5>Home</h5>
+          </Nav.Link>
+          <Nav.Link href="/dashboard" className="nav-link">
+            <h5>Dashboard</h5>
+          </Nav.Link>
+          <Nav.Link href="/ac" className="nav-link">
+            <h5>AC Control</h5>
+          </Nav.Link>
+          <li className="nav -item">
+            <li onClick={this.logout.bind(this)} className="nav-link">
+              <h5>Logout</h5>
+            </li>
+          </li>
+        </Nav>
+      );
     } else {
       return (
         <Nav className="mr-auto">
