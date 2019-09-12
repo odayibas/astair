@@ -19,32 +19,21 @@ class App extends Component {
     surveyInterval: undefined
   };
 
-  constructor() {
-    super();
-
-    console.log("APP CONST");
-  }
-
   componentDidMount() {
     this.getTimeInterval();
   }
 
   showNotification = b => {
-    console.log("show notificiation.");
     this.setState({ showBadge: b });
   };
 
   getTimeInterval = () => {
-    console.log("REQUESTING");
     return axios
       .get(urlServer + "/meeting/get-slots/")
       .then(res => {
         let currentSettings = res.data[res.data.length - 1];
         const adminInterval = parseInt(currentSettings.surveyInterval, 10);
-        console.log("GOT DATA");
-        this.setState({ surveyInterval: adminInterval }, () => {
-          console.log(this.state.surveyInterval, " NEW INTERVAL FROM DB");
-        });
+        this.setState({ surveyInterval: adminInterval }, () => {});
         // this.state.surveyInterval = adminInterval;
         // console.log(this.state.surveyInterval, " NEW INTERVAL FROM DB");
       })

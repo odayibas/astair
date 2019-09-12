@@ -13,7 +13,6 @@ class SurveyInterval extends Component {
   intervalInput = 0;
 
   validateTime = t => {
-    console.log(t);
     if ((t + "").indexOf(":") !== 2 || t.length !== 5) return false;
 
     const temp = t.split(":");

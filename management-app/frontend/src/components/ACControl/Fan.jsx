@@ -112,7 +112,6 @@ class Fan extends Component {
   };
 
   changeColor(value) {
-    console.log("Val", value, "props", this.props.mode);
     if (this.props.mode === value) return "rgba(238, 238, 238, 1)";
   }
   render() {

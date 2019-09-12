@@ -23,8 +23,6 @@ class Mode extends Component {
       selected: selected
     });
 
-    console.log(this.props.mode, "mode debug");
-
     if (selected === 1) {
       this.props.setMode("COOL");
     } else if (selected === 2) {

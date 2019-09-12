@@ -20,13 +20,13 @@ const urlArr = Array.from(
 ).map(x => (x + 1).toString());
 
 class ACControl extends Component {
-  currentAC = 1;
+  currentAC = 2; // To test 2 and 3
 
   state = {
     id: "1",
     mode: "",
     fan_speed: "",
-    temperature: 25,
+    temperature: "",
     active: "",
     isChecked: false,
     border: ""
@@ -34,10 +34,9 @@ class ACControl extends Component {
 
   //makes request to get last records for all airconditioners
   getData = async () => {
-    return axios
+    axios
       .get(urlServer + "/AC/get-last-records")
       .then(res => {
-        console.log("INITIAL AC VALUES", res.data);
         let b = false;
         let active = "OFF";
         if (res.data[this.currentAC - 1].active === "1") {
@@ -52,13 +51,12 @@ class ACControl extends Component {
           active: active,
           isChecked: b
         };
-        this.setState(acData, () => {
-          console.log("AFTER SETTING", this.state);
-        });
+        this.setState(acData, () => {});
       })
       .catch(err => {
         console.log(err);
       });
+    // setTimeout(this.getData, 60000); To refresh data periodically.
   };
 
   componentWillMount() {
@@ -67,23 +65,17 @@ class ACControl extends Component {
 
   //set the changes of fanspeed page
   setFan = fan => {
-    this.setState({ fan_speed: fan }, () => {
-      console.log("Fan:", fan);
-    });
+    this.setState({ fan_speed: fan }, () => {});
   };
 
   //set the changes of mode page
   setMode = mode => {
-    this.setState({ mode: mode }, () => {
-      console.log("Mode:", mode);
-    });
+    this.setState({ mode: mode }, () => {});
   };
 
   //set the changes of temperature page
   setTemp = temp => {
-    this.setState({ temperature: temp }, () => {
-      console.log("Temp: ", temp);
-    });
+    this.setState({ temperature: temp }, () => {});
   };
 
   adjustTemp = val => {
@@ -94,7 +86,6 @@ class ACControl extends Component {
 
   setAC = ac => {
     this.setState({ id: ac + "" }, () => {
-      console.log("AC:", ac);
       this.currentAC = ac;
       this.getData();
     });
@@ -104,13 +95,9 @@ class ACControl extends Component {
     const newVal = !this.state.isChecked;
 
     if (newVal === true) {
-      this.setState({ active: "ON" }, () => {
-        console.log("Power:", this.state.active);
-      });
+      this.setState({ active: "ON" }, () => {});
     } else {
-      this.setState({ active: "OFF" }, () => {
-        console.log("Power:", this.state.active);
-      });
+      this.setState({ active: "OFF" }, () => {});
     }
     this.setState({ isChecked: newVal });
   };
@@ -145,9 +132,7 @@ class ACControl extends Component {
           topic: "Astair/MODEL/AC"
         })
         .then(res => {
-          console.log("Successsss", this);
           this.setState({ border: "border border-success" }, () => {
-            console.log("Time out ");
             setTimeout(() => {
               this.setState({ border: "" });
             }, 3000);
@@ -156,7 +141,6 @@ class ACControl extends Component {
         })
         .catch(error => {
           this.setState({ border: "border border-danger" }, () => {
-            console.log("Time out ");
             setTimeout(() => {
               this.setState({ border: "" });
             }, 3000);
@@ -167,7 +151,6 @@ class ACControl extends Component {
 
   setAdminInterval = intervalTime => {
     //return axios
-    console.log("Final", intervalTime);
     return axios
       .get(urlServer + "/meeting/get-slots/")
       .then(res => {
@@ -204,7 +187,6 @@ class ACControl extends Component {
     // ));
 
     // To test number 2 and 3 on the board,
-    console.log("Debug ", urlArr);
     const arr = ["2", "3"];
     return arr.map(i => (
       <ToggleButton
@@ -221,7 +203,6 @@ class ACControl extends Component {
 
   render() {
     if (getCookie("usertoken") === "1" || getCookie("usertoken") === "3") {
-      console.log("RENDERRR");
       return (
         <div
           style={{ padding: this.state.border !== "" ? 19 : 20 }}
