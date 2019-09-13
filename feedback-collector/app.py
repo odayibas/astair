@@ -20,27 +20,32 @@ db_conn = databaseOperations.connect_db()
 key = Fernet.generate_key()
 f = Fernet(key)
 
+
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=databaseOperations.deleteAllSlashCommnads, args=(db_conn ,), trigger="interval", seconds=3600)
 scheduler.add_job(func=databaseOperations.deleteDisturb, args=(db_conn ,), trigger="interval", seconds=3600*24)
 scheduler.start()
 
 
-def decryptToken():
+def decryptToken(team_id1):
 
-    encrypted=databaseOperations.getToken(db_conn)
+    encrypted = databaseOperations.getToken(db_conn, team_id1)
     return encrypted
 
-def getUserList():
 
-    sc = SlackClient(decryptToken())
+def getUserList(team_id1):
+
+    sc = SlackClient(decryptToken(team_id1))
 
     usersID=sc.api_call("users.list")
     userinfo={}
 
-    print(usersID)
+    print("UserId",usersID)
 
     members=usersID["members"]
+    print("memberS:",members)
+    print("memberS1:", members[1])
+
 
     for i in range(len(members)):
 
@@ -49,11 +54,12 @@ def getUserList():
 
     return userinfo
 
-def sendLocationSurveyOneUser(username):
 
-    sc = SlackClient(decryptToken())
+def sendLocationSurveyOneUser(username,team_id1):
 
-    userinfo = getUserList()
+    sc = SlackClient(decryptToken(team_id1))
+
+    userinfo = getUserList(team_id1)
     userid=userinfo.get(username)
 
     zones=databaseOperations.getACzones(db_conn)
@@ -101,21 +107,23 @@ def oauth():
     response=requests.post(uri)
     response=json.loads(response.content)
 
-    print(response)
+    print("response::",response)
 
     token=response["access_token"]
+    print("token degeri",token)
+
     databaseOperations.setToken(db_conn,token,"admin")
 
     return make_response("App Installed",200)
 
 
 @app.route("/feedback-collector/slack/onsnooze", methods=["POST"])
-def onsnooze(creater,username): #Kullanıcılar kendilerine anket gönderilmesini engellemek istediğinde bu fonksiyon kullanılır.
+def onsnooze(creater,username,team_id1): #Kullanıcılar kendilerine anket gönderilmesini engellemek istediğinde bu fonksiyon kullanılır.
 
     with app.app_context():
 
-        sc = SlackClient(decryptToken())
-        userinfo = getUserList()
+        sc = SlackClient(decryptToken(team_id1))
+        userinfo = getUserList(team_id1)
 
         for key,val in userinfo.items():
             if key == username:
@@ -133,15 +141,15 @@ def onsnooze(creater,username): #Kullanıcılar kendilerine anket gönderilmesin
 
 
 @app.route("/feedback-collector/slack/offsnooze", methods=["POST"])
-def offSnooze(creater,username): #Kullanıcılar kendilerine tekrar anket gelmesini istediklerinde bu fonksiyon çalışır.
+def offSnooze(creater,username,team_id1): #Kullanıcılar kendilerine tekrar anket gelmesini istediklerinde bu fonksiyon çalışır.
 
     with app.app_context():
 
-        sc = SlackClient(decryptToken())
+        sc = SlackClient(decryptToken(team_id1))
 
-        userinfo = getUserList()
-
-        databaseOperations.deleteSnoozeTableName(db_conn, username)
+        userinfo = getUserList(team_id1)
+        print("username veritabanı",username)
+        databaseOperations.deleteSnoozeTableName(db_conn,username)
 
         for key, val in userinfo.items():
             if key == username:
@@ -157,12 +165,12 @@ def offSnooze(creater,username): #Kullanıcılar kendilerine tekrar anket gelmes
 
 
 @app.route("/feedback-collector/slack/airSurvey", methods=["POST"])
-def sendAirSurvey(creater): #Bu fonksiyon hava durumu için anket gönderir
+def sendAirSurvey(creater,team_id1): #Bu fonksiyon hava durumu için anket gönderir
 
     with app.app_context():
 
-        sc = SlackClient(decryptToken())
-        userinfo = getUserList()
+        sc = SlackClient(decryptToken(team_id1))
+        userinfo = getUserList(team_id1)
 
         name=databaseOperations.getSnoozeTableName(db_conn)
         username = databaseOperations.getPersonalinfo(db_conn) ##personalinfo tablosundaki,stajdakilerin,isimleri
@@ -216,12 +224,12 @@ def sendAirSurvey(creater): #Bu fonksiyon hava durumu için anket gönderir
 
 
 @app.route("/feedback-collector/slack/locationSurvey", methods=["POST"])
-def sendLocationSurvey(creater): #Bu fonksiyon lokasyon anketini gönderir.
+def sendLocationSurvey(creater,team_id1): #Bu fonksiyon lokasyon anketini gönderir.
 
     with app.app_context():
 
-        sc = SlackClient(decryptToken())
-        userinfo = getUserList()
+        sc = SlackClient(decryptToken(team_id1))
+        userinfo = getUserList(team_id1)
         print(userinfo)
 
         zones=databaseOperations.getACzones(db_conn)
@@ -278,12 +286,12 @@ def sendLocationSurvey(creater): #Bu fonksiyon lokasyon anketini gönderir.
 
 
 @app.route("/feedback-collector/slack/checkAcZone", methods=["POST"])
-def checkAcZone(creater): #Kullanıcıların önceki yerlerini gösteren fonksiyondur.
+def checkAcZone(creater,team_id1): #Kullanıcıların önceki yerlerini gösteren fonksiyondur.
 
     with app.app_context():
 
-        sc = SlackClient(decryptToken())
-        userinfo = getUserList()
+        sc = SlackClient(decryptToken(team_id1))
+        userinfo = getUserList(team_id1)
 
         name = databaseOperations.getSnoozeTableName(db_conn)
         username = databaseOperations.getPersonalinfo(db_conn)  ##personalinfo tablosundaki,stajdakilerin,isimleri
@@ -334,12 +342,12 @@ def checkAcZone(creater): #Kullanıcıların önceki yerlerini gösteren fonksiy
         return make_response("Success", 200)
 
 @app.route("/feedback-collector/slack/locationimage", methods=["POST"])
-def locationimage(creater): #Blueprint i gösterir.
+def locationimage(creater,team_id1): #Blueprint i gösterir.
 
     with app.app_context():
 
-        sc = SlackClient(decryptToken())
-        userinfo = getUserList()
+        sc = SlackClient(decryptToken(team_id1))
+        userinfo = getUserList(team_id1)
 
         name = databaseOperations.getSnoozeTableName(db_conn)
         username = databaseOperations.getPersonalinfo(db_conn)  ##personalinfo tablosundaki,stajdakilerin,isimleri
@@ -691,15 +699,6 @@ def message_actions():
             returnText ="Start time:" + selectedValue
             response_Interactive_Message(responseurl, returnText)
 
-        if form_json["actions"][0]["action_id"] == "users_select":  # ATTENDEES CHOOSE
-
-            print("====================users_select", form_json)
-            actions = form_json["actions"]
-            actions = actions[0]
-            selectedoption = actions["selected_user"]
-            print("Burası User değeri1", selectedoption)
-            selectedValue = selectedoption["real_name"]
-            print("Burası User değeri", selectedValue)
 
         if form_json["actions"][0]["action_id"] == "clock_id2":  # saat
             actions = form_json["actions"]
@@ -792,12 +791,12 @@ def message_actions():
     return make_response(returnText, 200)
 
 @app.route("/feedback-collector/slack/sendmeetingservey", methods=["POST"])
-def sendMeetingservey(creater,username): #Toplantı odası için oluşturulan anketi gönderir.
+def sendMeetingservey(creater,username,team_id1): #Toplantı odası için oluşturulan anketi gönderir.
 
    with app.app_context():
 
-        sc = SlackClient(decryptToken())
-        userinfo = getUserList()
+        sc = SlackClient(decryptToken(team_id1))
+        userinfo = getUserList(team_id1)
 
         for key, val in userinfo.items():
             if key == username:
@@ -820,12 +819,12 @@ def sendMeetingservey(creater,username): #Toplantı odası için oluşturulan an
 
 #----
 @app.route("/feedback-collector/slack/sendbikingservey",methods=["POST"])
-def sendBikingservey(creater,username):
+def sendBikingservey(creater,username,team_id1):
 
     with app.app_context():
 
-        sc=SlackClient(decryptToken())
-        userinfo=getUserList()
+        sc=SlackClient(decryptToken(team_id1))
+        userinfo=getUserList(team_id1)
 
         for key, val in userinfo.items():
             if key == username:
@@ -843,52 +842,69 @@ def sendBikingservey(creater,username):
 @app.route("/feedback-collector/slack/slash", methods=["POST"])
 def collectSlashRequests(): #Bu commandler çağrıldığında hangi fonksiyonlara gidecek
 
-    username=request.form["user_name"]
-    command=request.form["command"]
+    team_id1 = request.form["team_id"]
+    channel_id = request.form["channel_id"]
+    team_id = request.form["team_id"]
+    channel_name = request.form["channel_name"]
+    user_id = request.form["user_id"]
+    text = request.form["text"]
 
-    print(username + "  " + command)
+    print("degerler")
+    print("team_id1", team_id)
+    print("channel_id1", channel_id)
+    print("channel_name1", channel_name)
+    print("user_id1", user_id)
+    print("text1", text)
+
+    username = request.form["user_name"]
+    command = request.form["command"]
+    print(username + "  " + command )
 
     if(command == "/biking"):
 
-        sendBikingservey("Manuel",username)
+        sendBikingservey("Manuel",username,team_id1)
         return make_response("",200)
 
     if (command == "/meeting"):
 
-        sendMeetingservey("Manuel",username)
+        sendMeetingservey("Manuel",username,team_id1)
         return make_response("", 200)
 
     if(command=="/location"):
 
-        sendLocationSurveyOneUser(username)
+        sendLocationSurveyOneUser(username,team_id1)
         return make_response("",200)
 
     if(command=="/snoozeon"):
 
-        onsnooze("Manuel",username)
+        onsnooze("Manuel",username,team_id1)
         return make_response("", 200)
 
     if (command == "/snoozeoff"):
 
-        offSnooze("Manuel", username)
+        offSnooze("Manuel",username,team_id1)
         return make_response("", 200)
 
     if(command=="/sendsurvey"):
 
-        thread_sendAirSurvey = Thread(target=sendAirSurvey, args=("Manuel",))
+        thread_sendAirSurvey = Thread(target=sendAirSurvey, args=("Manuel",team_id1))
         thread_sendAirSurvey.start()
 
         return make_response("",200)
 
     if(command=="/locationall"):
-
-        thread_checkaczone = Thread(target=checkAcZone,args=("Manuel",))
-        thread_sendlocationsurvey = Thread(target=sendLocationSurvey,args=("Manuel",))
-        thread_locationimage = Thread(target=locationimage, args=("Manuel",))
+        """
+        checkAcZone("Manuel")
+        sendLocationSurvey("Manuel")
+        locationimage("Manuel")"""
+        thread_checkaczone = Thread(target=checkAcZone,args=("Manuel",team_id1))
+        thread_sendlocationsurvey = Thread(target=sendLocationSurvey,args=("Manuel",team_id1))
+        thread_locationimage = Thread(target=locationimage, args=("Manuel",team_id1))
 
         thread_locationimage.start()
         thread_checkaczone.start()
         thread_sendlocationsurvey.start()
+
 
         return make_response("",200)
 
@@ -899,7 +915,7 @@ def collectSlashRequests(): #Bu commandler çağrıldığında hangi fonksiyonla
         print(minute_servey)
         print(int(minute_servey))
 
-        setSchedule(int(minute_servey))
+        setSchedule(int(minute_servey),team_id1)
         return make_response("Survey schedule setted to "+ minute_servey+" minute",200)
 
     if(command=="/offsurveyschedule"):
@@ -915,7 +931,7 @@ def collectSlashRequests(): #Bu commandler çağrıldığında hangi fonksiyonla
         print(minute_location)
         print(int(minute_location))
 
-        setScheduleLocation(int(minute_location))
+        setScheduleLocation(int(minute_location),team_id1)
         return make_response("Location schedule setted to " + minute_location + " minute", 200)
 
     if (command == "/offlocationschedule"):
@@ -938,11 +954,11 @@ def collectSlashRequests(): #Bu commandler çağrıldığında hangi fonksiyonla
 
 
 @app.route('/feedback-collector/slack/setSchedule', methods=["POST"])
-def setSchedule(minuteSlash): #Zamanlayıcı oluşturu, hava durumu anketini 15 dakikada bir gönderir.
+def setSchedule(minuteSlash,team_id1): #Zamanlayıcı oluşturu, hava durumu anketini 15 dakikada bir gönderir.
 
     minute_servey = request.form.get("minute_servey")
     print("schedule setted "+str(minute_servey)+ " minute_servey")
-    scheduler.add_job(id="surveyschedule", func=sendAirSurvey, args=("Auto",) ,trigger="interval", seconds=int(minuteSlash)*60*15) #15 dakika
+    scheduler.add_job(id="surveyschedule", func=sendAirSurvey, args=("Auto",team_id1) ,trigger="interval", seconds=int(minuteSlash)*60*15) #15 dakika
     print("schedule added")
 
     return make_response("Success",200)
@@ -957,16 +973,16 @@ def removeSchedule(): #Hava durumu anketi için oluşturulan zamanlayıcıyı du
 
 
 @app.route('/feedback-collector/slack/setScheduleLocation', methods=["POST"])
-def setScheduleLocation(minuteSlash): #Zamanlayıcı oluşturu, lokasyon anketini 15 dakikada bir gönderir.
+def setScheduleLocation(minuteSlash,team_id1): #Zamanlayıcı oluşturu, lokasyon anketini 15 dakikada bir gönderir.
 
     minute_location = request.form.get("minute_location")
     print("schedule setted "+str(minute_location)+ "minute")
 
-    scheduler.add_job(id="checkackzone", func=checkAcZone, args=("Auto",), trigger="interval", seconds=int(minuteSlash) * 60 * 60 * 12) #12 saat
-    scheduler.add_job(id="locationimageschedule", func=locationimage, args=("Auto",), trigger="interval",
+    scheduler.add_job(id="checkackzone", func=checkAcZone, args=("Auto",team_id1), trigger="interval", seconds=int(minuteSlash) * 60 * 60 * 12) #12 saat
+    scheduler.add_job(id="locationimageschedule", func=locationimage, args=("Auto",team_id1), trigger="interval",
                       seconds=int(minuteSlash) * 60)
 
-    scheduler.add_job(id="locationschedule", func=sendLocationSurvey, args=("Auto",) ,trigger="interval", seconds=int(minuteSlash)*60)
+    scheduler.add_job(id="locationschedule", func=sendLocationSurvey, args=("Auto",team_id1) ,trigger="interval", seconds=int(minuteSlash)*60)
 
     print("Location added")
     return make_response("Success",200)
