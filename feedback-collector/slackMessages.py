@@ -41,7 +41,6 @@ def clocks():
             "options": clocks
         }
     }]
-
     return clock
 
 
