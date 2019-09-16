@@ -378,7 +378,7 @@ def message_actions():
 
     if "accessory" not in request.form["payload"]:
 
-        if form_json["actions"][0]["value"] != "zone":
+        if form_json["actions"][0]["block_id"] != "aircondition_id":
 
             chosen = form_json["actions"]
 
@@ -396,7 +396,7 @@ def message_actions():
             databaseOperations.addVoteRecord(db_conn, username, chosen)
 
 
-        elif form_json["actions"][0]["value"] == "zone":
+        elif form_json["actions"][0]["block_id"] == "zone_id":
 
             location = databaseOperations.getPersonLocation(db_conn, username)
             text = "You are in AC zone: " + str(location)
