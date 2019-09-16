@@ -64,7 +64,9 @@ def sendLocationSurveyOneUser(username,team_id1):
 
     zones=databaseOperations.getACzones(db_conn)
 
+    sc.api_call("chat.postMessage", channel=userid, blocks=slackMessages.locationimage())
     sc.api_call("chat.postMessage",channel=userid,blocks=slackMessages.getLocationSurvey(zones))
+
 
     return make_response("Success",200)
 
@@ -351,49 +353,8 @@ def locationimage(creater,team_id1): #Blueprint i gösterir.
 
         name = databaseOperations.getSnoozeTableName(db_conn)
         username = databaseOperations.getPersonalinfo(db_conn)  ##personalinfo tablosundaki,stajdakilerin,isimleri
+        sc.api_call("chat.postMessage", channel=username, blocks=slackMessages.locationimage())
 
-        # for i in name:
-        # print(i[0])
-
-        # for i in username:
-        # print(i[0])
-
-        new = list()
-        tut = 0
-
-        for key, val in userinfo.items():  # tüm personel
-            for j in username:  # stajdakiler
-
-                if j[0] == key:  # sadece z
-                    print("j[0]:" + j[0] + " key: " + key)
-                    tut = 0
-                    for i in name:  # snooze tablosundakiler ve stajdakiler
-                        print("i[0] : " + i[0])
-                        if j[0] == i[0]:
-                            tut = 1
-                            break
-                        else:
-                            tut = 0
-
-                    if tut == 0:
-                        new.append(userinfo[j[0]])
-
-                    else:
-                        pass
-
-                else:
-                    pass
-
-        print(new)
-
-        for i in userinfo.values():
-            print(i + "\n")
-            for k in new:
-                print("+++++" + k)
-                if k == i:
-                    sc.api_call("chat.postMessage", channel=i, blocks=slackMessages.locationimage())
-                else:
-                    pass
 
 
         return make_response("Success", 200)
@@ -873,7 +834,9 @@ def collectSlashRequests(): #Bu commandler çağrıldığında hangi fonksiyonla
     if(command=="/location"):
 
         sendLocationSurveyOneUser(username,team_id1)
+
         return make_response("",200)
+
 
     if(command=="/snoozeon"):
 
@@ -893,10 +856,7 @@ def collectSlashRequests(): #Bu commandler çağrıldığında hangi fonksiyonla
         return make_response("",200)
 
     if(command=="/locationall"):
-        """
-        checkAcZone("Manuel")
-        sendLocationSurvey("Manuel")
-        locationimage("Manuel")"""
+
         thread_checkaczone = Thread(target=checkAcZone,args=("Manuel",team_id1))
         thread_sendlocationsurvey = Thread(target=sendLocationSurvey,args=("Manuel",team_id1))
         thread_locationimage = Thread(target=locationimage, args=("Manuel",team_id1))

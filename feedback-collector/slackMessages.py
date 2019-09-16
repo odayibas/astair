@@ -24,6 +24,7 @@ def clocks():
         })
 
     clock = [{
+        
 
         "type": "section",
         "text": {
@@ -41,7 +42,6 @@ def clocks():
             "options": clocks
         }
     }]
-
     return clock
 
 
