@@ -188,7 +188,7 @@ class ACControl extends Component {
    //  ));
 
  
-     To test number 2 and 3 on the board,
+    // To test number 2 and 3 on the board,
      const arr = ["2", "3"];
      return arr.map(i => (
        <ToggleButton
