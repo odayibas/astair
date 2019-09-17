@@ -174,17 +174,17 @@ class ACControl extends Component {
 
   //creates the buttons
   getButton = () => {
-    // return urlArr.map((button, i) => (
-    //   <ToggleButton
-    //     variant="dark"
-    //     onMouseDown={() => {
-    //       this.setAC(i + 1);
-    //     }}
-    //     value={i + 1}
-    //   >
-    //     {i + 1}
-    //   </ToggleButton>
-    // ));
+   //  return urlArr.map((button, i) => (
+   //    <ToggleButton
+   //      variant="dark"
+   //      onMouseDown={() => {
+   //        this.setAC(i + 1);
+   //      }}
+   //      value={i + 1}
+   //    >
+   //      {i + 1}
+   //    </ToggleButton>
+   //  ));
 
     // To test number 2 and 3 on the board,
     const arr = ["2", "3"];
@@ -194,7 +194,7 @@ class ACControl extends Component {
         onMouseDown={() => {
           this.setAC(i);
         }}
-        value={i}
+       value={i}
       >
         {i}
       </ToggleButton>
