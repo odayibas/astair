@@ -3,13 +3,16 @@ import axios from "axios";
 import { Col } from "reactstrap";
 import { get as getCookie } from "es-cookie";
 import { Redirect } from "react-router-dom";
-
 import InfoCards from "./InfoCards/InfoCards";
-import Charts from "./Charts/Charts";
+import Charts from "./Charts-new/Charts";
 import SensorCards from "./SensorCards/SensorCards";
 import ACInfo from "./ACInfo/ACInfo";
+import ColumnChart from "./Charts-new/ColumnChart";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
+const urlArr = Array.from(
+  Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
+).map(x => (x + 1).toString());
 
 class Dashboard extends Component {
   constructor() {
@@ -39,7 +42,8 @@ class Dashboard extends Component {
       nice: null,
       cold: null,
       people: null,
-      interval: null
+      interval: null,
+      sensorData: null,
     };
   }
 
@@ -47,6 +51,36 @@ class Dashboard extends Component {
     return axios.get(urlServer + "/AC/get-avg-degree").then(res => {
       this.setState({ avgac: res.data });
     });
+  };
+
+  getSensorAverageData = () => {
+    return axios.get(urlServer + "/sensor/get-ave-degree").then(res => {
+      this.setAvgTemp(res.data);
+      //this.drawTempChart(res);    
+
+      //console.log(res);     // average degree
+
+      //  this.drawOutdoorChart()
+    });
+  };
+
+  getSensorData = async () => {
+    await Promise.all(
+      urlArr.map(url =>
+        axios(urlServer + "/sensor/get-zone/" + url).then(res => {
+          this.state.sensorTemp[url] =
+            res.data[res.data.length - 1].sensor_degree;
+          this.state.sensorHum[url] =
+            res.data[res.data.length - 1].sensor_humidity;
+          const degrees = res.data.map(p => p.sensor_degree);
+          this.setState({ sensorData: degrees });
+          //console.log('sensordata:', degrees);
+          //console.log(res)
+          //columnChartOptions.series[1].data = this.state.sensorData;
+
+        })
+      )
+    );
   };
 
   getOutdoorData = async () => {
@@ -72,7 +106,7 @@ class Dashboard extends Component {
     var interval = setInterval(() => {
       this.getOutdoorData().then(data => {});
       this.getACAverage().then(data => {});
-    }, 5000);
+    }, 15000);
     this.setState({
       interval: interval
     });
@@ -124,7 +158,7 @@ class Dashboard extends Component {
             </Col>
             <Col>
               <div style={{ paddingTop: "30px" }}>
-                <Charts
+                <ColumnChart
                   sensorTemp={this.state.sensorTemp}
                   sensorHum={this.state.sensorHum}
                   temp={this.state.temp}

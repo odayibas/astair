@@ -9,13 +9,13 @@ class ACInfo extends Component {
     if (x === "0")
       return (
         <div>
-          <h4 style={{ textAlign: "right" }}> Active: OFF </h4>{" "}
+          <h4 style={{ textAlign: "center" }}> OFF </h4>{" "}
         </div>
       );
     else
       return (
         <div>
-          <h4 style={{ textAlign: "right" }}> Active: ON </h4>{" "}
+          <h4 style={{ textAlign: "center" }}> ON </h4>{" "}
         </div>
       );
   }
@@ -30,26 +30,32 @@ class ACInfo extends Component {
               <h3 style={{ textAlign: "center" }}>
                 {" "}
                 <AC /> REGION {i + 1} AC INFO{" "}
+                <p></p>
               </h3>
             </div>
             <div>
               <h4 style={{ textAlign: "center" }}>
-                Degree: {this.props.ac[i].ac_degree} °C
+                {Math.round(this.props.ac[i].ac_degree * 10) / 10} °C
               </h4>{" "}
             </div>
             <div>
               <h4 style={{ textAlign: "center" }}>
                 {" "}
-                Mode:{this.props.ac[i].ac_mode}{" "}
+                {this.props.ac[i].ac_mode}{" "}
               </h4>{" "}
             </div>
             <div>
               <h4 style={{ textAlign: "center" }}>
                 {" "}
-                Fan Speed:{this.props.ac[i].ac_fan_speed}{" "}
+                {this.props.ac[i].ac_fan_speed}{" "}
               </h4>{" "}
             </div>
-            {this.OnOff(this.props.ac[i].active)}
+            <div>
+              <h4 style={{ textAlign: "center" }}>
+                {" "}
+                {this.OnOff(this.props.ac[i].active)}
+              </h4>{" "}
+            </div>
           </CardBody>
           <div className="chart-wrapper mx-3" style={{ height: "40px" }} />
         </Card>

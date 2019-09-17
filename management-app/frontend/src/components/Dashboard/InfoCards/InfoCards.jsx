@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
 import { Card, CardTitle, CardBody, Col, Progress, Row } from "reactstrap";
-
 import Cloud from "@material-ui/icons/Cloud";
 import Office from "@material-ui/icons/BusinessCenter";
-
+import Charts from "../Charts-new/Charts";
+import PieChart from "../Charts-new/PieChart";
 import Icon from "@mdi/react";
 import { mdiHumanMaleFemale } from "@mdi/js";
 
@@ -22,34 +22,48 @@ class InfoCards extends Component {
     return (
       <Row className="text-center">
         <Col>
-          <Card style={{ padding: "65px" }}>
+          <Card >
             <CardBody className="pb-0" icon>
-              <Cloud />
               <div className="text-value">
                 {" "}
-                <h4> OUTDOOR </h4>
-                <h2> {this.props.temp} °C </h2>
+                <CardTitle>
+
+                  <h4> OUTDOOR </h4>
+                </CardTitle>
+
+                <Cloud fontSize="large" />
+                <p></p>
+                <p></p>
+                <h2> {Math.round(this.props.temp * 10) / 10} °C </h2>
               </div>
             </CardBody>
           </Card>
         </Col>
         <Col>
-          <Card style={{ padding: "65px" }}>
+          <Card >
             <CardBody className="pb-0" icon>
-              <Office />
               <div className="bg-transparent">
-                <h4> INDOOR </h4>
-                <h2> {this.props.avgsensor} °C </h2>
+                <CardTitle>
+
+                  <h4> INDOOR </h4>
+                </CardTitle>
+
+                <Office fontSize="large" />
+                <p></p>
+                <p></p>
+                <h2> {Math.round(this.props.avgsensor * 10) / 10} °C </h2>
               </div>
             </CardBody>
           </Card>
         </Col>
-        <Col sm={12} md className="mb-sm-2 mb-0">
-          <Card style={{ padding: "30px" }}>
+        <Col>
+          <Card >
             <CardTitle>
-              <h4>Slack</h4>
+              <h4>SLACK</h4>
             </CardTitle>
-            <strong>Cold %{this.slack100(this.props.cold)}</strong>
+            <PieChart>
+            </PieChart>
+            {/* <strong>Cold %{this.slack100(this.props.cold)}</strong>
             <Progress
               className="progress-xs mt-2"
               color="primary"
@@ -61,22 +75,26 @@ class InfoCards extends Component {
               color="success"
               value={this.slack100(this.props.nice)}
             />
-
+ 
             <strong>Hot %{this.slack100(this.props.hot)}</strong>
             <Progress
               className="progress-xs mt-2"
               color="danger"
               value={this.slack100(this.props.hot)}
-            />
+            /> */}
           </Card>
         </Col>
         <Col>
-          <Card style={{ padding: "65px" }}>
+          <Card>
             <CardBody className="pb-0">
-              <Icon path={mdiHumanMaleFemale} size={1} horizontal />
-              <div className="text-value">
+              <CardTitle>
+
                 <h4>PEOPLE</h4>
-              </div>
+
+              </CardTitle>
+
+              <Icon path={mdiHumanMaleFemale} size={2} horizontal />
+              <p></p>
               <h2>{this.props.people} </h2>
             </CardBody>
           </Card>
@@ -85,5 +103,4 @@ class InfoCards extends Component {
     );
   }
 }
-
 export default InfoCards;

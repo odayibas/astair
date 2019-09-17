@@ -291,8 +291,8 @@ def deleteSnoozeTableName(connection,username):
 
     cursor = connection.cursor()
     postgres_select_query = """ Delete from snooze where userid=%s"""
-    data = (username)
-    cursor.execute(postgres_select_query,[data])
+    cursor.execute(postgres_select_query,(username,))
+    connection.commit()
     cursor.close()
 
 
@@ -504,6 +504,7 @@ def checkSlashData(connection):
 
 def deleteSlashCommands(connection,location,command):
 
+
     location = str(location)
     cursor=connection.cursor()
     postgres_delete_query="delete from slack_temp2 where loc="+location+" AND comment='"+command+"'"
@@ -533,15 +534,25 @@ def getLastSurveyID(connection):
 
     return voteid
 
-def getToken(connection):
+def getToken(connection,team_id):
+
 
     cursor=connection.cursor()
-    postgres_select_query="SELECT token FROM systemadmin order by id ASC LIMIT 1"
-    cursor.execute(postgres_select_query)
+    postgres_select_query="SELECT token FROM systemadmin where workspace=%s order by id ASC LIMIT 1"
+    data=(team_id)
+    cursor.execute(postgres_select_query,[data])
     token=cursor.fetchone()
     token=token[0]
 
     return token
+def getWorkspace(connection):
+    cursor=connection.cursor()
+    postgres_select_query="""select workspace from systemadmin"""
+    cursor.execute(postgres_select_query)
+    data=cursor.fetchall()
+    cursor.close()
+
+    return data
 
 def setToken(connection,token,username):
 

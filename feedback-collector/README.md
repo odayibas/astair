@@ -104,6 +104,10 @@ Users can use this command to get air condition and location surveys at any time
 
 This command sends meeting survey to all user.
 
+- /biking
+
+This command send biking survey to all user.
+
 
 **Deployment**
 

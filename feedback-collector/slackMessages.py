@@ -25,6 +25,7 @@ def clocks():
 
     clock = [{
 
+
         "type": "section",
         "text": {
             "type": "mrkdwn",
@@ -41,7 +42,6 @@ def clocks():
             "options": clocks
         }
     }]
-
     return clock
 
 
@@ -563,7 +563,7 @@ def getAirConSurvey():
     },
     {
       "type": "section",
-      "block_id": "section567",
+      "block_id": "aircondition_id",
       "text": {
         "type": "mrkdwn",
         "text": "Choose best option for you"
@@ -626,7 +626,7 @@ def checkAcZone():
     },
         {
             "type": "section",
-            "block_id": "section567",
+            "block_id": "zone_id",
             "text": {
                 "type": "mrkdwn",
                 "text": "Click to see your current zone"
