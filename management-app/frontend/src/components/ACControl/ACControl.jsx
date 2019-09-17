@@ -209,11 +209,12 @@ class ACControl extends Component {
           className="center"
         >
           <div className="aczone">
-            <button id="showzone">Show ac zone</button>
+            <Button id="showzone" variant="danger">Show ac zone</Button>
             <div className="showACzone">
-              <img src={ACzone}  />
+              <img src={ACzone} />
             </div>
           </div>
+
           <Card className={this.state.border}>
             <CardBody>
               <Container>
