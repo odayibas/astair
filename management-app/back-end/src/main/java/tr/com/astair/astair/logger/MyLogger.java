@@ -16,6 +16,10 @@ public class MyLogger {
             pw.printf("Tarih: %s Class: %s Method: %s Message: %s Thread ID: %d\n",
                     new Date(), o.getClass().getName(), nameofCallerMethod, message, Thread.currentThread().getId());
             pw.close();
+            PrintWriter pw2 = new PrintWriter(System.out, true);
+            pw2.printf("Tarih: %s Class: %s Method: %s Message: %s Thread ID: %d\n",
+                    new Date(), o.getClass().getName(), nameofCallerMethod, message, Thread.currentThread().getId());
+            pw2.close();
         } catch(IOException e){e.printStackTrace();}
 
     }
