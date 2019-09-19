@@ -14,6 +14,7 @@ import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
 import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
 
 import axios from "axios";
+import { positions } from "@material-ui/system";
 
 const urlArr = Array.from(
   Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
@@ -26,6 +27,7 @@ var pieChartOptions = {
   chart: {
     width: 270,
     type: 'donut',
+    position: 'center'
   },
   plotOptions: {
     pie: {

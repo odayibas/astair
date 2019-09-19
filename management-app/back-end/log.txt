@@ -1,0 +1,9 @@
+Tarih: Thu Sep 19 14:56:35 EET 2019 Class: tr.com.astair.astair.controller.MqttController Method: publishMessage Message: 3,COOL,LOW,24,OFF Thread ID: 21
+Tarih: Thu Sep 19 14:56:51 EET 2019 Class: tr.com.astair.astair.controller.MqttController Method: publishMessage Message: 3,AUTO,LOW,29,ON Thread ID: 29
+Tarih: Thu Sep 19 15:00:41 EET 2019 Class: tr.com.astair.astair.controller.MqttController Method: publishMessage Message: 3,AUTO,LOW,29,ON Thread ID: 27
+Tarih: Thu Sep 19 15:00:49 EET 2019 Class: tr.com.astair.astair.controller.MqttController Method: publishMessage Message: 2,FAN,HIGH,30,ON Thread ID: 26
+Tarih: Thu Sep 19 15:02:39 EET 2019 Class: tr.com.astair.astair.controller.MqttController Method: publishMessage Message: 2,COOL,LOW,28,ON Thread ID: 28
+Tarih: Thu Sep 19 15:48:56 EET 2019 Class: tr.com.astair.astair.controller.MqttController Method: publishMessage Message: 3,COOL,HIGH,30,OFF Thread ID: 23
+Tarih: Thu Sep 19 16:01:07 EET 2019 Class: tr.com.astair.astair.controller.MqttController Method: publishMessage Message: 3,HEAT,MEDIUM,24,ON Thread ID: 23
+Tarih: Thu Sep 19 16:02:31 EET 2019 Class: tr.com.astair.astair.controller.MqttController Method: publishMessage Message: 3,COOL,HIGH,30,OFF Thread ID: 23
+Tarih: Thu Sep 19 16:02:52 EET 2019 Class: tr.com.astair.astair.controller.MqttController Method: publishMessage Message: 3,COOL,HIGH,25,ON Thread ID: 29

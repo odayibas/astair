@@ -121,7 +121,7 @@ class SensorCards extends Component {
   componentDidMount() {
     const interval = setInterval(() => {
       this.getacData().then(data => {});
-    }, 5000);
+    }, 15000);
     this.setState(prevState => ({
       ...prevState,
       interval
@@ -181,7 +181,7 @@ class SensorCards extends Component {
                   </h4>{" "}
                 </div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: "40px" }}>
+              <div className="chart-wrapper mx-3" style={{ maxWidth: "350px",height: "40px" }}>
                 <Line
                   data={{
                     labels: ["", "", "", "", ""],

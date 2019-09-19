@@ -30,7 +30,7 @@ public class MqttController {
 
         String msg = messagePublishModel.getMessage();
         byte[] payload = msg.getBytes();
-
+        System.out.println("payload:"+msg); 
         MyLogger.logger(msg, new MqttController());
         /*
         for logging purposes.
