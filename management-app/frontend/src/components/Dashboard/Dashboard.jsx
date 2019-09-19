@@ -8,11 +8,38 @@ import Charts from "./Charts-new/Charts";
 import SensorCards from "./SensorCards/SensorCards";
 import ACInfo from "./ACInfo/ACInfo";
 import ColumnChart from "./Charts-new/ColumnChart";
+import { withStyles } from "@material-ui/core";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 const urlArr = Array.from(
   Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
 ).map(x => (x + 1).toString());
+
+const styles = (theme) => ({
+   sensorCards: {
+    width : '400px !important',
+    height : '90%'
+    
+  },
+  [`@media screen and (max-width: 600px)`] : {
+    sensorCards : {
+      background : 'yellow',
+      
+    },
+  },
+  [`@media screen and (max-width: 900px)`] : {
+    sensorCards : {
+      background : 'yellow',
+      
+    },
+  },
+  [`@media screen and (max-width: 1100px)`] : {
+    sensorCards : {
+      background : 'yellow',
+      
+    },
+  }
+})
 
 class Dashboard extends Component {
   constructor() {
@@ -53,14 +80,14 @@ class Dashboard extends Component {
     });
   };
 
-  getSensorAverageData = () => {
+  getSensorAstylesrageData = () => {
     return axios.get(urlServer + "/sensor/get-ave-degree").then(res => {
-      this.setAvgTemp(res.data);
-      //this.drawTempChart(res);    
+      this.sstylesAvgTemp(res.data);
+      //thisstylesrawTempChart(res);    
 
-      //console.log(res);     // average degree
+      //consstylese.log(res);     // average degree
 
-      //  this.drawOutdoorChart()
+      //  thstyles.drawOutdoorChart()
     });
   };
 
@@ -140,6 +167,8 @@ class Dashboard extends Component {
   };
 
   render() {
+    
+    const {classes} = this.props
     if (
       getCookie("usertoken") === "1" ||
       getCookie("usertoken") === "2" ||
@@ -148,7 +177,7 @@ class Dashboard extends Component {
       return (
         <div className="page-main">
           <div className="page-body">
-            <Col xs="4" sm="3">
+            <Col  xs="4" sm="3">
               <SensorCards
                 sensorHum={this.state.sensorHum}
                 sensorTemp={this.state.sensorTemp}
@@ -206,4 +235,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default withStyles(styles, {withTheme : true})(Dashboard);
