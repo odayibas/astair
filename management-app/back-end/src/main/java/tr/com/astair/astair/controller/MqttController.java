@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import tr.com.astair.astair.logger.MyLogger;
+
 @RestController
 @RequestMapping(value = "/api/mqtt")
 public class MqttController {
@@ -26,11 +28,19 @@ public class MqttController {
             throw new MqttException(ExceptionMessages.SOME_PARAMETERS_INVALID);
         }
 
-        MqttMessage mqttMessage = new MqttMessage(messagePublishModel.getMessage().getBytes());
+        String msg = messagePublishModel.getMessage();
+        byte[] payload = msg.getBytes();
+
+        MyLogger.logger(msg, new MqttController());
+        /*
+        for logging purposes.
+         */
+
+        MqttMessage mqttMessage = new MqttMessage(payload);
         mqttMessage.setRetained(messagePublishModel.getRetained());
 
         Mqtt.getInstance().publish(messagePublishModel.getTopic(), mqttMessage);
-       // Mqtt.getInstance().publish("Astair/MODEL/AC", new MqttMessage("1,COOL,HIGH,26,OFF".getBytes()));
+        // Mqtt.getInstance().publish("Astair/MODEL/AC", new MqttMessage("1,COOL,HIGH,26,OFF".getBytes()));
     }
 
     @GetMapping("subscribe")
@@ -52,6 +62,5 @@ public class MqttController {
 
         return messages;
     }
-
 
 }
