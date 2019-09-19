@@ -297,3 +297,11 @@ input[type="checkbox"].switch:checked + div > div {
   font-size: 18px;
   white-space: nowrap;
 }
+
+.showACzone {
+  display: none;
+}
+
+.aczone:hover .showACzone {
+  display: block;
+}

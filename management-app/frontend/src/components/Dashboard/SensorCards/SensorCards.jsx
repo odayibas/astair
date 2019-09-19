@@ -131,6 +131,7 @@ class SensorCards extends Component {
   componentWillUnmount() {
     clearInterval(this.state.interval);
   }
+
   getacData = async () => {
     var ac = [];
 
@@ -157,15 +158,15 @@ class SensorCards extends Component {
       .sort((sensor, sensor2) => sensor.region - sensor2.region)
       .map((sensor, i) => {
         return (
-          <Row style={{ margin: 20, marginTop: 40 }}>
+          <Row style={{ margin: 10, marginTop: 20 }}>
             <Card style={{ background: sensor.color }}>
               <CardBody className="pb-0">
                 <div>
                   {" "}
-                  <h3>INDOOR {i + 1} </h3>
+                  <h3>INDOOR #{i + 1} </h3>
                 </div>
                 <div>
-                  <h1>{sensor.temp}°C</h1>
+                  <h1>{Math.round( sensor.temp * 10 ) / 10}°C</h1>
                 </div>
                 <div>
                   <h4 style={{ textAlign: "right" }}>

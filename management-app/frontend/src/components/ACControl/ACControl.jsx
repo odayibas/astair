@@ -7,7 +7,7 @@ import { get as getCookie } from "es-cookie";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import SurveyInterval from "./surveyinterval";
-
+import ACzone from "../Dashboard/ac_zone.png";
 import FanSpeed from "./FanSpeed";
 import Temperature from "./Temperature";
 import Mode from "./Mode";
@@ -51,7 +51,7 @@ class ACControl extends Component {
           active: active,
           isChecked: b
         };
-        this.setState(acData, () => {});
+        this.setState(acData, () => { });
       })
       .catch(err => {
         console.log(err);
@@ -60,22 +60,22 @@ class ACControl extends Component {
   };
 
   componentWillMount() {
-    this.getData(data => {});
+    this.getData(data => { });
   }
 
   //set the changes of fanspeed page
   setFan = fan => {
-    this.setState({ fan_speed: fan }, () => {});
+    this.setState({ fan_speed: fan }, () => { });
   };
 
   //set the changes of mode page
   setMode = mode => {
-    this.setState({ mode: mode }, () => {});
+    this.setState({ mode: mode }, () => { });
   };
 
   //set the changes of temperature page
   setTemp = temp => {
-    this.setState({ temperature: temp }, () => {});
+    this.setState({ temperature: temp }, () => { });
   };
 
   adjustTemp = val => {
@@ -95,9 +95,9 @@ class ACControl extends Component {
     const newVal = !this.state.isChecked;
 
     if (newVal === true) {
-      this.setState({ active: "ON" }, () => {});
+      this.setState({ active: "ON" }, () => { });
     } else {
-      this.setState({ active: "OFF" }, () => {});
+      this.setState({ active: "OFF" }, () => { });
     }
     this.setState({ isChecked: newVal });
   };
@@ -113,13 +113,13 @@ class ACControl extends Component {
     ) {
       var message1 = (this.state.id + "").concat(
         "," +
-          this.state.mode +
-          "," +
-          this.state.fan_speed +
-          "," +
-          this.state.temperature +
-          "," +
-          this.state.active
+        this.state.mode +
+        "," +
+        this.state.fan_speed +
+        "," +
+        this.state.temperature +
+        "," +
+        this.state.active
       );
       console.log("The message is ", message1);
       this.setState({
@@ -137,7 +137,7 @@ class ACControl extends Component {
               this.setState({ border: "" });
             }, 3000);
           });
-          // alert("Data Send");
+          alert("Data Send");
         })
         .catch(error => {
           this.setState({ border: "border border-danger" }, () => {
@@ -174,31 +174,33 @@ class ACControl extends Component {
 
   //creates the buttons
   getButton = () => {
-    // return urlArr.map((button, i) => (
-    //   <ToggleButton
-    //     variant="dark"
-    //     onMouseDown={() => {
-    //       this.setAC(i + 1);
-    //     }}
-    //     value={i + 1}
-    //   >
-    //     {i + 1}
-    //   </ToggleButton>
-    // ));
 
+   //  return urlArr.map((button, i) => (
+   //    <ToggleButton
+   //      variant="dark"
+   //      onMouseDown={() => {
+   //        this.setAC(i + 1);
+   //      }}
+   //      value={i + 1}
+   //    >
+   //      {i + 1}
+   //    </ToggleButton>
+   //  ));
+
+ 
     // To test number 2 and 3 on the board,
-    const arr = ["2", "3"];
-    return arr.map(i => (
-      <ToggleButton
-        variant="dark"
-        onMouseDown={() => {
-          this.setAC(i);
-        }}
-        value={i}
-      >
-        {i}
-      </ToggleButton>
-    ));
+     const arr = ["2", "3"];
+     return arr.map(i => (
+       <ToggleButton
+         variant="dark"
+         onMouseDown={() => {
+           this.setAC(i);
+         }}
+         value={i}
+       >
+         {i}
+       </ToggleButton>
+     ));
   };
 
   render() {
@@ -208,6 +210,13 @@ class ACControl extends Component {
           style={{ padding: this.state.border !== "" ? 19 : 20 }}
           className="center"
         >
+          <div className="aczone">
+            <Button id="showzone" variant="danger">Show ac zone</Button>
+            <div className="showACzone">
+              <img src={ACzone} />
+            </div>
+          </div>
+
           <Card className={this.state.border}>
             <CardBody>
               <Container>
@@ -252,6 +261,7 @@ class ACControl extends Component {
                       adjustTemp={x => this.adjustTemp(x)}
                       temperature={this.state.temperature}
                     />
+
                   </Col>
                 </Row>
                 {/* <Row style={{ marginTop: 10 }}>
