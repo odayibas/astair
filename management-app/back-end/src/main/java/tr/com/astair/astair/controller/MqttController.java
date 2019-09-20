@@ -1,5 +1,6 @@
 package tr.com.astair.astair.controller;
 
+import tr.com.astair.astair.logger.MyLogger;
 import tr.com.astair.astair.config.Mqtt;
 import tr.com.astair.astair.exception.ExceptionMessages;
 import tr.com.astair.astair.exception.MqttException;
@@ -30,7 +31,6 @@ public class MqttController {
 
         String msg = messagePublishModel.getMessage();
         byte[] payload = msg.getBytes();
-        System.out.println("payload:"+msg); 
         MyLogger.logger(msg, new MqttController());
         /*
         for logging purposes.
