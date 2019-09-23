@@ -20,8 +20,8 @@ public class MyLogger {
             pw.close();
 
             Logger logger = Logger.getLogger(o.getClass().getName());
-            logger.info("Tarih" + new Date() + " Class: " + o.getClass().getName() + " Method: " + nameofCallerMethod
-                        + "Message: " + message + " Thread ID: " + thread_id);
+            logger.info("Tarih: " + new Date() + " Class: " + o.getClass().getName() + " Method: " + nameofCallerMethod
+                        + " Message: " + message + " Thread ID: " + thread_id);
 
         } catch(IOException e){e.printStackTrace();}
 
