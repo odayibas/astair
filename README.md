@@ -21,6 +21,7 @@ Watch the video:
 * [Open AI](https://openai.com/)- RL implementations
 * [Spring Boot](https://spring.io/projects/spring-boot) - Backend
 * [ReactJS](https://reactjs.org/) - Frontend
+* [React-Native](https://facebook.github.io/react-native/) - Mobile
 * [SparkFun ESP32 Thing](https://www.sparkfun.com/products/13907) - Sensor&controller boards
 * [Zaxe 3D printer](http://zaxe.com/en/) - Printing sensor&controller cases
 
