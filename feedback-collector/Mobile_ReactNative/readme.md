@@ -12,7 +12,7 @@
 
 ## Getting Started
 
-**0. Folders and Development Instructions:**
+**0. Folders and Development:**
 
 ```
 */Styles/ => CSS
@@ -24,9 +24,6 @@
 /App/Components => Components was used inside screens
 
 /App/Reducers && /App/Store && /App/Actions => REDUX
-
-
-
 
 
 Not implemented:
