@@ -14,6 +14,7 @@ import java.util.List;
 public class ACServiceImp implements ACService {
 
     ACRepository acRepository;
+    private static final Integer ENTRY_SIZE = 2000;
 
     @Autowired
     private ACServiceImp(ACRepository acRepository) {
@@ -35,11 +36,18 @@ public class ACServiceImp implements ACService {
 
     public List<AC> get() {
         try {
-            return acRepository.findAll();
+            if(getACEntryCount() < ENTRY_SIZE){
+                acRepository.deleteAll();
+                return null;
+            }
+            List<AC> list = acRepository.findAll();
+            return list;
         } catch (QueryException e) {
             throw new QueryException(e.getMessage());
         }
     }
+
+    public Long getACEntryCount(){return acRepository.getMaxAC_Id() - acRepository.getMinAC_Id() + 1;}
 
     public void update(AC ac) {
         acRepository.save(ac);
