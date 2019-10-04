@@ -6,6 +6,7 @@ import org.springframework.web.bind.support.WebBindingInitializer;
 import tr.com.astair.astair.model.WebVote;
 import tr.com.astair.astair.model.WeatherPollResult;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface WebVoteControllerApi {
@@ -30,6 +31,6 @@ public interface WebVoteControllerApi {
     ResponseEntity<List<WebVote>> getResultbyUserId(@PathVariable Long user_id);
 
     @PostMapping("/vote/save-vote")
-    ResponseEntity<WebVote> addResult(@RequestBody WebVote webVote);
+    ResponseEntity<WebVote> addResult(Long user_id, String vote, Long vote_id, Integer region, Timestamp date_time);
 
 }
