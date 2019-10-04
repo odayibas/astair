@@ -12,6 +12,7 @@ import tr.com.astair.astair.model.WeatherPollResult;
 import tr.com.astair.astair.service.WebVoteService;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -61,14 +62,16 @@ public class WebVoteController implements WebVoteControllerApi {
         if (test == null) {
 
             return new ResponseEntity<>((List<WebVote>) null, HttpStatus.BAD_REQUEST);
-            }
+        }
 
         return new ResponseEntity<>(test, HttpStatus.OK);
     }
 
-    public  ResponseEntity<WebVote> addResult(@RequestBody WebVote webVote) {
-        WebVote test = new WebVote(webVote.getUser_id(),webVote.getVote(), webVote.getVote_id(),webVote.getRegion(), webVote.getDate_time());
+    @Override
+    public ResponseEntity<WebVote> addResult(Long user_id, String vote, Long vote_id, Integer region, Timestamp date_time) {
+        WebVote test = new WebVote(user_id, vote, vote_id, region, date_time);
         webVoteService.addResult(test);
-        return new ResponseEntity<>(test, HttpStatus.OK);
-    }
+        return new ResponseEntity<>(test, HttpStatus.OK);    }
+
+
 }
