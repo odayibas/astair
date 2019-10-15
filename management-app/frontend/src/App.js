@@ -1,14 +1,14 @@
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import React, { Component } from "react";
-import Navbar from "./components/Navbar/Navbar";
-import Dashboard from "./components/Dashboard/Dashboard";
-import Login from "./components/Pages/Login";
-import Landing from "./components/Pages/Landing";
-import Monitor from "./components/Monitor/Monitor";
-import WebForm from "./components/Form/Form";
-import ACControl from "./components/ACControl/ACControl";
-import Register from "./components/Pages/Register";
-import SchedulerTop from "./components/MeetingScheduler/schedulertop";
+import Navbar from "./scenes/Home/Navbar";
+import Dashboard from "./scenes/Dashboard/Dashboard";
+import Login from "./scenes/Login/Login";
+import Landing from "./scenes/Home/Landing";
+import Monitor from "./scenes/Monitor/Monitor";
+import WebForm from "./scenes/Form/Form";
+import ACControl from "./scenes/ACControl/ACControl";
+import Register from "./scenes/Login/Register";
+import SchedulerTop from "./scenes/MeetingScheduler/components/SchedulerTop/schedulertop";
 import axios from "axios";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
@@ -49,6 +49,11 @@ class App extends Component {
           <Route exact path="/login" component={Login} />{" "}
           <Route exact path="/dashboard" component={Dashboard} />{" "}
           <Route exact path="/monitor" component={Monitor} />{" "}
+          
+          <Route exact path="/ac" component={ACControl} />{" "}
+          <Route exact path="/register" component={Register} />{" "}
+          <Route exact path="/meetingscheduler" component={SchedulerTop} />{" "}
+
           <Route
             exact
             path="/form"
@@ -62,9 +67,6 @@ class App extends Component {
               );
             }}
           />{" "}
-          <Route exact path="/ac" component={ACControl} />{" "}
-          <Route exact path="/register" component={Register} />{" "}
-          <Route exact path="/meetingscheduler" component={SchedulerTop} />{" "}
         </div>
       </Router>
     );
