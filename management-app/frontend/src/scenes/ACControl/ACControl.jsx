@@ -8,10 +8,9 @@ import { Redirect } from "react-router-dom";
 import axios from "axios";
 import SurveyInterval from "../../components/surveyinterval";
 import ACzone from "../Dashboard/images/ac_zone.png";
-import FanSpeed from "./FanSpeed/FanSpeed";
-import Temperature from "./Temperature/Temperature";
-import Mode from "./Mode/Mode";
-import Fan from "./Fan/Fan";
+import Temperature from "./components/Temperature/Temperature";
+import Mode from "./components/Mode/Mode";
+import Fan from "./components/Fan/Fan";
 import { Container } from "@material-ui/core";
 import { connect } from 'react-redux'
 import { getLastAcRecords, setTemperature, setFan, setMode, setActive, setIsChecked, handleSubmit } from '../../services/session/ACControl/actions';

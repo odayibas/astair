@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { mdiContentSaveAllOutline } from '@mdi/js';
 
 // asynchronous action creator
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;

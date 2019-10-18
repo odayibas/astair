@@ -1,21 +1,8 @@
 import React, { Component } from "react";
 import ApexCharts from 'apexcharts';
-import {
-  Button,
-  ButtonGroup,
-  ButtonToolbar,
-  Card,
-  CardBody,
-  CardTitle,
-  Col,
-  Row
-} from "reactstrap";
-import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
-import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
-
-import axios from "axios";
-import { positions } from "@material-ui/system";
-
+import * as PieChartActions from '../../services/session/PieChart/actions';
+import { connect } from 'react-redux'
+import { bindActionCreators } from "redux";
 const urlArr = Array.from(
   Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
 ).map(x => (x + 1).toString());
@@ -23,7 +10,7 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
 var pieChart;
 
-var pieChartOptions = {
+let pieChartOptions = {
   chart: {
     width: 270,
     type: 'donut',
@@ -128,8 +115,11 @@ class PieChart extends Component {
 
   trigger() {
     const interval1 = setInterval(() => {
-      //this.getSlackData().then(data => { });
-      //this.drawPieChart();
+      this.props.getSlackData().then(data => {
+        pieChartOptions.series = data;
+
+      });
+      this.drawPieChart();
     }, 15000);
   }
 
@@ -137,17 +127,12 @@ class PieChart extends Component {
 
     this.trigger();
   }
-  
-  drawPieChart() {
 
+  drawPieChart() {
     if (pieChart)
       pieChart.destroy();
-    //var pieChart = new ApexCharts(document.querySelector("#pieChart"), pieChartOptions);
     pieChart = new ApexCharts(document.querySelector("#pieChart"), pieChartOptions);
-
     pieChart.render();
-    //console.log('pieChart', pieChartOptions);
-    //pieChart.render();
   }
 
   render() {
@@ -160,4 +145,14 @@ class PieChart extends Component {
 
 }
 
-export default PieChart;
+const mapStatetoProps = (state) => {
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    ...PieChartActions,
+  }, dispatch);
+}
+
+export default connect(mapStatetoProps, mapDispatchToProps)(PieChart);

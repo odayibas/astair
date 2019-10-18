@@ -1,24 +1,8 @@
 import React, { Component } from "react";
 import ApexCharts from 'apexcharts';
-import {
-  Button,
-  ButtonGroup,
-  ButtonToolbar,
-  Card,
-  CardBody,
-  CardTitle,
-  Col,
-  Row
-} from "reactstrap";
-import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
-import { getStyle, hexToRgba } from "@coreui/coreui/dist/js/coreui-utilities";
-
-import axios from "axios";
-
-const urlArr = Array.from(
-  Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
-).map(x => (x + 1).toString());
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
+import * as ColumnChartActions from '../../services/session/ColumnChart/actions';
+import { connect } from 'react-redux'
+import { bindActionCreators } from "redux";
 
 var columnChart;
 
@@ -98,52 +82,57 @@ let columnChartOptions = {
 class ColumnChart extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      sensorData: null,
-    };
   }
 
-
-
-  trigger() {
-    const interval1 = setInterval(() => {
-      // this.getcompVisionControllerData().then(data => { });
-      // this.getSensorData().then(data => { });
-      // this.drawColumnChart();
-      // this.getSensorAverageData();
-
-    }, 15000);
-  }
   componentDidMount() {
-
     this.trigger();
   }
 
-  setPeople = people => {
-    this.props.setPeople(people);
-  };
+  trigger() {
+    const interval1 = setInterval(() => {
+      this.props.getCompVisionControllerData().then(people => {
+        columnChartOptions.series[0].data = people;
+      });
+      this.props.getSensorData().then(sensorData => {
+        var degrees = []
+        var i = 0, j = 0;
+        for (i = 0; i <= sensorData.length; i++) {
+          var data = 0;
+          for (j = 0; j < sensorData.length; j++) {
+            data += sensorData[j][i];
+          }
+          degrees[i] = data / sensorData.length;
+        }
+        columnChartOptions.series[1].data = degrees;
+
+      })
+      this.drawColumnChart();
+    }, 15000);
+  }
 
   drawColumnChart() {
-
     if (columnChart)
       columnChart.destroy();
-    //var pieChart = new ApexCharts(document.querySelector("#pieChart"), pieChartOptions);
     columnChart = new ApexCharts(document.querySelector("#columnChart"), columnChartOptions);
-
     columnChart.render();
-    //console.log('columnChartOptions', columnChartOptions);
-    //pieChart.render();
+
   }
 
   render() {
     return (
-
       <div id="columnChart" ></div>
-
     );
   }
-
-
 }
 
-export default ColumnChart;
+const mapStatetoProps = (state) => {
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    ...ColumnChartActions,
+  }, dispatch);
+}
+
+export default connect(mapStatetoProps, mapDispatchToProps)(ColumnChart);

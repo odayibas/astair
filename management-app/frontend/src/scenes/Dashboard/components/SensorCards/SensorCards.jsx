@@ -3,9 +3,6 @@ import { Line } from "react-chartjs-2";
 import { Card, CardBody, Row } from "reactstrap";
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
 import { getStyle } from "@coreui/coreui/dist/js/coreui-utilities";
-
-import axios from "axios";
-
 import AC from "@material-ui/icons/AcUnit";
 import Humidity from "@material-ui/icons/Opacity";
 
@@ -17,6 +14,14 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
 let orange = "rgba(214, 69, 65, 1)";
 let red = "rgba(252, 214, 112, 1)";
+
+
+
+// const mapDispatchprops = (dispatch) => {
+//   return {
+//     onGetAcData: () => dispatch(getAcData()),
+//   }
+// }
 
 const sensorData = {
   labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
@@ -119,18 +124,22 @@ class SensorCards extends Component {
     };
   }
   componentDidMount() {
-    const interval = setInterval(() => {
-//      this.getacData().then(data => {});
-    }, 15000);
-    this.setState(prevState => ({
-      ...prevState,
-      interval
-    }));
+
+
+    // const interval = setInterval(() => {
+    //   this.props.getAcData();
+    // }, 5000);
+
+
+    // this.setState(prevState => ({
+    //   ...prevState,
+    //   interval
+    // }));
   }
 
-  componentWillUnmount() {
-    clearInterval(this.state.interval);
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.state.interval);
+  // }
 
 
   //creates the sensor cards
@@ -147,7 +156,7 @@ class SensorCards extends Component {
                   <h3>INDOOR #{i + 1} </h3>
                 </div>
                 <div>
-                  <h1>{Math.round( sensor.temp * 10 ) / 10}°C</h1>
+                  <h1>{Math.round(sensor.temp * 10) / 10}°C</h1>
                 </div>
                 <div>
                   <h4 style={{ textAlign: "right" }}>
@@ -162,7 +171,7 @@ class SensorCards extends Component {
                   </h4>{" "}
                 </div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ maxWidth: "350px",height: "40px" }}>
+              <div className="chart-wrapper mx-3" style={{ maxWidth: "350px", height: "40px" }}>
                 <Line
                   data={{
                     labels: ["", "", "", "", ""],
@@ -192,6 +201,7 @@ class SensorCards extends Component {
       i + 1,
       this.props.ac[i] && this.props.ac[i].ac_degree
     ]);
+
   }
   render() {
     /* [
@@ -209,6 +219,7 @@ class SensorCards extends Component {
     );
 
     return <div>{this.getSensors(sensorArr)}</div>;
+
   }
 }
 

@@ -8,37 +8,38 @@ import SensorCards from "./components/SensorCards/SensorCards";
 import ACInfo from "./components/ACInfo/ACInfo";
 import ColumnChart from "../../components/ColumnChart/ColumnChart";
 import { withStyles } from "@material-ui/core";
+import { connect } from 'react-redux'
+import * as SensorActions from "../../services/session/Dashboard/actions";
+import { bindActionCreators } from "redux";
 
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
-const urlArr = Array.from(
-  Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
-).map(x => (x + 1).toString());
 
 const styles = (theme) => ({
-   sensorCards: {
-    width : '400px !important',
-    height : '90%'
-    
+  sensorCards: {
+    width: '400px !important',
+    height: '90%'
+
   },
-  [`@media screen and (max-width: 600px)`] : {
-    sensorCards : {
-      background : 'yellow',
-      
+  [`@media screen and (max-width: 600px)`]: {
+    sensorCards: {
+      background: 'yellow',
+
     },
   },
-  [`@media screen and (max-width: 900px)`] : {
-    sensorCards : {
-      background : 'yellow',
-      
+  [`@media screen and (max-width: 900px)`]: {
+    sensorCards: {
+      background: 'yellow',
+
     },
   },
-  [`@media screen and (max-width: 1100px)`] : {
-    sensorCards : {
-      background : 'yellow',
-      
+  [`@media screen and (max-width: 1100px)`]: {
+    sensorCards: {
+      background: 'yellow',
+
     },
   }
 })
+
+
 
 class Dashboard extends Component {
   constructor() {
@@ -70,18 +71,38 @@ class Dashboard extends Component {
       people: null,
       interval: null,
       sensorData: null,
+      columnChartOptions: {}
     };
   }
 
-
-
-
-
-
   componentDidMount() {
     var interval = setInterval(() => {
-      // this.getOutdoorData().then(data => {});
-      // this.getACAverage().then(data => {});
+      this.props.getSensorData().then(sensorData => {
+        this.setState({
+          sensorTemp: sensorData[0][0],
+          sensorHum: sensorData[0][1],
+        })
+      })
+      this.props.getAcData().then(ac => this.setAC(ac));
+      this.props.getAcAverage().then(acAvg => {
+        this.setState({
+          avgac: acAvg
+        });
+
+      })
+      this.props.getSensorAverageData().then(sensorAvg => {
+        this.setAvgTemp(sensorAvg)
+      });
+      this.props.getOutdoorData().then(outdoor => {
+        this.setState({
+          temp: outdoor
+        })
+      });
+      this.props.getcompVisionControllerData().then(people => {
+        this.setState({
+          people: people[people.length - 1],
+        })
+      });
     }, 15000);
     this.setState({
       interval: interval
@@ -116,8 +137,8 @@ class Dashboard extends Component {
   };
 
   render() {
-    
-    const {classes} = this.props
+
+    const { classes } = this.props
     if (
       getCookie("usertoken") === "1" ||
       getCookie("usertoken") === "2" ||
@@ -126,7 +147,7 @@ class Dashboard extends Component {
       return (
         <div className="page-main">
           <div className="page-body">
-            <Col  xs="4" sm="3">
+            <Col xs="4" sm="3">
               <SensorCards
                 sensorHum={this.state.sensorHum}
                 sensorTemp={this.state.sensorTemp}
@@ -184,4 +205,15 @@ class Dashboard extends Component {
   }
 }
 
-export default withStyles(styles, {withTheme : true})(Dashboard);
+const mapStatetoProps = (state) => {
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    ...SensorActions,
+  }, dispatch);
+}
+
+export default withStyles(styles, { withTheme: true })(connect(mapStatetoProps, mapDispatchToProps)(Dashboard));
+
