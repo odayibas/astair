@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ApexCharts from 'apexcharts';
-import * as PieChartActions from '../../services/session/PieChart/actions';
+import * as PieChartActions from '../../../../services/session/PieChart/actions';
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 const urlArr = Array.from(

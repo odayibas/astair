@@ -3,6 +3,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import { set as setCookie } from "es-cookie";
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux'
+import { submit } from '../../services/session/Login/action';
+import { mdiConsoleNetwork } from "@mdi/js";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
@@ -20,44 +23,49 @@ class Login extends Component {
   };
 
   onSubmit = e => {
-    const { history } = this.props;
     e.preventDefault();
-
-    const user = {
-      username: this.state.username,
-      role: 1,
-      password: this.state.password
-    };
-
-    axios
-      .post(urlServer + "/user/login/" + user.username + "/" + user.password, {
-        username: user.username,
-        role: user.role,
-        password: user.password
-      })
-      .then(res => {
-        if (res) {
-          if (res.data !== -2 && res.data !== -1) {
-            var promise1 = Promise.resolve(res.data);
-            promise1.then(function(value) {
-              axios.post(urlServer + "/user/" + value).then(res => {
-                setCookie("usertoken", res.data.role);
-                setCookie("token", res.data.id);
-
-                return history.push("/dashboard");
-              });
-            });
-          } else {
-            alert("Invalid Credentials");
-            return history.push("/login");
-          }
-          return res.data;
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.props.onSubmit(this.props.history,this.state.username,this.state.password);
   };
+
+  // onSubmit = e => {
+  //   const { history } = this.props;
+  //   e.preventDefault();
+
+  //   const user = {
+  //     username: this.state.username,
+  //     role: 1,
+  //     password: this.state.password
+  //   };
+
+  //   axios
+  //     .post(urlServer + "/user/login/" + user.username + "/" + user.password, {
+  //       username: user.username,
+  //       role: user.role,
+  //       password: user.password
+  //     })
+  //     .then(res => {
+  //       if (res) {
+  //         if (res.data !== -2 && res.data !== -1) {
+  //           var promise1 = Promise.resolve(res.data);
+  //           promise1.then(function(value) {
+  //             axios.post(urlServer + "/user/" + value).then(res => {
+  //               setCookie("usertoken", res.data.role);
+  //               setCookie("token", res.data.id);
+
+  //               return history.push("/dashboard");
+  //             });
+  //           });
+  //         } else {
+  //           alert("Invalid Credentials");
+  //           return history.push("/login");
+  //         }
+  //         return res.data;
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
 
 
   render() {
@@ -115,4 +123,16 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStatetoProps = (state) => {
+  console.log("mapStatetoProps", state)
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchProps = (dispatch) => {
+  return {
+    onSubmit: (history,username,password) => dispatch(submit(history,username,password)),
+
+  }
+}
+
+export default connect(mapStatetoProps,mapDispatchProps)(Login);

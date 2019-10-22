@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { connect } from 'react-redux'
+import { submit } from '../../services/session/Register/action';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 class Register extends Component {
@@ -15,7 +17,10 @@ class Register extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-
+  onSubmit = e => {
+    e.preventDefault();
+    this.props.onSubmit(this.props.history,this.state.username,this.state.password);
+  };
 
   render() {
     return (
@@ -67,4 +72,16 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapStatetoProps = (state) => {
+  console.log("mapStatetoProps", state)
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchProps = (dispatch) => {
+  return {
+    onSubmit: (history,username,password) => dispatch(submit(history,username,password)),
+
+  }
+}
+
+export default connect(mapStatetoProps,mapDispatchProps)(Register);

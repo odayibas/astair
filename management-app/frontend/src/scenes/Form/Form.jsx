@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { Card, CardBody } from "reactstrap";
-import axios from "axios";
 import { get as getCookie, set as setCookie } from "es-cookie";
 import { Col, Row } from "reactstrap";
 import { Redirect } from "react-router-dom";
 import "react-vertical-timeline-component/style.min.css";
 import { Link } from "react-router-dom";
-
 import VoteChart from "./components/VoteChart/VoteChart";
 import Timeline from "./components/Timeline/Timeline";
 import Survey from "./components/Survey/Survey";
+import { connect } from 'react-redux'
+import { getLastAcRecords, setTemperature, setFan, setMode, setActive, setIsChecked, handleSubmit } from '../../services/session/ACControl/actions';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
@@ -214,4 +214,16 @@ class WebForm extends Component {
   }
 }
 
-export default WebForm;
+const mapStatetoProps = (state) => {
+  console.log("mapStatetoProps", state)
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchprops = (dispatch) => {
+  return {
+    onGetLastAcRecords: (currentAC) => dispatch(getLastAcRecords(currentAC)),
+
+  }
+}
+
+export default connect(mapStatetoProps,mapDispatchprops)(WebForm);

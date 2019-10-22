@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 import InfoCards from "./components/InfoCards/InfoCards";
 import SensorCards from "./components/SensorCards/SensorCards";
 import ACInfo from "./components/ACInfo/ACInfo";
-import ColumnChart from "../../components/ColumnChart/ColumnChart";
+import ColumnChart from "./components/ColumnChart/ColumnChart";
 import { withStyles } from "@material-ui/core";
 import { connect } from 'react-redux'
 import * as SensorActions from "../../services/session/Dashboard/actions";

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ApexCharts from 'apexcharts';
-import * as ColumnChartActions from '../../services/session/ColumnChart/actions';
+import * as ColumnChartActions from '../../../../services/session/ColumnChart/actions';
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 
