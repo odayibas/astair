@@ -40,7 +40,18 @@ class Monitor extends Component {
 
 
   componentDidMount() {
-    this.getData().then(data => {});
+    console.log("monitor")
+    this.props.onGetData().then(data => {
+      this.setState({
+        temp: data.temp,
+        currentWeather: data.currentWeather,
+        dailySummary: data.dailySummary,
+        dew: data.dew,
+        humidity: data.humidity,
+        visibility: data.visibility,
+        timezone: data.timezone,
+      })
+    })
   }
 
   toggleAccordion(tab) {
@@ -194,4 +205,15 @@ class Monitor extends Component {
   }
 }
 
-export default Monitor;
+const mapStatetoProps = (state) => {
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetData: () => dispatch(getData())
+
+  }
+}
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Monitor);
