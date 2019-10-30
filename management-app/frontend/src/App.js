@@ -33,11 +33,13 @@ class App extends Component {
       .then(res => {
         let currentSettings = res.data[res.data.length - 1];
         const adminInterval = parseInt(currentSettings.surveyInterval, 10);
-        this.setState({ surveyInterval: adminInterval }, () => {});
+        console.log("get slots from app.js", res)
+        console.log("get slots from app.js", currentSettings.surveyInterval)
+        this.setState({ surveyInterval: adminInterval }, () => { });
         // this.state.surveyInterval = adminInterval;
         // console.log(this.state.surveyInterval, " NEW INTERVAL FROM DB");
       })
-      .catch(err => {});
+      .catch(err => { });
   };
 
   render() {
@@ -49,24 +51,26 @@ class App extends Component {
           <Route exact path="/login" component={Login} />{" "}
           <Route exact path="/dashboard" component={Dashboard} />{" "}
           <Route exact path="/monitor" component={Monitor} />{" "}
-          
+
           <Route exact path="/ac" component={ACControl} />{" "}
           <Route exact path="/register" component={Register} />{" "}
           <Route exact path="/meetingscheduler" component={SchedulerTop} />{" "}
 
-          <Route
-            exact
-            path="/form"
-            render={routeProps => {
-              return (
-                <WebForm
-                  {...routeProps}
-                  showNotification={this.showNotification}
-                  surveyInterval={this.state.surveyInterval}
-                />
-              );
-            }}
-          />{" "}
+          {this.state.surveyInterval &&
+            <Route
+              exact
+              path="/form"
+              render={routeProps => {
+                return (
+                  <WebForm
+                    {...routeProps}
+                    showNotification={this.showNotification}
+                    surveyInterval={this.state.surveyInterval}
+                  />
+                );
+              }}
+            />}
+
         </div>
       </Router>
     );

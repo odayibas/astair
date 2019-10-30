@@ -4,7 +4,7 @@ import axios from "axios";
 import { set as setCookie } from "es-cookie";
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
-import { submit } from '../../services/session/Login/action';
+import { submit } from '../../services/session/Login/actions';
 import { mdiConsoleNetwork } from "@mdi/js";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;

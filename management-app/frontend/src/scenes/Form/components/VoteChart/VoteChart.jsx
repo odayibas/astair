@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { Doughnut } from "react-chartjs-2";
-
 import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
 import { getStyle } from "@coreui/coreui/dist/js/coreui-utilities";
-
-import axios from "axios";
+import { connect } from 'react-redux'
+import { getData } from '../../../../services/session/VoteChart/actions';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
@@ -69,7 +68,16 @@ class VoteChart extends Component {
 
   trigger() {
     const interval = setInterval(() => {
-      this.getData().then(data => {});
+      this.props.onGetData().then(res => {
+        this.setState({
+          cold: res[0],
+          hot: res[1],
+          nice: res[2]
+        });
+        console.log(this.state.cold,this.state.hot,this.state.nice)
+        this.drawVoteChart(res);
+
+      })
     }, 1500);
 
     this.setState(prevState => ({
@@ -111,4 +119,16 @@ class VoteChart extends Component {
   }
 }
 
-export default VoteChart;
+const mapStatetoProps = (state) => {
+  console.log("mapStatetoProps", state)
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchprops = (dispatch) => {
+  return {
+    onGetData: () => dispatch(getData()),
+
+  }
+}
+
+export default connect(mapStatetoProps, mapDispatchprops)(VoteChart);

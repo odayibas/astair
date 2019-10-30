@@ -9,7 +9,7 @@ import VoteChart from "./components/VoteChart/VoteChart";
 import Timeline from "./components/Timeline/Timeline";
 import Survey from "./components/Survey/Survey";
 import { connect } from 'react-redux'
-import { getLastAcRecords, setTemperature, setFan, setMode, setActive, setIsChecked, handleSubmit } from '../../services/session/ACControl/actions';
+import { getData } from '../../services/session/Form/actions';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
@@ -34,15 +34,15 @@ class WebForm extends Component {
       region: 1,
       results: [
         {
+          date_time: "",
           user_id: "",
-          vote: "",
           vote_id: "",
+          vote: "",
           region: "",
-          date_time: ""
         }
       ]
     };
-    this.adminInterval = props.surveyInterval;
+
   }
 
   diff_minutes(dt2, dt1) {
@@ -63,7 +63,7 @@ class WebForm extends Component {
     console.log(
       "New props are",
       newProps.surveyInterval,
-      " OLD ,",
+      " OLD ",
       this.props.surveyInterval
     );
     if (
@@ -137,17 +137,55 @@ class WebForm extends Component {
   // };
 
   componentDidMount() {
-    this.getData(data => {});
+    this.props.onGetData().then(res => {
+      console.log("res",res)
+      if (res.data.length !== 0 && res.data) {
+        var now = new Date();
+        var nowMin = this.diff_minutes(now, baseYear);
+        time = (this.takeVoteId() + 1) * this.adminInterval - nowMin;
+        console.log("Should have been done before");
+
+        this.setState((prevState, props) => ({
+          vote_id: res.data[0].vote_id,
+          results: res.data
+        }));
+
+        if (vote_id && vote_id !== this.state.vote_id) {
+          console.log("vote id", vote_id, "state vote", this.state.vote_id);
+          setCookie("form_notification", "1");
+          console.log("This one?");
+          this.setState({
+            show: true
+          });
+        } else {
+          if (time === 0) this.refresh(true);
+          else this.refresh(false);
+        }
+      } else {
+        console.log("else e girdis")
+        now = new Date();
+        nowMin = this.diff_minutes(now, baseYear);
+        time = (this.takeVoteId() + 1) * this.adminInterval - nowMin;
+
+        this.setState({
+          show: true
+        });
+      }
+    })
     // this.takeVoteId();
+
   }
 
   getVoteResult = lastvote => {
+    console.log("this.state.results before",this.state.results)
     let results = [...this.state.results];
+    results.push(lastvote);
+    console.log("results",results)
 
-    results.splice(0, 0, lastvote);
     this.setState({
       results: results
     });
+    console.log("this.state.results after",this.state.results)
   };
 
   setVoteRegion = (vote, region) => {
@@ -158,6 +196,7 @@ class WebForm extends Component {
   };
 
   setResults(results) {
+    console.log("setResults",results)
     this.setState({
       results: results
     });
@@ -221,9 +260,9 @@ const mapStatetoProps = (state) => {
 
 const mapDispatchprops = (dispatch) => {
   return {
-    onGetLastAcRecords: (currentAC) => dispatch(getLastAcRecords(currentAC)),
+    onGetData: () => dispatch(getData()),
 
   }
 }
 
-export default connect(mapStatetoProps,mapDispatchprops)(WebForm);
+export default connect(mapStatetoProps, mapDispatchprops)(WebForm);

@@ -3,6 +3,9 @@ import axios from "axios";
 import { Button, Card, CardBody, CardHeader, Collapse } from "reactstrap";
 import { get as getCookie } from "es-cookie";
 import { Redirect } from "react-router-dom";
+import { connect } from 'react-redux'
+import { getData } from "../../services/session/Monitor/actions";
+
 class Monitor extends Component {
   constructor(props) {
     super(props);

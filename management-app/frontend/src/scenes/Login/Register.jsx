@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { connect } from 'react-redux'
-import { submit } from '../../services/session/Register/action';
+import { submit } from '../../services/session/Register/actions';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 class Register extends Component {

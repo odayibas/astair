@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Button, Card, CardBody } from "reactstrap";
 import { Form, FormGroup, FormLabel, FormControl } from "react-bootstrap";
-import axios from "axios";
 import { get as getCookie, set as setCookie } from "es-cookie";
+import { connect } from 'react-redux'
+import { postData } from '../../../../services/session/Survey/actions';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 var vote_id, today, hour;
@@ -54,6 +55,17 @@ class Survey extends Component {
     this.setState({ [e.target.id]: e.target.value });
   };
 
+  postData = async () => {
+    var x = {
+      date_time: saveDate(),
+      user_id: getCookie("token"),
+      vote_id: vote_id,
+      vote: this.state.vote,
+      region: this.state.region
+    };
+    this.props.getVoteResult(x);
+    this.props.onPostData(x);
+  };
 
   handleSubmit = event => {
     if (this.state.vote === "" || this.state.region === "") {
@@ -66,7 +78,9 @@ class Survey extends Component {
       this.setVoteRegion(this.state.vote, this.state.region);
       this.setState({ state: this.state });
       this.props.raiseRefresh(false);
+      console.log("data posted")
       this.postData();
+      
     }
     event.preventDefault();
   };
@@ -119,4 +133,16 @@ class Survey extends Component {
   }
 }
 
-export default Survey;
+const mapStatetoProps = (state) => {
+  console.log("mapStatetoProps", state)
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchprops = (dispatch) => {
+  return {
+    onPostData: (vote) => dispatch(postData(vote)),
+
+  }
+}
+
+export default connect(mapStatetoProps, mapDispatchprops)(Survey);
