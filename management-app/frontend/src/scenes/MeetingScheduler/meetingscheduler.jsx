@@ -462,7 +462,18 @@ class MeetingScheduler extends Component {
   };
 
   handleAddRoom = room => {
-    this.props.onAddRoom(room, this.state.rooms)
+    if (this.state.rooms.indexOf(room) !== -1) {
+      this.props.showToast("warning", "The room already exists!")
+      setTimeout(() => {
+        this.props.hideToast()
+      }, 5000);
+    }
+    else {
+      this.props.onAddRoom(room, this.state.rooms)
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+    }
   };
 
   handleDeleteAllMeetings = () => {
@@ -480,14 +491,28 @@ class MeetingScheduler extends Component {
     })
   }
 
-  handleAdminSetSchedule = () => {
-    this.props.onAdminSetSchedule().then(res => {
+  handleAdminSetSchedule = (start, end, slot) => {
+    this.props.onAdminSetSchedule(start, end, slot).then(timeSlot => {
+      this.setState({ timeSlot: timeSlot });
       window.location.reload();
     })
   }
 
   handleDeleteRoom = room => {
-    this.props.onDeleteRoom(room, this.state.rooms)
+    if (this.state.rooms.indexOf(room) === -1) {
+      this.props.showToast("warning", "There is no such room!")
+      setTimeout(() => {
+        this.props.hideToast()
+      }, 5000);
+    }
+    else {
+      this.props.onDeleteRoom(room, this.state.rooms)
+      setTimeout(() => {
+        this.props.onHideToast();
+        window.location.reload();
+
+      }, 5000);
+    }
   };
 
   handleCreateMeeting = room => {

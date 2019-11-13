@@ -206,15 +206,6 @@ export const postMeeting = meeting => {
 
 export const addRoom = (room, rooms) => {
     return (dispatch) => {
-
-        if (rooms.indexOf(room) !== -1) {
-            dispatch(showToast("warning", "The room already exists!"))
-            setTimeout(() => {
-                dispatch(hideToast())
-                console.log("hideToast")
-            }, 5000);
-            return;
-        }
         return axios
             .post(urlServer + "/rooms/add-room", { room: room })
             .then(res => {
@@ -249,14 +240,6 @@ export const addRoom = (room, rooms) => {
 
 export const deleteRoom = (room, rooms) => {
     return (dispatch) => {
-        if (rooms.indexOf(room) === -1) {
-            dispatch(showToast("warning", "There is no such room!"))
-            setTimeout(() => {
-                dispatch(hideToast())
-                console.log("hideToast")
-            }, 5000);
-            return;
-        }
         return axios
             .post(urlServer + "/rooms/delete-room", { room: room })
             .then(res => {
@@ -294,7 +277,7 @@ export const deleteAllMeetings = () => {
             .then(res => {
                 dispatch(
                     { type: "DELETE_ALL_MEETINGS", message: res })
-                console.log("res from actions",res)
+                console.log("res from actions", res)
                 return res
             })
             .catch(err => {
@@ -313,15 +296,12 @@ export const deleteAllMeetings = () => {
 export const adminSetSchedule = (start, end, interval) => {
     return (dispatch) => {
 
-        // console.log("The settings are", start, end, interval);
+        console.log("The settings are", start, end, interval);
         const timeSlot = {
             start: convertStringToTime(start),
             end: convertStringToTime(end),
             interval: convertStringToTime(interval)
         };
-        this.setState({ timeSlot: timeSlot }, () => {
-            // console.log("Settings check ", this.state.timeSlot);
-        });
         console.log("Query", start, end, interval);
         return axios
             .post(urlServer + "/admin/set-slots-only-slots/", {
@@ -333,7 +313,6 @@ export const adminSetSchedule = (start, end, interval) => {
                 dispatch(
                     { type: "ADMIN_SET_SCHEDULE", message: timeSlot })
                 console.log("Settings saved to database successfully.");
-                window.location.reload();
                 return timeSlot
             })
             .catch(err => {
