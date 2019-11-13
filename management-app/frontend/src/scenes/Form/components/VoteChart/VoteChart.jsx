@@ -5,8 +5,6 @@ import { getStyle } from "@coreui/coreui/dist/js/coreui-utilities";
 import { connect } from 'react-redux'
 import { getData } from '../../../../services/session/VoteChart/actions';
 
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
-
 const brandPrimary = getStyle("--primary");
 const brandDanger = getStyle("--danger");
 const brandSuccess = getStyle("--success");

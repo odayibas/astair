@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { Col, Row, Button } from "reactstrap";
 import Icon from "@mdi/react";
 import {
-  mdiThermometerPlus,
-  mdiThermometerMinus,
   mdiPlusCircleOutline,
   mdiMinusCircleOutline
 } from "@mdi/js";

@@ -5,7 +5,6 @@ import { get as getCookie, set as setCookie } from "es-cookie";
 import { connect } from 'react-redux'
 import { postData } from '../../../../services/session/Survey/actions';
 
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 var vote_id, today, hour;
 const baseYear = new Date(Date.UTC(2019, 0, 0, 0, 0, 0));
 

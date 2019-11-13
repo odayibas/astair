@@ -23,6 +23,45 @@
   color: #61dafb;
 }
 
+.toast {
+  align-items: flex-start;
+  border-radius: 4px;
+  color: #ffffff;
+  display: flex;
+  padding: 16px;
+}
+
+.toast:not(:last-child) {
+  margin: 0 0 12px;
+}
+
+.toast__content {
+  flex: 1 1 auto;
+  margin: 0 12px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toast__dismiss {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: block;
+  flex: 0 0 auto;
+  font: inherit;
+  padding: 0;
+}
+
+.toasts {
+  bottom: 24px;
+  position: fixed;
+  right: 24px;
+  width: 240px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import MeetingScheduler from "../../meetingscheduler";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Container } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
-import { maxHeight } from "@material-ui/system";
 import { get as getCookie } from "es-cookie";
 import Toast from "../../toast";
 

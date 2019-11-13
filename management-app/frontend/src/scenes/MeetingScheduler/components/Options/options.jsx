@@ -4,8 +4,6 @@ import {
   Row,
   Col,
   ButtonToolbar,
-  ToggleButtonGroup,
-  ToggleButton,
   ButtonGroup,
   Button
 } from "react-bootstrap";

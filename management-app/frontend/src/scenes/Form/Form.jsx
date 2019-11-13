@@ -11,8 +11,6 @@ import Survey from "./components/Survey/Survey";
 import { connect } from 'react-redux'
 import { getData } from '../../services/session/Form/actions';
 
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
-
 var vote_id, time;
 const baseYear = new Date(Date.UTC(2019, 0, 0, 0, 0, 0));
 

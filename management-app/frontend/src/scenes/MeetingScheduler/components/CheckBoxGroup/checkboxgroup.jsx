@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Checkbox from "@material-ui/core/Checkbox";
-import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import update from "immutability-helper";
 import { Container, Row, Col } from "react-bootstrap";

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-
-import { Card, CardTitle, CardBody, Col, Progress, Row } from "reactstrap";
+import { Card, CardTitle, CardBody, Col, Row } from "reactstrap";
 import Cloud from "@material-ui/icons/Cloud";
 import Office from "@material-ui/icons/BusinessCenter";
 import PieChart from "../PieChart/PieChart";

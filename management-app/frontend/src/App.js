@@ -10,6 +10,9 @@ import ACControl from "./scenes/ACControl/ACControl";
 import Register from "./scenes/Login/Register";
 import SchedulerTop from "./scenes/MeetingScheduler/components/SchedulerTop/schedulertop";
 import axios from "axios";
+import Toast from "./components/Toast/toast";
+import { showToast, hideToast } from "./services/session/Toast/actions";
+import { connect } from 'react-redux'
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
@@ -33,8 +36,8 @@ class App extends Component {
       .then(res => {
         let currentSettings = res.data[res.data.length - 1];
         const adminInterval = parseInt(currentSettings.surveyInterval, 10);
-        console.log("get slots from app.js", res)
-        console.log("get slots from app.js", currentSettings.surveyInterval)
+        //console.log("get slots from app.js", res)
+        //console.log("get slots from app.js", currentSettings.surveyInterval)
         this.setState({ surveyInterval: adminInterval }, () => { });
         // this.state.surveyInterval = adminInterval;
         // console.log(this.state.surveyInterval, " NEW INTERVAL FROM DB");
@@ -45,6 +48,10 @@ class App extends Component {
   render() {
     return (
       <Router>
+        <Toast message={this.props.data .toastMessage}
+          level={this.props.data.toastLevel}
+          visible={this.props.data.showToast}>
+        </Toast>
         <div className="App">
           <Navbar showBadge={this.state.showBadge} />
           <Route exact path="/" component={Landing} />{" "}
@@ -77,4 +84,18 @@ class App extends Component {
   }
 }
 
-export default App;
+
+const mapStatetoProps = (state) => {
+  console.log("mapStatetoProps", state)
+  return { data: state.toastReducer, error: state.error }
+}
+
+const mapDispatchprops = (dispatch) => {
+  return {
+    onShowToast: (level, message) => dispatch(showToast(level, message)),
+    onHideToast: () => dispatch(hideToast())
+  }
+}
+
+// burayı redux a bağla 2 fonksiyonu yaz , daha sonra uygulamanın neresinden çağırırsan buradaki visible değişecek.
+export default connect(mapStatetoProps, mapDispatchprops)(App);

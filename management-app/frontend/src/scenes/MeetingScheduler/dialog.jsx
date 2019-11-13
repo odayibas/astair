@@ -1,16 +1,14 @@
 import React, { Component } from "react";
+import { showToast, hideToast } from "../../services/session/Toast/actions";
+import { connect } from 'react-redux'
 import {
   Modal,
   Button,
-  InputGroup,
-  FormControl,
   Row,
   Col,
   Container,
   Form,
-  Table,
   Dropdown,
-  Toast
 } from "react-bootstrap";
 
 import ParticipantTable from "./components/Participants/participants";
@@ -73,6 +71,7 @@ class Dialog extends Component {
           onClick={() => {
             console.log("Selected", room);
             this.roomSelected = true;
+            console.log("room from dialog",room)
             this.setState({ currentRoom: room }, () => {
               console.log("Room has been changed", this.state.currentRoom);
             });
@@ -100,7 +99,10 @@ class Dialog extends Component {
 
   handleCreateClick = () => {
     if (this.roomSelected === false) {
-      this.props.showToast("danger", "Please select a room.");
+      this.props.onShowToast("danger", "Please select a room.");
+      setTimeout(() => {
+        this.props.onHideToast()
+      }, 5000);
       console.log("[ERROR], Select a room.");
     } else {
       this.props.cancelCreating();
@@ -205,4 +207,16 @@ class Dialog extends Component {
   }
 }
 
-export default Dialog;
+const mapStatetoProps = (state) => {
+  console.log("mapStatetoProps", state)
+  return { data: state.toastReducer, error: state.error }
+}
+
+const mapDispatchprops = (dispatch) => {
+  return {
+    onShowToast: (level, message) => dispatch(showToast(level, message)),
+    onHideToast: () => dispatch(hideToast())
+  }
+}
+
+export default connect(mapStatetoProps, mapDispatchprops)(Dialog);

@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Table, Button, Col, Row } from "react-bootstrap";
 import update from "immutability-helper";
-import { fontSize } from "@material-ui/system";
 import { Container } from "@material-ui/core";
-import { UncontrolledPopover, PopoverHeader, PopoverBody } from "reactstrap";
 
 class Schedule extends Component {
   prevLoc = { x: -1, y: -1 };
@@ -348,6 +346,7 @@ class Schedule extends Component {
   isWithin = (first, second) => {
     let diff =
       second.hours * 60 + second.minutes - (first.hours * 60 + first.minutes);
+      console.log("schedule.jsx",this.props)
     let interval =
       this.props.timeSlot.interval.hours * 60 +
       this.props.timeSlot.interval.minutes;

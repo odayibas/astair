@@ -6,24 +6,20 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import { get as getCookie } from "es-cookie";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import SurveyInterval from "../../components/surveyinterval";
 import ACzone from "../Dashboard/images/ac_zone.png";
 import Temperature from "./components/Temperature/Temperature";
 import Mode from "./components/Mode/Mode";
 import Fan from "./components/Fan/Fan";
 import { Container } from "@material-ui/core";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { getLastAcRecords, setTemperature, setFan, setMode, setActive, setIsChecked, handleSubmit } from '../../services/session/ACControl/actions';
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
-const urlArr = Array.from(
-  Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
-).map(x => (x + 1).toString());
 
 
 const mapStatetoProps = (state) => {
   console.log("mapStatetoProps", state)
-  return { data: state.data, error: state.error }
+  return { data: state.acControlReducer.data, error: state.acControlReducer.error }
 }
 
 const mapDispatchprops = (dispatch) => {
@@ -47,6 +43,8 @@ class ACControl extends Component {
 
   componentDidMount() {
     this.props.onGetLastAcRecords(this.state.currentAC)
+    console.log(this.props)
+
   }
 
   //set the changes of fanspeed px  age 
@@ -71,6 +69,7 @@ class ACControl extends Component {
   };
 
   handleChange = () => {
+    console.log("this.props.data",this.props)
     const newVal = !this.props.data.isChecked;
 
     if (newVal === true) {
@@ -162,6 +161,7 @@ class ACControl extends Component {
   };
 
   render() {
+    console.log("this.props from render",this.props)
     if (getCookie("usertoken") === "1" || getCookie("usertoken") === "3") {
       return (
         <div

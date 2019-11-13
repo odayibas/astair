@@ -23,6 +23,7 @@ export const getLastAcRecords = (currentAC) => {
                     active: active,
                     isChecked: b
                 };
+                console.log("acdata",acData)
                 dispatch(
                     { type: "GET_LAST_AC_RECORDS", data: acData })
             })

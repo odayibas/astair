@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { Col } from "reactstrap";
 import { get as getCookie } from "es-cookie";
 import { Redirect } from "react-router-dom";
@@ -138,7 +137,6 @@ class Dashboard extends Component {
 
   render() {
 
-    const { classes } = this.props
     if (
       getCookie("usertoken") === "1" ||
       getCookie("usertoken") === "2" ||

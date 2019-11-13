@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import { CardHeader } from "reactstrap";
-import { Container, Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
 import Icon from "@mdi/react";
 import { mdiFan } from "@mdi/js";
-import { maxWidth } from "@material-ui/system";
 
 class Fan extends Component {
   constructor(props) {

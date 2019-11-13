@@ -3,10 +3,6 @@ import ApexCharts from 'apexcharts';
 import * as PieChartActions from '../../../../services/session/PieChart/actions';
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
-const urlArr = Array.from(
-  Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
-).map(x => (x + 1).toString());
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
 var pieChart;
 

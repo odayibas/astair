@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux'
+import { showToast, hideToast } from "../../../../services/session/Toast/actions";
 import {
   Container,
   Row,
@@ -18,7 +20,10 @@ class AdminPanel extends Component {
 
   handleAddDeleteClick = act => {
     if (this.roomInput.value === "") {
-      this.props.showToast("warning", "Please specify a room name!");
+      this.props.onShowToast("warning", "Please specify a room name!")
+      setTimeout(() => {
+        this.props.onHideToast()
+      }, 5000);
       return;
     }
     if (act === 1) {
@@ -43,32 +48,50 @@ class AdminPanel extends Component {
 
   handleSetScheduleClick = () => {
     if (this.startInput.value === "") {
-      this.props.showToast("warning", "Please specify the start time");
+      this.props.onShowToast("warning", "Please specify the start time")
+      setTimeout(() => {
+        this.props.onHideToast()
+      }, 5000);
     } else if (this.endInput.value === "") {
-      this.props.showToast("warning", "Please specify the end time!");
+      this.props.onShowToast("warning", "Please specify the end time!")
+      setTimeout(() => {
+        this.props.onHideToast()
+      }, 5000);
     } else if (this.slotInput.value === "") {
-      this.props.showToast("warning", "Please specify the slot duration!");
+      this.props.onShowToast("warning", "Please specify the slot duration!")
+      setTimeout(() => {
+        this.props.onHideToast()
+      }, 5000);
     } else if (
       this.validateTime(this.startInput.value) === false ||
       this.validateTime(this.endInput.value === false) ||
       this.validateTime(this.slotInput.value === false)
     ) {
-      this.props.showToast("danger", "Wrong time format!");
+      this.props.onShowToast("danger", "Wrong time format!")
+      setTimeout(() => {
+        this.props.onHideToast()
+      }, 5000);
     } else if (this.startInput.value >= this.endInput.value) {
-      this.props.showToast(
+      this.props.onShowToast(
         "danger",
         "End time cannot be bigger than start time."
-      );
+      )
+      setTimeout(() => {
+        this.props.onHideToast()
+      }, 5000);
     } else {
       this.props.onAdminSetSchedule(
         this.startInput.value,
         this.endInput.value,
         this.slotInput.value
       );
-      this.props.showToast(
+      this.props.onShowToast(
         "success",
         "Schedule settings are saved successfully."
-      );
+      )
+      setTimeout(() => {
+        this.props.onHideToast()
+      }, 5000);
     }
   };
 
@@ -218,4 +241,16 @@ class AdminPanel extends Component {
   }
 }
 
-export default AdminPanel;
+const mapStatetoProps = (state) => {
+  console.log("mapStatetoProps", state)
+  return { data: state.toastReducer, error: state.error }
+}
+
+const mapDispatchprops = (dispatch) => {
+  return {
+    onShowToast: (level, message) => dispatch(showToast(level, message)),
+    onHideToast: () => dispatch(hideToast())
+  }
+}
+
+export default connect(mapStatetoProps, mapDispatchprops)(AdminPanel);

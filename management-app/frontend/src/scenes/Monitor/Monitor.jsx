@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { Button, Card, CardBody, CardHeader, Collapse } from "reactstrap";
 import { get as getCookie } from "es-cookie";
 import { Redirect } from "react-router-dom";

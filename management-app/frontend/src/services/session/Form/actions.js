@@ -1,5 +1,5 @@
 import axios from "axios";
-import { get as getCookie, set as setCookie } from "es-cookie";
+import { get as getCookie } from "es-cookie";
 
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 

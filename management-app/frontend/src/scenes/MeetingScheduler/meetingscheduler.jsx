@@ -1,16 +1,14 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import Schedule from "./components/Schedule/schedule";
-import { Row, Col, Container, Button } from "react-bootstrap";
-import update from "immutability-helper";
+import { Row, Col, Container } from "react-bootstrap";
 import ButtonPanel from "./components/SidePanel/sidePanel";
 import Dialog from "./dialog";
-import axios from "axios";
-import { get as getCookie, set as setCookie } from "es-cookie";
+import { get as getCookie } from "es-cookie";
 import AdminPanel from "./components/AdminPanel/adminpanel";
-import { resolve } from "dns";
-
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
+import { connect } from 'react-redux'
+import { getTimeSlotFromDatabase, fetchRooms, fetchParticipants, fetchMeetings, getAvailableRooms, postMeeting, addRoom, deleteRoom, deleteAllMeetings, adminSetSchedule } from '../../services/session/MeetingScheduler/actions';
+import { convertStringToDate, convertStringToTime, convertTimeToString, convertDateToString } from "../../components/dateTimeConverter";
+import { showToast, hideToast } from "../../services/session/Toast/actions";
 
 class MeetingScheduler extends Component {
   numberOfRows = 0;
@@ -58,49 +56,38 @@ class MeetingScheduler extends Component {
     super(props);
   }
 
-
-
-
-
-
-
   componentDidMount() {
-    this.getTimeSlotFromDatabase();
+    this.props.onGetTimeSlotFromDatabase().then(data => {
+      const start = convertStringToTime(data.beginSlot);
+      const end = convertStringToTime(data.finishSlot);
+      const interval = convertStringToTime(data.durationSlot);
+      console.log("", start, end, interval)
+      this.setState({
+        timeSlot:
+        {
+          start, end, interval
+        }
+      });
+    })
+
+
+    const s = new Set();
+    this.setState({ roomset: s });
+    this.props.onFetchRooms().then(rooms => {
+      this.setState({ rooms: rooms });
+    })
+
+    this.getMeetingsFromDatabase();
+    this.props.onFetchParticipants().then(list => {
+      this.allParticipants = list;
+    })
+
+
+
+
   }
 
-  convertTimeToString = t => {
-    var hours = "";
-    var minutes = "";
-    if (t.hours < 10) {
-      hours += "0";
-    }
-    hours += t.hours;
-    if (t.minutes < 10) {
-      minutes += "0";
-    }
-    minutes += t.minutes;
-    return hours + ":" + minutes;
-  };
 
-  convertDateToString = (d, priority = "day") => {
-    let years = "";
-    let days = "";
-    let months = "";
-    if (d.month < 10) {
-      months += "0";
-    }
-    months += d.month;
-    if (d.day < 10) {
-      days += "0";
-    }
-    days += d.day;
-    years += d.year;
-    if (priority === "day") {
-      return days + "." + months + "." + years;
-    } else if (priority === "year") {
-      return years + "." + months + "." + days;
-    }
-  };
 
   componentWillMount = () => {
     const today = new Date();
@@ -163,11 +150,14 @@ class MeetingScheduler extends Component {
   getMeetingsFromDatabase = (callback = undefined) => {
     let thisWeek = this.getWeek();
     // console.log("The week is", thisWeek);
-    this.fetchMeetings(
-      this.convertDateToString(thisWeek[0], "year"),
-      this.convertDateToString(thisWeek[4], "year"),
+    this.props.onFetchMeetings(
+      convertDateToString(thisWeek[0], "year"),
+      convertDateToString(thisWeek[4], "year"),
       callback
-    );
+    ).then(data => {
+      this.processData(data, callback);
+
+    })
   };
 
   constructScheduleFromMeetings = (meetings, selected) => {
@@ -247,9 +237,9 @@ class MeetingScheduler extends Component {
       const participants = element.participants;
       const username = element.username;
       const description = element.description;
-      const date = this.convertStringToDate(element.date, "year");
-      const start = this.convertStringToTime(element.startTime);
-      const end = this.convertStringToTime(element.endTime);
+      const date = convertStringToDate(element.date, "year");
+      const start = convertStringToTime(element.startTime);
+      const end = convertStringToTime(element.endTime);
       const room = element.room;
       meetingArray.push({
         id: i,
@@ -266,27 +256,7 @@ class MeetingScheduler extends Component {
     return meetingArray;
   };
 
-  convertStringToDate = (str, priority = "day") => {
-    const temp = str.split(".");
-    if (priority === "year") {
-      const year = parseInt(temp[0], 10);
-      const month = parseInt(temp[1], 10);
-      const day = parseInt(temp[2], 10);
-      return { year, month, day };
-    } else if (priority === "day") {
-      const year = parseInt(temp[2], 10);
-      const month = parseInt(temp[1], 10);
-      const day = parseInt(temp[0], 10);
-      return { year, month, day };
-    }
-  };
 
-  convertStringToTime = str => {
-    const temp = str.split(":");
-    const hours = parseInt(temp[0], 10);
-    const minutes = parseInt(temp[1], 10);
-    return { hours, minutes };
-  };
 
   getCheckedCount = count => {
     this.checkedCount = count;
@@ -297,8 +267,20 @@ class MeetingScheduler extends Component {
     // console.log("Meeting Start:", start);
     // console.log("Meeting End:", end);
     // if (this.state.roomset.size === 0) {
+    console.log("date", convertDateToString(date, "year"))
+    console.log(date)
+    let convertedDate = convertDateToString(date, "year");
+    let convertedStart = convertTimeToString(start);
+    let convertedEnd = convertTimeToString(end);
     if (this.checkedCount === 0) {
-      this.getAvailableRooms(date, start, end);
+      this.props.onGetAvailableRooms(convertedDate, convertedStart, convertedEnd, this.state.rooms).then(newSet => {
+        console.log("newSet", newSet)
+        this.setState({ roomset: newSet }, () => {
+          // Show Dialog
+          // console.log("Current roomset", this.state.roomset);
+          this.setShowDialog(true);
+        });
+      })
     }
     const room = this.state.rooms[this.state.roomset.values().next().value];
     const summary = { date, start, end, room };
@@ -416,7 +398,7 @@ class MeetingScheduler extends Component {
       participants: meeting.participants,
       username: meeting.username
     };
-    this.setState({ summary: summary }, () => {});
+    this.setState({ summary: summary }, () => { });
     console.log("Meeting displayed", summary);
     this.handleSummary("show");
   };
@@ -479,6 +461,35 @@ class MeetingScheduler extends Component {
     }
   };
 
+  handleAddRoom = room => {
+    this.props.onAddRoom(room, this.state.rooms)
+  };
+
+  handleDeleteAllMeetings = () => {
+    this.props.onDeleteAllMeetings().then(res => {
+      this.props.onShowToast(
+        "success",
+        "All the meetings have been deleted successfully."
+      )
+      setTimeout(() => {
+        this.props.onHideToast();
+        window.location.reload();
+
+      }, 5000);
+
+    })
+  }
+
+  handleAdminSetSchedule = () => {
+    this.props.onAdminSetSchedule().then(res => {
+      window.location.reload();
+    })
+  }
+
+  handleDeleteRoom = room => {
+    this.props.onDeleteRoom(room, this.state.rooms)
+  };
+
   handleCreateMeeting = room => {
     // this.postMeeting(this.state.summary);
     //this.setShowDialog(true);
@@ -496,7 +507,10 @@ class MeetingScheduler extends Component {
       username: "From frontend",
       description: this.description
     };
-    this.postMeeting(dataPosted);
+    this.props.onPostMeeting(dataPosted).then(res => {
+      this.getMeetingsFromDatabase();
+
+    });
   };
 
   setShowDialog = b => {
@@ -507,19 +521,11 @@ class MeetingScheduler extends Component {
     this.selectedParticipants = new Set(participants);
   };
 
-
-
-
-
-
-  
-
   getAdminPanel = () => {
     if (getCookie("usertoken") === "1") {
       return (
         <AdminPanel
           deleteAllMeetings={this.handleDeleteAllMeetings}
-          showToast={this.props.showToast}
           onAdminSetSchedule={this.handleAdminSetSchedule}
           onAddRoom={this.handleAddRoom}
           onDeleteRoom={this.handleDeleteRoom}
@@ -589,4 +595,26 @@ class MeetingScheduler extends Component {
   }
 }
 
-export default MeetingScheduler;
+const mapStatetoProps = (state) => {
+  console.log("mapStatetoProps", state)
+  return { data: state.data, error: state.error }
+}
+
+const mapDispatchprops = (dispatch) => {
+  return {
+    onGetTimeSlotFromDatabase: () => dispatch(getTimeSlotFromDatabase()),
+    onFetchParticipants: () => dispatch(fetchParticipants()),
+    onFetchRooms: () => dispatch(fetchRooms()),
+    onFetchMeetings: (startDate, endDate, callback) => dispatch(fetchMeetings(startDate, endDate, callback)),
+    onGetAvailableRooms: (date, startTime, endTime, rooms) => dispatch(getAvailableRooms(date, startTime, endTime, rooms)),
+    onPostMeeting: (dataPosted) => dispatch(postMeeting(dataPosted)),
+    onAddRoom: (room, rooms) => dispatch(addRoom(room, rooms)),
+    onDeleteRoom: (room, rooms) => dispatch(deleteRoom(room, rooms)),
+    onDeleteAllMeetings: () => dispatch(deleteAllMeetings()),
+    onAdminSetSchedule: (start, end, interval) => dispatch(adminSetSchedule(start, end, interval)),
+    onShowToast: (level, message) => dispatch(showToast(level, message)),
+    onHideToast: () => dispatch(hideToast()),
+  }
+}
+
+export default connect(mapStatetoProps, mapDispatchprops)(MeetingScheduler);

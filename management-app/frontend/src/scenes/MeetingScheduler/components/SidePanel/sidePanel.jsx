@@ -1,16 +1,9 @@
 import React, { Component } from "react";
-import { Container, Col, Row, Button } from "react-bootstrap";
-import DropdownMenu from "../DropDownMenu/dropdownMenu";
+import { Container } from "react-bootstrap";
 import CheckBoxGroup from "../CheckBoxGroup/checkboxgroup";
-import color from "@material-ui/core/colors/brown";
-import { maxWidth, maxHeight, height } from "@material-ui/system";
 import SummaryPanel from "../SummaryPanel/summarypanel";
 import Options from "../Options/options";
 
-import axios from "axios";
-import Toast from "../../toast";
-
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
 class ButtonPanel extends Component {
   state = {};

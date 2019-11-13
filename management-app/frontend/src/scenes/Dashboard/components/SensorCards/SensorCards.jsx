@@ -10,7 +10,6 @@ const brandPrimary = getStyle("--primary");
 const urlArr = Array.from(
   Array(parseInt(process.env.REACT_APP_LENGTH)).keys()
 ).map(x => (x + 1).toString());
-const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
 let orange = "rgba(214, 69, 65, 1)";
 let red = "rgba(252, 214, 112, 1)";
@@ -89,15 +88,14 @@ function interpolateColor(color1, color2, factor) {
   for (let i = 0; i < 3; i++) {
     result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
     color += result[i];
-    color += i != 2 ? "," : "";
+    color += i !== 2 ? "," : "";
   }
   color += ")";
   return color;
 }
 
 function interpolateColors(color1, color2, steps) {
-  var stepFactor = 1 / ((steps.length == 1 ? 2 : steps.length) - 1),
-    interpolatedColorArray = [];
+  var stepFactor = 1 / ((steps.length === 1 ? 2 : steps.length) - 1);
 
   let newArr = [];
 

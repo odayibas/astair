@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { get as getCookie, remove as removeCookie } from "es-cookie";
 import { Badge } from "react-bootstrap";
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import NavDropdown from "react-bootstrap/NavDropdown";
 
 class AppNavbar extends Component {
   logout(e) {

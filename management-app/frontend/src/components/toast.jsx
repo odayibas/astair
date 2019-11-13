@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 
 class Toast extends React.Component {
   constructor(props) {

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { maxWidth } from "@material-ui/system";
-import { min } from "moment";
 
 class SummaryPanel extends Component {
   state = {};
