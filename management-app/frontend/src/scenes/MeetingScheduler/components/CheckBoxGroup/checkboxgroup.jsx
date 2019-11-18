@@ -76,7 +76,6 @@ class CheckBoxGroup extends Component {
       this.checkedCount = 1;
       let it = this.checkedButtons.values();
       it = it.next();
-      // console.log("Close ", it.value);
       let up = update(this.state.items, {
         [it.value]: {
           checked: {
@@ -85,7 +84,6 @@ class CheckBoxGroup extends Component {
         }
       });
       this.setState({ items: up }, () => {
-        // console.log("Final items", this.state.items);
         let newStatus = update(this.state.items, {
           [id]: {
             checked: {

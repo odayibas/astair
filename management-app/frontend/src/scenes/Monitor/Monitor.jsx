@@ -42,7 +42,6 @@ class Monitor extends Component {
 
 
   componentDidMount() {
-    console.log("monitor")
     this.props.onGetData().then(data => {
       this.setState({
         temp: data.temp,
@@ -66,7 +65,6 @@ class Monitor extends Component {
   }
 
   mouseEnter = i => {
-    console.log("mouse enter");
     let newArr = [];
     newArr = this.state.border;
     newArr[i] = "4px dashed #20a8d8";
@@ -74,31 +72,11 @@ class Monitor extends Component {
   };
 
   mouseLeave = i => {
-    console.log("mouse leave");
     let newArr = [];
     newArr = this.state.border;
     newArr[i] = "4px dashed transparent";
     this.setState({ border: newArr });
   };
-
-  /* getRegion(){
-  return(
-    acArr.map((ac, i) => (
-        <Col style={{margin: 20, marginTop : "-20px"}}>
-          <Card>
-            <CardBody className="pb-0">
-                <div> <h3 style = {{textAlign : 'center'}}> <AC/> REGION {i+1} AC INFO </h3></div>
-                <div><h4 style = {{textAlign : 'center'}}>Degree: {this.props.ac[i].ac_degree} °C</h4> </div>
-                <div><h4 style = {{textAlign : 'center'}}> Mode:{this.props.ac[i].ac_mode}  </h4> </div>
-                <div><h4 style = {{textAlign : 'center'}}> Fan Speed:{this.props.ac[i].ac_fan_speed}  </h4> </div>
-                {this.OnOff(this.props.ac[i].active)}
-            </CardBody> 
-            <div className="chart-wrapper mx-3" style={{ height: '40px' }}>
-            </div>
-          </Card>
-       </Col>
-)))
-} */
 
   render() {
     if (getCookie("usertoken") === "1" || getCookie("usertoken") === "2") {
@@ -153,51 +131,10 @@ class Monitor extends Component {
               </Card>
             </div>
           </div>
-          {/*       <div style={{ padding: 40 }}>
-          <center>
-            <h4 className="m-0 p-0">
-              {" "}
-              Click your region on the plan or click the button of your region
-              to view A/C controller !{" "}
-            </h4>
-          </center>
-        </div> */}
           <center>
             <div className="monitor">
               <img height={1000} src="/assets/klima_konum.png" alt={"logo"} />
             </div>
-            {/* <Row>
-            <Col
-              className="text-dark bg-transparent"
-              style={{ paddingBottom: "300px", border: this.state.border[0] }}
-              onMouseEnter={this.mouseEnter(0)}
-              onMouseLeave={this.mouseLeave(0)}
-              onClick={() => this.openModal(0)}
-            />
-            <Col
-              className="text-dark bg-transparent"
-              style={{ paddingBottom: "300px", border: this.state.border[1] }}
-              onMouseEnter={this.mouseEnter(1)}
-              onMouseLeave={this.mouseLeave(1)}
-              onClick={() => this.openModal(1)}
-            />
-          </Row>
-          <Row>
-            <Col
-              className="text-dark  bg-transparent"
-              style={{ paddingTop: "300px", border: this.state.border[2] }}
-              onMouseEnter={this.mouseEnter(2)}
-              onMouseLeave={this.mouseLeave(2)}
-              onClick={() => this.openModal(2)}
-            />
-            <Col
-              className="text-dark bg-transparent"
-              style={{ paddingTop: "300px", border: this.state.border[3] }}
-              onMouseEnter={this.mouseEnter(3)}
-              onMouseLeave={this.mouseLeave(3)}
-              onClick={() => this.openModal(3)}
-            />
-          </Row> */}
           </center>
         </div>
       );

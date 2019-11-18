@@ -18,7 +18,6 @@ const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
 
 const mapStatetoProps = (state) => {
-  console.log("mapStatetoProps", state)
   return { data: state.acControlReducer.data, error: state.acControlReducer.error }
 }
 
@@ -43,7 +42,6 @@ class ACControl extends Component {
 
   componentDidMount() {
     this.props.onGetLastAcRecords(this.state.currentAC)
-    console.log(this.props)
 
   }
 
@@ -69,7 +67,6 @@ class ACControl extends Component {
   };
 
   handleChange = () => {
-    console.log("this.props.data",this.props)
     const newVal = !this.props.data.isChecked;
 
     if (newVal === true) {
@@ -99,25 +96,21 @@ class ACControl extends Component {
         "," +
         this.props.data.active
       );
-      console.log("The message is ", message1);
       this.props.onHandleSubmit(message1);
     }
     else alert("Please fill all fields to proceed");
   };
 
   setAdminInterval = intervalTime => {
-    //return axios
     return axios
       .get(urlServer + "/meeting/get-slots/")
       .then(res => {
-        // console.log("WTF", res.data[res.data.length - 1]);
         let curSettings = res.data[res.data.length - 1];
         curSettings.surveyInterval =
           intervalTime.hours * 60 + intervalTime.minutes + "";
         axios
           .post(urlServer + "/admin/set-slots/", curSettings)
           .then(res => {
-            console.log("Inserted successfully");
           })
           .catch(err => {
             console.log("ERR WHILE INSERTING SETTINGS");
@@ -150,7 +143,6 @@ class ACControl extends Component {
       <ToggleButton
         variant="dark"
         onMouseDown={() => {
-          console.log("i", i)
           this.setState({ currentAC: i }, () => this.props.onGetLastAcRecords(this.state.currentAC));
         }}
         value={i}
@@ -161,7 +153,6 @@ class ACControl extends Component {
   };
 
   render() {
-    console.log("this.props from render",this.props)
     if (getCookie("usertoken") === "1" || getCookie("usertoken") === "3") {
       return (
         <div
@@ -207,11 +198,6 @@ class ACControl extends Component {
                     </div>
                   </Col>
                 </Row>
-                {/* <Row style={{ marginTop: 10 }}>
-                  <Col xs={12} style={{ textAlign: "center" }}>
-                    <span style={{ fontSize: "1.25em" }}>Temperature</span>
-                  </Col>
-                </Row> */}
                 <Row style={{ marginTop: 30 }}>
                   <Col xs={12} style={{ textAlign: "center" }}>
                     <Temperature
@@ -220,11 +206,6 @@ class ACControl extends Component {
 
                   </Col>
                 </Row>
-                {/* <Row style={{ marginTop: 10 }}>
-                  <Col xs={12} style={{ textAlign: "center" }}>
-                    <span style={{ fontSize: "1.25em" }}>Fan Speed</span>
-                  </Col>
-                </Row> */}
                 <Row style={{ marginTop: 30 }}>
                   <Col xs={12} style={{ textAlign: "center" }}>
                     <Fan
@@ -233,11 +214,6 @@ class ACControl extends Component {
                     />
                   </Col>
                 </Row>
-                {/* <Row style={{ marginTop: 10 }}>
-                  <Col xs={12} style={{ textAlign: "center" }}>
-                    <span style={{ fontSize: "1.25em" }}>Mode</span>
-                  </Col>
-                </Row> */}
                 <Row style={{ marginTop: 30 }}>
                   <Col xs={12} style={{ textAlign: "center" }}>
                     <Mode

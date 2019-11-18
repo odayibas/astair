@@ -1,9 +1,7 @@
 import axios from 'axios';
-import { convertStringToDate, convertStringToTime, convertTimeToString, convertDateToString } from "../../../components/dateTimeConverter";
-import Toast from "../../../components/Toast/toast";
+import { convertStringToTime, convertTimeToString, convertDateToString } from "../../../components/dateTimeConverter";
 import { showToast, hideToast } from "../Toast/actions";
 
-// asynchronous action creator
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
 export const getTimeSlotFromDatabase = () => {
@@ -32,7 +30,6 @@ export const fetchParticipants = () => {
                 res.data.forEach(element => {
                     list.push(element.username);
                 });
-                //this.allParticipants = list;
                 dispatch(
                     { type: "GET_TIME_SLOTS_FROM_DATABASE", message: list })
                 return list
@@ -41,7 +38,6 @@ export const fetchParticipants = () => {
                 dispatch(showToast("danger", "Participants could not be loaded."))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
             });
     }
@@ -66,14 +62,12 @@ export const fetchRooms = () => {
                 dispatch(showToast("danger", "Rooms could not be loaded."))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
             });
     }
 };
 
 export const fetchMeetings = (startDate, endDate, callback = undefined) => {
-    // console.log("Data fetching from database...");
     return (dispatch) => {
 
         return axios
@@ -81,12 +75,6 @@ export const fetchMeetings = (startDate, endDate, callback = undefined) => {
                 urlServer + "/meeting/get-meeting-a-range/" + startDate + "/" + endDate
             )
             .then(res => {
-                console.log("Data fetched successfuly ", res.data);
-                //dispatch(showToast("danger", "Unable to fetch meetings."))
-                // setTimeout(() => {
-                //     dispatch(hideToast())
-                //     console.log("hideToast")
-                // }, 5000);
                 dispatch(
                     { type: "FETCH_MEETINGS", message: res.data })
                 return res.data
@@ -99,17 +87,10 @@ export const fetchMeetings = (startDate, endDate, callback = undefined) => {
 
 export const getAvailableRooms = (date, startTime, endTime, rooms) => {
     return (dispatch) => {
-
-        console.log("The query is ", date, startTime, endTime, rooms);
-        // let thisWeek = this.getWeek();
-        // const startDate = this.convertDateToString(thisWeek[0], "year");
-        // const endDate = this.convertDateToString(thisWeek[4], "year");
-
         return axios
             .get(
                 urlServer + "/meeting/find-spare-room/" + date + "/" + startTime + "/" + endTime)
             .then(res => {
-                console.log("res", rooms)
                 const newSet = new Set([]);
                 if (res.data.length === 0) {
                     dispatch(showToast(
@@ -118,7 +99,6 @@ export const getAvailableRooms = (date, startTime, endTime, rooms) => {
                     ))
                     setTimeout(() => {
                         dispatch(hideToast())
-                        console.log("hideToast")
                     }, 5000);
                     return;
                 } else {
@@ -128,16 +108,10 @@ export const getAvailableRooms = (date, startTime, endTime, rooms) => {
                             newSet.add(i);
                         }
                     });
-                    // this.setState({ roomset: newSet }, () => {
-                    //     // Show Dialog
-                    //     // console.log("Current roomset", this.state.roomset);
-                    //     this.setShowDialog(true);
-                    // });
                 }
 
                 dispatch(
                     { type: "GET_TIME_SLOTS_FROM_DATABASE", message: newSet })
-                console.log("newSet", newSet)
                 return newSet
             })
             .catch(err => {
@@ -145,7 +119,6 @@ export const getAvailableRooms = (date, startTime, endTime, rooms) => {
                 dispatch(showToast("danger", "Unable to access to server."))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
             });
     }
@@ -173,14 +146,12 @@ export const postMeeting = meeting => {
                 participants
             })
             .then(res => {
-                console.log("Inserted successfuly");
                 dispatch(showToast(
                     "success",
                     "The meeting has been set successfully."
                 ))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
                 // UPDATE SCHEDULE
                 //this.getMeetingsFromDatabase();
@@ -197,7 +168,6 @@ export const postMeeting = meeting => {
                 ))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
                 return;
             });
@@ -216,7 +186,6 @@ export const addRoom = (room, rooms) => {
                 ))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
 
 
@@ -232,7 +201,6 @@ export const addRoom = (room, rooms) => {
                 ))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
             });
     }
@@ -252,7 +220,6 @@ export const deleteRoom = (room, rooms) => {
                 ))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
                 return res
             })
@@ -263,7 +230,6 @@ export const deleteRoom = (room, rooms) => {
                 ))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
             });
     }
@@ -271,13 +237,11 @@ export const deleteRoom = (room, rooms) => {
 
 export const deleteAllMeetings = () => {
     return (dispatch) => {
-        console.log("Delete All meetings");
         return axios
             .get(urlServer + "/meeting/remove-all-meeting")
             .then(res => {
                 dispatch(
                     { type: "DELETE_ALL_MEETINGS", message: res })
-                console.log("res from actions", res)
                 return res
             })
             .catch(err => {
@@ -287,7 +251,6 @@ export const deleteAllMeetings = () => {
                 ))
                 setTimeout(() => {
                     dispatch(hideToast())
-                    console.log("hideToast")
                 }, 5000);
             });
     }
@@ -296,13 +259,11 @@ export const deleteAllMeetings = () => {
 export const adminSetSchedule = (start, end, interval) => {
     return (dispatch) => {
 
-        console.log("The settings are", start, end, interval);
         const timeSlot = {
             start: convertStringToTime(start),
             end: convertStringToTime(end),
             interval: convertStringToTime(interval)
         };
-        console.log("Query", start, end, interval);
         return axios
             .post(urlServer + "/admin/set-slots-only-slots/", {
                 beginSlot: start,
@@ -312,7 +273,6 @@ export const adminSetSchedule = (start, end, interval) => {
             .then(res => {
                 dispatch(
                     { type: "ADMIN_SET_SCHEDULE", message: timeSlot })
-                console.log("Settings saved to database successfully.");
                 return timeSlot
             })
             .catch(err => {

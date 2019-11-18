@@ -36,11 +36,7 @@ class App extends Component {
       .then(res => {
         let currentSettings = res.data[res.data.length - 1];
         const adminInterval = parseInt(currentSettings.surveyInterval, 10);
-        //console.log("get slots from app.js", res)
-        //console.log("get slots from app.js", currentSettings.surveyInterval)
         this.setState({ surveyInterval: adminInterval }, () => { });
-        // this.state.surveyInterval = adminInterval;
-        // console.log(this.state.surveyInterval, " NEW INTERVAL FROM DB");
       })
       .catch(err => { });
   };
@@ -86,7 +82,6 @@ class App extends Component {
 
 
 const mapStatetoProps = (state) => {
-  console.log("mapStatetoProps", state)
   return { data: state.toastReducer, error: state.error }
 }
 
@@ -97,5 +92,4 @@ const mapDispatchprops = (dispatch) => {
   }
 }
 
-// burayı redux a bağla 2 fonksiyonu yaz , daha sonra uygulamanın neresinden çağırırsan buradaki visible değişecek.
 export default connect(mapStatetoProps, mapDispatchprops)(App);

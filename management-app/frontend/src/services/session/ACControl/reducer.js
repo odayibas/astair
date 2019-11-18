@@ -6,7 +6,6 @@ const intialState = {
 export const acControlReducer = (state = intialState, action) => {
     switch (action.type) {
         case "GET_LAST_AC_RECORDS":
-            console.log("action.data",action.data)
             return {
                 ...state,
                 data: action.data

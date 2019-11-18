@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-// asynchronous action creator
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
-
 
 export const submit = (history, username, password) => {
     return (dispatch) => {
@@ -19,7 +17,6 @@ export const submit = (history, username, password) => {
                 password: user.password
             })
             .then(res => {
-                console.log(res.data);
 
                 if (res) {
                     if (res.data === -2 || res.data === -1) {

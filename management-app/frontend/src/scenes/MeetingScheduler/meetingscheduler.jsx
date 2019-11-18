@@ -27,22 +27,7 @@ class MeetingScheduler extends Component {
     creating: false,
     showWeekly: true,
     roomset: new Set([]), // Degistir
-    // headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     headerRow: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    // timeSlot: {
-    //   start: {
-    //     hours: 7,
-    //     minutes: 0
-    //   },
-    //   end: {
-    //     hours: 17,
-    //     minutes: 0
-    //   },
-    //   interval: {
-    //     hours: 1,
-    //     minutes: 0
-    //   }
-    // },
     timeSlot: undefined,
     rooms: undefined,
     meetings: [],
@@ -61,7 +46,6 @@ class MeetingScheduler extends Component {
       const start = convertStringToTime(data.beginSlot);
       const end = convertStringToTime(data.finishSlot);
       const interval = convertStringToTime(data.durationSlot);
-      console.log("", start, end, interval)
       this.setState({
         timeSlot:
         {
@@ -69,7 +53,6 @@ class MeetingScheduler extends Component {
         }
       });
     })
-
 
     const s = new Set();
     this.setState({ roomset: s });
@@ -81,13 +64,7 @@ class MeetingScheduler extends Component {
     this.props.onFetchParticipants().then(list => {
       this.allParticipants = list;
     })
-
-
-
-
   }
-
-
 
   componentWillMount = () => {
     const today = new Date();
@@ -97,7 +74,6 @@ class MeetingScheduler extends Component {
   getWeek = (day = undefined) => {
     let week = new Array(5);
     const permToday = new Date(this.state.today);
-    // console.log("The day being processed is ", permToday);
     for (let i = 0; i <= 4; i++) {
       const todayDate = permToday;
       const todayDay = todayDate.getDay() - 1;
@@ -118,7 +94,6 @@ class MeetingScheduler extends Component {
     this.state.roomset.forEach(item => {
       result.push(this.state.rooms[item]);
     });
-    // console.log("As strings ", result);
     return result;
   };
 
@@ -149,7 +124,6 @@ class MeetingScheduler extends Component {
 
   getMeetingsFromDatabase = (callback = undefined) => {
     let thisWeek = this.getWeek();
-    // console.log("The week is", thisWeek);
     this.props.onFetchMeetings(
       convertDateToString(thisWeek[0], "year"),
       convertDateToString(thisWeek[4], "year"),
@@ -167,12 +141,10 @@ class MeetingScheduler extends Component {
     meetings.forEach(meeting => {
       allBlocks = [...allBlocks, ...this.divideMeeting(meeting)];
     });
-    // console.log("All the blocks", allBlocks);
     return allBlocks;
   };
 
   divideMeeting = meeting => {
-    // console.log("The main meeting is ", meeting);
     let interval = this.state.timeSlot.interval;
     let result = [];
     const start = meeting.start;
@@ -201,21 +173,18 @@ class MeetingScheduler extends Component {
         description: meeting.description
       });
     }
-    // console.log(result);
     return result;
   };
 
   processData = (data, callback = undefined) => {
     let meetingArray = this.decodeMeetingData(data);
     this.setState({ rawMeetings: meetingArray });
-    // console.log("Meeting Data is ready for processing ", meetingArray);
     // CONSTRUCT SCHEDULE ARRAY
     this.setState(
       {
         meetings: this.constructScheduleFromMeetings(meetingArray)
       },
       () => {
-        // console.log("Meetings are ready to forward.");
         const b = !this.state.readyForDisplay;
         this.setState({ readyForDisplay: b });
         this.handleSummary("hide");
@@ -232,8 +201,6 @@ class MeetingScheduler extends Component {
     let meetingArray = [];
     for (let i = 0; i < dataArr.length; i++) {
       let element = dataArr[i];
-      // const participants = element.participants.split(",");
-      // const description = element.description;
       const participants = element.participants;
       const username = element.username;
       const description = element.description;
@@ -252,7 +219,6 @@ class MeetingScheduler extends Component {
         participants
       });
     }
-    // console.log("Data fetched from database", meetingArray);
     return meetingArray;
   };
 
@@ -263,21 +229,13 @@ class MeetingScheduler extends Component {
   };
 
   slotSelected = (date, start, end) => {
-    // console.log("Meeting date:", date);
-    // console.log("Meeting Start:", start);
-    // console.log("Meeting End:", end);
-    // if (this.state.roomset.size === 0) {
-    console.log("date", convertDateToString(date, "year"))
-    console.log(date)
     let convertedDate = convertDateToString(date, "year");
     let convertedStart = convertTimeToString(start);
     let convertedEnd = convertTimeToString(end);
     if (this.checkedCount === 0) {
       this.props.onGetAvailableRooms(convertedDate, convertedStart, convertedEnd, this.state.rooms).then(newSet => {
-        console.log("newSet", newSet)
         this.setState({ roomset: newSet }, () => {
           // Show Dialog
-          // console.log("Current roomset", this.state.roomset);
           this.setShowDialog(true);
         });
       })
@@ -285,7 +243,6 @@ class MeetingScheduler extends Component {
     const room = this.state.rooms[this.state.roomset.values().next().value];
     const summary = { date, start, end, room };
     this.setState({ summary: summary }, () => {
-      console.log("Debug", this.state.roomset);
       if (this.checkedCount !== 0) {
         this.setShowDialog(true);
       }
@@ -332,15 +289,11 @@ class MeetingScheduler extends Component {
     this.getMeetingsFromDatabase(() => {
       if (roomset.size > 1) {
         this.multiRoomSelected = true;
-        // const tempMultiSchedule = this.mergeSchedules(roomset);
         const copy = new Set(roomset);
-        // console.log("Copy", copy);
         this.setState({ roomset: copy });
-        // this.setState({ multiSchedule: tempMultiSchedule }, () => {});
         this.setState({ scheduleID: {} });
       } else {
         const copy = new Set(roomset);
-        // console.log("Copy", copy);
         this.setState({ roomset: copy });
         this.setState({ scheduleID: roomset.values().next().value });
         this.multiRoomSelected = false;
@@ -349,19 +302,9 @@ class MeetingScheduler extends Component {
     });
   };
 
-  // getProperSchedule = () => {
-  //   if (this.multiRoomSelected) {
-  //     return this.state.multiSchedule;
-  //   } else {
-  //     return this.state.schedules[this.state.scheduleID];
-  //   }
-  // };
-
   setDescription = desc => {
     this.description = desc;
   };
-
-
 
   handleRangeClick = range => {
     if (range === "Day") {
@@ -399,7 +342,6 @@ class MeetingScheduler extends Component {
       username: meeting.username
     };
     this.setState({ summary: summary }, () => { });
-    console.log("Meeting displayed", summary);
     this.handleSummary("show");
   };
 
@@ -516,13 +458,10 @@ class MeetingScheduler extends Component {
   };
 
   handleCreateMeeting = room => {
-    // this.postMeeting(this.state.summary);
-    //this.setShowDialog(true);
     let participants = "";
     this.selectedParticipants.forEach(i => {
       participants += this.allParticipants[i] + ",";
     });
-    console.log("Summary, ", this.state.summary);
     const dataPosted = {
       participants,
       room: room,
@@ -621,7 +560,6 @@ class MeetingScheduler extends Component {
 }
 
 const mapStatetoProps = (state) => {
-  console.log("mapStatetoProps", state)
   return { data: state.data, error: state.error }
 }
 

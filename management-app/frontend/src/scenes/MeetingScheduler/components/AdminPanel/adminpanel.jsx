@@ -242,7 +242,6 @@ class AdminPanel extends Component {
 }
 
 const mapStatetoProps = (state) => {
-  console.log("mapStatetoProps", state)
   return { data: state.toastReducer, error: state.error }
 }
 

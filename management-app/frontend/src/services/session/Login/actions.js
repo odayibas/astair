@@ -1,13 +1,10 @@
 import axios from 'axios';
 import { set as setCookie } from "es-cookie";
 
-// asynchronous action creator
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
-
 
 export const submit = (history, username, password) => {
     return (dispatch) => {
-        console.log(history,username,password)
         const user = {
             username: username,
             role: 1,
@@ -21,7 +18,6 @@ export const submit = (history, username, password) => {
                 password: user.password
             })
             .then(res => {
-                console.log("res",res)
                 if (res) {
                     if (res.data !== -2 && res.data !== -1) {
                         var promise1 = Promise.resolve(res.data);

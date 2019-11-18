@@ -72,7 +72,6 @@ class VoteChart extends Component {
           hot: res[1],
           nice: res[2]
         });
-        console.log(this.state.cold,this.state.hot,this.state.nice)
         this.drawVoteChart(res);
 
       })
@@ -118,7 +117,6 @@ class VoteChart extends Component {
 }
 
 const mapStatetoProps = (state) => {
-  console.log("mapStatetoProps", state)
   return { data: state.data, error: state.error }
 }
 

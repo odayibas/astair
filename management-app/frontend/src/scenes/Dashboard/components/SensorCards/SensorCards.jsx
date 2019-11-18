@@ -14,14 +14,6 @@ const urlArr = Array.from(
 let orange = "rgba(214, 69, 65, 1)";
 let red = "rgba(252, 214, 112, 1)";
 
-
-
-// const mapDispatchprops = (dispatch) => {
-//   return {
-//     onGetAcData: () => dispatch(getAcData()),
-//   }
-// }
-
 const sensorData = {
   labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
   datasets: [
@@ -202,13 +194,6 @@ class SensorCards extends Component {
 
   }
   render() {
-    /* [
-    [this.props.sensorTemp[1],this.props.sensorHum[1],1,this.props.ac[0] && this.props.ac[0].ac_degree],
-    [this.props.sensorTemp[2],this.props.sensorHum[2],2,this.props.ac[1] && this.props.ac[1].ac_degree],
-    [this.props.sensorTemp[3],this.props.sensorHum[3],3,this.props.ac[2] && this.props.ac[2].ac_degree],
-    [this.props.sensorTemp[4],this.props.sensorHum[4],4,this.props.ac[3] && this.props.ac[3].ac_degree],
-    // [this.props.sensorTemp[5],this.props.sensorHum[5],5,this.props.ac[5] && this.props.ac[5].ac_degree], 
-  ] */
     const arr = this.createArr();
     const sensorArr = interpolateColors(
       red,

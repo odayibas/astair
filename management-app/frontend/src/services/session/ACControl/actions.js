@@ -3,7 +3,6 @@ import axios from 'axios';
 // asynchronous action creator
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
-// eski adı getData
 export const getLastAcRecords = (currentAC) => {
     return (dispatch) => {
         axios
@@ -23,7 +22,6 @@ export const getLastAcRecords = (currentAC) => {
                     active: active,
                     isChecked: b
                 };
-                console.log("acdata",acData)
                 dispatch(
                     { type: "GET_LAST_AC_RECORDS", data: acData })
             })
@@ -78,7 +76,6 @@ export const handleSubmit = (message1) => {
                 topic: "Astair/MODEL/AC"
             })
             .then(res => {
-                console.log("res",res)
                 dispatch(
                     { type: "HANDLE_SUBMIT", message: request })
                 alert("Data Send");

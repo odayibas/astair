@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// asynchronous action creator
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 
 export const getSlackData = () => {
@@ -21,8 +20,5 @@ export const getSlackData = () => {
             .catch(error => {
                 console.log(error);
             });
-
-        //console.log([cold,nice,hot]);    // poll results from slack
-
     }
 }

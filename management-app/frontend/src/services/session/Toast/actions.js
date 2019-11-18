@@ -6,7 +6,6 @@ export const showToast = (level,message) => {
             toastMessage: message,
             showToast: true,
         }
-        console.log("data",data)
         dispatch(
             { type: "SHOW_TOAST", action: data })
     }

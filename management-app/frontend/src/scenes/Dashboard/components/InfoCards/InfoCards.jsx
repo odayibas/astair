@@ -61,25 +61,6 @@ class InfoCards extends Component {
             </CardTitle>
             <PieChart>
             </PieChart>
-            {/* <strong>Cold %{this.slack100(this.props.cold)}</strong>
-            <Progress
-              className="progress-xs mt-2"
-              color="primary"
-              value={this.slack100(this.props.cold)}
-            />
-            <strong>Nice %{this.slack100(this.props.nice)}</strong>
-            <Progress
-              className="progress-xs mt-2"
-              color="success"
-              value={this.slack100(this.props.nice)}
-            />
- 
-            <strong>Hot %{this.slack100(this.props.hot)}</strong>
-            <Progress
-              className="progress-xs mt-2"
-              color="danger"
-              value={this.slack100(this.props.hot)}
-            /> */}
           </Card>
         </Col>
         <Col>

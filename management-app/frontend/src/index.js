@@ -10,9 +10,6 @@ import { Provider } from 'react-redux'
 import { acControlReducer } from './services/session/ACControl/reducer';
 import { toastReducer } from './services/session/Toast/reducer';
 
-
-// const store = createStore(reducer, applyMiddleware(thunk));
-
 const reducer = combineReducers({
     acControlReducer, toastReducer
 })

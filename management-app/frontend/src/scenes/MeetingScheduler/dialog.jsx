@@ -69,11 +69,8 @@ class Dialog extends Component {
       return (
         <Dropdown.Item
           onClick={() => {
-            console.log("Selected", room);
             this.roomSelected = true;
-            console.log("room from dialog",room)
             this.setState({ currentRoom: room }, () => {
-              console.log("Room has been changed", this.state.currentRoom);
             });
           }}
           id={room}
@@ -103,7 +100,6 @@ class Dialog extends Component {
       setTimeout(() => {
         this.props.onHideToast()
       }, 5000);
-      console.log("[ERROR], Select a room.");
     } else {
       this.props.cancelCreating();
       this.props.onHide();
@@ -116,8 +112,6 @@ class Dialog extends Component {
   };
 
   render() {
-    // console.log("Dialog render");
-    // console.log("Rooms of dialog", this.props.rooms);
     return (
       <Modal
         {...this.props}
@@ -155,17 +149,6 @@ class Dialog extends Component {
               </Col>
             </Row>
           </Container>
-          {/* <InputGroup size="sm" className="mb-3">
-            <InputGroup.Prepend>
-              <InputGroup.Text id="inputGroup-sizing-sm">
-                Description:
-              </InputGroup.Text>
-            </InputGroup.Prepend>
-            <FormControl
-              aria-label="Small"
-              aria-describedby="inputGroup-sizing-sm"
-            />
-          </InputGroup> */}
           <Form>
             <Form.Group>
               <Form.Control
@@ -208,7 +191,6 @@ class Dialog extends Component {
 }
 
 const mapStatetoProps = (state) => {
-  console.log("mapStatetoProps", state)
   return { data: state.toastReducer, error: state.error }
 }
 

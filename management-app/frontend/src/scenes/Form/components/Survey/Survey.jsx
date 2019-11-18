@@ -64,6 +64,7 @@ class Survey extends Component {
     };
     this.props.getVoteResult(x);
     this.props.onPostData(x);
+
   };
 
   handleSubmit = event => {
@@ -77,7 +78,6 @@ class Survey extends Component {
       this.setVoteRegion(this.state.vote, this.state.region);
       this.setState({ state: this.state });
       this.props.raiseRefresh(false);
-      console.log("data posted")
       this.postData();
       
     }
@@ -133,7 +133,6 @@ class Survey extends Component {
 }
 
 const mapStatetoProps = (state) => {
-  console.log("mapStatetoProps", state)
   return { data: state.data, error: state.error }
 }
 

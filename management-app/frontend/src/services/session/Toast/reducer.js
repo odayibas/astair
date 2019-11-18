@@ -5,8 +5,6 @@ const intialState = {
 }
 
 export const toastReducer = (state = intialState, action) => {
-    console.log("action", action.action)
-
     switch (action.type) {
         case "SHOW_TOAST":
 

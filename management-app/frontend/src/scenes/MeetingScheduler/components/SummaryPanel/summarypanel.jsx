@@ -89,20 +89,6 @@ class SummaryPanel extends Component {
               </span>
             </Col>
           </Row>
-          {/* <Row>
-            <Col xs={12}>
-              <button
-                type="button"
-                className="btn btn-info"
-                style={{ margin: "10px" }}
-                onClick={() => {
-                  this.props.onShowDialog(true);
-                }}
-              >
-                Create
-              </button>
-            </Col>
-          </Row> */}
         </Container>
       </div>
     );

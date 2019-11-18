@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// asynchronous action creator
 const urlServer = process.env.REACT_APP_ASTAIR_MANAGEMENT_BACKEND;
 const urlArr = Array.from(
     Array(parseInt(process.env.REACT_APP_LENGTH)).keys()

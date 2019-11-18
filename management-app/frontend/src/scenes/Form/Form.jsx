@@ -24,7 +24,6 @@ class WebForm extends Component {
   adminInterval = 10;
   constructor(props) {
     super(props);
-    console.log(props.timeInterval, "CONSTRUCTOR CHECK");
     this.state = {
       show: false,
       vote: "Hot",
@@ -50,20 +49,12 @@ class WebForm extends Component {
   }
 
   takeVoteId = () => {
-    console.log("NEVER EVERRRRR", this.adminInterval);
     let now = new Date();
     vote_id = Math.floor(this.diff_minutes(now, baseYear) / this.adminInterval);
-    console.log("Interval inside", this.adminInterval);
     return vote_id;
   };
 
   componentWillReceiveProps(newProps) {
-    console.log(
-      "New props are",
-      newProps.surveyInterval,
-      " OLD ",
-      this.props.surveyInterval
-    );
     if (
       newProps.surveyInterval &&
       newProps.surveyInterval !== this.props.surveyInterval
@@ -89,7 +80,6 @@ class WebForm extends Component {
     var t = time;
     if (b) t = this.adminInterval;
     this.setState({ show: false });
-    console.log("The time you are going to wait for is ", t);
     if (t) {
       setTimeout(() => {
         this.setState({ show: true });
@@ -136,22 +126,17 @@ class WebForm extends Component {
 
   componentDidMount() {
     this.props.onGetData().then(res => {
-      console.log("res",res)
       if (res.data.length !== 0 && res.data) {
         var now = new Date();
         var nowMin = this.diff_minutes(now, baseYear);
         time = (this.takeVoteId() + 1) * this.adminInterval - nowMin;
-        console.log("Should have been done before");
-
         this.setState((prevState, props) => ({
           vote_id: res.data[0].vote_id,
           results: res.data
         }));
 
         if (vote_id && vote_id !== this.state.vote_id) {
-          console.log("vote id", vote_id, "state vote", this.state.vote_id);
           setCookie("form_notification", "1");
-          console.log("This one?");
           this.setState({
             show: true
           });
@@ -160,7 +145,6 @@ class WebForm extends Component {
           else this.refresh(false);
         }
       } else {
-        console.log("else e girdis")
         now = new Date();
         nowMin = this.diff_minutes(now, baseYear);
         time = (this.takeVoteId() + 1) * this.adminInterval - nowMin;
@@ -175,15 +159,12 @@ class WebForm extends Component {
   }
 
   getVoteResult = lastvote => {
-    console.log("this.state.results before",this.state.results)
     let results = [...this.state.results];
     results.push(lastvote);
-    console.log("results",results)
 
     this.setState({
       results: results
     });
-    console.log("this.state.results after",this.state.results)
   };
 
   setVoteRegion = (vote, region) => {
@@ -194,7 +175,6 @@ class WebForm extends Component {
   };
 
   setResults(results) {
-    console.log("setResults",results)
     this.setState({
       results: results
     });
@@ -252,7 +232,6 @@ class WebForm extends Component {
 }
 
 const mapStatetoProps = (state) => {
-  console.log("mapStatetoProps", state)
   return { data: state.data, error: state.error }
 }
 

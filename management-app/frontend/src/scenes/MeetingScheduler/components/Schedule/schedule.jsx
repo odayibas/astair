@@ -45,13 +45,6 @@ class Schedule extends Component {
     );
   };
 
-  componentWillReceiveProps(newProps) {
-    // if (newProps.timeSlot !== this.props.timeSlot) {
-    //   console.log("Hell yeah", newProps.timeSlot);
-    //   this.loadSettings(newProps);                       GOT AN ERROR
-    // }
-  }
-
   getEmptyArray = (rows, cols) => {
     let result = [];
     for (let i = 0; i < rows; i++) {
@@ -63,7 +56,6 @@ class Schedule extends Component {
 
   componentDidMount() {
     this.props.onRef(this);
-    // this.setState({ schedule: this.firstSchedule });
   }
 
   componentWillUnmount() {
@@ -87,8 +79,6 @@ class Schedule extends Component {
           });
         }
         this.setState({ scheduleID: this.props.scheduleID });
-        // this.firstSchedule = JSON.parse(JSON.stringify(this.props.schedule));
-        // this.setState({ schedule: this.firstSchedule });
       }
       // IF TODAY CHANGES (NOTE THAT SCHEDULE SHOULD ALSO CHANGE. FIX IT)
       if (this.state.today !== this.props.today) {
@@ -148,10 +138,8 @@ class Schedule extends Component {
       result.push(currentRow);
     }
     meetings.forEach(meeting => {
-      // console.log("The meeting is", meeting);
       const curTime = meeting.start;
       const x = this.slotArrayString.indexOf(this.convertTimeToString(curTime));
-      // console.log("Found x: ", x);
       if (x !== -1) {
         let y = 0;
         for (let i = 0; i < this.week.length; i++) {
@@ -169,8 +157,6 @@ class Schedule extends Component {
               x + 1 < this.numberOfRow &&
               y + 1 < this.numberOfCol
             ) {
-              // construct a map key: roomname | value: roomID
-              // console.log("The block should be added");
 
               if (!this.scheduleMap[x][y]) {
                 this.scheduleMap[x][y] = [];
@@ -188,9 +174,6 @@ class Schedule extends Component {
 
   getWeek = (props = this.props) => {
     let days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-    // if (this.numberOfCol === 1) {
-    //   days = ["Today"];
-    // }
     let week = new Array(days.length);
     let weekString = new Array(days.length);
     const permToday = new Date(props.today);
@@ -234,9 +217,6 @@ class Schedule extends Component {
 
     this.selectedSlots.clear();
     this.props.onSummary("hide");
-    // this.setState({ schedule: this.firstSchedule }, () => {
-    //   if (callback !== undefined) callback();
-    // });
   };
 
   decodeID = loc => {
@@ -312,12 +292,10 @@ class Schedule extends Component {
   };
 
   handleDown = id => {
-    console.log("Check 1 ");
     let loc = this.decodeLocation(id);
     if (loc.x <= 0 || loc.y <= 0) return;
     const val = this.state.schedule[loc.x - 1][loc.y - 1];
 
-    console.log("Check 2 ");
 
     if (val !== 0 && val !== 1) {
       this.pressedForeign = true;
@@ -328,7 +306,6 @@ class Schedule extends Component {
       return;
     }
     this.pressedForeign = false;
-    console.log("Check 3 ");
 
     this.clearSchedule(() => {
       if (loc.x > 0 && loc.y > 0) {
@@ -338,7 +315,6 @@ class Schedule extends Component {
           y: loc.y
         };
         this.updateSchedule(loc, 1);
-        console.log("Check 4 ");
       }
     });
   };
@@ -346,7 +322,6 @@ class Schedule extends Component {
   isWithin = (first, second) => {
     let diff =
       second.hours * 60 + second.minutes - (first.hours * 60 + first.minutes);
-      console.log("schedule.jsx",this.props)
     let interval =
       this.props.timeSlot.interval.hours * 60 +
       this.props.timeSlot.interval.minutes;
