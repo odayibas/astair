@@ -12,7 +12,7 @@
     "@mdi/font": "^3.8.95",
     "@mdi/js": "^3.8.95",
     "@mdi/react": "^1.2.1",
-    "apexcharts": "^3.8.6",
+    "apexcharts": "^3.24.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
